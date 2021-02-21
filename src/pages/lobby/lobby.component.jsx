@@ -1,11 +1,10 @@
 import React from 'react';
-import Marquee from '../../components/marquee/marquee.component';
-
+import Events from '../../components/events/events.component';
 import './lobby.styles.scss';
 
 const Lobby = () => (
     <div className='lobby'>
-        <Marquee />
+        <Events />
     </div>
 );
 
