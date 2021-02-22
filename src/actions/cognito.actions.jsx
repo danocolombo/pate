@@ -12,11 +12,13 @@ import {
     AuthenticationDetails,
 } from 'amazon-cognito-identity-js';
 import UserPool from './UserPool';
-export const authenticateUser = (email, password) => async (dispatch) => {
+export const loginWithCognito = (email, password) => {
     // call to login
+    console.log('...auth...');
     const user = new CognitoUser({
         Username: email,
         Pool: UserPool,
     });
     console.log('AUTHENTICATE NOW');
+    return null;
 }
