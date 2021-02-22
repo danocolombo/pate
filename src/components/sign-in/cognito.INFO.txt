@@ -1,0 +1,5 @@
+from the AWS site....
+https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-social-idp.html
+
+
+https://<your_user_pool_domain>/login?response_type=code&client_id=<your_client_id>&redirect_uri=https://www.example.com
