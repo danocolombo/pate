@@ -18,15 +18,16 @@ class SignIn extends React.Component {
   }
 
   handleSubmit = async event => {
-    event.preventDefault();
-    return null;
+    
     const { email, password } = this.state;
 
     try {
       //await auth.signInWithEmailAndPassword(email, password);
       console.log('handleSubmit');
       //await authenticateUser(email, password);
+      await loginWithCognito(email, password);
       this.setState({ email: '', password: '' });
+      console.log('done with handleSubmit');
     } catch (error) {
       console.log(error);
     }
@@ -63,7 +64,7 @@ class SignIn extends React.Component {
           />
           <div className='buttons'>
             
-            <CustomButton onClick={loginWithCognito}> Sign in </CustomButton>
+            <CustomButton onClick={this.handleSubmit}> Sign in </CustomButton>
             <CustomButton onClick={signInWithGoogle} isGoogleSignIn>
               Google Sign In
             </CustomButton>
