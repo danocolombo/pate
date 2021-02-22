@@ -11,17 +11,14 @@ import {
     CognitoUser,
     AuthenticationDetails,
 } from 'amazon-cognito-identity-js';
-import {
-    LOGIN_SUCCESS,
-    LOGIN_FAILURE,
-    UPDATE_USER
-} from '../redux/user/user.types';
+import { UserActionTypes } from '../redux/user/user.types';
 import UserPool from './UserPool';
 export const loginWithCognito = (email, password) => async (dispatch) => {
     const user = new CognitoUser({
         Username: email,
         Pool: UserPool,
     });
+
     const authDetails = new AuthenticationDetails({
         Username: email,
         Password: password,
@@ -38,7 +35,7 @@ export const loginWithCognito = (email, password) => async (dispatch) => {
             };
             //pass the jwt to LOGIN_SUCCESS
             dispatch({
-                type: LOGIN_SUCCESS,
+                type: UserActionTypes.LOGIN_SUCCESS,
                 payload: login_success_data,
             });
             //======================================
@@ -71,7 +68,7 @@ export const loginWithCognito = (email, password) => async (dispatch) => {
             //     console.log('registerUserInPool FAILED');
             // }
             dispatch({
-                type: UPDATE_USER,
+                type: UserActionTypes.UPDATE_USER,
                 payload: uData,
             });
             // dispatch(loadUser({ uData }));
@@ -83,9 +80,9 @@ export const loginWithCognito = (email, password) => async (dispatch) => {
                 'err: ' + util.inspect(err, { showHidden: false, depth: null })
             );
 
-            dispatch(setAlert(err.message, 'danger'));
+            // dispatch(setAlert(err.message, 'danger'));
             dispatch({
-                type: LOGIN_FAILURE,
+                type: UserActionTypes.LOGIN_FAILURE,
             });
         },
         // newPasswordRequired: (data) => {
@@ -94,4 +91,4 @@ export const loginWithCognito = (email, password) => async (dispatch) => {
     });
 
     return null;
-}
+};
