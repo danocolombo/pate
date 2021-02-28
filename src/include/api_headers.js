@@ -9,3 +9,9 @@ export const api_header_config = {
     },
 };
 //'Allow-Control-Allow-Headers': 'Content-Type, x-auth-token, Access-Control-Allow-Headers'
+
+export const api_get_header_config = {
+    headers: {
+        Method: 'POST',
+    },
+};
