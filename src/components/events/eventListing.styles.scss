@@ -24,7 +24,7 @@
 .location-box {
     float: right;
     min-width: 500px;
-    padding-left: 10px;
+    padding-left: 30px;
 }
 .location-box .event-name {
     font-size: 1.3em;
@@ -32,6 +32,6 @@
     font-weight: bold;
     text-align: left;
 }
-.location-box .event-street {
+.location-box .event-city-state-zip {
     text-align: left;
 }
