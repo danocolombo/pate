@@ -1,3 +1,37 @@
 .events-header {
     color: blue;
 }
+
+#event-box {
+    padding: 20px 10px;
+    min-height: 50px;
+    padding-bottom: 30px;
+}
+.date-box {
+    float: left;
+    border: #333 solid 1px;
+}
+.date-box .event-month {
+    border: #333 solid 1px;
+    padding: 2px 5px;
+    text-align: center;
+    background: #444;
+    color: #fff;
+}
+.date-box .event-day {
+    text-align: center;
+}
+.location-box {
+    float: right;
+    min-width: 500px;
+    padding-left: 10px;
+}
+.location-box .event-name {
+    font-size: 1.3em;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    text-align: left;
+}
+.location-box .event-street {
+    text-align: left;
+}
