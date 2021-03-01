@@ -1,13 +1,14 @@
 import React from 'react';
 import axios from 'axios';
 import ReactDom from 'react-dom';
-
+import eventListing from './eventListing.component';
 import {
     api_get_header_config,
     api_header_config,
 } from '../../include/api_headers';
 
 import './events.styles.scss';
+import EventListing from './eventListing.component';
 const util = require('util');
 // ---- notes on doing async await in componentDidMount
 // https://www.valentinog.com/blog/await-react/
@@ -33,7 +34,7 @@ class Events extends React.Component {
             .then((data) => {
                 console.log(data);
                 console.log('one more line');
-                this.setState({ plans: data });
+                this.setState({ plans: data.body });
             });
     }
 
@@ -44,14 +45,14 @@ class Events extends React.Component {
                 <span>Below you will find the current events</span>
                 {console.log(
                     'state.plans: ' +
-                        util.inspect(this.state.plans, {
+                        util.inspect(this.state?.events, {
                             showHidden: false,
                             depth: null,
                         })
                 )}
-                {console.log('##' + this.state.plans.body?.Items[0].eventDate)}
-                {this.state.plans.body?.Items.map((plan) => (
-                    <h3>{plan.eventDate}</h3>
+
+                {this.state.plans.map((plan) => (
+                    <EventListing event={plan} key={plan.uid} />
                 ))}
                 {console.log('DONE')}
             </div>
