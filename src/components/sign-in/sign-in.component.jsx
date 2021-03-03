@@ -3,8 +3,9 @@ import React from 'react';
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
 
-import {signInWithGoogle} from './google.utils';
-import {loginWithCognito} from '../../actions/cognito.actions';
+// import {signInWithGoogle} from './google.utils';
+//import {loginWithCognito} from '../../actions/cognito.actions';
+// import {testCog} from '../../actions/cognito.actions';
 import './sign-in.styles.scss';
 
 class SignIn extends React.Component {
@@ -17,27 +18,32 @@ class SignIn extends React.Component {
     };
   }
 
-  handleSubmit = async event => {
+  // handleSubmit = async event => {
     
-    const { email, password } = this.state;
+  //   const { email, password } = this.state;
 
-    try {
-      //await auth.signInWithEmailAndPassword(email, password);
-      console.log('handleSubmit');
-      //await authenticateUser(email, password);
-      await loginWithCognito(email, password);
-      this.setState({ email: '', password: '' });
-      console.log('done with handleSubmit');
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //   try {
+  //     //await auth.signInWithEmailAndPassword(email, password);
+  //     console.log('handleSubmit');
+  //     //await authenticateUser(email, password);
+  //     // console.log(testCog);
+  //     // await loginWithCognito(email, password);
+  //     // this.setState({ email: '', password: '' });
+  //     console.log('done with handleSubmit');
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   handleChange = event => {
     const { value, name } = event.target;
 
     this.setState({ [name]: value });
   };
+  clickTest = async event => {
+    // console.log(testCog);
+    console.log('clickText');
+  }
 
   render() {
     return (
@@ -45,7 +51,7 @@ class SignIn extends React.Component {
         <h2>I already have an account</h2>
         <span>Sign in with your email and password</span>
 
-        <form onSubmit={this.handleSubmit}>
+        <form >
           <FormInput
             name='email'
             type='email'
@@ -64,10 +70,8 @@ class SignIn extends React.Component {
           />
           <div className='buttons'>
             
-            <CustomButton onClick={this.handleSubmit}> Sign in </CustomButton>
-            <CustomButton onClick={signInWithGoogle} isGoogleSignIn>
-              Google Sign In
-            </CustomButton>
+            <CustomButton onClick={this.clickTest}> Sign in </CustomButton>
+            
           </div>
         </form>
       </div>

@@ -92,3 +92,8 @@ export const loginWithCognito = (email, password) => async (dispatch) => {
 
     return null;
 };
+export const testCog = () => {
+    console.log('in TESTCog');
+    let msg = 'We made it there and back';
+    return msg;
+}
