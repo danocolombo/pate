@@ -92,3 +92,7 @@ export const loginWithCognito = (email, password) => async (dispatch) => {
 
     return null;
 };
+export const testCognitoFunc = () => {
+    let msg = 'made it';
+    return msg;
+}
