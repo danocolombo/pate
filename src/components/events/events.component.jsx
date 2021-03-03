@@ -40,7 +40,7 @@ class Events extends React.Component {
 
     render() {
         return (
-            <div className='events'>
+            <div id='events-page'>
                 <h2 className='title'>Principle 8 Rally Events</h2>
                 <span>Below you will find the current events</span>
                 {console.log(
