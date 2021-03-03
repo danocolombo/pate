@@ -92,7 +92,108 @@ export const loginWithCognito = (email, password) => async (dispatch) => {
 
     return null;
 };
-export const testCognitoFunc = () => {
-    let msg = 'made it';
-    return msg;
-}
+export async function testCognitoFunc(email, password) {
+    const user = new CognitoUser({
+        Username: email,
+        Pool: UserPool,
+    });
+
+    const authDetails = new AuthenticationDetails({
+        Username: email,
+        Password: password,
+    });
+    let cognitoResponse = {};
+    // console.log(user?.getUsername);
+    await user.authenticateUser(authDetails, {
+        onSuccess: (data) => {
+            const jwToken = data.idToken.jwtToken;
+            data.token = jwToken;
+            let login_success_data = {
+                token: data.token,
+            };
+            //pass the jwt to LOGIN_SUCCESS
+            //@@@@@@@@@@@@@@@@@@@@@@@@@
+            //DISPATCH CALL
+            // dispatch({
+            //     type: UserActionTypes.LOGIN_SUCCESS,
+            //     payload: login_success_data,
+            // });
+            //======================================
+            // now lets get our user information
+            // from Cognito, send to loadUser
+            let uData = {
+                _id: data.idToken.payload.sub,
+                email: data.idToken.payload.email,
+                firstName: data.idToken.payload.given_name,
+                lastName: data.idToken.payload.family_name,
+                phone: data.idToken.payload.phone_number,
+            };
+            cognitoResponse = data;
+            // console.log('_id: ' + data.idToken.payload.sub);
+            const util = require('util');
+            console.log('cognito data: ' + util.inspect(data, { showHidden: false, depth: null }));
+
+            // console.log('given_name: ' + data.idToken.payload.given_name);
+            // console.log('email: ' + data.idToken.password.email);
+            // console.log('firstName: ' + data.idToken.password.firstName);
+            // console.log('lastName: ' + data.idToken.password.lastName);
+            // console.log('phone: ' + data.idToken.password.phone);
+            //===================
+            // DANOTEST
+            //===================
+            // try {
+            //     let newUser = {
+            //         login: 'meeter.tester@wmogcolumbus.com',
+            //         password: 'R0mans1212!',
+            //         firstName: 'Meeter',
+            //         lastName: 'Tester',
+            //         phone: '+17066543210',
+            //         email: 'meeter.tester@wmogcolumbus.com',
+            //         role: 'guest', //superuser, owner, manager
+            //         client: 'wbc',
+            //     };
+            //     dispatch(registerUserInPool({ newUser }));
+            // } catch (regError) {
+            //     console.log('registerUserInPool FAILED');
+            // }
+            //@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+            // DISPATCH CALL
+            //@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+            // dispatch({
+            //     type: UserActionTypes.UPDATE_USER,
+            //     payload: uData,
+            // });
+            // dispatch(loadUser({ uData }));
+            // console.log('WE GOOD');
+            // console.log('============');
+            // const util = require('util');
+            // console.log('cognitoResponse: ' + util.inspect(cognitoResponse, { showHidden: false, depth: null }));
+
+            // return login_success_data;
+        },
+        onFailure: (err) => {
+            console.error('onFailure:', err);
+            const util = require('util');
+            console.log(
+                'err: ' + util.inspect(err, { showHidden: false, depth: null })
+            );
+
+            // dispatch(setAlert(err.message, 'danger'));
+            //@@@@@@@@@@@@@@@@@@@@@@@@@@@
+            // DISPATCH CALL
+            // dispatch({
+            //     type: UserActionTypes.LOGIN_FAILURE,
+            // });
+            console.log('WE ERRORED OUT');
+        },
+        // newPasswordRequired: (data) => {
+        //     console.log('newPasswordRequired:', data);
+        // },
+    });
+    
+    // console.log('RETURNING:\n' + JSON.parse(cognitoResponse));
+    return cognitoResponse;
+    // let msg = 'made it: ' + email;
+    // return msg;
+};

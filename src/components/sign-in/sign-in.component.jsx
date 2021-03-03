@@ -22,12 +22,17 @@ class SignIn extends React.Component {
     const { email, password } = this.state;
 
     try {
+      let em = 'danocolombo@gmail.com';
+      let pa = 'R0mans1212!';
       //await auth.signInWithEmailAndPassword(email, password);
       console.log('handleSubmit');
       //await authenticateUser(email, password);
-      //await loginWithCognito(email, password);
-      let msg = await testIt();
-      console.log(msg);
+      // await loginWithCognito(email, password);
+      let uData = await testIt(em, pa);
+      // console.log(msg);
+      const util = require('util');
+      console.log('uData: ' + util.inspect(uData, { showHidden: false, depth: null }));
+
       this.setState({ email: '', password: '' });
       console.log('done with handleSubmit');
     } catch (error) {
