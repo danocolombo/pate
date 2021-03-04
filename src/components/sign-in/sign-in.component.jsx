@@ -4,7 +4,7 @@ import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
 
 import {signInWithGoogle} from './google.utils';
-import {loginWithCognito} from '../../actions/cognito.actions';
+import {loginWithCognito, newCognitoLogin, testFunc} from '../../actions/cognito.actions';
 import './sign-in.styles.scss';
 
 class SignIn extends React.Component {
@@ -25,7 +25,11 @@ class SignIn extends React.Component {
       //await auth.signInWithEmailAndPassword(email, password);
       console.log('handleSubmit');
       //await authenticateUser(email, password);
-      await loginWithCognito(email, password);
+      //await loginWithCognito(email, password);
+      let em = 'danocolombo@gmail.com';
+      let pa = 'R0mans1212!';
+      await testFunc(em,pa);
+      // newCognitoLogin(em,pa).then(result=>{console.log(result)});
       this.setState({ email: '', password: '' });
       console.log('done with handleSubmit');
     } catch (error) {
