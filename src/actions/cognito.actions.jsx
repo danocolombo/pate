@@ -111,6 +111,7 @@ export const testCognitoFunc = (email, password) => async (dispatch) => {
             let login_success_data = {
                 token: data.token,
             };
+
             //pass the jwt to LOGIN_SUCCESS
             //@@@@@@@@@@@@@@@@@@@@@@@@@
             //DISPATCH CALL
@@ -133,10 +134,10 @@ export const testCognitoFunc = (email, password) => async (dispatch) => {
             // console.log('_id: ' + data.idToken.payload.sub);
             const util = require('util');
             console.log(
-                'cognito data: ' +
+                'COGNITO_RESPONSE_DATA: \n###############################\n' +
                     util.inspect(data, { showHidden: false, depth: null })
             );
-
+            console.log('\n###############################\n');
             // console.log('given_name: ' + data.idToken.payload.given_name);
             // console.log('email: ' + data.idToken.password.email);
             // console.log('firstName: ' + data.idToken.password.firstName);
