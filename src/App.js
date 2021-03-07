@@ -1,14 +1,15 @@
 import React from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, Redirect, BrowserRouter as Router } from 'react-router-dom';
 
 import './App.css';
-
+import Header from './components/header/header.component';
 import Lobby from './pages/lobby/lobby.component';
+import Profile from './pages/profile/profile.component';
 // import ShopPage from './pages/shop/shop.component';
-import SignInAndSignUpPage from './pages/signin-and-signup/signin-and-signup.component';
+// import SignInAndSignUpPage from './pages/signin-and-signup/signin-and-signup.component';
 // import CheckoutPage from './pages/checkout/checkout.component';
 
-import Header from './components/header/header.component';
+
 
 // import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 //----------------------
@@ -17,7 +18,7 @@ import Header from './components/header/header.component';
 import { withAuthenticator } from '@aws-amplify/ui-react';
 
 
-import CurrentUserContext from './contexts/current-user/current-user.context';
+// import CurrentUserContext from './contexts/current-user/current-user.context';
 
 class App extends React.Component {
     constructor() {
@@ -55,27 +56,14 @@ class App extends React.Component {
 
     render() {
         return (
-            <div>
-                <CurrentUserContext.Provider value={this.state.currentUser}>
-                    <Header />
-                </CurrentUserContext.Provider>
-                <Switch>
-                    <Route exact path='/' component={Lobby} />
+            
+            <Router>
+                <Header/>
+                <Route exact path='/' component={Lobby} />
                     {/*  <Route path='/shop' component={ShopPage} />
                       // <Route exact path='/checkout' component={CheckoutPage} /> */}
-                    <Route
-                        exact
-                        path='/signin'
-                        render={() =>
-                            this.state.currentUser ? (
-                                <Redirect to='/' />
-                            ) : (
-                                <SignInAndSignUpPage />
-                            )
-                        }
-                    />
-                </Switch>
-            </div>
+                <Route exact path='/profile' component={Profile}/>
+            </Router>
         );
     }
 }
