@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-pate-dev-63025-authRole",
+      "UnauthRoleArn": "arn:aws:iam::226036691416:role/amplify-pate-dev-63025-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::226036691416:role/amplify-pate-dev-63025-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-pate-dev-63025-deployment",
+      "UnauthRoleName": "amplify-pate-dev-63025-unauthRole",
+      "StackName": "amplify-pate-dev-63025",
+      "StackId": "arn:aws:cloudformation:us-east-1:226036691416:stack/amplify-pate-dev-63025/84bc9660-7f38-11eb-87f1-0e0ada131a5b",
+      "AmplifyAppId": "d57ri4ibo2uq2"
+    },
+    "categories": {
+      "auth": {
+        "pate782e594f": {}
+      }
+    }
+  }
+}

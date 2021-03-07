@@ -11,6 +11,11 @@ import SignInAndSignUpPage from './pages/signin-and-signup/signin-and-signup.com
 import Header from './components/header/header.component';
 
 // import { auth, createUserProfileDocument } from './firebase/firebase.utils';
+//----------------------
+//AMPLIFY INTEGRATION
+//----------------------
+import { withAuthenticator } from '@aws-amplify/ui-react';
+
 
 import CurrentUserContext from './contexts/current-user/current-user.context';
 
@@ -20,6 +25,8 @@ class App extends React.Component {
 
         this.state = {
             currentUser: null,
+            loggedInStatus: "NOT_LOGGED_IN",
+            user: {}
         };
     }
 
@@ -73,4 +80,4 @@ class App extends React.Component {
     }
 }
 
-export default App;
+export default withAuthenticator(App);
