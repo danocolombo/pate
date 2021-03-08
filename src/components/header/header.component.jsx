@@ -1,12 +1,13 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { TitleContainer } from './header.styles';
+import CustomButton from '../custom-button/custom-button.component';
 //import CurrentUserContext from '../../contexts/current-user/current-user.context';
 import './header.styles.scss';
 import { ReactComponent as Logo } from '../../assets/pate-logo-white.svg';
-import { AmplifySignOut } from '@aws-amplify/ui-react';
+// import { AmplifySignOut } from '@aws-amplify/ui-react';
 
-const Header = () => {
+const Header = ({loggedIn, onClick}) => {
     // const currentUser = useContext(CurrentUserContext);
     // const signout = () => {
     //     return null;
@@ -17,7 +18,9 @@ const Header = () => {
                 <Logo className='logo' />
             </Link>
             <div className='options'>
-                <AmplifySignOut/>
+                { loggedIn ? <CustomButton onClick={onClick} >Logout</CustomButton> :
+                <Link to="/signin"><CustomButton onClick={onClick} >Login</CustomButton></Link>
+            }
                
             </div>
         </div>

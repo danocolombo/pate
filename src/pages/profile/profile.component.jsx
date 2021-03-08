@@ -3,7 +3,7 @@ import './profile.styles.scss';
 
 const Profile = () => (
     <div className='profile'>
-        <h2>YOUR PROFILE</h2>
+        <h2>Profile Page</h2>
     </div>
 );
 
