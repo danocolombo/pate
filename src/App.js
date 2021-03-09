@@ -8,7 +8,8 @@ import {
 
 import './App.css';
 import Header from './components/header/header.component';
-import Lobby from './pages/lobby/lobby.component';
+//import Lobby from './pages/lobby/lobby.component';
+import Events from './components/events/events.component';
 import Profile from './pages/profile/profile.component';
 import SignIn from './pages/signin/signin.component';
 //----------------------
@@ -46,7 +47,7 @@ function App() {
     return (
         <Router>
             <Header loggedIn={isLoggedIn} onClick={signOut} />
-            <Route exact path='/' component={Lobby} />
+            <Route exact path='/' component={Events} />
             {/*  <Route path='/shop' component={ShopPage} />
                       // <Route exact path='/checkout' component={CheckoutPage} /> */}
             <Route exact path='/profile' component={Profile} />
