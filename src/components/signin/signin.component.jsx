@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Auth, signInButton } from 'aws-amplify';
 import { Link, useHistory } from 'react-router-dom';
-import FormInput from '../../components/form-input/form-input.component';
-import CustomButton from '../../components/custom-button/custom-button.component';
+import FormInput from '../form-input/form-input.component';
+import CustomButton from '../custom-button/custom-button.component';
 
 import './signin.styles.scss';
 
@@ -43,9 +43,10 @@ const SignIn = ({ onSignIn }) => {
         }
     };
     return (
-        <>
+        <div className='signin-wrapper'>
             <FormInput
                 name='username'
+                className='form-component'
                 type='username'
                 handleChange={handleChange}
                 value={username}
@@ -54,6 +55,7 @@ const SignIn = ({ onSignIn }) => {
             />
             <FormInput
                 name='password'
+                className='form-component'
                 type='password'
                 value={password}
                 handleChange={handleChange}
@@ -63,7 +65,7 @@ const SignIn = ({ onSignIn }) => {
             <div className='buttons'>
                 <CustomButton onClick={signIn}> Sign in </CustomButton>
             </div>
-        </>
+        </div>
     );
 };
 

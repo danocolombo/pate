@@ -32,29 +32,20 @@ class Events extends React.Component {
         )
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
-                console.log('one more line');
                 this.setState({ plans: data.body });
             });
     }
 
     render() {
         return (
+            <div className='events-wrapper'>
             <div className='events'>
                 <h2 className='title'>Principle 8 Rally Events</h2>
                 <span>Below you will find the current events</span>
-                {console.log(
-                    'state.plans: ' +
-                        util.inspect(this.state?.events, {
-                            showHidden: false,
-                            depth: null,
-                        })
-                )}
-
                 {this.state.plans.map((plan) => (
                     <EventListing event={plan} key={plan.uid} />
                 ))}
-                {console.log('DONE')}
+            </div>
             </div>
         );
     }

@@ -1,24 +1,20 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { TitleContainer } from './header.styles';
+
 import CustomButton from '../custom-button/custom-button.component';
-//import CurrentUserContext from '../../contexts/current-user/current-user.context';
+import SecuredUser from '../secured-user/secured-user.component';
 import './header.styles.scss';
 import { ReactComponent as Logo } from '../../assets/pate-logo-white.svg';
-// import { AmplifySignOut } from '@aws-amplify/ui-react';
 
 const Header = ({loggedIn, onClick}) => {
-    // const currentUser = useContext(CurrentUserContext);
-    // const signout = () => {
-    //     return null;
-    // };
+    
     return (
         <div className='header'>
             <Link className='logo-container' to='/'>
                 <Logo className='logo' />
             </Link>
             <div className='options'>
-                { loggedIn ? <CustomButton onClick={onClick} >Logout</CustomButton> :
+                { loggedIn ? <SecuredUser onLogOut={onClick} >Logout</SecuredUser> :
                 <Link to="/signin"><CustomButton onClick={onClick} >Login</CustomButton></Link>
             }
                
@@ -27,3 +23,10 @@ const Header = ({loggedIn, onClick}) => {
     );
 };
 export default Header;
+
+//this was the logout button section that worked
+// <div className='options'>
+//     { loggedIn ? <CustomButton onClick={onClick} >Logout</CustomButton> :
+//     <Link to="/signin"><CustomButton onClick={onClick} >Login</CustomButton></Link>
+//     }
+// </div>
