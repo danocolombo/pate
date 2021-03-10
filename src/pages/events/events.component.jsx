@@ -1,17 +1,15 @@
 import React from 'react';
 import axios from 'axios';
 import ReactDom from 'react-dom';
-import eventListing from './eventListing.component';
 import {
     api_get_header_config,
     api_header_config,
 } from '../../include/api_headers';
 
 import './events.styles.scss';
-import EventListing from './eventListing.component';
-const util = require('util');
-// ---- notes on doing async await in componentDidMount
-// https://www.valentinog.com/blog/await-react/
+import EventListing from '../../components/events/eventListing.component';
+import Header from '../../components/header/header.component';
+
 class Events extends React.Component {
     constructor() {
         super();
@@ -38,15 +36,18 @@ class Events extends React.Component {
 
     render() {
         return (
-            <div className='events-wrapper'>
-            <div className='events'>
-                <h2 className='title'>Principle 8 Rally Events</h2>
-                <span>Below you will find the current events</span>
-                {this.state.plans.map((plan) => (
-                    <EventListing event={plan} key={plan.uid} />
-                ))}
-            </div>
-            </div>
+            <>
+                <Header />
+                <div className='events-wrapper'>
+                    <div className='events'>
+                        <h2 className='title'>Principle 8 Rally Events</h2>
+                        <span>Below you will find the current events</span>
+                        {this.state.plans.map((plan) => (
+                            <EventListing event={plan} key={plan.uid} />
+                        ))}
+                    </div>
+                </div>
+            </>
         );
     }
 }

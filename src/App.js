@@ -9,8 +9,8 @@ import {
 import './App.css';
 import Header from './components/header/header.component';
 //import Lobby from './pages/lobby/lobby.component';
-import Events from './components/events/events.component';
-import Profile from './components/profile/profile.component';
+import Events from './pages/events/events.component';
+import Profile from './pages/profile/profile.component';
 import SignIn from './components/signin/signin.component';
 //----------------------
 //AMPLIFY INTEGRATION
@@ -46,7 +46,6 @@ function App() {
     // render() {
     return (
         <Router>
-            <Header loggedIn={isLoggedIn} onClick={signOut} />
             <Route exact path='/' loggedIn={isLoggedIn} component={Events} />
             {/*  <Route path='/shop' component={ShopPage} />
                       // <Route exact path='/checkout' component={CheckoutPage} /> */}
@@ -61,3 +60,4 @@ function App() {
 }
 
 export default App;
+//<Header loggedIn={isLoggedIn} onClick={signOut} />
