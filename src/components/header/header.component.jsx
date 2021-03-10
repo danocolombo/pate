@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import CustomButton from '../custom-button/custom-button.component';
-import SecuredUser from '../secured-user/secured-user.component';
 import './header.styles.scss';
 import { ReactComponent as Logo } from '../../assets/pate-logo-white.svg';
 
