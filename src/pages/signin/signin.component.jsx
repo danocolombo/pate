@@ -9,17 +9,17 @@ import Header from '../../components/header/header.component';
 import { setCurrentUser } from '../../redux/user/user.actions';
 import './signin.styles.scss';
 
-const SignIn = ({ onSignIn }) => {
+const SignIn = ({ onSignIn, setCurrentUser }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [userDetails, setUserDetails] = useState('');
+
     const history = useHistory();
 
     const signIn = async () => {
         try {
-            let userDetails = {};
+            // let userDetails = {};
             const user = Auth.signIn(username, password);
-            const util = require('util');
+            // const util = require('util');
             // Auth.currentAuthenticatedUser({
             //     bypassCache: false})
             //     .then(user => console.log('current....RESPONSE:\n ' +
@@ -28,18 +28,32 @@ const SignIn = ({ onSignIn }) => {
             //         depth: null,
             //     })))
             //     .catch(err => console.log(err));
-            Auth.currentAuthenticatedUser({
-                bypassCache: false})
-                .then(user => console.log('username:\n ' +
-                user.username))
-                .catch(err => console.log(err));
 
-            console.log('userDetails.username: ' + userDetails.username);
+            Auth.currentSession()
+                .then((data) => {
+                    saveUser(data);
+                })
+                .catch((err) => console.log(err));
+
             history.push('/');
             // onSignIn();
         } catch (error) {
             console.log('Error signing in' + error);
         }
+    };
+    const saveUser = (userInfo) => {
+        const userDetails = {
+            isLoggedIn: true,
+            email: userInfo.idToken.payload.email,
+            cognitoId: userInfo.accessToken.payload.username,
+            jwtToken: userInfo.idToken.jwtToken,
+        };
+        const util = require('util');
+        console.log(
+            'userDetails \n' +
+                util.inspect(userDetails, { showHidden: false, depth: null })
+        );
+        setCurrentUser(userDetails);
     };
     const handleChange = (e) => {
         const { value, name } = e.target;
@@ -84,7 +98,7 @@ const SignIn = ({ onSignIn }) => {
         </>
     );
 };
-const mapDispatchToProps = dispatch => ({
-    setCurrentUser: user => dispatch.setCurrentUser(user)
+const mapDispatchToProps = (dispatch) => ({
+    setCurrentUser: (user) => dispatch(setCurrentUser(user)),
 });
 export default connect(null, mapDispatchToProps)(SignIn);
