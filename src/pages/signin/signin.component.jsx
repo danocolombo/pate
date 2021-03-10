@@ -71,7 +71,9 @@ const SignIn = ({ onSignIn, setCurrentUser }) => {
     return (
         <>
             <Header />
-            <h2>test</h2>
+            <div className='signin-title-wrapper'>
+                <div className='signin-page-title'>Login Page</div>
+            </div>
             <div className='signin-wrapper'>
                 <FormInput
                     name='username'
@@ -93,6 +95,10 @@ const SignIn = ({ onSignIn, setCurrentUser }) => {
                 />
                 <div className='buttons'>
                     <CustomButton onClick={signIn}> Sign in </CustomButton>
+                </div>
+                <div className='register-offer-wrapper'>
+                    If you don't have an account,{' '}
+                    <Link to={'/register'}>click here</Link> to register.
                 </div>
             </div>
         </>

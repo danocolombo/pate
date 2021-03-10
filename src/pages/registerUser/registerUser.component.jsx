@@ -34,12 +34,13 @@ const RegisterUser = ({ setCurrentUser }) => {
     return (
         <>
             <Header />
-
-            <div className='register-wrapper'>
+            <div className='register-title-wrapper'>
                 <div className='register-page-title'>Registration Form</div>
                 <div className='register-page-description'>
                     This is where you get engaged...
                 </div>
+            </div>
+            <div className='register-wrapper'>
                 <FormInput
                     name='username'
                     className='form-component'
