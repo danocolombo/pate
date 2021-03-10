@@ -11,6 +11,7 @@ import './App.css';
 import Events from './pages/events/events.component';
 import Profile from './pages/profile/profile.component';
 import SignIn from './pages/signin/signin.component';
+import Register from './pages/registerUser/registerUser.component';
 //----------------------
 //AMPLIFY INTEGRATION
 //----------------------
@@ -49,10 +50,8 @@ function App() {
             {/*  <Route path='/shop' component={ShopPage} />
                       // <Route exact path='/checkout' component={CheckoutPage} /> */}
             <Route exact path='/profile' component={Profile} />
-            <Route
-                path='/signin'
-                render={() => <SignIn  />}
-            />
+            <Route path='/signin' render={() => <SignIn />} />
+            <Route exact path='/register' component={Register} />
         </Router>
     );
     // }
