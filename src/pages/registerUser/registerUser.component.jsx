@@ -11,14 +11,14 @@ import './registerUser.styles.scss';
 
 const RegisterUser = ({ setCurrentUser }) => {
     const [userFullName, setUserFullName] = useState('');
-    const [userGivenName, setUserGivenName] = useState('');
     const [userPhoneNumber, setUserPhoneNumber] = useState('');
     const [userStreet, setUserStreet] = useState('');
     const [userCity, setUserCity] = useState('');
     const [userState, setUserState] = useState('');
     const [userPostalCode, setUserPostalCode] = useState('');
     const [userEmail, setUserEmail] = useState('');
-    const [userPassword, setUserPassword] = useState('');
+    const [userPassword1, setUserPassword1] = useState('');
+    const [userPassword2, setUserPassword2] = useState('');
     const [userChurchName, setUserChurchName] = useState('');
     const [userChurchCity, setUserChurchCity] = useState('');
     const [userChurchState, setUserChurchState] = useState('');
@@ -31,9 +31,6 @@ const RegisterUser = ({ setCurrentUser }) => {
     const handleChange = (e) => {
         const { value, name } = e.target;
         switch (name) {
-            case 'userGivenName':
-                setUserGivenName(value);
-                break;
             case 'userFullName':
                 setUserFullName(value);
                 break;
@@ -64,8 +61,11 @@ const RegisterUser = ({ setCurrentUser }) => {
             case 'userEmail':
                 setUserEmail(value);
                 break;
-            case 'userPassword':
-                setUserPassword(value);
+            case 'userPassword1':
+                setUserPassword1(value);
+                break;
+            case 'userPassword2':
+                setUserPassword2(value);
                 break;
             default:
                 break;
@@ -83,269 +83,282 @@ const RegisterUser = ({ setCurrentUser }) => {
                         <div className='two'>
                             <div className='register'>
                                 <h3>Create your account</h3>
-                                <form id='reg-form1'>
-                                    <div>
-                                        <label htmlFor='userGivenName'>
-                                            Name
-                                        </label>
-                                        <FormInput
-                                            name='userGivenName'
-                                            id='userGivenName'
-                                            className='form-reg-input'
-                                            type='userGivenName'
-                                            handleChange={handleChange}
-                                            value={userGivenName}
-                                            size='30'
-                                            required
-                                        />
-                                    </div>
-                                    <div>
-                                        <label htmlFor='userFullName'>
-                                            Name
-                                        </label>
-                                        <input
-                                            type='text'
-                                            id='userFullName'
-                                            spellCheck='false'
-                                            placeholder=''
-                                        />
-                                    </div>
-                                    <div>
-                                        <label htmlFor='userEmail'>Email</label>
-                                        <input
-                                            type='text'
-                                            id='userEmail'
-                                            spellCheck='false'
-                                            placeholder=''
-                                        />
-                                    </div>
-                                    <div>
-                                        <label htmlFor='userPhone'>Phone</label>
-                                        <input
-                                            type='text'
-                                            id='userPhone'
-                                            spellCheck='false'
-                                            placeholder=''
-                                        />
-                                    </div>
-                                    <div className='sep'>
-                                        <span className='residence-label'>
-                                            Residence
-                                        </span>
-                                    </div>
-                                    <div>
-                                        <label htmlFor='userStreet'>
-                                            Street
-                                        </label>
-                                        <input
-                                            type='text'
-                                            id='userStreet'
-                                            spellCheck='false'
-                                            placeholder=''
-                                        />
-                                    </div>
-                                    <div>
-                                        <label htmlFor='userCity'>City</label>
-                                        <input
-                                            type='text'
-                                            id='userCity'
-                                            spellCheck='false'
-                                            placeholder=''
-                                        />
-                                    </div>
-                                    <div>
-                                        <label htmlFor='userState'>State</label>
-                                        <select
-                                            type='text'
-                                            id='userState'
-                                            spellCheck='false'
-                                            placeholder=''
-                                        >
-                                            <option value='AK'>AK</option>
-                                            <option value='AL'>AL</option>
-                                            <option value='AR'>AR</option>
-                                            <option value='AZ'>AZ</option>
-                                            <option value='CA'>CA</option>
-                                            <option value='CO'>CO</option>
-                                            <option value='CT'>CT</option>
-                                            <option value='DE'>DE</option>
-                                            <option value='FL'>FL</option>
-                                            <option value='GA'>GA</option>
-                                            <option value='HI'>HI</option>
-                                            <option value='IA'>IA</option>
-                                            <option value='ID'>ID</option>
-                                            <option value='IL'>IL</option>
-                                            <option value='IN'>IN</option>
-                                            <option value='KS'>KS</option>
-                                            <option value='KY'>KY</option>
-                                            <option value='LA'>LA</option>
-                                            <option value='MA'>MA</option>
-                                            <option value='MD'>MD</option>
-                                            <option value='ME'>ME</option>
-                                            <option value='MI'>MI</option>
-                                            <option value='MN'>MN</option>
-                                            <option value='MO'>MO</option>
-                                            <option value='MS'>MS</option>
-                                            <option value='MT'>MT</option>
-                                            <option value='NC'>NC</option>
-                                            <option value='ND'>ND</option>
-                                            <option value='NE'>NE</option>
-                                            <option value='NH'>NH</option>
-                                            <option value='NJ'>NJ</option>
-                                            <option value='NM'>NM</option>
-                                            <option value='NV'>NV</option>
-                                            <option value='NY'>NY</option>
-                                            <option value='OH'>OH</option>
-                                            <option value='OK'>OK</option>
-                                            <option value='OR'>OR</option>
-                                            <option value='PA'>PA</option>
-                                            <option value='RI'>RI</option>
-                                            <option value='SC'>SC</option>
-                                            <option value='SD'>SD</option>
-                                            <option value='TN'>TN</option>
-                                            <option value='TX'>TX</option>
-                                            <option value='UT'>UT</option>
-                                            <option value='VA'>VA</option>
-                                            <option value='VT'>VT</option>
-                                            <option value='WA'>WA</option>
-                                            <option value='WI'>WI</option>
-                                            <option value='WV'>WV</option>
-                                            <option value='WY'>WY</option>
-                                            <option value='??'>OTHER</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label htmlFor='userPostalCode'>
-                                            Postal Code
-                                        </label>
-                                        <input
-                                            type='text'
-                                            id='userPostalCode'
-                                            spellCheck='false'
-                                            placeholder=''
-                                        />
-                                    </div>
-                                    <div className='sep'>
-                                        <span className='church-label'>
-                                            Church
-                                        </span>
-                                    </div>
-                                    <div>
-                                        <label htmlFor='userChurchName'>
-                                            Church Name
-                                        </label>
-                                        <input
-                                            type='text'
-                                            id='userChurchName'
-                                            spellCheck='false'
-                                            placeholder=''
-                                        />
-                                    </div>
-                                    <div>
-                                        <label htmlFor='userChurchCity'>
-                                            City
-                                        </label>
-                                        <input
-                                            type='text'
-                                            id='userChurchCity'
-                                            spellCheck='false'
-                                            placeholder=''
-                                        />
-                                    </div>
-                                    <div>
-                                        <label htmlFor='userChurchState'>
-                                            State
-                                        </label>
-                                        <select
-                                            type='text'
-                                            id='userChurchState'
-                                            spellCheck='false'
-                                            placeholder=''
-                                        >
-                                            <option value='AK'>AK</option>
-                                            <option value='AL'>AL</option>
-                                            <option value='AR'>AR</option>
-                                            <option value='AZ'>AZ</option>
-                                            <option value='CA'>CA</option>
-                                            <option value='CO'>CO</option>
-                                            <option value='CT'>CT</option>
-                                            <option value='DE'>DE</option>
-                                            <option value='FL'>FL</option>
-                                            <option value='GA'>GA</option>
-                                            <option value='HI'>HI</option>
-                                            <option value='IA'>IA</option>
-                                            <option value='ID'>ID</option>
-                                            <option value='IL'>IL</option>
-                                            <option value='IN'>IN</option>
-                                            <option value='KS'>KS</option>
-                                            <option value='KY'>KY</option>
-                                            <option value='LA'>LA</option>
-                                            <option value='MA'>MA</option>
-                                            <option value='MD'>MD</option>
-                                            <option value='ME'>ME</option>
-                                            <option value='MI'>MI</option>
-                                            <option value='MN'>MN</option>
-                                            <option value='MO'>MO</option>
-                                            <option value='MS'>MS</option>
-                                            <option value='MT'>MT</option>
-                                            <option value='NC'>NC</option>
-                                            <option value='ND'>ND</option>
-                                            <option value='NE'>NE</option>
-                                            <option value='NH'>NH</option>
-                                            <option value='NJ'>NJ</option>
-                                            <option value='NM'>NM</option>
-                                            <option value='NV'>NV</option>
-                                            <option value='NY'>NY</option>
-                                            <option value='OH'>OH</option>
-                                            <option value='OK'>OK</option>
-                                            <option value='OR'>OR</option>
-                                            <option value='PA'>PA</option>
-                                            <option value='RI'>RI</option>
-                                            <option value='SC'>SC</option>
-                                            <option value='SD'>SD</option>
-                                            <option value='TN'>TN</option>
-                                            <option value='TX'>TX</option>
-                                            <option value='UT'>UT</option>
-                                            <option value='VA'>VA</option>
-                                            <option value='VT'>VT</option>
-                                            <option value='WA'>WA</option>
-                                            <option value='WI'>WI</option>
-                                            <option value='WV'>WV</option>
-                                            <option value='WY'>WY</option>
-                                            <option value='??'>OTHER</option>
-                                        </select>
-                                    </div>
-                                    <div className='sep'>
-                                        <span className='church-label'></span>
-                                    </div>
-                                    <div>
-                                        <label htmlFor='userPassword1'>
-                                            Password
-                                        </label>
-                                        <input
-                                            type='password'
-                                            id='userPassword1'
-                                        />
-                                    </div>
-                                    <div>
-                                        <label htmlFor='userPassword2'>
-                                            Password Again
-                                        </label>
-                                        <input
-                                            type='password'
-                                            id='userPassword2'
-                                        />
-                                    </div>
-                                    <div className='register-btn-wrapper'>
-                                        <label></label>
-                                        <input
-                                            type='submit'
-                                            value='Create Account'
-                                            id='create-account-btn'
-                                            className='button'
-                                        />
-                                    </div>
-                                </form>
+
+                                <div>
+                                    <label htmlFor='userFullName'>Name</label>
+                                    <FormInput
+                                        name='userFullName'
+                                        id='userFullName'
+                                        className='form-reg-input'
+                                        type='userFullName'
+                                        handleChange={handleChange}
+                                        value={userFullName}
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor='userEmail'>Email</label>
+                                    <FormInput
+                                        name='userEmail'
+                                        id='userEmail'
+                                        className='form-reg-input'
+                                        type='userEmail'
+                                        handleChange={handleChange}
+                                        value={userEmail}
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor='userPhoneNumber'>
+                                        Phone
+                                    </label>
+                                    <FormInput
+                                        name='userPhoneNumber'
+                                        id='userPhoneNumber'
+                                        className='form-reg-input'
+                                        type='userPhoneNumber'
+                                        handleChange={handleChange}
+                                        value={userPhoneNumber}
+                                        required
+                                    />
+                                </div>
+                                <div className='sep'>
+                                    <span className='residence-label'>
+                                        Residence
+                                    </span>
+                                </div>
+                                <div>
+                                    <label htmlFor='userStreet'>Street</label>
+                                    <FormInput
+                                        name='userStreet'
+                                        id='userStreet'
+                                        className='form-reg-input'
+                                        type='userStreet'
+                                        handleChange={handleChange}
+                                        value={userStreet}
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor='userCity'>City</label>
+                                    <FormInput
+                                        name='userCity'
+                                        id='userCity'
+                                        className='form-reg-input'
+                                        type='userCity'
+                                        handleChange={handleChange}
+                                        value={userCity}
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor='userState'>State</label>
+                                    <select
+                                        type='text'
+                                        id='userState'
+                                        spellCheck='false'
+                                        placeholder=''
+                                    >
+                                        <option value='AK'>AK</option>
+                                        <option value='AL'>AL</option>
+                                        <option value='AR'>AR</option>
+                                        <option value='AZ'>AZ</option>
+                                        <option value='CA'>CA</option>
+                                        <option value='CO'>CO</option>
+                                        <option value='CT'>CT</option>
+                                        <option value='DE'>DE</option>
+                                        <option value='FL'>FL</option>
+                                        <option value='GA'>GA</option>
+                                        <option value='HI'>HI</option>
+                                        <option value='IA'>IA</option>
+                                        <option value='ID'>ID</option>
+                                        <option value='IL'>IL</option>
+                                        <option value='IN'>IN</option>
+                                        <option value='KS'>KS</option>
+                                        <option value='KY'>KY</option>
+                                        <option value='LA'>LA</option>
+                                        <option value='MA'>MA</option>
+                                        <option value='MD'>MD</option>
+                                        <option value='ME'>ME</option>
+                                        <option value='MI'>MI</option>
+                                        <option value='MN'>MN</option>
+                                        <option value='MO'>MO</option>
+                                        <option value='MS'>MS</option>
+                                        <option value='MT'>MT</option>
+                                        <option value='NC'>NC</option>
+                                        <option value='ND'>ND</option>
+                                        <option value='NE'>NE</option>
+                                        <option value='NH'>NH</option>
+                                        <option value='NJ'>NJ</option>
+                                        <option value='NM'>NM</option>
+                                        <option value='NV'>NV</option>
+                                        <option value='NY'>NY</option>
+                                        <option value='OH'>OH</option>
+                                        <option value='OK'>OK</option>
+                                        <option value='OR'>OR</option>
+                                        <option value='PA'>PA</option>
+                                        <option value='RI'>RI</option>
+                                        <option value='SC'>SC</option>
+                                        <option value='SD'>SD</option>
+                                        <option value='TN'>TN</option>
+                                        <option value='TX'>TX</option>
+                                        <option value='UT'>UT</option>
+                                        <option value='VA'>VA</option>
+                                        <option value='VT'>VT</option>
+                                        <option value='WA'>WA</option>
+                                        <option value='WI'>WI</option>
+                                        <option value='WV'>WV</option>
+                                        <option value='WY'>WY</option>
+                                        <option value='??'>OTHER</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label htmlFor='userPostalCode'>
+                                        Postal Code
+                                    </label>
+                                    <FormInput
+                                        name='userPostalCode'
+                                        id='userPostalCode'
+                                        className='form-reg-input'
+                                        type='userPostalCode'
+                                        handleChange={handleChange}
+                                        value={userPostalCode}
+                                        required
+                                    />
+                                </div>
+                                <div className='sep'>
+                                    <span className='church-label'>Church</span>
+                                </div>
+                                <div>
+                                    <label htmlFor='userChurchName'>
+                                        Church Name
+                                    </label>
+                                    <FormInput
+                                        name='userChurchName'
+                                        id='userChurchName'
+                                        className='form-reg-input'
+                                        type='userChurchName'
+                                        handleChange={handleChange}
+                                        value={userChurchName}
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor='userChurchCity'>City</label>
+                                    <FormInput
+                                        name='userChurchCity'
+                                        id='userChurchCity'
+                                        className='form-reg-input'
+                                        type='userChurchCity'
+                                        handleChange={handleChange}
+                                        value={userChurchCity}
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor='userChurchState'>
+                                        State
+                                    </label>
+                                    <select
+                                        type='text'
+                                        id='userChurchState'
+                                        spellCheck='false'
+                                        placeholder=''
+                                    >
+                                        <option value='AK'>AK</option>
+                                        <option value='AL'>AL</option>
+                                        <option value='AR'>AR</option>
+                                        <option value='AZ'>AZ</option>
+                                        <option value='CA'>CA</option>
+                                        <option value='CO'>CO</option>
+                                        <option value='CT'>CT</option>
+                                        <option value='DE'>DE</option>
+                                        <option value='FL'>FL</option>
+                                        <option value='GA'>GA</option>
+                                        <option value='HI'>HI</option>
+                                        <option value='IA'>IA</option>
+                                        <option value='ID'>ID</option>
+                                        <option value='IL'>IL</option>
+                                        <option value='IN'>IN</option>
+                                        <option value='KS'>KS</option>
+                                        <option value='KY'>KY</option>
+                                        <option value='LA'>LA</option>
+                                        <option value='MA'>MA</option>
+                                        <option value='MD'>MD</option>
+                                        <option value='ME'>ME</option>
+                                        <option value='MI'>MI</option>
+                                        <option value='MN'>MN</option>
+                                        <option value='MO'>MO</option>
+                                        <option value='MS'>MS</option>
+                                        <option value='MT'>MT</option>
+                                        <option value='NC'>NC</option>
+                                        <option value='ND'>ND</option>
+                                        <option value='NE'>NE</option>
+                                        <option value='NH'>NH</option>
+                                        <option value='NJ'>NJ</option>
+                                        <option value='NM'>NM</option>
+                                        <option value='NV'>NV</option>
+                                        <option value='NY'>NY</option>
+                                        <option value='OH'>OH</option>
+                                        <option value='OK'>OK</option>
+                                        <option value='OR'>OR</option>
+                                        <option value='PA'>PA</option>
+                                        <option value='RI'>RI</option>
+                                        <option value='SC'>SC</option>
+                                        <option value='SD'>SD</option>
+                                        <option value='TN'>TN</option>
+                                        <option value='TX'>TX</option>
+                                        <option value='UT'>UT</option>
+                                        <option value='VA'>VA</option>
+                                        <option value='VT'>VT</option>
+                                        <option value='WA'>WA</option>
+                                        <option value='WI'>WI</option>
+                                        <option value='WV'>WV</option>
+                                        <option value='WY'>WY</option>
+                                        <option value='??'>OTHER</option>
+                                    </select>
+                                </div>
+                                <div className='sep'>
+                                    <span className='church-label'></span>
+                                </div>
+                                <div>
+                                    <label htmlFor='userPassword1'>
+                                        Password
+                                    </label>
+                                    <FormInput
+                                        name='userPassword1'
+                                        id='userPassword1'
+                                        className='form-reg-input'
+                                        type='password'
+                                        handleChange={handleChange}
+                                        value={userPassword1}
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor='userPassword2'>
+                                        Password Again
+                                    </label>
+                                    <FormInput
+                                        name='userPassword2'
+                                        id='userPassword2'
+                                        className='form-reg-input'
+                                        type='password'
+                                        handleChange={handleChange}
+                                        value={userPassword2}
+                                        required
+                                    />
+                                </div>
+                                <div className='register-btn-wrapper'>
+                                    <label></label>
+                                    <input
+                                        type='submit'
+                                        value='Create Account'
+                                        id='create-account-btn'
+                                        onClick={register}
+                                        className='button'
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
