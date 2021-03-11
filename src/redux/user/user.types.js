@@ -12,4 +12,5 @@ export const UserActionTypes = {
     UPDATE_USER: 'UPDATE_USER',
     LOGIN_FAILURE: 'LOGIN_FAILURE',
     LOGIN_FAIL: 'LOGIN_FAIL',
+    CLEAR_USER: 'CLEAR_USER',
 };

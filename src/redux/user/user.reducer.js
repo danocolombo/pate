@@ -2,8 +2,8 @@ import { UserActionTypes } from './user.types';
 
 const INITIAL_STATE = {
     currentUser: {
-        isLoggedIn: false
-    }
+        isLoggedIn: false,
+    },
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -27,6 +27,11 @@ const userReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 currentUser: action.payload,
+            };
+        case UserActionTypes.CLEAR_USER:
+            return {
+                ...state,
+                currentUser: null,
             };
         default:
             return state;
