@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Auth } from 'aws-amplify';
 import { Link, useHistory } from 'react-router-dom';
-import FormInput from '../../components/form-input/form-input.component';
+import FormInput from '../../components/form-input/form-input-reg.component';
 import CustomButton from '../../components/custom-button/custom-button.component';
 import Header from '../../components/header/header.component';
 //----- actions needed -------
@@ -11,6 +11,7 @@ import './registerUser.styles.scss';
 
 const RegisterUser = ({ setCurrentUser }) => {
     const [userFullName, setUserFullName] = useState('');
+    const [userGivenName, setUserGivenName] = useState('');
     const [userPhoneNumber, setUserPhoneNumber] = useState('');
     const [userStreet, setUserStreet] = useState('');
     const [userCity, setUserCity] = useState('');
@@ -31,6 +32,9 @@ const RegisterUser = ({ setCurrentUser }) => {
         const { value, name } = e.target;
         switch (name) {
             case 'userGivenName':
+                setUserGivenName(value);
+                break;
+            case 'userFullName':
                 setUserFullName(value);
                 break;
             case 'userPhoneNumber':
@@ -76,66 +80,85 @@ const RegisterUser = ({ setCurrentUser }) => {
                 </div>
                 <div className='register-wrapper'>
                     <div className='main'>
-                        <div class='two'>
-                            <div class='register'>
+                        <div className='two'>
+                            <div className='register'>
                                 <h3>Create your account</h3>
                                 <form id='reg-form1'>
                                     <div>
-                                        <label for='userFullName'>Name</label>
+                                        <label htmlFor='userGivenName'>
+                                            Name
+                                        </label>
+                                        <FormInput
+                                            name='userGivenName'
+                                            id='userGivenName'
+                                            className='form-reg-input'
+                                            type='userGivenName'
+                                            handleChange={handleChange}
+                                            value={userGivenName}
+                                            size='30'
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor='userFullName'>
+                                            Name
+                                        </label>
                                         <input
                                             type='text'
                                             id='userFullName'
-                                            spellcheck='false'
+                                            spellCheck='false'
                                             placeholder=''
                                         />
                                     </div>
                                     <div>
-                                        <label for='userEmail'>Email</label>
+                                        <label htmlFor='userEmail'>Email</label>
                                         <input
                                             type='text'
                                             id='userEmail'
-                                            spellcheck='false'
+                                            spellCheck='false'
                                             placeholder=''
                                         />
                                     </div>
                                     <div>
-                                        <label for='userPhone'>Phone</label>
+                                        <label htmlFor='userPhone'>Phone</label>
                                         <input
                                             type='text'
                                             id='userPhone'
-                                            spellcheck='false'
+                                            spellCheck='false'
                                             placeholder=''
                                         />
                                     </div>
                                     <div className='sep'>
-                                        <span class='residence-label'>
+                                        <span className='residence-label'>
                                             Residence
                                         </span>
                                     </div>
                                     <div>
-                                        <label for='userStreet'>Street</label>
+                                        <label htmlFor='userStreet'>
+                                            Street
+                                        </label>
                                         <input
                                             type='text'
                                             id='userStreet'
-                                            spellcheck='false'
+                                            spellCheck='false'
                                             placeholder=''
                                         />
                                     </div>
                                     <div>
-                                        <label for='userCity'>City</label>
+                                        <label htmlFor='userCity'>City</label>
                                         <input
                                             type='text'
                                             id='userCity'
-                                            spellcheck='false'
+                                            spellCheck='false'
                                             placeholder=''
                                         />
                                     </div>
                                     <div>
-                                        <label for='userState'>State</label>
+                                        <label htmlFor='userState'>State</label>
                                         <select
                                             type='text'
                                             id='userState'
-                                            spellcheck='false'
+                                            spellCheck='false'
                                             placeholder=''
                                         >
                                             <option value='AK'>AK</option>
@@ -192,47 +215,51 @@ const RegisterUser = ({ setCurrentUser }) => {
                                         </select>
                                     </div>
                                     <div>
-                                        <label for='userPostalCode'>
+                                        <label htmlFor='userPostalCode'>
                                             Postal Code
                                         </label>
                                         <input
                                             type='text'
                                             id='userPostalCode'
-                                            spellcheck='false'
+                                            spellCheck='false'
                                             placeholder=''
                                         />
                                     </div>
                                     <div className='sep'>
-                                        <span class='church-label'>Church</span>
+                                        <span className='church-label'>
+                                            Church
+                                        </span>
                                     </div>
                                     <div>
-                                        <label for='userChurchName'>
+                                        <label htmlFor='userChurchName'>
                                             Church Name
                                         </label>
                                         <input
                                             type='text'
                                             id='userChurchName'
-                                            spellcheck='false'
+                                            spellCheck='false'
                                             placeholder=''
                                         />
                                     </div>
                                     <div>
-                                        <label for='userChurchCity'>City</label>
+                                        <label htmlFor='userChurchCity'>
+                                            City
+                                        </label>
                                         <input
                                             type='text'
                                             id='userChurchCity'
-                                            spellcheck='false'
+                                            spellCheck='false'
                                             placeholder=''
                                         />
                                     </div>
                                     <div>
-                                        <label for='userChurchState'>
+                                        <label htmlFor='userChurchState'>
                                             State
                                         </label>
                                         <select
                                             type='text'
                                             id='userChurchState'
-                                            spellcheck='false'
+                                            spellCheck='false'
                                             placeholder=''
                                         >
                                             <option value='AK'>AK</option>
@@ -289,10 +316,10 @@ const RegisterUser = ({ setCurrentUser }) => {
                                         </select>
                                     </div>
                                     <div className='sep'>
-                                        <span class='church-label'></span>
+                                        <span className='church-label'></span>
                                     </div>
                                     <div>
-                                        <label for='userPassword1'>
+                                        <label htmlFor='userPassword1'>
                                             Password
                                         </label>
                                         <input
@@ -301,7 +328,7 @@ const RegisterUser = ({ setCurrentUser }) => {
                                         />
                                     </div>
                                     <div>
-                                        <label for='userPassword2'>
+                                        <label htmlFor='userPassword2'>
                                             Password Again
                                         </label>
                                         <input
@@ -315,7 +342,7 @@ const RegisterUser = ({ setCurrentUser }) => {
                                             type='submit'
                                             value='Create Account'
                                             id='create-account-btn'
-                                            class='button'
+                                            className='button'
                                         />
                                     </div>
                                 </form>

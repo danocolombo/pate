@@ -1,0 +1,38 @@
+$sub-color: grey;
+$main-color: black;
+$back-color: #f0f0f0;
+$green-border: #72b372;
+
+@mixin shrinkLabel {
+    top: -14px;
+    font-size: 12px;
+    color: $main-color;
+}
+
+.form-reg-input {
+    /* from div.register */
+    /*width: 500px;*/
+    margin: 5px auto;
+    padding: 5px;
+    border: 7px solid #72b372;
+    border-radius: 5px;
+    background: #f0f0f0;
+    /*box-shadow: 0 0 10px 0 #000000;*/
+
+    /* input */
+    width: 65%;
+    text-rendering: auto;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-transform: none;
+    text-indent: 0px;
+    text-shadow: none;
+    display: inline-block;
+    text-align: start;
+    cursor: text;
+    /*font: 400 13.3333px Arial;*/
+    font-size: 0.9em;
+    border-width: 2px;
+    border-style: inset;
+    /*border-color: internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133));*/
+}
