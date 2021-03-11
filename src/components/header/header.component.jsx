@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Auth } from 'aws-amplify';
@@ -8,6 +8,9 @@ import { ReactComponent as Logo } from '../../assets/pate-logo-white.svg';
 import { clearUser } from '../../redux/user/user.actions';
 
 const Header = ({ currentUser, clearUser }) => {
+    useEffect(() => {
+        console.log('refresh nav');
+    }, [currentUser]);
     const logoutRequest = async () => {
         console.log('LOGOUT->LOGOUT->LOGOUT');
         try {
