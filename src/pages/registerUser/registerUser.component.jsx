@@ -8,7 +8,7 @@ import FormInput from '../../components/form-input/form-input-reg.component';
 import CustomButton from '../../components/custom-button/custom-button.component';
 import Header from '../../components/header/header.component';
 //----- actions needed -------
-import { setCurrentUser } from '../../redux/user/user.actions';
+import { updateCurrentUser } from '../../redux/user/user.actions';
 import './registerUser.styles.scss';
 
 const RegisterUser = ({ setCurrentUser }) => {
@@ -32,19 +32,20 @@ const RegisterUser = ({ setCurrentUser }) => {
     const register = async (dispatch) => {
         console.log('stubbed registration');
 
-        //check if user exists
-
+        //get the state dropdown values to useState appropriatedly
+        setUserState(document.getElementById('userState').value);
+        setUserChurchState(document.getElementById('userChurchState').value);
         try {
             Auth.signUp({
                 username: userEmail,
                 password: userPassword1,
-                // attributes: {
-                //     phone: userPhoneNumber
-                // }
+                attributes: {
+                    phone: userPhoneNumber,
+                },
             })
                 .then((data) => {
                     //console.log(data);
-                    confirmRegistration(data);
+                    saveSystemUser(data);
                 })
                 .catch((err) => {
                     // if (err) {
@@ -65,8 +66,43 @@ const RegisterUser = ({ setCurrentUser }) => {
         let uState = document.getElementById('userState').value;
         console.log('user state: ' + uState);
     };
-    const confirmRegistration = (userRequest) => {
+    const saveSystemUser = (data) => {
         console.log('checking Cognito response...');
+        // build the API request...
+        const apiPayload = {
+            operation: 'createUser',
+            payload: {
+                Item: {
+                    uid: data.cognitoId,
+                    displayName: userFullName,
+                    cognitoId: data.cognitoId,
+                    email: data.email,
+                    role: 'guest',
+                    status: 'active',
+                    phone: userPhoneNumber,
+                    address: {
+                        street: userStreet,
+                        city: userCity,
+                        state: userState,
+                        postalCode: userPostalCode,
+                    },
+                    church: {
+                        name: userChurchName,
+                        city: userChurchCity,
+                        state: userChurchState,
+                    },
+                },
+            },
+        };
+        //=====================================
+        // call the api to update the dynamodb
+        //=====================================
+
+        //=====================================
+        // store user information in redux
+        //=====================================
+        updateCurrentUser(apiPayload.payload);
+        history.push('/');
     };
     const handleChange = (e) => {
         const { value, name } = e.target;
@@ -421,6 +457,6 @@ const RegisterUser = ({ setCurrentUser }) => {
     );
 };
 const mapDispatchToProps = (dispatch) => ({
-    setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+    updateCurrentUser: (user) => dispatch(updateCurrentUser(user)),
 });
 export default connect(null, mapDispatchToProps)(RegisterUser);
