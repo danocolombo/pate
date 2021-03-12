@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Auth } from 'aws-amplify';
 import { Link, useHistory } from 'react-router-dom';
-import { setAlert } from '../../redux/alert/alert.actions';
+import AlertBox from '../../components/alert-box/alert-box.component';
+//import { setAlert } from '../../redux/alert/alert.actions';
 import FormInput from '../../components/form-input/form-input-reg.component';
 import CustomButton from '../../components/custom-button/custom-button.component';
 import Header from '../../components/header/header.component';
@@ -23,6 +24,8 @@ const RegisterUser = ({ setCurrentUser }) => {
     const [userChurchName, setUserChurchName] = useState('');
     const [userChurchCity, setUserChurchCity] = useState('');
     const [userChurchState, setUserChurchState] = useState('');
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
 
     const history = useHistory();
 
@@ -30,7 +33,7 @@ const RegisterUser = ({ setCurrentUser }) => {
         console.log('stubbed registration');
 
         //check if user exists
-        
+
         try {
             Auth.signUp({
                 username: userEmail,
@@ -38,34 +41,33 @@ const RegisterUser = ({ setCurrentUser }) => {
                 // attributes: {
                 //     phone: userPhoneNumber
                 // }
-    
             })
-            .then((data) => {
-                //console.log(data);
-                confirmRegistration(data);
-            })
-            .catch((err) => {
-                // if (err) {
-                //     err.forEach((err) => dispatch(setAlert(err.message, 'danger')));
-                // }
-                console.log('Yak:' + err.code);
-                if(err.code === 'UsernameExistsException'){
-                    dispatch(setAlert(err.message,'danger'));
-                    console.log(err.message);
-                }
-                console.log(err);
-            });
-
+                .then((data) => {
+                    //console.log(data);
+                    confirmRegistration(data);
+                })
+                .catch((err) => {
+                    // if (err) {
+                    //     err.forEach((err) => dispatch(setAlert(err.message, 'danger')));
+                    // }
+                    console.log('Yak:' + err.code);
+                    if (err.code === 'UsernameExistsException') {
+                        setAlertMessage(err.message);
+                        setAlertVisible(true);
+                        console.log(err.message);
+                    }
+                    console.log(err);
+                });
         } catch (error) {
             console.log('error:' + error);
         }
 
-        let uState = document.getElementById("userState").value
+        let uState = document.getElementById('userState').value;
         console.log('user state: ' + uState);
     };
     const confirmRegistration = (userRequest) => {
         console.log('checking Cognito response...');
-    }
+    };
     const handleChange = (e) => {
         const { value, name } = e.target;
         switch (name) {
@@ -109,6 +111,13 @@ const RegisterUser = ({ setCurrentUser }) => {
                 break;
         }
     };
+    // <AlertBox
+    //     show={false}
+    //     onClose={setAlertVisible(!alertVisible)}
+    //     message={'Danger!: AlertBox'}
+    //     autoClose={true}
+    //     variant={'danger'}
+    // />;
     return (
         <>
             <Header />
@@ -116,6 +125,12 @@ const RegisterUser = ({ setCurrentUser }) => {
                 <div className='register-title-wrapper'>
                     <div className='register-page-title'>Registration Form</div>
                 </div>
+                <AlertBox
+                    show={alertVisible}
+                    /*onClose={this.onChange}*/
+                    message={alertMessage}
+                    autoClose={false}
+                />
                 <div className='register-wrapper'>
                     <div className='main'>
                         <div className='two'>
