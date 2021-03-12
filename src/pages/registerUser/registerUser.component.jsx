@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Auth } from 'aws-amplify';
 import { Link, useHistory } from 'react-router-dom';
+import { setAlert } from '../../redux/alert/alert.actions';
 import FormInput from '../../components/form-input/form-input-reg.component';
 import CustomButton from '../../components/custom-button/custom-button.component';
 import Header from '../../components/header/header.component';
@@ -25,7 +26,7 @@ const RegisterUser = ({ setCurrentUser }) => {
 
     const history = useHistory();
 
-    const register = async () => {
+    const register = async (dispatch) => {
         console.log('stubbed registration');
 
         //check if user exists
@@ -44,8 +45,12 @@ const RegisterUser = ({ setCurrentUser }) => {
                 confirmRegistration(data);
             })
             .catch((err) => {
+                // if (err) {
+                //     err.forEach((err) => dispatch(setAlert(err.message, 'danger')));
+                // }
                 console.log('Yak:' + err.code);
                 if(err.code === 'UsernameExistsException'){
+                    dispatch(setAlert(err.message,'danger'));
                     console.log(err.message);
                 }
                 console.log(err);

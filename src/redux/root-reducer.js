@@ -3,7 +3,7 @@ import { combineReducers } from 'redux';
 // import storage from 'redux-persist/lib/storage';
 
 import userReducer from './user/user.reducer';
-
+import alertReducer from './alert/alert.reducer';
 
 // const persistConfig = {
 //   key: 'root',
@@ -13,6 +13,7 @@ import userReducer from './user/user.reducer';
 
 const rootReducer = combineReducers({
     user: userReducer,
+    alert: alertReducer,
     
 });
 
