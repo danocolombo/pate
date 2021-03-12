@@ -7,7 +7,6 @@ import { clearUser } from '../../redux/user/user.actions';
 import './userStatusBox.styles.scss';
 const UserStatusBox = ({ currentUser, clearUser }) => {
     useEffect(() => {
-        console.log('refresh nav');
     }, [currentUser]);
     const logoutRequest = async () => {
         console.log('LOGOUT->LOGOUT->LOGOUT');

@@ -25,9 +25,42 @@ const RegisterUser = ({ setCurrentUser }) => {
 
     const history = useHistory();
 
-    const register = () => {
+    const register = async () => {
         console.log('stubbed registration');
+
+        //check if user exists
+        
+        try {
+            Auth.signUp({
+                username: userEmail,
+                password: userPassword1,
+                // attributes: {
+                //     phone: userPhoneNumber
+                // }
+    
+            })
+            .then((data) => {
+                //console.log(data);
+                confirmRegistration(data);
+            })
+            .catch((err) => {
+                console.log('Yak:' + err.code);
+                if(err.code === 'UsernameExistsException'){
+                    console.log(err.message);
+                }
+                console.log(err);
+            });
+
+        } catch (error) {
+            console.log('error:' + error);
+        }
+
+        let uState = document.getElementById("userState").value
+        console.log('user state: ' + uState);
     };
+    const confirmRegistration = (userRequest) => {
+        console.log('checking Cognito response...');
+    }
     const handleChange = (e) => {
         const { value, name } = e.target;
         switch (name) {
