@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Auth } from 'aws-amplify';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import AlertBox from '../../components/alert-box/alert-box.component';
 import FormInput from '../../components/form-input/form-input-reg.component';
 import Header from '../../components/header/header.component';
@@ -10,7 +10,9 @@ import { updateCurrentUser } from '../../redux/user/user.actions';
 import './registerUser.styles.scss';
 
 const ConfirmUser = ({ setCurrentUser }) => {
-    const [userEmail, setUserEmail] = useState('');
+    const {email} = useParams();
+    console.log('urlEmail: ' + email);
+    const [userEmail, setUserEmail] = useState(email);
     const [confirmCode, setConfirmCode] = useState('');
     const [alertVisible, setAlertVisible] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
@@ -23,8 +25,9 @@ const ConfirmUser = ({ setCurrentUser }) => {
         try {
             Auth.confirmSignUp(userEmail, confirmCode)
                 .then((data) => {
-                    console.log('User Confirmed');
-                    history.push('/signin');
+                    let url =
+                        'profile?email=' + userEmail + 'state=new';
+                    history.push(url);
                 })
                 .catch((err) => {
                     console.log('Yak:' + err.code);
