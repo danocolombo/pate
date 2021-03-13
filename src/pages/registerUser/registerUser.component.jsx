@@ -39,9 +39,6 @@ const RegisterUser = ({ setCurrentUser }) => {
             Auth.signUp({
                 username: userEmail,
                 password: userPassword1,
-                attributes: {
-                    phone: userPhoneNumber,
-                },
             })
                 .then((data) => {
                     //console.log(data);
@@ -66,7 +63,7 @@ const RegisterUser = ({ setCurrentUser }) => {
         let uState = document.getElementById('userState').value;
         console.log('user state: ' + uState);
     };
-    const saveSystemUser = (data) => {
+    const saveSystemUser = async (data) => {
         console.log('checking Cognito response...');
         // build the API request...
         const apiPayload = {
@@ -75,7 +72,6 @@ const RegisterUser = ({ setCurrentUser }) => {
                 Item: {
                     uid: data.cognitoId,
                     displayName: userFullName,
-                    cognitoId: data.cognitoId,
                     email: data.email,
                     role: 'guest',
                     status: 'active',
@@ -97,12 +93,26 @@ const RegisterUser = ({ setCurrentUser }) => {
         //=====================================
         // call the api to update the dynamodb
         //=====================================
+        await fetch(
+            'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/users',
+            {
+                method: 'POST',
+                body: JSON.stringify(apiPayload),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            }
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                //=====================================
+                // store user information in redux
+                //=====================================
+                updateCurrentUser(data.body);
+                // this.setState({ plans: data.body });
+            });
 
-        //=====================================
-        // store user information in redux
-        //=====================================
-        updateCurrentUser(apiPayload.payload);
-        history.push('/');
+        // history.push('/confirmUser');
     };
     const handleChange = (e) => {
         const { value, name } = e.target;

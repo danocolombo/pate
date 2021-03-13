@@ -12,6 +12,7 @@ import Events from './pages/events/events.component';
 import Profile from './pages/profile/profile.component';
 import SignIn from './pages/signin/signin.component';
 import Register from './pages/registerUser/registerUser.component';
+import ConfirmUser from './pages/registerUser/confirmUser.component';
 //----------------------
 //AMPLIFY INTEGRATION
 //----------------------
@@ -52,6 +53,7 @@ function App() {
             <Route exact path='/profile' component={Profile} />
             <Route path='/signin' render={() => <SignIn />} />
             <Route exact path='/register' component={Register} />
+            <Route exact path='/confirmUser' component={ConfirmUser} />
         </Router>
     );
     // }
