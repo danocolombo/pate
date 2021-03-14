@@ -27,16 +27,24 @@ const EventListing = ({
         let alpha = mo[m];
         return alpha;
     };
+    const day2Display = (d) => {
+        let dom = d.substring(6,8);
+        return dom;
+    }
     return (
         <Fragment>
             <div className='event-box'>
                 <div className='date-box'>
-                    <h3 className='event-month'>{month2Display(eventDate)}</h3>
+                    <div className='event-month'>
+                    <h3>{month2Display(eventDate)}&nbsp;{day2Display(eventDate)}</h3>
+                    </div>
                 </div>
+                <div className="address">
                 <div className='event-location'>{location.name}</div>
                 <div className='event-street'>{location.street}</div>
                 <div className='event-city'>{location.city}</div>
-                <div className='postal-code'>{location.postalCode}</div>
+                <div className='event-postalcode'>{location.postalCode}</div>
+                </div>
             </div>
         </Fragment>
     );

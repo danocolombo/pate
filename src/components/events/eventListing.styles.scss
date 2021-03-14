@@ -1,3 +1,27 @@
-.events-header {
-    color: blue;
+
+.event-box{
+    // background-color: gray;
+}
+.date-box{
+    background-color: lightblue;
+    margin-top:10px;
+}
+.event-location {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+.address {
+    margin-left: 10px;
+}
+.event-street {
+    padding-left:10px;
+}
+.event-city {
+    padding-left:10px;
+}
+.event-state {
+    padding-left:10px;
+}
+.event-postalcode {
+    padding-left:10px;
 }
