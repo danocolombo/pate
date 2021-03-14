@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Auth } from 'aws-amplify';
 import { Link, useHistory } from 'react-router-dom';
+import jwt_decode from "jwt-decode";
 import FormInput from '../../components/form-input/form-input.component';
 import CustomButton from '../../components/custom-button/custom-button.component';
 import Header from '../../components/header/header.component';
@@ -18,42 +19,45 @@ const SignIn = ({ onSignIn, setCurrentUser }) => {
     const signIn = async () => {
         try {
             // let userDetails = {};
-            const user = Auth.signIn(username, password);
+            await Auth.signIn(username, password);
+            let currentUserInfo = {};
+            let currentSession = {};
+            await Auth.currentUserInfo()
+            .then(u => {
+                currentUserInfo = u;
+                
+            });
             // const util = require('util');
-            // Auth.currentAuthenticatedUser({
-            //     bypassCache: false})
-            //     .then(user => console.log('current....RESPONSE:\n ' +
-            //     util.inspect(user, {
-            //         showHidden: false,
-            //         depth: null,
-            //     })))
-            //     .catch(err => console.log(err));
+            // console.log('currentUserInfo:\n' + util.inspect(currentUserInfo, { showHidden: false, depth: null }));
+            // console.log('))))))))))))))))))))))))))))))');
+            await Auth.currentSession()
+            .then(data => {
+                currentSession = data;
+                
 
-            Auth.currentSession()
-                .then((data) => {
-                    saveUser(data);
-                })
-                .catch((err) => console.log(err));
-
+            });
+            // const util = require('util');
+            // console.log('currentSession:\n ' + util.inspect(currentSession, { showHidden: false, depth: null }));
+            await saveUser(currentUserInfo, currentSession);
+            
             history.push('/');
             // onSignIn();
         } catch (error) {
             console.log('Error signing in' + error);
         }
     };
-    const saveUser = (userInfo) => {
+    const saveUser = async (userInfo, userSession) => {
+        
         const userDetails = {
             isLoggedIn: true,
-            email: userInfo.idToken.payload.email,
-            cognitoId: userInfo.accessToken.payload.username,
-            jwtToken: userInfo.idToken.jwtToken,
+            userName: userInfo?.username,
+            email: userInfo?.attributes?.email,
+            phone: userInfo?.attributes?.phone_number,
+            uid: userInfo?.attributes?.sub,
+            jwt: userSession?.idToken?.jwtToken,
+            
         };
-        // const util = require('util');
-        // console.log(
-        //     'userDetails \n' +
-        //         util.inspect(userDetails, { showHidden: false, depth: null })
-        // );
-        setCurrentUser(userDetails);
+        await setCurrentUser(userDetails);
     };
     const handleChange = (e) => {
         const { value, name } = e.target;

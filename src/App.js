@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom';
 
 import './App.css';
-//import Lobby from './pages/lobby/lobby.component';
+
 import Events from './pages/events/events.component';
 import Profile from './pages/profile/profile.component';
 import SignIn from './pages/signin/signin.component';

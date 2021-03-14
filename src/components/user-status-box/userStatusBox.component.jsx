@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { BiLogInCircle, BiLogOutCircle } from 'react-icons/bi';
-import { Link } from 'react-router-dom';
+import { CgProfile } from 'react-icons/cg';
+import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Auth } from 'aws-amplify';
 import { clearUser } from '../../redux/user/user.actions';
@@ -8,6 +9,10 @@ import './userStatusBox.styles.scss';
 const UserStatusBox = ({ currentUser, clearUser }) => {
     useEffect(() => {
     }, [currentUser]);
+    const history = useHistory();
+    const profileRequest = async () => {
+        history.push('/profile');
+    }
     const logoutRequest = async () => {
         console.log('LOGOUT->LOGOUT->LOGOUT');
         try {
@@ -20,10 +25,13 @@ const UserStatusBox = ({ currentUser, clearUser }) => {
     return (
         <div className='control-box-wrapper'>
             {currentUser?.isLoggedIn ? (
+                <>
+                <p onClick={profileRequest} className='login-icon'><CgProfile/></p>
                 <p onClick={logoutRequest} className='login-icon'>
                     <BiLogOutCircle />
                     &nbsp;Logout
                 </p>
+                </>
             ) : (
                 <Link to='/signin' className='login-icon'>
                     <BiLogInCircle />
