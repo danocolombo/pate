@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "pate782e594f_identitypool_782e594f",
+    "identityPoolName": "pate20214e565539_identitypool_4e565539",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "pate782e594f",
-    "userPoolName": "pate782e594f_userpool_782e594f",
+    "resourceNameTruncated": "pate204e565539",
+    "userPoolName": "pate20214e565539_userpool_4e565539",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -22,12 +22,16 @@
     ],
     "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
-    "userpoolClientWriteAttributes": [],
-    "userpoolClientReadAttributes": [],
-    "userpoolClientLambdaRole": "pate78782e594f_userpoolclient_lambda_role",
+    "userpoolClientWriteAttributes": [
+        "email"
+    ],
+    "userpoolClientReadAttributes": [
+        "email"
+    ],
+    "userpoolClientLambdaRole": "pate204e565539_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "782e594f",
-    "resourceName": "pate782e594f",
+    "sharedId": "4e565539",
+    "resourceName": "pate20214e565539",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -41,17 +45,9 @@
             "Arn"
         ]
     },
-    "useDefault": "manual",
-    "usernameAttributes": [
-        "email"
-    ],
+    "useDefault": "default",
     "userPoolGroupList": [],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
-    "dependsOn": [],
-    "userPoolGroups": false,
-    "adminQueries": false,
-    "thirdPartyAuth": false,
-    "authProviders": [],
-    "hostedUI": false
+    "dependsOn": []
 }

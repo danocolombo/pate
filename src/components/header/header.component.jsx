@@ -3,6 +3,7 @@ import { BiLogInCircle, BiLogOutCircle } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Auth } from 'aws-amplify';
+import { AmplifySignOut } from '@aws-amplify/ui-react';
 import CustomButton from '../custom-button/custom-button.component';
 import UserStatusBox from '../user-status-box/userStatusBox.component';
 import './header.styles.scss';
@@ -11,8 +12,17 @@ import { clearUser } from '../../redux/user/user.actions';
 
 const Header = ({ currentUser, clearUser }) => {
     // useEffect(() => {
+    //     checkWho();
+    // }, []);
+    // useEffect(() => {
     //     console.log('refresh nav');
     // }, [currentUser]);
+
+    // const checkWho = async () => {
+    //     await Auth.currentUserInfo().then((user) => {
+    //         console.log('currentUser:\n' + user?.username);
+    //     });
+    // };
     // const logoutRequest = async () => {
     //     console.log('LOGOUT->LOGOUT->LOGOUT');
     //     try {
@@ -22,11 +32,13 @@ const Header = ({ currentUser, clearUser }) => {
     //     }
     //     clearUser(currentUser);
     // };
+
     return (
         <div className='header'>
             <Link className='logo-container' to='/'>
                 <Logo className='logo' />
             </Link>
+
             <UserStatusBox />
         </div>
     );

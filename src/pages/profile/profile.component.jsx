@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Auth } from 'aws-amplify';
+
 import { Link, useHistory } from 'react-router-dom';
 import AlertBox from '../../components/alert-box/alert-box.component';
 //import { setAlert } from '../../redux/alert/alert.actions';

@@ -48,11 +48,11 @@ const SignIn = ({ onSignIn, setCurrentUser }) => {
             cognitoId: userInfo.accessToken.payload.username,
             jwtToken: userInfo.idToken.jwtToken,
         };
-        const util = require('util');
-        console.log(
-            'userDetails \n' +
-                util.inspect(userDetails, { showHidden: false, depth: null })
-        );
+        // const util = require('util');
+        // console.log(
+        //     'userDetails \n' +
+        //         util.inspect(userDetails, { showHidden: false, depth: null })
+        // );
         setCurrentUser(userDetails);
     };
     const handleChange = (e) => {

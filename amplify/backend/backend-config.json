@@ -1,6 +1,6 @@
 {
   "auth": {
-    "pate782e594f": {
+    "pate20214e565539": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
