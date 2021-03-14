@@ -42,7 +42,7 @@ const EventListing = ({
                 <div className="address">
                 <div className='event-location'>{location.name}</div>
                 <div className='event-street'>{location.street}</div>
-                <div className='event-city'>{location.city}</div>
+                <div className='event-city-state'><span>{location.city}</span>,&nbsp;<span>{location.state}</span></div>
                 <div className='event-postalcode'>{location.postalCode}</div>
                 </div>
             </div>
