@@ -38,7 +38,6 @@ class Events extends React.Component {
                 <Header />
                 <div className='event-wrapper'>
                     <div>
-                        <h2>Upcoming Event</h2>
                         <EventDetails theEvent={this.state.plan} />
                     </div>
                 </div>

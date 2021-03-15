@@ -45,7 +45,11 @@ const EventDetails = ({ theEvent }) => {
         <>
             <div className='event-graphics'>
                 <div>
-                    <span>graphics here</span>
+                    <img
+                        className='event-image'
+                        src={displayThis?.graphic}
+                        alt='CR P8 Rally'
+                    ></img>
                 </div>
             </div>
             <div className='church-wrapper'>
@@ -73,9 +77,7 @@ const EventDetails = ({ theEvent }) => {
                 </div>
             </div>
             <div className='event-message'>
-                <div>
-                    We want to welcome you to the first post-Covid event...
-                </div>
+                <div>{displayThis?.message}</div>
             </div>
         </>
     );

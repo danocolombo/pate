@@ -1,6 +1,6 @@
 {
     "identityPoolName": "pate20214e565539_identitypool_4e565539",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "pate204e565539",
     "userPoolName": "pate20214e565539_userpool_4e565539",
     "autoVerifiedAttributes": [
