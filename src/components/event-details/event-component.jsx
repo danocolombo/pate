@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
-import './eventListing.styles.scss';
-const EventListing = ({
+import './event.styles.scss';
+const EventDetails = ({
     event: { uid, eventDate, startTime, endTime, location },
 }) => {
     //-------------------------------
@@ -35,7 +34,6 @@ const EventListing = ({
     return (
         <Fragment>
             <div className='event-box'>
-                
                 <div className='date-box'>
                     <div className='event-month'>
                     <h3>{month2Display(eventDate)}&nbsp;{day2Display(eventDate)}</h3>
@@ -47,11 +45,8 @@ const EventListing = ({
                 <div className='event-city-state'><span>{location.city}</span>,&nbsp;<span>{location.state}</span></div>
                 <div className='event-postalcode'>{location.postalCode}</div>
                 </div>
-                <Link to={`/event/${uid}`}>
-                    DETAILS
-                </Link>
             </div>
         </Fragment>
     );
 };
-export default EventListing;
+export default EventDetails;
