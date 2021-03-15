@@ -1,31 +1,59 @@
-import React, { useContext } from 'react';
+import React, { useEffect } from 'react';
+import { BiLogInCircle, BiLogOutCircle } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
-import { TitleContainer } from './header.styles';
-import CurrentUserContext from '../../contexts/current-user/current-user.context';
+import { connect } from 'react-redux';
+import { Auth } from 'aws-amplify';
+import { AmplifySignOut } from '@aws-amplify/ui-react';
+import CustomButton from '../custom-button/custom-button.component';
+import UserStatusBox from '../user-status-box/userStatusBox.component';
 import './header.styles.scss';
 import { ReactComponent as Logo } from '../../assets/pate-logo-white.svg';
-const Header = () => {
-    const currentUser = useContext(CurrentUserContext);
-    const signout = () => {
-        return null;
-    };
+import { clearUser } from '../../redux/user/user.actions';
+
+const Header = ({ currentUser, clearUser }) => {
+    // useEffect(() => {
+    //     checkWho();
+    // }, []);
+    // useEffect(() => {
+    //     console.log('refresh nav');
+    // }, [currentUser]);
+
+    // const checkWho = async () => {
+    //     await Auth.currentUserInfo().then((user) => {
+    //         console.log('currentUser:\n' + user?.username);
+    //     });
+    // };
+    // const logoutRequest = async () => {
+    //     console.log('LOGOUT->LOGOUT->LOGOUT');
+    //     try {
+    //         await Auth.signOut();
+    //     } catch (error) {
+    //         console.log('error signing out: ', error);
+    //     }
+    //     clearUser(currentUser);
+    // };
+
     return (
         <div className='header'>
             <Link className='logo-container' to='/'>
                 <Logo className='logo' />
             </Link>
-            <div className='options'>
-                {currentUser ? (
-                    <div className='option' onClick={() => this.signOut()}>
-                        SIGN OUT
-                    </div>
-                ) : (
-                    <Link className='option' to='/signin'>
-                        SIGN IN
-                    </Link>
-                )}
-            </div>
+
+            <UserStatusBox />
         </div>
     );
 };
-export default Header;
+const mapDispatchToProps = (dispatch) => ({
+    clearUser: (user) => dispatch(clearUser(user)),
+});
+const mapStateToProps = (state) => ({
+    currentUser: state.user.currentUser,
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
+
+//this was the logout button section that worked
+// <div className='options'>
+//     { loggedIn ? <CustomButton onClick={onClick} >Logout</CustomButton> :
+//     <Link to="/signin"><CustomButton onClick={onClick} >Login</CustomButton></Link>
+//     }
+// </div>

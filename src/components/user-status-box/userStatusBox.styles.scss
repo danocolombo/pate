@@ -1,0 +1,16 @@
+.control-box-wrapper {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    .option {
+        padding: 10px 15px;
+        cursor: pointer;
+    }
+}
+.login-icon {
+    padding-right: 30px;
+    text-align: center;
+}

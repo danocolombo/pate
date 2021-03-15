@@ -4,14 +4,11 @@ import './custom-button.sytles.scss';
 
 const CustomButton = ({
     children,
-    isGoogleSignIn,
     inverted,
     ...otherProps
 }) => (
     <button
-        className={`${inverted ? 'inverted' : ''} ${
-            isGoogleSignIn ? 'google-sign-in' : ''
-        } custom-button`}
+        className={`custom-button`}
         {...otherProps}
     >
         {children}

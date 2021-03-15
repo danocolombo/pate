@@ -1,76 +1,69 @@
-import React from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import {
+    Switch,
+    Route,
+    Redirect,
+    BrowserRouter as Router,
+} from 'react-router-dom';
 
 import './App.css';
 
-import Lobby from './pages/lobby/lobby.component';
-// import ShopPage from './pages/shop/shop.component';
-import SignInAndSignUpPage from './pages/signin-and-signup/signin-and-signup.component';
-// import CheckoutPage from './pages/checkout/checkout.component';
+import Events from './pages/events/events.component';
+import Profile from './pages/profile/profile.component';
+import SignIn from './pages/signin/signin.component';
+import Register from './pages/registerUser/registerUser.component';
+import ConfirmUser from './pages/registerUser/confirmUser.component';
+import PrivatePage from './pages/privatePage/privatePage';
+import EventDetails from './pages/event/event.page';
 
-import Header from './components/header/header.component';
+//----------------------
+//AMPLIFY INTEGRATION
+//----------------------
+// import { withAuthenticator } from '@aws-amplify/ui-react';
+import { Auth } from 'aws-amplify';
+import privatePage from './pages/privatePage/privatePage';
 
-// import { auth, createUserProfileDocument } from './firebase/firebase.utils';
+function App() {
+    const [isLoggedIn, setLoggedIn] = useState(false);
+    // const checkLoggedInState = () => {
+    //     Auth.currentAuthenticatedUser()
+    //         .then((sess) => {
+    //             console.log('logged in');
+    //             setLoggedIn(true);
+    //         })
+    //         .catch(() => {
+    //             console.log('not logged in');
+    //             setLoggedIn(false);
+    //         });
+    // };
+    // useEffect(() => {
+    //     checkLoggedInState();
+    // }, []);
+    // const signOut = async () => {
+    //     try {
+    //         await Auth.signOut();
+    //         setLoggedIn(false);
+    //     } catch (error) {
+    //         console.log('Error logging out:\n:' + error);
+    //     }
+    // };
 
-import CurrentUserContext from './contexts/current-user/current-user.context';
-
-class App extends React.Component {
-    constructor() {
-        super();
-
-        this.state = {
-            currentUser: null,
-        };
-    }
-
-    // unsubscribeFromAuth = null;
-
-    componentDidMount() {
-        // this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
-        //     if (userAuth) {
-        //         const userRef = await createUserProfileDocument(userAuth);
-        //         userRef.onSnapshot((snapShot) => {
-        //             this.setState({
-        //                 currentUser: {
-        //                     id: snapShot.id,
-        //                     ...snapShot.data(),
-        //                 },
-        //             });
-        //         });
-        //     }
-        //     this.setState({ currentUser: userAuth });
-        // });
-    }
-
-    componentWillUnmount() {
-        // this.unsubscribeFromAuth();
-    }
-
-    render() {
-        return (
-            <div>
-                <CurrentUserContext.Provider value={this.state.currentUser}>
-                    <Header />
-                </CurrentUserContext.Provider>
-                <Switch>
-                    <Route exact path='/' component={Lobby} />
-                    {/*  <Route path='/shop' component={ShopPage} />
+    // render() {
+    return (
+        <Router>
+            <Route exact path='/' component={Events} />
+            {/*  <Route path='/shop' component={ShopPage} />
                       // <Route exact path='/checkout' component={CheckoutPage} /> */}
-                    <Route
-                        exact
-                        path='/signin'
-                        render={() =>
-                            this.state.currentUser ? (
-                                <Redirect to='/' />
-                            ) : (
-                                <SignInAndSignUpPage />
-                            )
-                        }
-                    />
-                </Switch>
-            </div>
-        );
-    }
+            <Route exact path='/profile' component={Profile} />
+            <Route path='/signin' render={() => <SignIn />} />
+            <Route exact path='/register' component={Register} />
+            <Route exact path='/confirmUser' component={ConfirmUser} />
+            <Route exact path='/privatepage' component={privatePage} />
+            <Route exact path='/event/:id' component={EventDetails} />
+        </Router>
+    );
+    // }
 }
 
 export default App;
+//<Header loggedIn={isLoggedIn} onClick={signOut} />
