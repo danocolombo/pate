@@ -1,41 +1,50 @@
-import React, {useState, useEffect} from 'react'
-import PropTypes from 'prop-types'
+import React from 'react';
+import { withRouter } from 'react-router';
+import './event.styles.scss';
 import EventDetails from '../../components/event-details/event-component';
 import Header from '../../components/header/header.component';
-import './event.styles.scss';
-const EventDetail = ({match}) => {
-    const [eventId, setEventId] = useState(null);
-    useEffect(() => {
-        setEventId(match.params.id);
-        
-    }, []);
-    const theEvent = {
-        uid: eventId,
-        eventDate: '20210422',
-        startTime: '13:00', 
-        endTime: '16:00', 
-        location: {
-            street: '124 Main St.',
-            city: 'Columbus',
-            state: 'GA',
-            postalcode: '31909'
-        }
+
+class Events extends React.Component {
+    constructor() {
+        super();
+        this.state = { plan: [] };
     }
-    return (
-        <>
-            <Header />
-            <div className='event-wrapper'>
-                <div>
-                    <h1>Details</h1>
-                    <EventDetails event={theEvent}/>
+    async componentDidMount() {
+        const id = this.props.match.params.id;
+        await fetch(
+            'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/events',
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    operation: 'getEvent',
+                    payload: {
+                        uid: id,
+                    },
+                }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            }
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                this.setState({ plan: data });
+            });
+    }
+
+    render() {
+        return (
+            <>
+                <Header />
+                <div className='event-wrapper'>
+                    <div>
+                        <h2>Upcoming Event</h2>
+                        <EventDetails theEvent={this.state.plan} />
+                    </div>
                 </div>
-            </div>
-        </> 
-    )
-};
-
-EventDetail.propTypes = {
-
+            </>
+        );
+    }
 }
 
-export default EventDetail
+export default withRouter(Events);

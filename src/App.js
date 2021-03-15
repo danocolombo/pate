@@ -59,11 +59,7 @@ function App() {
             <Route exact path='/register' component={Register} />
             <Route exact path='/confirmUser' component={ConfirmUser} />
             <Route exact path='/privatepage' component={privatePage} />
-            <Route
-                    exact
-                    path='/event/:id'
-                    component={EventDetails}
-                />
+            <Route exact path='/event/:id' component={EventDetails} />
         </Router>
     );
     // }

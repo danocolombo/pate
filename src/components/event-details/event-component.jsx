@@ -1,8 +1,7 @@
 import React, { Fragment } from 'react';
 import './event.styles.scss';
-const EventDetails = ({
-    event: { uid, eventDate, startTime, endTime, location },
-}) => {
+//event: { uid, eventDate, startTime, endTime, location },
+const EventDetails = ({ theEvent }) => {
     //-------------------------------
     // prep data
     //-------------------------------
@@ -28,25 +27,59 @@ const EventDetails = ({
         return alpha;
     };
     const day2Display = (d) => {
-        let dom = d.substring(6,8);
+        let dom = d.substring(6, 8);
         return dom;
-    }
+    };
+    const util = require('util');
+    // console.log(
+    //     'component.theEvent: \n' +
+    //         util.inspect(theEvent, { showHidden: false, depth: null })
+    // );
+    //get data ready to display
+    const displayThis = theEvent?.body?.Items[0];
+    console.log(
+        'component.dislayThis: \n' +
+            util.inspect(displayThis, { showHidden: false, depth: null })
+    );
     return (
-        <Fragment>
-            <div className='event-box'>
-                <div className='date-box'>
-                    <div className='event-month'>
-                    <h3>{month2Display(eventDate)}&nbsp;{day2Display(eventDate)}</h3>
-                    </div>
-                </div>
-                <div className="address">
-                <div className='event-location'>{location.name}</div>
-                <div className='event-street'>{location.street}</div>
-                <div className='event-city-state'><span>{location.city}</span>,&nbsp;<span>{location.state}</span></div>
-                <div className='event-postalcode'>{location.postalCode}</div>
+        <>
+            <div className='event-graphics'>
+                <div>
+                    <span>graphics here</span>
                 </div>
             </div>
-        </Fragment>
+            <div className='church-wrapper'>
+                <div className='church-name'>{displayThis?.location?.name}</div>
+                <div className='church-address-wrapper'>
+                    <div className='church-street'>
+                        {displayThis?.location?.street}
+                    </div>
+                    <div className='church-city-state'>
+                        <span>
+                            {displayThis?.location?.city},{' '}
+                            {displayThis?.location?.state}
+                        </span>
+                    </div>
+                    <div className='church-postal-code'>
+                        {displayThis?.location?.postalCode}
+                    </div>
+                </div>
+            </div>
+            <div className='event-date-time'>
+                <div className='event-date'>{displayThis?.eventDate}</div>
+                <div className='event-times'>
+                    <span>{displayThis?.startTime}</span> -{' '}
+                    <span>{displayThis?.endTime}</span>
+                </div>
+            </div>
+            <div className='event-message'>
+                <div>
+                    We want to welcome you to the first post-Covid event...
+                </div>
+            </div>
+        </>
     );
 };
 export default EventDetails;
+//this was working..
+// <span>{displayThis.location.name}</span>;
