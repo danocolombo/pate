@@ -1,11 +1,12 @@
 import React from 'react';
+import { compose } from 'redux';
 import { withRouter } from 'react-router';
-import {Link} from 'react-router-dom';
-import './event.styles.scss';
+import { withAuthenticator } from '@aws-amplify/ui-react';
+import './registration.styles.scss';
 import EventDetails from '../../components/event-details/event-component';
 import Header from '../../components/header/header.component';
 
-class Events extends React.Component {
+class EventRegistration extends React.Component {
     constructor() {
         super();
         this.state = { plan: [] };
@@ -37,17 +38,13 @@ class Events extends React.Component {
         return (
             <>
                 <Header />
-                <div className='event-wrapper'>
-                    <div>
-                        <EventDetails theEvent={this.state.plan} />
-                    </div>
-                </div>
-                <div>
-                    <Link to={`/registration/${this.state?.plan?.body?.Items[0]?.uid}`}>REGISTER NOW</Link>
-                </div>
+                <div>REGISTRATION page</div>
+                <EventDetails theEvent={this.state.plan} />
             </>
         );
     }
 }
-
-export default withRouter(Events);
+// const firstHOC = withAuthenticator(EventRegistration);
+// export default withRouter(firstHOC);
+// export default withRouter(EventRegistration);
+export default withAuthenticator(EventRegistration);

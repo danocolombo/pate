@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import {Link} from 'react-router-dom';
 import './event.styles.scss';
 //event: { uid, eventDate, startTime, endTime, location },
 const EventDetails = ({ theEvent }) => {
@@ -43,9 +44,9 @@ const EventDetails = ({ theEvent }) => {
     );
     const displayDate = () => {
         // format the date and return it
-        let y = parseInt(displayThis.eventDate.substring(0, 4));
-        let m = parseInt(displayThis.eventDate.substring(4, 6)) - 1;
-        let d = parseInt(displayThis.eventDate.substring(6, 8));
+        let y = parseInt(displayThis?.eventDate.substring(0, 4));
+        let m = parseInt(displayThis?.eventDate.substring(4, 6)) - 1;
+        let d = parseInt(displayThis?.eventDate.substring(6, 8));
         let eventDate = new Date(y, m, d);
         let theDate = eventDate.toDateString();
 
@@ -84,15 +85,15 @@ const EventDetails = ({ theEvent }) => {
     };
     return (
         <>
-            <div className='event-wrapper'>
-                <div className='event-graphics'>
+            <div className='event_wrapper'>
+                <div className='event_graphics'>
                     <img
-                        className='event-image'
+                        className='event_image'
                         src={displayThis?.graphic}
                         alt='CR P8 Rally'
                     ></img>
                 </div>
-                <div className='church-info'>
+                <div className='church_info'>
                     <div className='church_name'>
                         {displayThis?.location?.name}
                     </div>
@@ -103,12 +104,14 @@ const EventDetails = ({ theEvent }) => {
                         {displayThis?.location?.postalCode}
                     </div>
                 </div>
-                <div className='event-date-time'>
-                    <div className='event-date'>{displayTimes()}</div>
+                <div className='event_date'>{displayDate()}</div>
+                <div className='event_date_time'>
+                    <div className='event_date'>{displayTimes()}</div>
                 </div>
                 <div className='event-message'>
                     <div>{displayThis?.message}</div>
                 </div>
+                
             </div>
         </>
     );

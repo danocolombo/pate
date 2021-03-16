@@ -15,13 +15,12 @@ import Register from './pages/registerUser/registerUser.component';
 import ConfirmUser from './pages/registerUser/confirmUser.component';
 import PrivatePage from './pages/privatePage/privatePage';
 import EventDetails from './pages/event/event.page';
-
+import EventRegistration from './pages/registration/registration.page';
 //----------------------
 //AMPLIFY INTEGRATION
 //----------------------
 // import { withAuthenticator } from '@aws-amplify/ui-react';
 import { Auth } from 'aws-amplify';
-import privatePage from './pages/privatePage/privatePage';
 
 function App() {
     const [isLoggedIn, setLoggedIn] = useState(false);
@@ -58,7 +57,8 @@ function App() {
             <Route path='/signin' render={() => <SignIn />} />
             <Route exact path='/register' component={Register} />
             <Route exact path='/confirmUser' component={ConfirmUser} />
-            <Route exact path='/privatepage' component={privatePage} />
+            <Route exact path='/privatepage' component={PrivatePage} />
+            <Route exact path='/registration/:id' component={EventRegistration} />
             <Route exact path='/event/:id' component={EventDetails} />
         </Router>
     );
