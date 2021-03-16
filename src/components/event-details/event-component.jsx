@@ -5,31 +5,31 @@ const EventDetails = ({ theEvent }) => {
     //-------------------------------
     // prep data
     //-------------------------------
-    const mo = {
-        '01': 'JAN',
-        '02': 'FEB',
-        '03': 'MAR',
-        '04': 'APR',
-        '05': 'MAY',
-        '06': 'JUN',
-        '07': 'JUL',
-        '08': 'AUG',
-        '09': 'SEP',
-        10: 'OCT',
-        11: 'NOV',
-        12: 'DEC',
-    };
+    // const mo = {
+    //     '01': 'JAN',
+    //     '02': 'FEB',
+    //     '03': 'MAR',
+    //     '04': 'APR',
+    //     '05': 'MAY',
+    //     '06': 'JUN',
+    //     '07': 'JUL',
+    //     '08': 'AUG',
+    //     '09': 'SEP',
+    //     10: 'OCT',
+    //     11: 'NOV',
+    //     12: 'DEC',
+    // };
 
-    const month2Display = (d) => {
-        //get the month, the return String
-        let m = d.substring(4, 6);
-        let alpha = mo[m];
-        return alpha;
-    };
-    const day2Display = (d) => {
-        let dom = d.substring(6, 8);
-        return dom;
-    };
+    // const month2Display = (d) => {
+    //     //get the month, the return String
+    //     let m = d.substring(4, 6);
+    //     let alpha = mo[m];
+    //     return alpha;
+    // };
+    // const day2Display = (d) => {
+    //     let dom = d.substring(6, 8);
+    //     return dom;
+    // };
     const util = require('util');
     // console.log(
     //     'component.theEvent: \n' +
@@ -41,43 +41,74 @@ const EventDetails = ({ theEvent }) => {
         'component.dislayThis: \n' +
             util.inspect(displayThis, { showHidden: false, depth: null })
     );
+    const displayDate = () => {
+        // format the date and return it
+        let y = parseInt(displayThis.eventDate.substring(0, 4));
+        let m = parseInt(displayThis.eventDate.substring(4, 6)) - 1;
+        let d = parseInt(displayThis.eventDate.substring(6, 8));
+        let eventDate = new Date(y, m, d);
+        let theDate = eventDate.toDateString();
+
+        return theDate;
+    };
+    const displayTimes = () => {
+        if (displayThis?.startTime) {
+            let sTime = displayThis?.startTime.split(':');
+            let eTime = displayThis?.endTime.split(':');
+            console.log(sTime[0]);
+            console.log(sTime[1]);
+            let startTime = '';
+            let endTime = '';
+            if (parseInt(sTime[0]) < 13) {
+                console.log('less than 13');
+                startTime = displayThis?.startTime;
+            } else {
+                let newHour = parseInt(sTime[0]) - 12;
+                console.log('newHour:' + newHour);
+                startTime = newHour.toString() + ':' + sTime[1];
+                console.log('startTime:' + startTime);
+            }
+            if (parseInt(eTime[0]) < 13) {
+                console.log('less than 13');
+                endTime = displayThis.endTime;
+            } else {
+                let newHour = parseInt(eTime[0]) - 12;
+                console.log('newHour:' + newHour);
+                endTime = newHour.toString() + ':' + eTime[1];
+            }
+            let returnValue = startTime + ' - ' + endTime;
+            return returnValue;
+        } else {
+            return null;
+        }
+    };
     return (
         <>
-            <div className='event-graphics'>
-                <div>
+            <div className='event-wrapper'>
+                <div className='event-graphics'>
                     <img
                         className='event-image'
                         src={displayThis?.graphic}
                         alt='CR P8 Rally'
                     ></img>
                 </div>
-            </div>
-            <div className='church-wrapper'>
-                <div className='church-name'>{displayThis?.location?.name}</div>
-                <div className='church-address-wrapper'>
-                    <div className='church-street'>
-                        {displayThis?.location?.street}
+                <div className='church-info'>
+                    <div className='church_name'>
+                        {displayThis?.location?.name}
                     </div>
-                    <div className='church-city-state'>
-                        <span>
-                            {displayThis?.location?.city},{' '}
-                            {displayThis?.location?.state}
-                        </span>
-                    </div>
-                    <div className='church-postal-code'>
+                    <div>{displayThis?.location?.street}</div>
+                    <div>
+                        {displayThis?.location?.city},
+                        {displayThis?.location?.state}&nbsp;
                         {displayThis?.location?.postalCode}
                     </div>
                 </div>
-            </div>
-            <div className='event-date-time'>
-                <div className='event-date'>{displayThis?.eventDate}</div>
-                <div className='event-times'>
-                    <span>{displayThis?.startTime}</span> -{' '}
-                    <span>{displayThis?.endTime}</span>
+                <div className='event-date-time'>
+                    <div className='event-date'>{displayTimes()}</div>
                 </div>
-            </div>
-            <div className='event-message'>
-                <div>{displayThis?.message}</div>
+                <div className='event-message'>
+                    <div>{displayThis?.message}</div>
+                </div>
             </div>
         </>
     );
@@ -85,3 +116,5 @@ const EventDetails = ({ theEvent }) => {
 export default EventDetails;
 //this was working..
 // <span>{displayThis.location.name}</span>;
+
+//

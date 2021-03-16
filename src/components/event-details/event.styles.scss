@@ -1,3 +1,26 @@
+.event-wrapper {
+    text-align: center;
+    // padding: 1rem;
+    margin: 0.5rem 0;
+    width: 100%;
+    background: #19b84c;
+    color: white;
+}
 .event-image {
     width: 80%;
+}
+.church-info {
+    text-align: left;
+    font-family: sans-serif;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.church_name {
+    align-items: left;
+    font-size: 1.3em;
+    font-weight: bold;
+}
+.event-date {
+    font-size: 1.2em;
+    font-weight: bold;
 }
