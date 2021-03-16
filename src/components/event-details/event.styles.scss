@@ -1,13 +1,15 @@
-.event_wrapper {
+.eventdetailswrapper {
     text-align: center;
     // padding: 1rem;
-    margin: 0.5rem 0;
-    width: 100%;
+    // margin: 0.5rem 0;
+    padding-top: 10px;
+    width: 80%;
+    // align-items: center;
     background: #19b84c;
     color: white;
 }
 .event_graphics {
-    width: 90%;
+    width: 100%;
 }
 .event_image {
     width: 80%;
@@ -32,7 +34,9 @@
 .event_date_time {
     font-size: 1em;
     font-weight: bold;
+    margin-bottom: 10px;
 }
-.event-message {
+.eventmessage {
     margin-bottom: 25px;
+    padding: 0px 5px;
 }

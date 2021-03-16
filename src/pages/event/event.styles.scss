@@ -1,6 +1,21 @@
-.event-wrapper {
-    
+.eventwrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+.pageheader {
+    background: black;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.3em;
+    color: white;
+    width: 80%;
+    margin: 0;
+    padding: 5px 0px;
+}
+.registerbutton {
+    color: black;
+    background-color: yellow;
+    padding: 5px 10px;
+    margin: 10px;
 }

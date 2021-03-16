@@ -38,13 +38,13 @@ class EventRegistration extends React.Component {
         return (
             <>
                 <Header />
-                <div>REGISTRATION page</div>
-                <EventDetails theEvent={this.state.plan} />
+
+                <div className='registrationpagewrapper'>
+                    <div className='pageheader'>REGISTRATION</div>
+                    <EventDetails theEvent={this.state.plan} />
+                </div>
             </>
         );
     }
 }
-// const firstHOC = withAuthenticator(EventRegistration);
-// export default withRouter(firstHOC);
-// export default withRouter(EventRegistration);
-export default withAuthenticator(EventRegistration);
+export default compose(withAuthenticator, withRouter)(EventRegistration);

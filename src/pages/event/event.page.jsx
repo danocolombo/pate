@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './event.styles.scss';
 import EventDetails from '../../components/event-details/event-component';
 import Header from '../../components/header/header.component';
@@ -37,14 +37,19 @@ class Events extends React.Component {
         return (
             <>
                 <Header />
-                <div className='event-wrapper'>
+                <div className='eventwrapper'>
+                    <EventDetails theEvent={this.state.plan} />
                     <div>
-                        <EventDetails theEvent={this.state.plan} />
+                        <Link
+                            to={`/registration/${this.state?.plan?.body?.Items[0]?.uid}`}
+                        >
+                            <button className='registerbutton'>
+                                REGISTER NOW
+                            </button>
+                        </Link>
                     </div>
                 </div>
-                <div>
-                    <Link to={`/registration/${this.state?.plan?.body?.Items[0]?.uid}`}>REGISTER NOW</Link>
-                </div>
+                ;
             </>
         );
     }
