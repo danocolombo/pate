@@ -5,7 +5,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Auth } from 'aws-amplify';
 import { clearUser } from '../../redux/user/user.actions';
-import { clearRegistrations } from '../../redux/registrations/registrations.actions';
+import { clearReservations } from '../../redux/registrations/registrations.actions';
 import './userStatusBox.styles.scss';
 const UserStatusBox = ({ currentUser, clearUser }) => {
     useEffect(() => {}, [currentUser]);
