@@ -23,7 +23,7 @@ import EventRegistration from './pages/registration/registration.page';
 import { Auth } from 'aws-amplify';
 
 function App() {
-    const [isLoggedIn, setLoggedIn] = useState(false);
+    // const [isLoggedIn, setLoggedIn] = useState(false);
     // const checkLoggedInState = () => {
     //     Auth.currentAuthenticatedUser()
     //         .then((sess) => {
