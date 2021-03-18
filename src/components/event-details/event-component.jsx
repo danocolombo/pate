@@ -25,25 +25,20 @@ const EventDetails = ({ theEvent }) => {
         if (displayThis?.startTime) {
             let sTime = displayThis?.startTime.split(':');
             let eTime = displayThis?.endTime.split(':');
-            console.log(sTime[0]);
-            console.log(sTime[1]);
+
             let startTime = '';
             let endTime = '';
             if (parseInt(sTime[0]) < 13) {
-                console.log('less than 13');
                 startTime = displayThis?.startTime;
             } else {
                 let newHour = parseInt(sTime[0]) - 12;
-                console.log('newHour:' + newHour);
+
                 startTime = newHour.toString() + ':' + sTime[1];
-                console.log('startTime:' + startTime);
             }
             if (parseInt(eTime[0]) < 13) {
-                console.log('less than 13');
                 endTime = displayThis.endTime;
             } else {
                 let newHour = parseInt(eTime[0]) - 12;
-                console.log('newHour:' + newHour);
                 endTime = newHour.toString() + ':' + eTime[1];
             }
             let returnValue = startTime + ' - ' + endTime;

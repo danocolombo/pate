@@ -1,0 +1,4 @@
+export const RegistrationsActionTypes = {
+    LOAD_REGISTRATIONS: 'LOAD_REGISTRATIONS',
+    CLEAR_REGISTRATIONS: 'CLEAR_REGISTRATIONS',
+};

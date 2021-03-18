@@ -9,11 +9,11 @@ import {
 import './events.styles.scss';
 import EventListing from '../../components/events/eventListing.component';
 import Header from '../../components/header/header.component';
-
+import Spinner from '../../components/spinner/Spinner';
 class Events extends React.Component {
     constructor() {
         super();
-        this.state = { data: [], plans: [], cnt: 0 };
+        this.state = { data: [], plans: [], cnt: 0, loading: true };
     }
     async componentDidMount() {
         await fetch(
@@ -35,7 +35,9 @@ class Events extends React.Component {
     }
 
     render() {
-        return (
+        return this.loading ? (
+            <Spinner />
+        ) : (
             <>
                 <Header />
                 <div className='events-wrapper'>
