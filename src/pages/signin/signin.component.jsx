@@ -108,7 +108,7 @@ const SignIn = ({
                 break;
         }
     };
-    return !pateSystem.showSpinner && currentUser?.isLoggedIn ? (
+    return pateSystem.showSpinner ? (
         <Spinner />
     ) : (
         <>

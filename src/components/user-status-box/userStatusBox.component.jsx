@@ -5,9 +5,9 @@ import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Auth } from 'aws-amplify';
 import { clearUser } from '../../redux/user/user.actions';
-import { clearReservations } from '../../redux/registrations/registrations.actions';
+import { clearRegistrations } from '../../redux/registrations/registrations.actions';
 import './userStatusBox.styles.scss';
-const UserStatusBox = ({ currentUser, clearUser }) => {
+const UserStatusBox = ({ currentUser, clearUser, clearRegistrations }) => {
     useEffect(() => {}, [currentUser]);
     const history = useHistory();
     const profileRequest = async () => {
@@ -21,6 +21,7 @@ const UserStatusBox = ({ currentUser, clearUser }) => {
             console.log('error signing out: ', error);
         }
         clearUser(currentUser);
+        clearRegistrations();
     };
     return (
         <div className='control-box-wrapper'>
