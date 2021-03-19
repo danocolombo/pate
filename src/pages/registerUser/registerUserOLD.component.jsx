@@ -11,7 +11,7 @@ import Header from '../../components/header/header.component';
 import { updateCurrentUser } from '../../redux/user/user.actions';
 import './registerUser.styles.scss';
 
-const RegisterUser = ({ setCurrentUser }) => {
+const RegisterUser = () => {
     const [userEmail, setUserEmail] = useState('');
     const [userPassword1, setUserPassword1] = useState('');
     const [userPassword2, setUserPassword2] = useState('');

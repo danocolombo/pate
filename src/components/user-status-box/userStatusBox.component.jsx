@@ -22,6 +22,7 @@ const UserStatusBox = ({ currentUser, clearUser, clearRegistrations }) => {
         }
         clearUser(currentUser);
         clearRegistrations();
+        history.push('/');
     };
     return (
         <div className='control-box-wrapper'>

@@ -1,29 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import Spinner from '../../components/spinner/Spinner';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
-
+import { updateCurrentUser } from '../../redux/user/user.actions';
 import './profile.styles.scss';
 const PersonalProfile = ({
     currentUser,
     setSpinner,
+    updateCurrentUser,
     clearSpinner,
     pateSystem,
 }) => {
+    const history = useHistory();
     // variables for the form
     const [firstName, setFirstName] = useState(currentUser?.firstName);
     const [lastName, setLastName] = useState(currentUser?.lastName);
     const [email, setEmail] = useState(currentUser?.email);
     const [phone, setPhone] = useState(currentUser?.phone);
-    const [homeStreet, setHomeStreet] = useState(currentUser?.address?.street);
-    const [homeCity, setHomeCity] = useState(currentUser?.address?.city);
-    const [homeState, setHomeState] = useState(currentUser?.address?.state);
+    const [homeStreet, setHomeStreet] = useState(
+        currentUser?.residence?.street
+    );
+    const [homeCity, setHomeCity] = useState(currentUser?.residence?.city);
+    const [homeState, setHomeState] = useState(
+        currentUser?.residence?.stateProv
+    );
     const [homePostalCode, setHomePostalCode] = useState(
-        currentUser?.address?.postalCode
+        currentUser?.residence?.postalCode
     );
     const [churchName, setChurchName] = useState(currentUser?.church?.name);
     const [churchCity, setChurchCity] = useState(currentUser?.church?.city);
-    const [churchState, setChurchState] = useState(currentUser?.address?.state);
+    const [churchState, setChurchState] = useState(
+        currentUser?.church?.stateProv
+    );
 
     useEffect(() => {}, [pateSystem.showSpinner]);
 
@@ -31,33 +40,129 @@ const PersonalProfile = ({
         event.preventDefault();
         setSpinner();
         // build currentUser object
-        //church values are optional, so we want to send empty string if undefined
-        if (churchName === undefined) setChurchName('');
-        if (churchCity === undefined) setChurchCity('');
-        if (churchState === undefined) setChurchState('');
-        const profileUpdate = {
+        let coreUser = {
+            uid: currentUser.uid,
+            isLoggedIn: currentUser.isLoggedIn,
+            loading: currentUser.loading,
             firstName: firstName,
             lastName: lastName,
             email: email,
             phone: phone,
-            address: {
-                street: homeStreet,
-                city: homeCity,
-                state: homeState,
-                postalCode: homePostalCode,
-            },
-            church: {
-                name: churchName,
-                city: churchCity,
-                state: churchState,
-            },
         };
+
+        //section for address....
+        let residence = {};
+        if (homeStreet || homeCity || homeState || homePostalCode) {
+            // let address = {};
+            // profileUpdate.address = {};
+            if (homeStreet !== undefined && homeStreet !== '') {
+                residence.street = homeStreet;
+            }
+            if (homeCity !== undefined && homeCity !== '') {
+                residence.city = homeCity;
+            }
+            if (homeState !== undefined && homeState !== '') {
+                residence.stateProv = homeState;
+            }
+            if (homePostalCode !== undefined && homePostalCode !== '') {
+                residence.postalCode = homePostalCode;
+            }
+            // profileUpdate.address = address;
+        }
+
+        //church values are optional, so we want to send empty string if undefined
+        let church = {};
+        if (churchName || churchCity || churchState) {
+            // let church = {};
+            // profileUpdate.church = {};
+            if (churchName !== undefined && churchName !== '') {
+                church.name = churchName;
+            }
+            if (churchCity !== undefined && churchCity !== '') {
+                church.city = churchCity;
+            }
+            if (churchState !== undefined && churchState !== '')
+                church.stateProv = churchState;
+            // profileUpdate.church = church;
+        }
+
+        //profileUpdate.dateUpdated = '2021-03-18T09:09';
+        // now save the information to the pate db
+        // 1. add the uid to the data to update database.
+        //profileUpdate.uid = currentUser.uid;
+
+        // 2. save the object to the pate db
         const util = require('util');
         console.log(
-            'profileUpdate: ' +
-                util.inspect(profileUpdate, { showHidden: false, depth: null })
+            'residence \n' +
+                util.inspect(residence, {
+                    showHidden: false,
+                    depth: null,
+                })
         );
+        let newCurrentUser = {};
+        newCurrentUser = coreUser;
 
+        if (
+            residence?.street ||
+            residence?.city ||
+            residence?.stateProv ||
+            residence?.postalCode
+        ) {
+            newCurrentUser = { ...newCurrentUser, residence };
+        }
+        if (church?.name || church?.city || church?.stateProv) {
+            newCurrentUser = { ...newCurrentUser, church };
+        }
+        //======================================
+        // 1. update database
+        // 2. add JWt to object
+        // 3. update Redux
+        //======================================
+        //====== 1. update database
+        async function updateDb() {
+            fetch(
+                'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/users',
+                {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        operation: 'updateUser',
+                        payload: {
+                            Item: newCurrentUser,
+                        },
+                    }),
+                    headers: {
+                        'Content-type': 'application/json; charset=UTF-8',
+                    },
+                }
+            )
+                .then((response) => response.json())
+                .then((data) => {
+                    const util = require('util');
+                    console.log(
+                        'db data returned: \n' +
+                            util.inspect(data, {
+                                showHidden: false,
+                                depth: null,
+                            })
+                    );
+                });
+        }
+        //next call is to async the above update
+        updateDb();
+
+        //====== 2. add JWT to object
+        newCurrentUser.jwt = currentUser.jwt;
+        //====== 3. update redux
+        async function updateRedux() {
+            updateCurrentUser(newCurrentUser);
+            console.log('updateRedux function.............................');
+        }
+        updateRedux();
+
+        history.push('/');
+
+        history.push('/');
         clearSpinner();
     };
     const handleChange = (e) => {
@@ -244,6 +349,7 @@ const PersonalProfile = ({
     );
 };
 const mapDispatchToProps = (dispatch) => ({
+    updateCurrentUser: (user) => dispatch(updateCurrentUser(user)),
     setSpinner: () => dispatch(setSpinner()),
     clearSpinner: () => dispatch(clearSpinner()),
 });
@@ -254,5 +360,6 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
     setSpinner,
     clearSpinner,
+    updateCurrentUser,
     mapDispatchToProps,
 })(PersonalProfile);

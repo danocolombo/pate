@@ -7,10 +7,10 @@ import FormInput from '../../components/form-input/form-input-reg.component';
 import Header from '../../components/header/header.component';
 //----- actions needed -------
 import { updateCurrentUser } from '../../redux/user/user.actions';
-import './registerUser.styles.scss';
+import './register.styles.scss';
 
-const ConfirmUser = ({ setCurrentUser }) => {
-    const {email} = useParams();
+const ConfirmUser = () => {
+    const { email } = useParams();
     console.log('urlEmail: ' + email);
     const [userEmail, setUserEmail] = useState(email);
     const [confirmCode, setConfirmCode] = useState('');
@@ -25,8 +25,7 @@ const ConfirmUser = ({ setCurrentUser }) => {
         try {
             Auth.confirmSignUp(userEmail, confirmCode)
                 .then((data) => {
-                    let url =
-                        'profile?email=' + userEmail + 'state=new';
+                    let url = 'profile?email=' + userEmail + 'state=new';
                     history.push(url);
                 })
                 .catch((err) => {

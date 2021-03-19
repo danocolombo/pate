@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { compose } from 'redux';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { withAuthenticator } from '@aws-amplify/ui-react';
 
@@ -8,24 +9,33 @@ import './profile.styles.scss';
 import Header from '../../components/header/header.component';
 import PersonalProfile from '../../components/profile/profile.component';
 
-import { setCurrentUser } from '../../redux/user/user.actions';
-
-const UserProfile = () => {
-    
-    
-    
-
+const UserProfile = ({ currentUser, pateSystem }) => {
+    useEffect(() => {
+        if (currentUser.isLoggedIn) {
+            console.log('INININININININ');
+        } else {
+            console.log('NONONONONONONO');
+        }
+    }, []);
     // render() {
-        return (
-            <>
-                <Header />
+    return (
+        <>
+            <Header />
 
-                <div className='profilepagewrapper'>
-                    <div className='pageheader'>PERSONAL PROFILE</div>
-                    <PersonalProfile />
-                </div>
-            </>
-        );
+            <div className='profilepagewrapper'>
+                <div className='pageheader'>PERSONAL PROFILE</div>
+                <PersonalProfile />
+            </div>
+        </>
+    );
     // }
-}
-export default compose(withAuthenticator, withRouter)(UserProfile);
+};
+const mapStateToProps = (state) => ({
+    currentUser: state.user.currentUser,
+    pateSystem: state.pate,
+});
+export default compose(
+    withAuthenticator,
+    withRouter,
+    connect(mapStateToProps)
+)(UserProfile);

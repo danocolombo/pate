@@ -35,18 +35,12 @@ const SignIn = ({
             await Auth.currentUserInfo().then((u) => {
                 currentUserInfo = u;
             });
-            // const util = require('util');
-            // console.log('currentUserInfo:\n' + util.inspect(currentUserInfo, { showHidden: false, depth: null }));
-            // console.log('))))))))))))))))))))))))))))))');
             await Auth.currentSession().then((data) => {
                 currentSession = data;
             });
-            // const util = require('util');
-            // console.log('currentSession:\n ' + util.inspect(currentSession, { showHidden: false, depth: null }));
             await saveUser(currentUserInfo, currentSession);
             clearSpinner();
             history.push('/');
-            // onSignIn();
         } catch (error) {
             clearSpinner();
             console.log('Error signing in' + error);
@@ -54,6 +48,7 @@ const SignIn = ({
     };
     const saveUser = async (userInfo, userSession) => {
         //get p8user data...
+
         let dbUser = {};
         await fetch(
             'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/users',
@@ -75,24 +70,62 @@ const SignIn = ({
                 dbUser = data?.body?.Items[0];
             });
         // now we have dbUser, add it to cognito data to put in redux
-        const util = require('util');
-        console.log(
-            'dbUser: \n' +
-                util.inspect(dbUser, { showHidden: false, depth: null })
-        );
+        // const util = require('util');
+        // console.log(
+        //     'dbUser: \n' +
+        //         util.inspect(dbUser, { showHidden: false, depth: null })
+        // );
 
-        const userDetails = {
+        let userDetails = {
             isLoggedIn: true,
             login: userInfo?.username,
+            testMe: true,
+            role: dbUser?.role,
+            status: dbUser?.status,
             email: userInfo?.attributes?.email,
             phone: userInfo?.attributes?.phone_number,
             uid: userInfo?.attributes?.sub,
             displayName: dbUser.displayName,
-            stateRep: dbUser?.repInfo?.state,
             firstName: dbUser.firstName,
             lastName: dbUser.lastName,
             jwt: userSession?.idToken?.jwtToken,
         };
+        // if they are a state rep...
+        if (dbUser?.repInfo) {
+            userDetails.stateRep = dbUser?.repInfo?.stateProv;
+        }
+        //if there is address,
+        if (dbUser?.residence) {
+            let residence = {};
+            if (dbUser?.residence?.street !== undefined) {
+                residence.street = dbUser.residence.street;
+            }
+            if (dbUser?.residence?.city !== undefined) {
+                residence.city = dbUser.residence.city;
+            }
+            if (dbUser?.residence?.postalCode !== undefined) {
+                residence.postalCode = dbUser.residence.postalCode;
+            }
+            if (dbUser?.residence?.stateProv !== undefined) {
+                residence.stateProv = dbUser.residence.stateProv;
+            }
+
+            userDetails.residence = residence;
+        }
+        if (dbUser?.church) {
+            let church = {};
+            if (dbUser?.church?.name !== undefined) {
+                church.name = dbUser.church.name;
+            }
+            if (dbUser?.church?.city !== undefined) {
+                church.city = dbUser.church.city;
+            }
+            if (dbUser?.church?.stateProv !== undefined) {
+                church.stateProv = dbUser.church.stateProv;
+            }
+
+            userDetails.church = church;
+        }
         await setCurrentUser(userDetails);
     };
     const handleChange = (e) => {

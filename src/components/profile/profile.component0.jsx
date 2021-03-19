@@ -11,7 +11,7 @@ import Header from '../../components/header/header.component';
 import { updateCurrentUser } from '../../redux/user/user.actions';
 import './profile.styles.scss';
 
-const Profile = ({ setCurrentUser }) => {
+const Profile = () => {
     const [userFullName, setUserFullName] = useState('');
     const [userPhoneNumber, setUserPhoneNumber] = useState('');
     const [userStreet, setUserStreet] = useState('');
