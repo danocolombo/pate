@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Auth } from 'aws-amplify';
 import { Link, useHistory } from 'react-router-dom';
-import jwt_decode from 'jwt-decode';
+// import jwt_decode from 'jwt-decode';
 import FormInput from '../../components/form-input/form-input.component';
 import CustomButton from '../../components/custom-button/custom-button.component';
 import Header from '../../components/header/header.component';
 import Spinner from '../../components/spinner/Spinner';
 //----- actions needed -------
+import { loadRegistrations } from '../../redux/registrations/registrations.actions';
 import { setCurrentUser } from '../../redux/user/user.actions';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import './signin.styles.scss';
@@ -17,6 +18,7 @@ const SignIn = ({
     setCurrentUser,
     setSpinner,
     clearSpinner,
+    loadRegistrations,
     pateSystem,
     currentUser,
 }) => {
@@ -39,12 +41,50 @@ const SignIn = ({
                 currentSession = data;
             });
             await saveUser(currentUserInfo, currentSession);
+            await getRegistrations(currentUserInfo.attributes.sub);
             clearSpinner();
             history.push('/');
         } catch (error) {
             clearSpinner();
             console.log('Error signing in' + error);
         }
+    };
+    const getRegistrations = async (uid) => {
+        async function getUserReg() {
+            try {
+                fetch(
+                    'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/registrations',
+                    {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            operation: 'getAllUserRegistrations',
+                            payload: {
+                                rid: uid,
+                            },
+                        }),
+                        headers: {
+                            'Content-type': 'application/json; charset=UTF-8',
+                        },
+                    }
+                )
+                    .then((response) => response.json())
+                    .then((data) => {
+                        const util = require('util');
+                        console.log(
+                            'registrations-data:\n' +
+                                util.inspect(data.body, {
+                                    showHidden: false,
+                                    depth: null,
+                                })
+                        );
+                        loadRegistrations(data.body);
+                    });
+            } catch (error) {
+                clearSpinner();
+                console.log('Error fetching registrations \n' + error);
+            }
+        }
+        await getUserReg();
     };
     const saveUser = async (userInfo, userSession) => {
         //get p8user data...
@@ -183,6 +223,8 @@ const mapDispatchToProps = (dispatch) => ({
     setCurrentUser: (user) => dispatch(setCurrentUser(user)),
     setSpinner: () => dispatch(setSpinner()),
     clearSpinner: () => dispatch(clearSpinner()),
+    loadRegistrations: (registrations) =>
+        dispatch(loadRegistrations(registrations)),
 });
 const mapStateToProps = (state) => ({
     pateSystem: state.pate,
