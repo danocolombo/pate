@@ -1,33 +1,23 @@
-.personalprofilewrapper {
+.userregistrationswrapper {
     text-align: center;
-    // padding: 1rem;
-    // margin: 0.5rem 0;
-    padding-top: 10px;
+    padding-top: 0px;
     width: 80%;
     height: auto;
-    // align-items: center;
     background: lightgray;
     color: black;
 }
-.profileform {
-    text-align: right;
-    padding-right: 10%;
-    margin-bottom: 20px;
+.registrationtable {
+    text-align: left;
+    margin-left: 20px;
+    font-size: 0.8em;
+    width: 100%;
 }
-.profileform label {
-    margin-right: 10px;
+.eventdate {
+    vertical-align: bottom;
 }
-.profilehomesection {
-    text-align: center;
-    margin: 10px 0 10px 0;
+.eventname {
+    padding-left: 10px;
 }
-.churchsection {
-    font-size: 1.2em;
-    text-align: center;
-    margin: 10px 0 10px 0;
-    
-}
-.profilebutton {
-    text-align: center;
-    margin-top: 10px;
+.eventlocation {
+    padding-left: 10px;
 }
