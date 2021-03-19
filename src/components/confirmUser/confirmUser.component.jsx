@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Auth } from 'aws-amplify';
-import { useHistory, useParams } from 'react-router-dom';
-
+import { useHistory } from 'react-router-dom';
+import AlertBox from '../../components/alert-box/alert-box.component';
 import Spinner from '../../components/spinner/Spinner';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import './confirmUser.styles.scss';
@@ -11,6 +11,9 @@ const ConfirmUserDetails = ({ setSpinner, clearSpinner, pateSystem, id }) => {
     const history = useHistory();
     // variables for the form
     const [code, setCode] = useState('');
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
+
     useEffect(() => {}, [pateSystem.showSpinner]);
 
     const handleSubmitClick = (event) => {
@@ -24,12 +27,26 @@ const ConfirmUserDetails = ({ setSpinner, clearSpinner, pateSystem, id }) => {
                 })
                 .catch((err) => {
                     console.log('Yak:' + err.code);
-                    if (err.code === 'CodeMismatchException') {
-                        // setAlertMessage(err.message);
-                        // setAlertVisible(true);
-                        console.log(err.message);
+                    let msg = null;
+                    switch (err.code) {
+                        case 'CodeMismatchException':
+                            setAlertMessage(err.message);
+                            break;
+                        case 'UsernameExistsException':
+                            msg = 'User Already Exists!! \n' + err.message;
+                            setAlertMessage(msg);
+                            break;
+                        case 'NotAuthorizedException':
+                            msg = 'Invalid code provided.\nPlease try again';
+                            setAlertMessage(msg);
+                            break;
+                        default:
+                            setAlertMessage(err.message);
+                            break;
                     }
-                    console.log(err);
+                    setAlertVisible(true);
+
+                    // console.log(err);
                 });
         } catch (error) {
             console.log('error:' + error);
@@ -52,6 +69,12 @@ const ConfirmUserDetails = ({ setSpinner, clearSpinner, pateSystem, id }) => {
     ) : (
         <>
             <div className='confirmuserwrapper'>
+                <AlertBox
+                    show={alertVisible}
+                    /*onClose={this.onChange}*/
+                    message={alertMessage}
+                    autoClose={false}
+                />
                 <div className='confirmform'>
                     <form>
                         <div className='instructions'>

@@ -11,12 +11,37 @@ import Spinner from '../../components/spinner/Spinner';
 import { loadRegistrations } from '../../redux/registrations/registrations.actions';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 //class Events extends React.Component {
-const Events = ({ currentUser, match, loadRegistrations, setSpinner, clearSpinner,pateSystem }) => {
+const Events = ({ currentUser, match, loadRegistrations, setSpinner, clearSpinner,pateSystem, registrations }) => {
     const [plan, setplan] = useState([]);
+    const [registered, setRegistered] = useState(false);
+    const { currentRegistrations } = registrations;
     
+    const DEBUG = false;
+    if(DEBUG){
+    let userRegs = registrations.Items;
+    console.log('REGISTRATIONS: ' + userRegs.length);
+    let regConfirmed = false;
+    userRegs.forEach(r => {
+        console.log('eid:' + r.eid);
+        if(r.eid === match.params.id){
+            regConfirmed = true;
+        }
+    });
+    console.log('***** registered: ' + regConfirmed + '*****');
+    const util = require('util');
+    
+    console.log('currentRegistrations: \n-=-=-=-=-=-=-=-=-=-=\n' + util.inspect(currentRegistrations, { showHidden: false, depth: null }));
+    console.log('-=-=-=-=-=-=-=-=-=-=');
+    // currentRegistrations.Items.map((evnt) => (
+    //     console.log('event.ui: ' + evnt),
+    // ));
+    // currentRegistrations.Items.map((evnt) => (
+    //     evnt.uid from {person.country}
+    // ))
+}
     useEffect(() => {
-        setSpinner();
         const id = match.params.id;
+        
         async function fetchEvents() {
             fetch(
                 'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/events',
@@ -60,6 +85,8 @@ const Events = ({ currentUser, match, loadRegistrations, setSpinner, clearSpinne
                 )
                     .then((response) => response.json())
                     .then((data) => {
+                        const util = require('util');
+                        console.log('registrations-data:\n' + util.inspect(data.body, { showHidden: false, depth: null }));
                         loadRegistrations(data.body);
                     });
             }
@@ -67,15 +94,17 @@ const Events = ({ currentUser, match, loadRegistrations, setSpinner, clearSpinne
         async function groupCalls() {
             fetchEvents();
             getUserReg();
+            
         }
         groupCalls();
 
         // return () => {
         //     //cleanup
         // };
-        clearSpinner();
+        
     }, []);
-
+    
+    
     //something like this to check registrations if ths one...
     // posts: state.posts.map(post =>
     //     post._id === payload.id ? { ...post, likes: payload.likes } : post
@@ -107,6 +136,7 @@ Events.propTypes = {
 };
 const mapStateToProps = (state) => ({
     currentUser: state.user.currentUser,
+    registrations: state.registrations.currentRegistrations,
     pateSystem: state.pate,
 });
 export default compose(
