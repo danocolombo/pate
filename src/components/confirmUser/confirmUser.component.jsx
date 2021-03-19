@@ -23,7 +23,7 @@ const ConfirmUserDetails = ({ setSpinner, clearSpinner, pateSystem, id }) => {
         try {
             Auth.confirmSignUp(id, code)
                 .then((data) => {
-                    history.push('/profile');
+                    history.push('/signin');
                 })
                 .catch((err) => {
                     console.log('Yak:' + err.code);
@@ -52,6 +52,7 @@ const ConfirmUserDetails = ({ setSpinner, clearSpinner, pateSystem, id }) => {
             console.log('error:' + error);
         }
         clearSpinner();
+        history.push('/signin');
     };
     const handleChange = (e) => {
         const { value, name } = e.target;

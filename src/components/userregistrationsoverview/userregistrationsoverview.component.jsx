@@ -10,9 +10,11 @@ const UserRegistrationOverview = ({ currentUser, registrationInfo }) => {
     );
     const registrations = registrationInfo?.Items;
 
-    registrations.forEach((r) => {
-        console.log(r.eid);
-    });
+    if (registrations) {
+        registrations.forEach((r) => {
+            console.log(r.eid);
+        });
+    }
     const dateToDisplay = (dt) => {
         const y = dt.substring(0, 4);
         const m = parseInt(dt.substring(4, 6));

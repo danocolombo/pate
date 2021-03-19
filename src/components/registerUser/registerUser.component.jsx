@@ -34,7 +34,7 @@ const RegisterUserDetails = ({
                 },
             })
                 .then((data) => {
-                    let url = '/confirmUser?username=' + userName;
+                    let url = '/confirmUser/' + userName;
                     history.push(url);
                 })
                 .catch((err) => {

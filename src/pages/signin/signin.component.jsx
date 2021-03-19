@@ -31,7 +31,36 @@ const SignIn = ({
         setSpinner();
         try {
             // let userDetails = {};
-            await Auth.signIn(username, password);
+            await Auth.signIn(username, password)
+                .then((user) => {
+                    if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
+                        const { requiredAttributes } = user.challengeParam; // the array of required attributes, e.g ['email', 'phone_number']
+                        Auth.completeNewPassword(
+                            username, // the Cognito User Object
+                            password,
+                            []
+                            // the new password
+                            // OPTIONAL, the required attributes
+                            // {
+                            //     email: 'xxxx@example.com',
+                            //     phone_number: '1234567890'
+                            // }
+                        )
+                            .then((user) => {
+                                // at this time the user is logged in if no MFA required
+                                console.log(user);
+                            })
+                            .catch((e) => {
+                                console.log(e);
+                            });
+                    } else {
+                        // other situations
+                    }
+                })
+                .catch((e) => {
+                    console.log(e);
+                });
+
             let currentUserInfo = {};
             let currentSession = {};
             await Auth.currentUserInfo().then((u) => {
@@ -48,6 +77,14 @@ const SignIn = ({
             clearSpinner();
             console.log('Error signing in' + error);
         }
+    };
+    const changePassword = async () => {
+        Auth.currentAuthenticatedUser()
+            .then((user) => {
+                return Auth.changePassword(user, 'oldPassword', 'newPassword');
+            })
+            .then((data) => console.log(data))
+            .catch((err) => console.log(err));
     };
     const getRegistrations = async (uid) => {
         async function getUserReg() {
@@ -90,46 +127,69 @@ const SignIn = ({
         //get p8user data...
 
         let dbUser = {};
-        await fetch(
-            'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/users',
-            {
-                method: 'POST',
-                body: JSON.stringify({
-                    operation: 'getUser',
-                    payload: {
-                        uid: userInfo?.attributes?.sub,
+        try {
+            await fetch(
+                'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/users',
+                {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        operation: 'getUser',
+                        payload: {
+                            uid: userInfo?.attributes?.sub,
+                        },
+                    }),
+                    headers: {
+                        'Content-type': 'application/json; charset=UTF-8',
                     },
-                }),
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8',
-                },
-            }
-        )
-            .then((response) => response.json())
-            .then((data) => {
-                dbUser = data?.body?.Items[0];
-            });
+                }
+            )
+                .then((response) => response.json())
+                .then((data) => {
+                    dbUser = data?.body?.Items[0];
+                });
+        } catch (error) {
+            clearSpinner();
+            console.log('Error fetching registrations \n' + error);
+        }
+
         // now we have dbUser, add it to cognito data to put in redux
         // const util = require('util');
         // console.log(
         //     'dbUser: \n' +
         //         util.inspect(dbUser, { showHidden: false, depth: null })
         // );
-
-        let userDetails = {
-            isLoggedIn: true,
-            login: userInfo?.username,
-            testMe: true,
-            role: dbUser?.role,
-            status: dbUser?.status,
-            email: userInfo?.attributes?.email,
-            phone: userInfo?.attributes?.phone_number,
-            uid: userInfo?.attributes?.sub,
-            displayName: dbUser.displayName,
-            firstName: dbUser.firstName,
-            lastName: dbUser.lastName,
-            jwt: userSession?.idToken?.jwtToken,
-        };
+        //============================================
+        // if user has never updated their profile, there
+        // will not be any pate ddb data to load, so need
+        // to default...
+        let userDetails = {};
+        if (dbUser === undefined) {
+            // default values
+            userDetails.isLoggedIn = true;
+            userDetails.role = 'guest';
+            userDetails.status = 'active';
+            userDetails.phone = '';
+            userDetails.dislayName = userInfo?.username;
+            userDetails.firstName = '';
+            userDetails.lastName = '';
+            // session values
+            userDetails.uid = userInfo?.attributes?.sub;
+            userDetails.login = userInfo?.username;
+            userDetails.email = userInfo?.attributes?.email;
+            userDetails.jwt = userSession?.idToken?.jwtToken;
+        } else {
+            userDetails.isLoggedIn = true;
+            userDetails.role = dbUser?.role;
+            userDetails.status = dbUser?.status;
+            userDetails.phone = dbUser?.phone;
+            userDetails.dislayName = dbUser.displayName;
+            userDetails.firstName = dbUser.firstName;
+            userDetails.lastName = dbUser.lastName;
+            userDetails.uid = userInfo?.attributes?.sub;
+            userDetails.login = userInfo?.username;
+            userDetails.email = userInfo?.attributes?.email;
+            userDetails.jwt = userSession?.idToken?.jwtToken;
+        }
         // if they are a state rep...
         if (dbUser?.repInfo) {
             userDetails.stateRep = dbUser?.repInfo?.stateProv;
