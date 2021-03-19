@@ -1,0 +1,42 @@
+.eventdetailswrapper {
+    text-align: center;
+    // padding: 1rem;
+    // margin: 0.5rem 0;
+    padding-top: 10px;
+    width: 80%;
+    // align-items: center;
+    background: #19b84c;
+    color: white;
+}
+.event_graphics {
+    width: 100%;
+}
+.event_image {
+    width: 80%;
+}
+.church_info {
+    text-align: left;
+    font-family: sans-serif;
+    margin-top: 10px;
+    margin-left: 10%;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+}
+.church_name {
+    align-items: left;
+    font-size: 1.4em;
+    font-weight: bold;
+}
+.event_date {
+    font-size: 2em;
+    font-weight: bold;
+}
+.event_date_time {
+    font-size: 1em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.eventmessage {
+    margin-bottom: 25px;
+    padding: 0px 5px;
+}

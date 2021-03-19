@@ -9,22 +9,21 @@ import {
 import './App.css';
 
 import Events from './pages/events/events.component';
-import Profile from './pages/profile/profile.component';
+import Profile from './pages/profile/profile.page';
 import SignIn from './pages/signin/signin.component';
-import Register from './pages/registerUser/registerUser.component';
-import ConfirmUser from './pages/registerUser/confirmUser.component';
+import Register from './pages/registerUser/registerUser.page';
+import ConfirmUser from './pages/registerUser/confirmUser.page';
 import PrivatePage from './pages/privatePage/privatePage';
 import EventDetails from './pages/event/event.page';
-
+import EventRegistration from './pages/registration/registration.page';
 //----------------------
 //AMPLIFY INTEGRATION
 //----------------------
 // import { withAuthenticator } from '@aws-amplify/ui-react';
 import { Auth } from 'aws-amplify';
-import privatePage from './pages/privatePage/privatePage';
 
 function App() {
-    const [isLoggedIn, setLoggedIn] = useState(false);
+    // const [isLoggedIn, setLoggedIn] = useState(false);
     // const checkLoggedInState = () => {
     //     Auth.currentAuthenticatedUser()
     //         .then((sess) => {
@@ -57,8 +56,13 @@ function App() {
             <Route exact path='/profile' component={Profile} />
             <Route path='/signin' render={() => <SignIn />} />
             <Route exact path='/register' component={Register} />
-            <Route exact path='/confirmUser' component={ConfirmUser} />
-            <Route exact path='/privatepage' component={privatePage} />
+            <Route exact path='/confirmUser/:id' component={ConfirmUser} />
+            <Route exact path='/privatepage' component={PrivatePage} />
+            <Route
+                exact
+                path='/registration/:id'
+                component={EventRegistration}
+            />
             <Route exact path='/event/:id' component={EventDetails} />
         </Router>
     );

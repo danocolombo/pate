@@ -5,14 +5,14 @@ import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Auth } from 'aws-amplify';
 import { clearUser } from '../../redux/user/user.actions';
+import { clearRegistrations } from '../../redux/registrations/registrations.actions';
 import './userStatusBox.styles.scss';
-const UserStatusBox = ({ currentUser, clearUser }) => {
-    useEffect(() => {
-    }, [currentUser]);
+const UserStatusBox = ({ currentUser, clearUser, clearRegistrations }) => {
+    useEffect(() => {}, [currentUser]);
     const history = useHistory();
     const profileRequest = async () => {
         history.push('/profile');
-    }
+    };
     const logoutRequest = async () => {
         console.log('LOGOUT->LOGOUT->LOGOUT');
         try {
@@ -21,16 +21,20 @@ const UserStatusBox = ({ currentUser, clearUser }) => {
             console.log('error signing out: ', error);
         }
         clearUser(currentUser);
+        clearRegistrations();
+        history.push('/');
     };
     return (
         <div className='control-box-wrapper'>
             {currentUser?.isLoggedIn ? (
                 <>
-                <p onClick={profileRequest} className='login-icon'><CgProfile/></p>
-                <p onClick={logoutRequest} className='login-icon'>
-                    <BiLogOutCircle />
-                    &nbsp;Logout
-                </p>
+                    <p onClick={profileRequest} className='login-icon'>
+                        <CgProfile />
+                    </p>
+                    <p onClick={logoutRequest} className='login-icon'>
+                        <BiLogOutCircle />
+                        &nbsp;Logout
+                    </p>
                 </>
             ) : (
                 <Link to='/signin' className='login-icon'>
@@ -43,6 +47,7 @@ const UserStatusBox = ({ currentUser, clearUser }) => {
 };
 const mapDispatchToProps = (dispatch) => ({
     clearUser: (user) => dispatch(clearUser(user)),
+    clearRegistrations: () => dispatch(clearRegistrations()),
 });
 const mapStateToProps = (state) => ({
     currentUser: state.user.currentUser,

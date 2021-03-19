@@ -6,5 +6,11 @@
       "dependsOn": [],
       "customAuth": false
     }
+  },
+  "storage": {
+    "pates3": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation"
+    }
   }
 }
