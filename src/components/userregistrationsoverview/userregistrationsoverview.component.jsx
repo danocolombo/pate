@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import StyledLink from '../../components/custom-link/custom-link-white.component';
 import './userregistrationsoverview.styles.scss';
 const UserRegistrationOverview = ({ currentUser, registrationInfo }) => {
     const util = require('util');
@@ -34,12 +35,12 @@ const UserRegistrationOverview = ({ currentUser, registrationInfo }) => {
                         {registrations.map((r) => (
                             <tr>
                                 <td className='eventdate'>
-                                    <Link
+                                    <StyledLink
                                         style={{ textDecoration: 'none' }}
                                         to={`/event/${r.eid}`}
                                     >
                                         {dateToDisplay(r.eventDate)}
-                                    </Link>
+                                    </StyledLink>
                                 </td>
                                 <td className='eventname'>
                                     {r?.location?.name}

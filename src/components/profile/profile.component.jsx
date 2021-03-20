@@ -33,7 +33,9 @@ const PersonalProfile = ({
     const [churchState, setChurchState] = useState(
         currentUser?.church?.stateProv
     );
-
+    useEffect(() => {
+        if (!currentUser.isLoggedIn) history.push('/');
+    }, []);
     useEffect(() => {}, [pateSystem.showSpinner]);
 
     const handleSubmitClick = (event) => {
@@ -339,8 +341,13 @@ const PersonalProfile = ({
                                 />
                             </div>
                         </div>
-                        <div className='updateButton'>
-                            <button onClick={handleSubmitClick}>UPDATE</button>
+                        <div className='updatebuttonwrapper'>
+                            <button
+                                className='updatebutton'
+                                onClick={handleSubmitClick}
+                            >
+                                UPDATE
+                            </button>
                         </div>
                     </form>
                 </div>

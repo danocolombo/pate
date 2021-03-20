@@ -1,10 +1,16 @@
-
-.event-box{
-    // background-color: gray;
+.event-box {
+    text-align: center;
+    // padding: 1rem;
+    // margin: 0.5rem 0;
+    padding-top: 0px;
+    width: 80%;
+    // align-items: center;
+    background: #557a95;
+    color: white;
 }
-.date-box{
-    background-color: lightblue;
-    margin-top:10px;
+.date-box {
+    background-color: black;
+    margin-top: 10px;
 }
 .event-location {
     font-size: 1.2em;
@@ -14,11 +20,16 @@
     margin-left: 10px;
 }
 .event-street {
-    padding-left:10px;
+    padding-left: 10px;
 }
 .event-city-state {
-    padding-left:10px;
+    padding-left: 10px;
 }
 .event-postalcode {
-    padding-left:10px;
+    padding-left: 10px;
+}
+.linkbutton {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    padding-top: 10px;
 }

@@ -9,10 +9,11 @@
     color: white;
 }
 .event_graphics {
-    width: 100%;
+    width: 50%;
 }
 .event_image {
     width: 80%;
+    margin-left: 10%;
 }
 .church_info {
     text-align: left;
@@ -27,16 +28,22 @@
     font-size: 1.4em;
     font-weight: bold;
 }
-.event_date {
-    font-size: 2em;
-    font-weight: bold;
+.eventdatewrapper {
+    text-align: left;
+    margin-left: 10%;
 }
-.event_date_time {
+
+.eventdatetime {
     font-size: 1em;
     font-weight: bold;
     margin-bottom: 10px;
 }
+.eventdate {
+    align-items: left;
+    font-size: 2em;
+    font-weight: bold;
+}
 .eventmessage {
     margin-bottom: 25px;
-    padding: 0px 5px;
+    padding: 10px 5px;
 }

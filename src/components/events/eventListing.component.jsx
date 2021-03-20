@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import StyledLink from '../../components/custom-link/custom-link-yellow.component';
 import './eventListing.styles.scss';
 const EventListing = ({
     event: { uid, eventDate, startTime, endTime, location },
@@ -29,27 +29,34 @@ const EventListing = ({
         return alpha;
     };
     const day2Display = (d) => {
-        let dom = d.substring(6,8);
+        let dom = d.substring(6, 8);
         return dom;
-    }
+    };
     return (
         <Fragment>
             <div className='event-box'>
-                
                 <div className='date-box'>
                     <div className='event-month'>
-                    <h3>{month2Display(eventDate)}&nbsp;{day2Display(eventDate)}</h3>
+                        <h3>
+                            {month2Display(eventDate)}&nbsp;
+                            {day2Display(eventDate)}
+                        </h3>
                     </div>
                 </div>
-                <div className="address">
-                <div className='event-location'>{location.name}</div>
-                <div className='event-street'>{location.street}</div>
-                <div className='event-city-state'><span>{location.city}</span>,&nbsp;<span>{location.state}</span></div>
-                <div className='event-postalcode'>{location.postalCode}</div>
+                <div className='address'>
+                    <div className='event-location'>{location.name}</div>
+                    <div className='event-street'>{location.street}</div>
+                    <div className='event-city-state'>
+                        <span>{location.city}</span>,&nbsp;
+                        <span>{location.state}</span>
+                    </div>
+                    <div className='event-postalcode'>
+                        {location.postalCode}
+                    </div>
                 </div>
-                <Link to={`/event/${uid}`}>
-                    DETAILS
-                </Link>
+                <div className='linkbutton'>
+                    <StyledLink to={`/event/${uid}`}>VIEW DETAILS</StyledLink>
+                </div>
             </div>
         </Fragment>
     );

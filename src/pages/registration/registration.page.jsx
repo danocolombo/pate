@@ -3,7 +3,7 @@ import { compose } from 'redux';
 import { withRouter } from 'react-router';
 import { withAuthenticator } from '@aws-amplify/ui-react';
 import './registration.styles.scss';
-import EventDetails from '../../components/event-details/event-component';
+import RegistrationDetails from '../../components/registration-details/registration-details-component';
 import Header from '../../components/header/header.component';
 
 class EventRegistration extends React.Component {
@@ -41,7 +41,7 @@ class EventRegistration extends React.Component {
 
                 <div className='registrationpagewrapper'>
                     <div className='pageheader'>REGISTRATION</div>
-                    <EventDetails theEvent={this.state.plan} />
+                    <RegistrationDetails theEvent={this.state.plan} />
                 </div>
             </>
         );
