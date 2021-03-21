@@ -113,16 +113,18 @@ const RegistrationDetails = ({ theEvent,currentUser,
         <Spinner />
     ) : (
         <>
-            <div className='eventdetailswrapper'>
+            <div className='registrationdetailswrapper'>
                 <div className='event_graphics'>
                     <img
-                        className='event_image'
+                        className='eventimage'
                         src={displayThis?.graphic}
                         alt='CR P8 Rally'
                     ></img>
                 </div>
-                <div className='church_info'>
-                    <div className='church_name'>
+                {/* border-box layout for date & time */}
+                {/* FLOAT LEFT */}
+                <div className='eventbox' id='eventbox-location'>
+                    <div className='registrationchurchname'>
                         {displayThis?.location?.name}
                     </div>
                     <div>{displayThis?.location?.street}</div>
@@ -132,138 +134,141 @@ const RegistrationDetails = ({ theEvent,currentUser,
                         {displayThis?.location?.postalCode}
                     </div>
                 </div>
-                <div className='eventdatewrapper'>
+                {/* FLOAT RIGHT */}
+                <div className='eventbox' id='eventbox-datetime'>
                     <div className='eventdate'>{displayDate()}</div>
-                    <div className='eventdate'>{displayTimes()}</div>
+                    <div className='eventtime'>{displayTimes()}</div>
                 </div>
-                <div className='eventmessage'>
+                {/* end border-box layout */}
+                <div className='eventboxclear'></div>
+                <div className='registrationmessage'>
                     <div>{displayThis?.message}</div>
                 </div>
             
-            <div><hr className='registerhorizontalbreak'/></div>
-            <div className='formwrapper'>
-                <form>
-                    <div className='eventmessage'>
-                        <div className='registrationoffermessage'>
-                        {(currentUser.isLoggedIn) ? 
-                            <>
-                            <div>You can change the information, if you are registering someone else.
-                            </div>
-                            </>
-                            :
-                            <>
-                            <div>You can <button className="loginbutton" onClick={handleLoginClick}>LOGIN</button> or <button className="newregisterbutton" onClick={handleRegisterClick}>SIGN-UP</button> an account to save your profile for future use.
-                            </div>
-                            
-                            </>
-                        
-                        }
-                    </div>
-                        <div>
-                            <label htmlFor='firstName'>First name</label>
-                            <input
-                                type='text'
-                                name='firstName'
-                                id='firstName'
-                                value={firstName}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor='lastName'>Last name</label>
-                            <input
-                                type='text'
-                                id='lastName'
-                                name='lastName'
-                                onChange={handleChange}
-                                value={lastName}
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor='email'>E-mail</label>
-                            <input
-                                type='text'
-                                id='email'
-                                name='email'
-                                onChange={handleChange}
-                                value={email}
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor='phone'>Telephone</label>
-                            <input
-                                type='text'
-                                id='phone'
-                                name='phone'
-                                onChange={handleChange}
-                                value={phone}
-                                required
-                            />
-                        </div>
-                        <div className='profilehomesection'>Address</div>
-                        
-                        <div className='profileaddress'>
-                            <div>
-                                <label htmlFor='homeStreet'>Street</label>
-                                <input
-                                    type='text'
-                                    id='homeStreet'
-                                    name='homeStreet'
-                                    onChange={handleChange}
-                                    value={homeStreet}
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor='homeCity'>City</label>
-                                <input
-                                    type='text'
-                                    id='homeCity'
-                                    name='homeCity'
-                                    onChange={handleChange}
-                                    value={homeCity}
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor='homeState'>State</label>
-                                <input
-                                    type='text'
-                                    id='homeState'
-                                    name='homeState'
-                                    onChange={handleChange}
-                                    value={homeState}
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor='homePostalCode'>
-                                    Postal Code
-                                </label>
-                                <input
-                                    type='text'
-                                    id='homePostalCode'
-                                    name='homePostalCode'
-                                    onChange={handleChange}
-                                    value={homePostalCode}
-                                    required
-                                />
-                            </div>
-                            <div className="attendeewrapper">
-                                <label htmlFor='attendeeCount'>Attendees</label>
+                <div><hr className='registerhorizontalbreak'/></div>
+                <div className='formwrapper'>
+                    <form>
+                        <div className='registrationmessage'>
+                            <div className='registrationoffermessage'>
+                            {(currentUser.isLoggedIn) ? 
+                                <>
+                                <div>You can change the information, if you are registering someone else.
+                                </div>
+                                </>
+                                :
+                                <>
+                                <div>You can <button className="loginbutton" onClick={handleLoginClick}>LOGIN</button> or <button className="newregisterbutton" onClick={handleRegisterClick}>SIGN-UP</button> an account to save your profile for future use.
+                                </div>
                                 
-                                <NumericInput min='0' max='10' value={attendeeCount} size='2'/>
+                                </>
+                            
+                            }
+                        </div>
+                            <div>
+                                <label htmlFor='firstName'>First name</label>
+                                <input
+                                    type='text'
+                                    name='firstName'
+                                    id='firstName'
+                                    value={firstName}
+                                    onChange={handleChange}
+                                    required
+                                />
                             </div>
                             <div>
-                                <button className="registerbutton">Register</button>
+                                <label htmlFor='lastName'>Last name</label>
+                                <input
+                                    type='text'
+                                    id='lastName'
+                                    name='lastName'
+                                    onChange={handleChange}
+                                    value={lastName}
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor='email'>E-mail</label>
+                                <input
+                                    type='text'
+                                    id='email'
+                                    name='email'
+                                    onChange={handleChange}
+                                    value={email}
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor='phone'>Telephone</label>
+                                <input
+                                    type='text'
+                                    id='phone'
+                                    name='phone'
+                                    onChange={handleChange}
+                                    value={phone}
+                                    required
+                                />
+                            </div>
+                            <div className='profilehomesection'>Address</div>
+                            
+                            <div className='profileaddress'>
+                                <div>
+                                    <label htmlFor='homeStreet'>Street</label>
+                                    <input
+                                        type='text'
+                                        id='homeStreet'
+                                        name='homeStreet'
+                                        onChange={handleChange}
+                                        value={homeStreet}
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor='homeCity'>City</label>
+                                    <input
+                                        type='text'
+                                        id='homeCity'
+                                        name='homeCity'
+                                        onChange={handleChange}
+                                        value={homeCity}
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor='homeState'>State</label>
+                                    <input
+                                        type='text'
+                                        id='homeState'
+                                        name='homeState'
+                                        onChange={handleChange}
+                                        value={homeState}
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor='homePostalCode'>
+                                        Postal Code
+                                    </label>
+                                    <input
+                                        type='text'
+                                        id='homePostalCode'
+                                        name='homePostalCode'
+                                        onChange={handleChange}
+                                        value={homePostalCode}
+                                        required
+                                    />
+                                </div>
+                                <div className="attendeewrapper">
+                                    <label htmlFor='attendeeCount'>Attendees</label>
+                                    
+                                    <NumericInput min='0' max='10' value={attendeeCount} size='2'/>
+                                </div>
+                                <div>
+                                    <button className="registerbutton">Register</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </form>
-            </div>
+                    </form>
+                </div>
             </div>
         </>
     );

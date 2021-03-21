@@ -1,4 +1,4 @@
-.eventdetailswrapper {
+.registrationdetailswrapper {
     text-align: center;
     // padding: 1rem;
     // margin: 0.5rem 0;
@@ -8,40 +8,79 @@
     background: #557a95;
     color: white;
 }
-.event_graphics {
+.eventgraphics {
     width: 50%;
 }
-.event_image {
+.eventimage {
     width: 80%;
-    margin-left: 10%;
+    margin-left: 0%;
+}
+.eventbox {
+
+    // border: 1px solid #333;
+    
+  }
+.eventbox p {
+    /* Text Align */
+    text-align: left;
+    text-align: right;
+    // text-align: center;
+    // text-align: justify;
+}
+#eventbox-location {
+    // float: left;
+    margin-top:15px;
+    width: 80%;
+    margin-left:10%;
+    margin-bottom: 20px;
+  }
+
+#eventbox-datetime {
+// float: right;
+width: 80%;
+margin-left: 10%;
+}
+.eventboxclear {
+    clear: both;
+}
+.registrationmessage {
+    // border: black solid 1px;
+    margin: 15px 10% 0 10%;
 }
 
-.eventdatewrapper {
+.registrationchurchinfo {
+    float: left;
+    text-align: left;
+    font-family: sans-serif;
+    margin-top: 10px;
+    margin-left: 10%;
+    margin-bottom: 15px;
+    font-size: 1.2em; 
+}
+.registrationchurchname {
+    align-items: left;
+    font-size: 1.4em;
+    font-weight: bold;
+}
+.registrationdatetime {
+    float: right;
     text-align: left;
     margin-left: 10%;
-}
-
-.eventdatetime {
-    font-size: 1em;
-    font-weight: bold;
-    margin-bottom: 10px;
 }
 .eventdate {
     align-items: left;
     font-size: 2em;
     font-weight: bold;
 }
-.eventmessage {
-    margin-bottom: 25px;
-    padding: 10px 5px;
-}
+
+
 .registerhorizontalbreak {
-    border: 5px solid #B1A296;
+    border: 2px solid #B1A296;
     width: 80%;
     color: #B1A296;
     height:1px;
-    margin-left: 10%;
-    margin-bottom: 10px;
+    margin: 10px 10% 10px 10%;
+    
     background-color: #B9A296;
     border-radius: 7px 7px 7px 7px;
 }
