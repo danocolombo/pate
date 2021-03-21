@@ -15,19 +15,7 @@
     width: 80%;
     margin-left: 10%;
 }
-.church_info {
-    text-align: left;
-    font-family: sans-serif;
-    margin-top: 10px;
-    margin-left: 10%;
-    margin-bottom: 15px;
-    font-size: 1.2em;
-}
-.church_name {
-    align-items: left;
-    font-size: 1.4em;
-    font-weight: bold;
-}
+
 .eventdatewrapper {
     text-align: left;
     margin-left: 10%;
@@ -46,4 +34,37 @@
 .eventmessage {
     margin-bottom: 25px;
     padding: 10px 5px;
+}
+.registerhorizontalbreak {
+    border: 5px solid #B1A296;
+    width: 80%;
+    color: #B1A296;
+    height:1px;
+    margin-left: 10%;
+    margin-bottom: 10px;
+    background-color: #B9A296;
+    border-radius: 7px 7px 7px 7px;
+}
+.registrationoffermessage {
+    margin-bottom: 30px;
+}
+.loginbutton {
+    padding: 2px 5px;
+    font-size: .7em;
+    background-color: white;
+    border-radius: 2px 2px 2px 2px;
+}
+.newregisterbutton {
+    padding: 2px 5px;
+    font-size: .7em;
+    background-color: black;
+    color: white;
+    border-radius: 2px 2px 2px 2px;
+}
+.attendeecount {
+    width: 3px;
+}
+.registerbutton {
+    background: yellow;
+    padding: 2px 5px;
 }
