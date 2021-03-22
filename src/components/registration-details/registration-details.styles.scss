@@ -17,7 +17,7 @@
 }
 .eventbox {
 
-    // border: 1px solid #333;
+     border: 1px solid #333;
     
   }
 .eventbox p {
@@ -100,10 +100,23 @@ margin-left: 10%;
     color: white;
     border-radius: 2px 2px 2px 2px;
 }
+.attendeewrapper {
+    margin: 10px 0;
+}
+.attendee-count-label {
+    margin-right: 5px;
+}
 .attendeecount {
     width: 3px;
 }
 .registerbutton {
     background: yellow;
     padding: 2px 5px;
+}
+.meal-description-label {
+    font-size: 0.7em;
+    margin: 10px 0;
+}
+.meal-count-label {
+    margin-right: 5px;
 }

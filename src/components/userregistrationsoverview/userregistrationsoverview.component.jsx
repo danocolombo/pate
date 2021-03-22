@@ -13,17 +13,14 @@ const UserRegistrationOverview = ({ currentUser, registrationInfo }) => {
 
     if (registrations) {
         registrations.forEach((r) => {
-            console.log(r.eid);
+            
         });
     }
     const dateToDisplay = (dt) => {
         const y = dt.substring(0, 4);
         const m = parseInt(dt.substring(4, 6));
         const d = dt.substring(6, 8);
-        console.log('m is ' + typeof m);
-        console.log('\ny: ' + y);
-        console.log('m: ' + m);
-        console.log('d: ' + d);
+        
         let smDate = m.toString() + '/' + d.toString();
         return smDate;
     };
@@ -37,7 +34,7 @@ const UserRegistrationOverview = ({ currentUser, registrationInfo }) => {
                                 <td className='eventdate'>
                                     <StyledLink
                                         style={{ textDecoration: 'none' }}
-                                        to={`/event/${r.eid}`}
+                                        to={`/registration/REG${r.eid}`}
                                     >
                                         {dateToDisplay(r.eventDate)}
                                     </StyledLink>

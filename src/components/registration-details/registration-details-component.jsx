@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+
 import { useHistory } from 'react-router-dom';
 import Spinner from '../../components/spinner/Spinner';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import './registration-details.styles.scss';
 import NumericInput from 'react-numeric-input';
-const RegistrationDetails = ({ theEvent,currentUser,
+const RegistrationDetails = ({ theEvent, uid, currentUser,
     setSpinner,
     clearSpinner,
     pateSystem }) => {
     const [attendeeCount, setAttendeeCount] = useState('1');
+    const [mealCount, setMealCount] = useState('0');
     const util = require('util');
     const [firstName, setFirstName] = useState(currentUser?.firstName);
     const [lastName, setLastName] = useState(currentUser?.lastName);
@@ -26,8 +28,13 @@ const RegistrationDetails = ({ theEvent,currentUser,
         currentUser?.residence?.postalCode
     );
     const history = useHistory();
+    
     useEffect(() => {}, [pateSystem.showSpinner]);
 
+    useEffect(() => {
+        //if the id is REG, then we need to get registration.
+        console.log('REGISTRATION-DETAILS-COMPONENT::id = ' + uid);
+    }, []);
     //get data ready to display
     const displayThis = theEvent?.body?.Items[0];
     console.log(
@@ -108,6 +115,12 @@ const RegistrationDetails = ({ theEvent,currentUser,
     const handleRegisterClick = (e) => {
         e.preventDefault();
         history.push('/register');
+    }
+    const handleRegisterRequest = (e) => {
+        // this function pulls the data together and creates
+        // an object to update database.
+        //========================================
+        
     }
     return pateSystem.showSpinner ? (
         <Spinner />
@@ -258,9 +271,15 @@ const RegistrationDetails = ({ theEvent,currentUser,
                                     />
                                 </div>
                                 <div className="attendeewrapper">
-                                    <label htmlFor='attendeeCount'>Attendees</label>
-                                    
+                                    <label className='attendee-label' htmlFor='attendeeCount'>Attendees</label>  
                                     <NumericInput min='0' max='10' value={attendeeCount} size='2'/>
+                                </div>
+
+                                <div className="mealwrapper">
+                                   <p className='meal-description-label'>This particular event offers a "free" lunch at 12 noon, please indicate how many will attend the lunch.</p>
+                                    <label className='meal-count-label' htmlFor='mealCount'>Meal Guests</label>
+                                    
+                                    <NumericInput name='mealCount' id='mealCount' min='0' max='10' value={mealCount} size='2'/>
                                 </div>
                                 <div>
                                     <button className="registerbutton">Register</button>
@@ -282,9 +301,10 @@ const mapStateToProps = (state) => ({
     currentUser: state.user.currentUser,
     pateSystem: state.pate,
 });
-export default connect(mapStateToProps, {
+export default connect(mapStateToProps,{
     setSpinner,
     clearSpinner,
     
     mapDispatchToProps,
 })(RegistrationDetails);
+

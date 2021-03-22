@@ -12,26 +12,42 @@ class EventRegistration extends React.Component {
         this.state = { plan: [] };
     }
     async componentDidMount() {
-        const id = this.props.match.params.id;
-        await fetch(
-            'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/events',
-            {
-                method: 'POST',
-                body: JSON.stringify({
-                    operation: 'getEvent',
-                    payload: {
-                        uid: id,
-                    },
-                }),
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8',
-                },
+        let id = this.props.match.params.id;
+        //need to determine if the first 3 digits are REG, which
+        //means that the request is to get a registration already
+        //saved.
+        let regCheck = "";
+        
+        if(id.length > 3){
+            regCheck = id.substring(0,3);
+            if(regCheck === "REG"){
+                id=id.slice(3);
+                
             }
-        )
-            .then((response) => response.json())
-            .then((data) => {
-                this.setState({ plan: data });
-            });
+        
+            
+            // const regCheck = id.subString(0,3);
+            // console.log("check:" + regCheck);
+            await fetch(
+                'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/events',
+                {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        operation: 'getEvent',
+                        payload: {
+                            uid: id,
+                        },
+                    }),
+                    headers: {
+                        'Content-type': 'application/json; charset=UTF-8',
+                    },
+                }
+            )
+                .then((response) => response.json())
+                .then((data) => {
+                    this.setState({ plan: data });
+                });
+            }
     }
 
     render() {
@@ -41,10 +57,10 @@ class EventRegistration extends React.Component {
 
                 <div className='registrationpagewrapper'>
                     <div className='pageheader'>REGISTRATION</div>
-                    <RegistrationDetails theEvent={this.state.plan} />
+                    <RegistrationDetails theEvent={this.state.plan} uid={this.props.match.params.id}/>
                 </div>
             </>
         );
     }
 }
-export default compose(withAuthenticator, withRouter)(EventRegistration);
+export default withRouter(EventRegistration);
