@@ -27,6 +27,8 @@ const RegistrationDetails = ({ theEvent, uid, currentUser,
     const [homePostalCode, setHomePostalCode] = useState(
         currentUser?.residence?.postalCode
     );
+    //create refs for count
+    let mCount = React.createRef();
     const history = useHistory();
     
     useEffect(() => {}, [pateSystem.showSpinner]);
@@ -117,10 +119,42 @@ const RegistrationDetails = ({ theEvent, uid, currentUser,
         history.push('/register');
     }
     const handleRegisterRequest = (e) => {
+        e.preventDefault();
         // this function pulls the data together and creates
         // an object to update database.
         //========================================
         
+        let regData = {
+            eventDate: displayThis?.eventDate,
+            startTime: displayThis?.startTime,
+            endTime: displayThis?.endTime,
+            eid: displayThis?.eid,
+            location: {
+                name: displayThis?.location?.name,
+                street: displayThis?.location?.street,
+                city: displayThis?.location?.city,
+                stateProv: displayThis?.location?.stateProv,
+                postalCode: displayThis?.location?.postalCode
+            },
+            rid: currentUser.uid,
+            registrar: {
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                phone: phone,
+                residence: {
+                    street: homeStreet,
+                    city: homeCity,
+                    stateProv: homeState,
+                    postalCode: homePostalCode
+                }
+            },
+            attendeeCount: attendeeCount,
+            mealCount: mealCount
+        };
+        const util = require('util');
+        console.log('regData: \n' + util.inspect(regData, { showHidden: false, depth: null }));
+
     }
     return pateSystem.showSpinner ? (
         <Spinner />
@@ -277,12 +311,12 @@ const RegistrationDetails = ({ theEvent, uid, currentUser,
 
                                 <div className="mealwrapper">
                                    <p className='meal-description-label'>This particular event offers a "free" lunch at 12 noon, please indicate how many will attend the lunch.</p>
-                                    <label className='meal-count-label' htmlFor='mealCount'>Meal Guests</label>
+                                    <label className='meal-count-label' htmlFor='mealInput'>Meal Guests</label>
                                     
-                                    <NumericInput name='mealCount' id='mealCount' min='0' max='10' value={mealCount} size='2'/>
+                                    <NumericInput name='mealInput' id='mealInput' min='0' max='10' value={mealCount} size='2'/>
                                 </div>
                                 <div>
-                                    <button className="registerbutton">Register</button>
+                                    <button className="registerbutton" onClick={handleRegisterRequest}>Register</button>
                                 </div>
                             </div>
                         </div>
