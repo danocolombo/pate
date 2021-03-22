@@ -34,13 +34,31 @@ const Header = ({ currentUser, clearUser }) => {
     // };
 
     return (
-        <div className='header'>
-            <Link className='logo-container' to='/'>
-                <Logo className='logo' />
-            </Link>
-
-            <UserStatusBox />
-        </div>
+        <>
+            <header className='main-header'>
+                <div>
+                    <a className='brand-name' href='/'>
+                        PATE
+                    </a>
+                </div>
+                <nav className='main-nav'>
+                    {currentUser.isLoggedIn ? (
+                        <ul className='main-nav__items'>
+                            <li className='main-nav__item'>
+                                <a href='/profile'>Profile</a>
+                            </li>
+                            <li className='main-nav__item'>
+                                <a href='/'>Logout</a>
+                            </li>
+                        </ul>
+                    ) : (
+                        <li className='main-nav__item'>
+                            <a href='/signin'>Login/Sign-up</a>
+                        </li>
+                    )}
+                </nav>
+            </header>
+        </>
     );
 };
 const mapDispatchToProps = (dispatch) => ({

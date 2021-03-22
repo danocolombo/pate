@@ -9,7 +9,10 @@
     color: white;
 }
 .date-box {
-    background-color: black;
+    background-color: #379683;
+    border-top: black solid 1px;
+    border-left: black solid 1px;
+    border-right: black solid 1px;
     margin-top: 10px;
 }
 .event-location {
@@ -17,7 +20,9 @@
     font-weight: bold;
 }
 .address {
-    margin-left: 10px;
+    padding-left: 10px;
+    border-left: black solid 1px;
+    border-right: black solid 1px;
 }
 .event-street {
     padding-left: 10px;
@@ -32,4 +37,7 @@
     margin-bottom: 10px;
     padding-bottom: 10px;
     padding-top: 10px;
+    border-left: black solid 1px;
+    border-bottom: black solid 1px;
+    border-right: black solid 1px;
 }

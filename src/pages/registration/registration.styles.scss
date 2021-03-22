@@ -4,12 +4,15 @@
     align-items: center;
 }
 .pageheader {
-    background: black;
+    background: #379683;
     text-align: center;
     font-weight: bold;
     font-size: 1.3em;
     color: white;
     width: 80%;
-    margin: 0;
+    margin: 3px 0 0 0;
     padding: 5px 0px;
+    border-top: black solid 1px;
+    border-left: black solid 1px;
+    border-right: black solid 1px;
 }
