@@ -6,12 +6,16 @@ import Spinner from '../../components/spinner/Spinner';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import './registration-details.styles.scss';
 import NumericInput from 'react-numeric-input';
-const RegistrationDetails = ({ theEvent, uid, currentUser,
+const RegistrationDetails = ({
+    theEvent,
+    uid,
+    currentUser,
     setSpinner,
     clearSpinner,
-    pateSystem }) => {
-    const [attendeeCount, setAttendeeCount] = useState('1');
-    const [mealCount, setMealCount] = useState('0');
+    pateSystem,
+}) => {
+    const [attendeeCount, setAttendeeCount] = useState(1);
+    const [mealCount, setMealCount] = useState(0);
     const util = require('util');
     const [firstName, setFirstName] = useState(currentUser?.firstName);
     const [lastName, setLastName] = useState(currentUser?.lastName);
@@ -30,7 +34,7 @@ const RegistrationDetails = ({ theEvent, uid, currentUser,
     //create refs for count
     let mCount = React.createRef();
     const history = useHistory();
-    
+
     useEffect(() => {}, [pateSystem.showSpinner]);
 
     useEffect(() => {
@@ -106,6 +110,12 @@ const RegistrationDetails = ({ theEvent, uid, currentUser,
             case 'homePostalCode':
                 setHomePostalCode(value);
                 break;
+            case 'attendeeCount':
+                setAttendeeCount(value);
+                break;
+            case 'mealCount':
+                setMealCount(value);
+                break;
             default:
                 break;
         }
@@ -113,17 +123,17 @@ const RegistrationDetails = ({ theEvent, uid, currentUser,
     const handleLoginClick = (e) => {
         e.preventDefault();
         history.push('/signin');
-    }
+    };
     const handleRegisterClick = (e) => {
         e.preventDefault();
         history.push('/register');
-    }
+    };
     const handleRegisterRequest = (e) => {
         e.preventDefault();
         // this function pulls the data together and creates
         // an object to update database.
         //========================================
-        
+
         let regData = {
             eventDate: displayThis?.eventDate,
             startTime: displayThis?.startTime,
@@ -134,7 +144,7 @@ const RegistrationDetails = ({ theEvent, uid, currentUser,
                 street: displayThis?.location?.street,
                 city: displayThis?.location?.city,
                 stateProv: displayThis?.location?.stateProv,
-                postalCode: displayThis?.location?.postalCode
+                postalCode: displayThis?.location?.postalCode,
             },
             rid: currentUser.uid,
             registrar: {
@@ -146,16 +156,18 @@ const RegistrationDetails = ({ theEvent, uid, currentUser,
                     street: homeStreet,
                     city: homeCity,
                     stateProv: homeState,
-                    postalCode: homePostalCode
-                }
+                    postalCode: homePostalCode,
+                },
             },
             attendeeCount: attendeeCount,
-            mealCount: mealCount
+            mealCount: mealCount,
         };
         const util = require('util');
-        console.log('regData: \n' + util.inspect(regData, { showHidden: false, depth: null }));
-
-    }
+        console.log(
+            'regData: \n' +
+                util.inspect(regData, { showHidden: false, depth: null })
+        );
+    };
     return pateSystem.showSpinner ? (
         <Spinner />
     ) : (
@@ -191,73 +203,98 @@ const RegistrationDetails = ({ theEvent, uid, currentUser,
                 <div className='registrationmessage'>
                     <div>{displayThis?.message}</div>
                 </div>
-            
-                <div><hr className='registerhorizontalbreak'/></div>
+
+                <div>
+                    <hr className='registerhorizontalbreak' />
+                </div>
                 <div className='formwrapper'>
                     <form>
-                        <div className='registrationmessage'>
-                            <div className='registrationoffermessage'>
-                            {(currentUser?.isLoggedIn) ? 
-                                <>
-                                <div>You can change the information, if you are registering someone else.
+                        <div className='registrar-data'>
+                            <div className='registration-instructions'>
+                                {currentUser?.isLoggedIn ? (
+                                    <>
+                                        <div>
+                                            You can change the information, if
+                                            you are registering someone else.
+                                        </div>
+                                    </>
+                                ) : (
+                                    <>
+                                        <div>
+                                            You can{' '}
+                                            <button
+                                                className='loginbutton'
+                                                onClick={handleLoginClick}
+                                            >
+                                                LOGIN
+                                            </button>{' '}
+                                            or{' '}
+                                            <button
+                                                className='newregisterbutton'
+                                                onClick={handleRegisterClick}
+                                            >
+                                                SIGN-UP
+                                            </button>{' '}
+                                            an account to save your profile for
+                                            future use.
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+                            <div className='profilehomesection'>
+                                Contact Information
+                            </div>
+                            <div className='attendee-identity-wrapper'>
+                                <div>
+                                    <label htmlFor='firstName'>
+                                        First name
+                                    </label>
+                                    <input
+                                        type='text'
+                                        name='firstName'
+                                        id='firstName'
+                                        value={firstName}
+                                        onChange={handleChange}
+                                        required
+                                    />
                                 </div>
-                                </>
-                                :
-                                <>
-                                <div>You can <button className="loginbutton" onClick={handleLoginClick}>LOGIN</button> or <button className="newregisterbutton" onClick={handleRegisterClick}>SIGN-UP</button> an account to save your profile for future use.
+                                <div>
+                                    <label htmlFor='lastName'>Last name</label>
+                                    <input
+                                        type='text'
+                                        id='lastName'
+                                        name='lastName'
+                                        onChange={handleChange}
+                                        value={lastName}
+                                        required
+                                    />
                                 </div>
-                                
-                                </>
-                            
-                            }
-                        </div>
-                            <div>
-                                <label htmlFor='firstName'>First name</label>
-                                <input
-                                    type='text'
-                                    name='firstName'
-                                    id='firstName'
-                                    value={firstName}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor='lastName'>Last name</label>
-                                <input
-                                    type='text'
-                                    id='lastName'
-                                    name='lastName'
-                                    onChange={handleChange}
-                                    value={lastName}
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor='email'>E-mail</label>
-                                <input
-                                    type='text'
-                                    id='email'
-                                    name='email'
-                                    onChange={handleChange}
-                                    value={email}
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor='phone'>Telephone</label>
-                                <input
-                                    type='text'
-                                    id='phone'
-                                    name='phone'
-                                    onChange={handleChange}
-                                    value={phone}
-                                    required
-                                />
+                                <div>
+                                    <label htmlFor='email'>E-mail</label>
+                                    <input
+                                        type='text'
+                                        id='email'
+                                        name='email'
+                                        onChange={handleChange}
+                                        value={email}
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor='phone'>Telephone</label>
+                                    <input
+                                        type='text'
+                                        id='phone'
+                                        name='phone'
+                                        onChange={handleChange}
+                                        value={phone}
+                                        required
+                                    />
+                                </div>
                             </div>
                             <div className='profilehomesection'>Address</div>
-                            
-                            <div className='profileaddress'>
+
+                            <div className='attendee-address-wrapper'>
                                 <div>
                                     <label htmlFor='homeStreet'>Street</label>
                                     <input
@@ -304,20 +341,56 @@ const RegistrationDetails = ({ theEvent, uid, currentUser,
                                         required
                                     />
                                 </div>
-                                <div className="attendeewrapper">
-                                    <label className='attendee-label' htmlFor='attendeeCount'>Attendees</label>  
-                                    <NumericInput min='0' max='10' value={attendeeCount} size='2'/>
-                                </div>
+                            </div>
+                            <div className='attendeewrapper'>
+                                <label
+                                    className='attendee-label'
+                                    htmlFor='attendeeCount'
+                                >
+                                    Attendees
+                                </label>
+                                <input
+                                    type='number'
+                                    className='attendee-count-component'
+                                    id='attendeeCount'
+                                    name='attendeeCount'
+                                    onChange={handleChange}
+                                    value={attendeeCount}
+                                    required
+                                />
+                                {/*<NumericInput min='0' max='10' value={attendeeCount} size='2'/>*/}
+                            </div>
 
-                                <div className="mealwrapper">
-                                   <p className='meal-description-label'>This particular event offers a "free" lunch at 12 noon, please indicate how many will attend the lunch.</p>
-                                    <label className='meal-count-label' htmlFor='mealInput'>Meal Guests</label>
-                                    
-                                    <NumericInput name='mealInput' id='mealInput' min='0' max='10' value={mealCount} size='2'/>
-                                </div>
-                                <div>
-                                    <button className="registerbutton" onClick={handleRegisterRequest}>Register</button>
-                                </div>
+                            <div className='meal-wrapper'>
+                                <p className='meal-description-label'>
+                                    This particular event offers a "free" lunch
+                                    at 12 noon, please indicate how many will
+                                    attend the lunch.
+                                </p>
+                                <label
+                                    className='meal-count-label'
+                                    htmlFor='mealCount'
+                                >
+                                    Meal Guests
+                                </label>
+
+                                <input
+                                    type='number'
+                                    className='meal-count-component'
+                                    id='mealCount'
+                                    name='mealCount'
+                                    onChange={handleChange}
+                                    value={mealCount}
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <button
+                                    className='registerbutton'
+                                    onClick={handleRegisterRequest}
+                                >
+                                    Register
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -335,10 +408,9 @@ const mapStateToProps = (state) => ({
     currentUser: state.user.currentUser,
     pateSystem: state.pate,
 });
-export default connect(mapStateToProps,{
+export default connect(mapStateToProps, {
     setSpinner,
     clearSpinner,
-    
+
     mapDispatchToProps,
 })(RegistrationDetails);
-
