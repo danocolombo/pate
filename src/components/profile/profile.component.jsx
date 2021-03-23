@@ -173,7 +173,7 @@ const PersonalProfile = ({
             case 'firstName':
                 setFirstName(value);
                 break;
-            case 'lastNaem':
+            case 'lastName':
                 setLastName(value);
                 break;
             case 'email':

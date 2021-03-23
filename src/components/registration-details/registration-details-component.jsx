@@ -30,8 +30,7 @@ const RegistrationDetails = ({
     const [homePostalCode, setHomePostalCode] = useState(
         currentUser?.residence?.postalCode
     );
-    //create refs for count
-    let mCount = React.createRef();
+
     const history = useHistory();
 
     useEffect(() => {}, [pateSystem.showSpinner]);
@@ -88,7 +87,7 @@ const RegistrationDetails = ({
             case 'firstName':
                 setFirstName(value);
                 break;
-            case 'lastNaem':
+            case 'lastName':
                 setLastName(value);
                 break;
             case 'email':
@@ -132,12 +131,18 @@ const RegistrationDetails = ({
         // this function pulls the data together and creates
         // an object to update database.
         //========================================
+        // check to see if he registration request is from
+        // a logged in user. If not, set the rid to 0.
+        let registrarId = '0';
+        if (currentUser?.isLoggedIn) {
+            registrarId = currentUser.uid;
+        }
 
         let regData = {
             eventDate: displayThis?.eventDate,
             startTime: displayThis?.startTime,
             endTime: displayThis?.endTime,
-            eid: displayThis?.eid,
+            eid: displayThis?.uid,
             location: {
                 name: displayThis?.location?.name,
                 street: displayThis?.location?.street,
@@ -145,7 +150,7 @@ const RegistrationDetails = ({
                 stateProv: displayThis?.location?.stateProv,
                 postalCode: displayThis?.location?.postalCode,
             },
-            rid: currentUser.uid,
+            rid: registrarId,
             registrar: {
                 firstName: firstName,
                 lastName: lastName,
@@ -161,11 +166,45 @@ const RegistrationDetails = ({
             attendeeCount: attendeeCount,
             mealCount: mealCount,
         };
-        const util = require('util');
-        console.log(
-            'regData: \n' +
-                util.inspect(regData, { showHidden: false, depth: null })
-        );
+        // const util = require('util');
+        // console.log(
+        //     'regData: \n' +
+        //         util.inspect(regData, { showHidden: false, depth: null })
+        // );
+
+        // post the registration to API and return to /
+        //====================================================
+        async function updateDb() {
+            fetch(
+                'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/registrations',
+                {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        operation: 'createRegistration',
+                        payload: {
+                            Item: regData,
+                        },
+                    }),
+                    headers: {
+                        'Content-type': 'application/json; charset=UTF-8',
+                    },
+                }
+            )
+                .then((response) => response.json())
+                .then((data) => {
+                    const util = require('util');
+                    console.log(
+                        'db data returned: \n' +
+                            util.inspect(data, {
+                                showHidden: false,
+                                depth: null,
+                            })
+                    );
+                });
+        }
+        //next call is to async the above update
+        updateDb();
+        history.push('/');
     };
     return pateSystem.showSpinner ? (
         <Spinner />

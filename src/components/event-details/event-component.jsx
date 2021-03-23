@@ -64,7 +64,7 @@ const EventDetails = ({ theEvent }) => {
                     <div>{displayThis?.location?.street}</div>
                     <div>
                         {displayThis?.location?.city},
-                        {displayThis?.location?.state}&nbsp;
+                        {displayThis?.location?.stateProv}&nbsp;
                         {displayThis?.location?.postalCode}
                     </div>
                 </div>
