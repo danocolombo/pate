@@ -5,7 +5,6 @@ import { useHistory } from 'react-router-dom';
 import Spinner from '../../components/spinner/Spinner';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import './registration-details.styles.scss';
-import NumericInput from 'react-numeric-input';
 const RegistrationDetails = ({
     theEvent,
     uid,
