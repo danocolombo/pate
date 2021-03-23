@@ -27,7 +27,7 @@ const UserProfile = ({ currentUser, pateSystem }) => {
                 <div className='pageheader'>PERSONAL PROFILE</div>
                 <PersonalProfile />
                 <div className='pageheader'>YOUR REGISTRATIONS</div>
-                {/*<UserRegistrationOverview />*/}
+                <UserRegistrationOverview />
             </div>
         </>
     );

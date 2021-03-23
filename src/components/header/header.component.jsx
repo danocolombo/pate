@@ -49,12 +49,12 @@ const Header = ({ currentUser, clearUser }) => {
         <>
             <header className='main-header'>
                 <div>
-                    <a className='brand-name' href='/'>
+                    <Link to='/' className="brand-name">
                         PATE
-                    </a>
+                        </Link>
                 </div>
                 <nav className='main-nav'>
-                    {currentUser.isLoggedIn ? (
+                    {currentUser?.isLoggedIn ? (
                         <ul className='main-nav__items'>
                             <li className='main-nav__item'>
                                 <Link to='/profile'>PROFILE</Link>
