@@ -49,9 +49,9 @@ const Header = ({ currentUser, clearUser }) => {
         <>
             <header className='main-header'>
                 <div>
-                    <Link to='/' className="brand-name">
+                    <Link to='/' className='brand-name'>
                         PATE
-                        </Link>
+                    </Link>
                 </div>
                 <nav className='main-nav'>
                     {currentUser?.isLoggedIn ? (
@@ -65,7 +65,10 @@ const Header = ({ currentUser, clearUser }) => {
                         </ul>
                     ) : (
                         <li className='main-nav__item'>
-                            <a href='/signin'>Login/Sign-up</a>
+                            {/*<a href='/signin'>Login/Sign-up</a>*/}
+                            <li className='main-nav__item'>
+                                <Link to='/signin'>Login/Sign-up</Link>
+                            </li>
                         </li>
                     )}
                 </nav>
