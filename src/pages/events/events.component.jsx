@@ -42,7 +42,7 @@ class Events extends React.Component {
                 <Header />
                 <div className='events-wrapper'>
                     <div>
-                        <h2>Upcoming Principle 8 Rallies</h2>
+                        <h2>Upcoming P8 Rallies</h2>
                         {this.state.plans.map((plan) => (
                             <EventListing event={plan} key={plan.uid} />
                         ))}

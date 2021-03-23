@@ -56,7 +56,7 @@ class EventRegistration extends React.Component {
                 <Header />
 
                 <div className='registrationpagewrapper'>
-                    <div className='pageheader'>REGISTRATION</div>
+                    <div className='registration-pageheader'>REGISTRATION</div>
                     <RegistrationDetails theEvent={this.state.plan} uid={this.props.match.params.id}/>
                 </div>
             </>

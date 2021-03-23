@@ -1,0 +1,21 @@
+{
+    "uid": "436fc04fa94694525c3364c92090c517",
+    "displayName": "Dano Colombo",
+    "role": "superuser",
+    "lastName": "Colombo",
+    "repinfo": {
+     "state": "GA"
+    },
+    "status": "active",
+    "userName": "dcolombo",
+    "address": {
+     "state": "GA",
+     "city": "Columbus",
+     "street": "2304 Leah Dr.",
+     "postalCode": 31909
+    },
+    "email": "danocolombo@gmail.com",
+    "cognitoId": "7bcc0438-830e-4fc8-a517-67a2e06f4a8a",
+    "phone": 7066042494,
+    "firstName": "Dano"
+   }

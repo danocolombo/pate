@@ -197,7 +197,7 @@ const RegistrationDetails = ({ theEvent, uid, currentUser,
                     <form>
                         <div className='registrationmessage'>
                             <div className='registrationoffermessage'>
-                            {(currentUser.isLoggedIn) ? 
+                            {(currentUser?.isLoggedIn) ? 
                                 <>
                                 <div>You can change the information, if you are registering someone else.
                                 </div>
