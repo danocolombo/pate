@@ -21,19 +21,22 @@ const registrationsReducer = (state = INITIAL_STATE, action) => {
                 currentRegistrations: null,
             };
         case RegistrationsActionTypes.ADD_REGISTRATION:
-            // this is not tested, this was copied from 
-            // Traversy project dev_connector2.0
             return {
-                state,
-            }
-            
-            case RegistrationsActionTypes.REMOVE_REGISTRATION:
-                // this is not tested, this was copied from 
-                // Traversy project dev_connector2.0
-                return {
-                    state,
-                }
-                
+                ...state,
+                currentRegistrations: [
+                    action.payload,
+                    ...state.currentRegistrations,
+                ],
+            };
+
+        case RegistrationsActionTypes.REMOVE_REGISTRATION:
+            return {
+                ...state,
+                currentRegistrations: state.currentRegistrations.filter(
+                    (post) => post._id !== action.payload
+                ),
+            };
+
         default:
             return state;
     }
@@ -41,20 +44,18 @@ const registrationsReducer = (state = INITIAL_STATE, action) => {
 
 export default registrationsReducer;
 //---------------------------------
-            // this would remove an entry from an array like
-            // 
-            // const initialState = {
-            //     posts: [],
-            //     post: null,
-            //     loading: true,
-            //     error: {}
-            //   };
-            //===========================
-            // then the switch case...
-            // return {
-            //     ...state,
-            //     posts: [payload, ...state.posts],
-            //     loading: false
-            // };
-
-            
+// this would remove an entry from an array like
+//
+// const initialState = {
+//     posts: [],
+//     post: null,
+//     loading: true,
+//     error: {}
+//   };
+//===========================
+// then the switch case...
+// return {
+//     ...state,
+//     posts: [payload, ...state.posts],
+//     loading: false
+// };
