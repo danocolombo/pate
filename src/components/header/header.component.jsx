@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { BiLogInCircle, BiLogOutCircle } from 'react-icons/bi';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Auth } from 'aws-amplify';
 import { AmplifySignOut } from '@aws-amplify/ui-react';
@@ -9,6 +9,7 @@ import UserStatusBox from '../user-status-box/userStatusBox.component';
 import './header.styles.scss';
 import { ReactComponent as Logo } from '../../assets/pate-logo-white.svg';
 import { clearUser } from '../../redux/user/user.actions';
+import { clearRegistrations } from '../../redux/registrations/registrations.actions';
 
 const Header = ({ currentUser, clearUser }) => {
     // useEffect(() => {
@@ -32,7 +33,18 @@ const Header = ({ currentUser, clearUser }) => {
     //     }
     //     clearUser(currentUser);
     // };
-
+    const history = useHistory();
+    const logoutRequest = async () => {
+        console.log('LOGOUT->LOGOUT->LOGOUT');
+        try {
+            await Auth.signOut();
+        } catch (error) {
+            console.log('error signing out: ', error);
+        }
+        clearUser(currentUser);
+        clearRegistrations();
+        history.push('/');
+    };
     return (
         <>
             <header className='main-header'>
@@ -45,10 +57,10 @@ const Header = ({ currentUser, clearUser }) => {
                     {currentUser.isLoggedIn ? (
                         <ul className='main-nav__items'>
                             <li className='main-nav__item'>
-                                <a href='/profile'>Profile</a>
+                                <Link to='/profile'>PROFILE</Link>
                             </li>
                             <li className='main-nav__item'>
-                                <a href='/'>Logout</a>
+                                <Link onClick={logoutRequest}>LOGOUT</Link>
                             </li>
                         </ul>
                     ) : (

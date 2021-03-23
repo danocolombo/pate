@@ -246,34 +246,50 @@ const SignIn = ({
     ) : (
         <>
             <Header />
-            <div className='signin-title-wrapper'>
-                <div className='signin-page-title'>Login Page</div>
-            </div>
-            <div className='signin-wrapper'>
-                <FormInput
-                    name='username'
-                    className='form-component'
-                    type='username'
-                    handleChange={handleChange}
-                    value={username}
-                    label='login'
-                    required
-                />
-                <FormInput
-                    name='password'
-                    className='form-component'
-                    type='password'
-                    value={password}
-                    handleChange={handleChange}
-                    label='password'
-                    required
-                />
-                <div className='buttons'>
-                    <CustomButton onClick={signIn}> Sign in </CustomButton>
-                </div>
-                <div className='register-offer-wrapper'>
-                    If you don't have an account,{' '}
-                    <Link to={'/register'}>click here</Link> to register.
+
+            <div className='signin-page-wrapper'>
+                <div className='signin-box'>
+                    <div className='signin-title-box'>
+                        <h3>Login</h3>
+                    </div>
+                    <div className='signin-wrapper'>
+                        <div className='username-wrapper'>
+                            <FormInput
+                                name='username'
+                                className='form-component'
+                                type='username'
+                                handleChange={handleChange}
+                                value={username}
+                                label='login'
+                                required
+                            />
+                        </div>
+                        <div className='password-wrapper'>
+                            <FormInput
+                                name='password'
+                                className='form-component'
+                                type='password'
+                                value={password}
+                                handleChange={handleChange}
+                                label='password'
+                                required
+                            />
+                        </div>
+                    </div>
+                    <div className='button-wrapper'>
+                        <CustomButton
+                            onClick={signIn}
+                            className='register-button'
+                        >
+                            {' '}
+                            Sign in{' '}
+                        </CustomButton>
+                    </div>
+                    <div className='register-offer-wrapper'>
+                        If you don't have an account,
+                        <br />
+                        <Link to={'/register'}>click here</Link> to register.
+                    </div>
                 </div>
             </div>
         </>

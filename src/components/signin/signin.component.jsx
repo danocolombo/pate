@@ -43,7 +43,7 @@ const SignIn = ({ onSignIn }) => {
         }
     };
     return (
-        <div className='signin-wrapper'>
+        <div className='signin-page-wrapper'>
             <FormInput
                 name='username'
                 className='form-component'
