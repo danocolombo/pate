@@ -1,10 +1,11 @@
 import { RegistrationsActionTypes } from './registrations.types';
 
 const INITIAL_STATE = {
-    currentRegistrations: {
-        isLoading: false,
-        count: 0,
-    },
+    registration: null,
+    confirmed: [],
+    loading: false,
+    count: 0,
+    error: {},
 };
 
 const registrationsReducer = (state = INITIAL_STATE, action) => {
@@ -13,33 +14,31 @@ const registrationsReducer = (state = INITIAL_STATE, action) => {
         case RegistrationsActionTypes.LOAD_REGISTRATIONS:
             return {
                 ...state,
-                currentRegistrations: action.payload,
+                confirmed: action.payload,
             };
         case RegistrationsActionTypes.CLEAR_REGISTRATIONS:
             return {
                 ...state,
-                currentRegistrations: null,
+                confirmed: null,
             };
         case RegistrationsActionTypes.ADD_REGISTRATION:
+            // return {
+            //     ...state,
+            //     posts: [payload, ...state.posts],
+            //     loading: false,
+            // };
             return {
                 ...state,
-                currentRegistrations: [
-                    action.payload,
-                    ...state.currentRegistrations,
-                ],
+                confirmed: [action.payload, ...state.confirmed],
+                count: state.count + 1,
             };
-
-        case RegistrationsActionTypes.REMOVE_REGISTRATION:
-            return {
-                ...state,
-                currentRegistrations: state.currentRegistrations.filter(
-                    (post) => post._id !== action.payload
-                ),
-            };
-        case RegistrationsActionTypes.TEST_ME:
-            console.log('TESTER_TESTER_TESTER\n');
-            return state;
-
+        // case RegistrationsActionTypes.REMOVE_REGISTRATION:
+        //     return {
+        //         ...state,
+        //         confirmed: state.confirmed.filter(
+        //             (post) => post._id !== action.payload
+        //         ),
+        //     };
         default:
             return state;
     }

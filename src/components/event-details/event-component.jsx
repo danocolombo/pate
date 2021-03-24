@@ -7,10 +7,10 @@ const EventDetails = ({ theEvent }) => {
 
     //get data ready to display
     const displayThis = theEvent?.body?.Items[0];
-    console.log(
-        'component.dislayThis: \n' +
-            util.inspect(displayThis, { showHidden: false, depth: null })
-    );
+    // console.log(
+    //     'component.dislayThis: \n' +
+    //         util.inspect(displayThis, { showHidden: false, depth: null })
+    // );
     const displayDate = () => {
         // format the date and return it
         let y = parseInt(displayThis?.eventDate.substring(0, 4));

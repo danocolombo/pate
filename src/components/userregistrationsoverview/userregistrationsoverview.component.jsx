@@ -9,18 +9,16 @@ const UserRegistrationOverview = ({ currentUser, registrationInfo }) => {
         '&%&%&%&%&%___registrations___&%&%&%&%&%\n' +
             util.inspect(registrationInfo, { showHidden: false, depth: null })
     );
-    const registrations = registrationInfo?.Items;
+    const registrations = registrationInfo;
 
     if (registrations) {
-        registrations.forEach((r) => {
-            
-        });
+        registrations.forEach((r) => {});
     }
     const dateToDisplay = (dt) => {
         const y = dt.substring(0, 4);
         const m = parseInt(dt.substring(4, 6));
         const d = dt.substring(6, 8);
-        
+
         let smDate = m.toString() + '/' + d.toString();
         return smDate;
     };
@@ -55,6 +53,6 @@ const UserRegistrationOverview = ({ currentUser, registrationInfo }) => {
 };
 const mapStateToProps = (state) => ({
     currentUser: state.user.currentUser,
-    registrationInfo: state.registrations.currentRegistrations,
+    registrationInfo: state.registrations.confirmed,
 });
 export default connect(mapStateToProps)(UserRegistrationOverview);

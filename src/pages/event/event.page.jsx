@@ -76,7 +76,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 const mapStateToProps = (state) => ({
     currentUser: state.user.currentUser,
-    registrations: state.registrations.currentRegistrations,
+    registrations: state.registrations.confirmed,
     pateSystem: state.pate,
 });
 export default compose(

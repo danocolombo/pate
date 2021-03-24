@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { compose } from 'redux';
 import { withRouter } from 'react-router';
-import { withAuthenticator } from '@aws-amplify/ui-react';
+// import { withAuthenticator } from '@aws-amplify/ui-react';
 import './registration.styles.scss';
 import Header from '../../components/header/header.component';
 import Spinner from '../../components/spinner/Spinner';
-
+import { addRegistration } from '../../redux/registrations/registrations.actions';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 const EventRegistration = ({
     setSpinner,
@@ -15,6 +15,7 @@ const EventRegistration = ({
     match,
     pateSystem,
     currentUser,
+    addRegistration,
 }) => {
     // const [plan, setPlan] = useState([]);
     const [attendeeCount, setAttendeeCount] = useState(1);
@@ -69,14 +70,6 @@ const EventRegistration = ({
                     .then((response) => response.json())
                     .then((data) => {
                         const details = data?.body?.Items[0];
-                        // const util = require('util');
-                        //     console.log(
-                        //         'THE_EVENT:\n' +
-                        //             util.inspect(data?.body, {
-                        //                 showHidden: false,
-                        //                 depth: null,
-                        //             })
-                        //     );
 
                         setTheEvent({ ...theEvent, details });
                     });
@@ -247,30 +240,22 @@ const EventRegistration = ({
                 //     addRegistration(regData);
                 // }
             });
-        // }
-        //next call is to async the above update
-        // updateDb();
+
         //=====================================
         // add the registration to redux
         //=====================================
         // if (registrarId !== '0') {
         //     await addRegistration(regData);
         // }
-
+        if (currentUser?.isLoggedIn) {
+            await addRegistration(theEvent.details);
+        }
         history.push('/');
     };
     return pateSystem.showSpinner ? (
         <Spinner />
     ) : (
         <>
-            (
-            {console.log(
-                'theEvent: \n' +
-                    util.inspect(theEvent, {
-                        showHidden: false,
-                        depth: null,
-                    })
-            )}
             <Header />
             <div className='registrationpagewrapper'>
                 <div className='registration-pageheader'>REGISTRATION</div>
@@ -528,8 +513,7 @@ const mapDispatchToProps = (dispatch) => ({
     // setCurrentUser: (user) => dispatch(setCurrentUser(user)),
     setSpinner: () => dispatch(setSpinner()),
     clearSpinner: () => dispatch(clearSpinner()),
-    // loadRegistrations: (registrations) =>
-    //     dispatch(loadRegistrations(registrations)),
+    addRegistration: (registration) => dispatch(addRegistration(registration)),
 });
 const mapStateToProps = (state) => ({
     pateSystem: state.pate,
