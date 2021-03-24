@@ -3,6 +3,10 @@ export const addRegistration = (registration) => ({
     type: RegistrationsActionTypes.ADD_REGISTRATION,
     payload: registration,
 });
+export const removeRegistration = (registration) => ({
+    type: RegistrationsActionTypes.REMOVE_REGISTRATION,
+    payload: registration,
+});
 
 export const loadRegistrations = (registrations) => ({
     type: RegistrationsActionTypes.LOAD_REGISTRATIONS,
@@ -13,5 +17,3 @@ export const clearRegistrations = () => ({
     type: RegistrationsActionTypes.CLEAR_REGISTRATIONS,
     payload: null,
 });
-
-

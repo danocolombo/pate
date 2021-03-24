@@ -1,5 +1,8 @@
 import { RegistrationsActionTypes } from './registrations.types';
-import { addItemToConfirmed } from './registrations.utils';
+import {
+    addItemToConfirmed,
+    removeItemFromConfirmed,
+} from './registrations.utils';
 
 const INITIAL_STATE = {
     registration: null,
@@ -26,6 +29,14 @@ const registrationsReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 confirmed: addItemToConfirmed(state.confirmed, action.payload),
+            };
+        case RegistrationsActionTypes.REMOVE_REGISTRATION:
+            return {
+                ...state,
+                confirmed: removeItemFromConfirmed(
+                    state.confirmed,
+                    action.payload
+                ),
             };
         default:
             return state;

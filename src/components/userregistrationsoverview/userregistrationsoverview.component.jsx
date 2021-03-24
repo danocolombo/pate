@@ -3,12 +3,17 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import StyledLink from '../../components/custom-link/custom-link-white.component';
 import './userregistrationsoverview.styles.scss';
-const UserRegistrationOverview = ({ currentUser, registrationInfo }) => {
-    const util = require('util');
-    console.log(
-        '&%&%&%&%&%___registrations___&%&%&%&%&%\n' +
-            util.inspect(registrationInfo, { showHidden: false, depth: null })
-    );
+import { removeRegistration } from '../../redux/registrations/registrations.actions';
+const UserRegistrationOverview = ({
+    currentUser,
+    registrationInfo,
+    removeRegistration,
+}) => {
+    // const util = require('util');
+    // console.log(
+    //     '&%&%&%&%&%___registrations___&%&%&%&%&%\n' +
+    //         util.inspect(registrationInfo, { showHidden: false, depth: null })
+    // );
     const registrations = registrationInfo;
 
     if (registrations) {
@@ -21,6 +26,15 @@ const UserRegistrationOverview = ({ currentUser, registrationInfo }) => {
 
         let smDate = m.toString() + '/' + d.toString();
         return smDate;
+    };
+    const handleCancellation = async (id) => {
+        console.log('cancellation for ' + id);
+        console.log('done');
+        // async function removeThis() {
+        //     removeRegistration(id);
+        // };
+        // await removeThis();
+        await removeRegistration(id);
     };
     return (
         <>
@@ -43,6 +57,15 @@ const UserRegistrationOverview = ({ currentUser, registrationInfo }) => {
                                 <td className='eventlocation'>
                                     {r?.location?.city}
                                 </td>
+                                <td className='cancelButton'>
+                                    <Link
+                                        onClick={() => {
+                                            handleCancellation(r.uid);
+                                        }}
+                                    >
+                                        X
+                                    </Link>
+                                </td>
                             </tr>
                         ))}
                     </table>
@@ -51,8 +74,16 @@ const UserRegistrationOverview = ({ currentUser, registrationInfo }) => {
         </>
     );
 };
+
+const mapDispatchToProps = (dispatch) => ({
+    removeRegistration: (registration) =>
+        dispatch(removeRegistration(registration)),
+});
 const mapStateToProps = (state) => ({
     currentUser: state.user.currentUser,
     registrationInfo: state.registrations.confirmed,
 });
-export default connect(mapStateToProps)(UserRegistrationOverview);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(UserRegistrationOverview);

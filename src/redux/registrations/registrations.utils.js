@@ -31,18 +31,18 @@ export const removeItemFromConfirmed = (
     registrations,
     registrationToRemove
 ) => {
-    const existingCartItem = registrations.find(
-        (registration) => registration.uid === registrationToRemove.uid
+    const existingRegistration = registrations.find(
+        (registration) => registration.uid === registrationToRemove
     );
 
-    if (existingCartItem.quantity === 1) {
+    if (existingRegistration.quantity === 1) {
         return registrations.filter(
-            (registration) => registration.uid !== registrationToRemove.uid
+            (registration) => registration.uid !== registrationToRemove
         );
     }
 
     return registrations.map((registration) =>
-        registration.uid === registrationToRemove.uid
+        registration.uid === registrationToRemove
             ? { ...registration }
             : registration
     );
