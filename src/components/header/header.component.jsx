@@ -56,6 +56,11 @@ const Header = ({ currentUser, clearUser }) => {
                 <nav className='main-nav'>
                     {currentUser?.isLoggedIn ? (
                         <ul className='main-nav__items'>
+                            {currentUser?.stateRep || currentUser?.stateLead ? (
+                                <li className='main-nav__item'>
+                                    <Link to='/serve'>SERVE</Link>
+                                </li>
+                            ) : null}
                             <li className='main-nav__item'>
                                 <Link to='/profile'>PROFILE</Link>
                             </li>

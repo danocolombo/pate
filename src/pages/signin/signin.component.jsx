@@ -192,8 +192,12 @@ const SignIn = ({
             userDetails.jwt = userSession?.idToken?.jwtToken;
         }
         // if they are a state rep...
-        if (dbUser?.repInfo) {
-            userDetails.stateRep = dbUser?.repInfo?.stateProv;
+        if (dbUser?.stateRep) {
+            userDetails.stateRep = dbUser?.stateRep;
+        }
+        // if they are a state lead...
+        if (dbUser?.stateLead) {
+            userDetails.stateLead = dbUser?.stateLead;
         }
         //if there is address,
         if (dbUser?.residence) {

@@ -8,7 +8,6 @@ const INITIAL_STATE = {
     registration: null,
     confirmed: [],
     loading: false,
-    count: 0,
     error: {},
 };
 

@@ -28,12 +28,33 @@ const UserRegistrationOverview = ({
         return smDate;
     };
     const handleCancellation = async (id) => {
-        console.log('cancellation for ' + id);
-        console.log('done');
-        // async function removeThis() {
-        //     removeRegistration(id);
-        // };
-        // await removeThis();
+        //delete from database
+        await fetch(
+            'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/registrations',
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    operation: 'deleteRegistration',
+                    payload: {
+                        Key: { uid: id },
+                    },
+                }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            }
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                const util = require('util');
+                console.log(
+                    'db data returned: \n' +
+                        util.inspect(data, {
+                            showHidden: false,
+                            depth: null,
+                        })
+                );
+            });
         await removeRegistration(id);
     };
     return (
