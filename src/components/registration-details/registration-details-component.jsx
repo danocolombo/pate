@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-
 import { useHistory } from 'react-router-dom';
+import { withRouter } from 'react-router';
+
 import Spinner from '../../components/spinner/Spinner';
-import { loadRegistrations } from '../../redux/registrations/registrations.actions';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
-// import { tester } from '../../redux/registrations/registrations.actions';
+
 import './registration-details.styles.scss';
 const RegistrationDetails = ({
     theEvent,
@@ -13,7 +13,6 @@ const RegistrationDetails = ({
     currentUser,
     setSpinner,
     clearSpinner,
-    loadRegistrations,
     pateSystem,
 }) => {
     const [attendeeCount, setAttendeeCount] = useState(1);
@@ -216,12 +215,12 @@ const RegistrationDetails = ({
         // if (registrarId !== '0') {
         //     await addRegistration(regData);
         // }
-        await addRegToRedux(regData);
+        
         history.push('/');
     };
-    const addRegToRedux = async (reg) => {
-        await loadRegistrations(reg);
-    };
+    
+
+
     return pateSystem.showSpinner ? (
         <Spinner />
     ) : (
@@ -457,9 +456,9 @@ const mapDispatchToProps = (dispatch) => ({
     // updateCurrentUser: (user) => dispatch(updateCurrentUser(user)),
     setSpinner: () => dispatch(setSpinner()),
     clearSpinner: () => dispatch(clearSpinner()),
-    loadRegistrations: (registrations) =>
-        dispatch(loadRegistrations(registrations)),
-    //addRegistration: (registration) => dispatch(addRegistration(registration)),
+
+
+
 });
 const mapStateToProps = (state) => ({
     currentUser: state.user.currentUser,
