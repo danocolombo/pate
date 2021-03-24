@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 
 import { useHistory } from 'react-router-dom';
 import Spinner from '../../components/spinner/Spinner';
+import { loadRegistrations } from '../../redux/registrations/registrations.actions';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
+// import { tester } from '../../redux/registrations/registrations.actions';
 import './registration-details.styles.scss';
 const RegistrationDetails = ({
     theEvent,
@@ -11,6 +13,7 @@ const RegistrationDetails = ({
     currentUser,
     setSpinner,
     clearSpinner,
+    loadRegistrations,
     pateSystem,
 }) => {
     const [attendeeCount, setAttendeeCount] = useState(1);
@@ -126,7 +129,7 @@ const RegistrationDetails = ({
         e.preventDefault();
         history.push('/register');
     };
-    const handleRegisterRequest = (e) => {
+    const handleRegisterRequest = async (e) => {
         e.preventDefault();
         // this function pulls the data together and creates
         // an object to update database.
@@ -174,37 +177,50 @@ const RegistrationDetails = ({
 
         // post the registration to API and return to /
         //====================================================
-        async function updateDb() {
-            fetch(
-                'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/registrations',
-                {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        operation: 'createRegistration',
-                        payload: {
-                            Item: regData,
-                        },
-                    }),
-                    headers: {
-                        'Content-type': 'application/json; charset=UTF-8',
+        // async function updateDb() {
+        await fetch(
+            'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/registrations',
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    operation: 'createRegistration',
+                    payload: {
+                        Item: regData,
                     },
-                }
-            )
-                .then((response) => response.json())
-                .then((data) => {
-                    const util = require('util');
-                    console.log(
-                        'db data returned: \n' +
-                            util.inspect(data, {
-                                showHidden: false,
-                                depth: null,
-                            })
-                    );
-                });
-        }
+                }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            }
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                const util = require('util');
+                console.log(
+                    'db data returned: \n' +
+                        util.inspect(data, {
+                            showHidden: false,
+                            depth: null,
+                        })
+                );
+                // if (registrarId !== '0') {
+                //     addRegistration(regData);
+                // }
+            });
+        // }
         //next call is to async the above update
-        updateDb();
+        // updateDb();
+        //=====================================
+        // add the registration to redux
+        //=====================================
+        // if (registrarId !== '0') {
+        //     await addRegistration(regData);
+        // }
+        await addRegToRedux(regData);
         history.push('/');
+    };
+    const addRegToRedux = async (reg) => {
+        await loadRegistrations(reg);
     };
     return pateSystem.showSpinner ? (
         <Spinner />
@@ -441,6 +457,9 @@ const mapDispatchToProps = (dispatch) => ({
     // updateCurrentUser: (user) => dispatch(updateCurrentUser(user)),
     setSpinner: () => dispatch(setSpinner()),
     clearSpinner: () => dispatch(clearSpinner()),
+    loadRegistrations: (registrations) =>
+        dispatch(loadRegistrations(registrations)),
+    //addRegistration: (registration) => dispatch(addRegistration(registration)),
 });
 const mapStateToProps = (state) => ({
     currentUser: state.user.currentUser,

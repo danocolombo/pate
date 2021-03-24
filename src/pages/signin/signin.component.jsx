@@ -8,7 +8,10 @@ import CustomButton from '../../components/custom-button/custom-button.component
 import Header from '../../components/header/header.component';
 import Spinner from '../../components/spinner/Spinner';
 //----- actions needed -------
-import { loadRegistrations } from '../../redux/registrations/registrations.actions';
+import {
+    loadRegistrations,
+    tester,
+} from '../../redux/registrations/registrations.actions';
 import { setCurrentUser } from '../../redux/user/user.actions';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import './signin.styles.scss';
@@ -71,6 +74,7 @@ const SignIn = ({
             });
             await saveUser(currentUserInfo, currentSession);
             await getRegistrations(currentUserInfo.attributes.sub);
+            await tester();
             clearSpinner();
             history.push('/');
         } catch (error) {
@@ -227,6 +231,7 @@ const SignIn = ({
             userDetails.church = church;
         }
         await setCurrentUser(userDetails);
+        tester();
     };
     const handleChange = (e) => {
         const { value, name } = e.target;
@@ -298,6 +303,7 @@ const SignIn = ({
 const mapDispatchToProps = (dispatch) => ({
     setCurrentUser: (user) => dispatch(setCurrentUser(user)),
     setSpinner: () => dispatch(setSpinner()),
+    tester: () => dispatch(tester()),
     clearSpinner: () => dispatch(clearSpinner()),
     loadRegistrations: (registrations) =>
         dispatch(loadRegistrations(registrations)),

@@ -13,7 +13,6 @@ import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 const Events = ({
     currentUser,
     match,
-    loadRegistrations,
     setSpinner,
     clearSpinner,
     pateSystem,

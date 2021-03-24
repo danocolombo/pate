@@ -36,6 +36,9 @@ const registrationsReducer = (state = INITIAL_STATE, action) => {
                     (post) => post._id !== action.payload
                 ),
             };
+        case RegistrationsActionTypes.TEST_ME:
+            console.log('TESTER_TESTER_TESTER\n');
+            return state;
 
         default:
             return state;
