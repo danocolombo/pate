@@ -30,3 +30,173 @@
     border-right: black solid 1px;
     border-bottom: black solid 1px;
 }
+//----------- from registration details original page
+.registrationdetailswrapper {
+    text-align: center;
+    // padding: 1rem;
+    // margin: 0.5rem 0;
+    padding-top: 10px;
+    width: 80%;
+    // align-items: center;
+    background: #557a95;
+    color: white;
+    border-right: black solid 1px;
+    border-bottom: black solid 1px;
+    border-left: black solid 1px;
+}
+.eventgraphics {
+    width: 50%;
+}
+.eventimage {
+    width: 80%;
+    margin-left: 0%;
+}
+.eventbox {
+    // border: 1px solid #333;
+}
+.eventbox p {
+    /* Text Align */
+    text-align: left;
+    text-align: right;
+    // text-align: center;
+    // text-align: justify;
+}
+#eventbox-location {
+    // float: left;
+    margin-top: 15px;
+    width: 80%;
+    margin-left: 10%;
+    margin-bottom: 20px;
+}
+
+#eventbox-datetime {
+    // float: right;
+    width: 80%;
+    margin-left: 10%;
+}
+.eventboxclear {
+    clear: both;
+}
+.registrationmessage {
+    // border: black solid 1px;
+    margin: 15px 10% 0 10%;
+}
+
+.registrationchurchinfo {
+    float: left;
+    text-align: left;
+    font-family: sans-serif;
+    margin-top: 10px;
+    margin-left: 10%;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+}
+.registrationchurchname {
+    align-items: left;
+    font-size: 1.4em;
+    font-weight: bold;
+}
+.registrationdatetime {
+    float: right;
+    text-align: left;
+    margin-left: 10%;
+}
+.eventdate {
+    align-items: left;
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.registerhorizontalbreak {
+    border: 2px solid #b1a296;
+    width: 80%;
+    color: #b1a296;
+    height: 1px;
+    margin: 10px 10% 10px 10%;
+
+    background-color: #b9a296;
+    border-radius: 7px 7px 7px 7px;
+}
+.registrationoffermessage {
+    margin-bottom: 30px;
+}
+.loginbutton {
+    padding: 2px 5px;
+    font-size: 0.7em;
+    background-color: white;
+    border-radius: 2px 2px 2px 2px;
+}
+.newregisterbutton {
+    padding: 2px 5px;
+    font-size: 0.7em;
+    background-color: black;
+    color: white;
+    border-radius: 2px 2px 2px 2px;
+}
+.registration-instructions {
+    width: 80%;
+    margin-left: 10%;
+    padding-bottom: 10px;
+    text-align: center;
+}
+.attendee-identity-wrapper {
+    // border: yellow solid 1px;
+}
+.attendee-identity-wrapper label {
+    display: inline-block;
+    width: 30%;
+    text-align: right;
+    padding-right: 10px;
+}
+.attendee-identity-wrapper input {
+    display: inline-block;
+    width: 45%;
+    text-align: left;
+}
+.attendee-address-wrapper {
+    // border: yellow solid 1px;
+}
+.attendee-address-wrapper label {
+    display: inline-block;
+    width: 20%;
+    text-align: right;
+    padding-right: 10px;
+}
+.attendee-address-wrapper input {
+    display: inline-block;
+    width: 40%;
+    text-align: left;
+}
+.attendeewrapper {
+    margin: 10px 0;
+}
+.attendee-count-label {
+    margin-right: 5px;
+}
+.attendee-count-component {
+    width: 30px;
+    margin-left: 10px;
+}
+
+.meal-wrapper {
+    border: black double 3px;
+    width: 50%;
+    text-align: center;
+    display: inline-block;
+    padding: 5px;
+}
+.meal-description-label {
+    font-size: 0.7em;
+    padding: 5px;
+}
+.meal-count-label {
+    margin-right: 5px;
+}
+.meal-count-component {
+    width: 30px;
+}
+.registerbutton {
+    background: yellow;
+    padding: 2px 5px;
+    margin-bottom: 20px;
+}

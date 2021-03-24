@@ -5,12 +5,17 @@ import { compose } from 'redux';
 import { withRouter } from 'react-router';
 import { withAuthenticator } from '@aws-amplify/ui-react';
 import './registration.styles.scss';
-import RegistrationDetails from '../../components/registration-details/registration-details-component';
 import Header from '../../components/header/header.component';
 import Spinner from '../../components/spinner/Spinner';
 
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
-const EventRegistration = ({setSpinner, clearSpinner,match,pateSystem, currentUser}) => {
+const EventRegistration = ({
+    setSpinner,
+    clearSpinner,
+    match,
+    pateSystem,
+    currentUser,
+}) => {
     // const [plan, setPlan] = useState([]);
     const [attendeeCount, setAttendeeCount] = useState(1);
     const [mealCount, setMealCount] = useState(0);
@@ -36,19 +41,18 @@ const EventRegistration = ({setSpinner, clearSpinner,match,pateSystem, currentUs
         //need to determine if the first 3 digits are REG, which
         //means that the request is to get a registration already
         //saved.
-        let regCheck = "";
-        
-        if(id.length > 3){
-            regCheck = id.substring(0,3);
-            if(regCheck === "REG"){
-                id=id.slice(3);
-                
+        let regCheck = '';
+
+        if (id.length > 3) {
+            regCheck = id.substring(0, 3);
+            if (regCheck === 'REG') {
+                id = id.slice(3);
             }
             // const regCheck = id.subString(0,3);
             // console.log("check:" + regCheck);
             async function getTheEvent() {
                 fetch(
-                'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/events',
+                    'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/events',
                     {
                         method: 'POST',
                         body: JSON.stringify({
@@ -62,20 +66,20 @@ const EventRegistration = ({setSpinner, clearSpinner,match,pateSystem, currentUs
                         },
                     }
                 )
-                .then((response) => response.json())
-                .then((data) => {
-                    const details = data?.body?.Items[0];
-                    // const util = require('util');
-                    //     console.log(
-                    //         'THE_EVENT:\n' +
-                    //             util.inspect(data?.body, {
-                    //                 showHidden: false,
-                    //                 depth: null,
-                    //             })
-                    //     );
-                    
-                    setTheEvent({...theEvent,details});
-                });
+                    .then((response) => response.json())
+                    .then((data) => {
+                        const details = data?.body?.Items[0];
+                        // const util = require('util');
+                        //     console.log(
+                        //         'THE_EVENT:\n' +
+                        //             util.inspect(data?.body, {
+                        //                 showHidden: false,
+                        //                 depth: null,
+                        //             })
+                        //     );
+
+                        setTheEvent({ ...theEvent, details });
+                    });
             }
             getTheEvent();
         }
@@ -84,13 +88,13 @@ const EventRegistration = ({setSpinner, clearSpinner,match,pateSystem, currentUs
     useEffect(() => {}, [pateSystem.showSpinner]);
     const displayDate = () => {
         // format the date and return it
-        if(theEvent.length > 0){
-        let y = parseInt(theEvent?.details?.eventDate.substring(0, 4));
-        let m = parseInt(theEvent?.details?.eventDate.substring(4, 6)) - 1;
-        let d = parseInt(theEvent?.details?.eventDate.substring(6, 8));
-        let eventDate = new Date(y, m, d);
-        let theDate = eventDate.toDateString();
-        return theDate;
+        if (theEvent.length > 0) {
+            let y = parseInt(theEvent?.details?.eventDate.substring(0, 4));
+            let m = parseInt(theEvent?.details?.eventDate.substring(4, 6)) - 1;
+            let d = parseInt(theEvent?.details?.eventDate.substring(6, 8));
+            let eventDate = new Date(y, m, d);
+            let theDate = eventDate.toDateString();
+            return theDate;
         }
         return null;
     };
@@ -252,7 +256,7 @@ const EventRegistration = ({setSpinner, clearSpinner,match,pateSystem, currentUs
         // if (registrarId !== '0') {
         //     await addRegistration(regData);
         // }
-        
+
         history.push('/');
     };
     return pateSystem.showSpinner ? (
@@ -266,242 +270,260 @@ const EventRegistration = ({setSpinner, clearSpinner,match,pateSystem, currentUs
                         showHidden: false,
                         depth: null,
                     })
-            )
-                }
+            )}
             <Header />
             <div className='registrationpagewrapper'>
-                <div className='registration-pageheader'>REGISTRATION!</div>
+                <div className='registration-pageheader'>REGISTRATION</div>
                 <>
-            <div className='registrationdetailswrapper'>
-                <div className='event_graphics'>
-                    <img
-                        className='eventimage'
-                        src={theEvent?.details?.graphic}
-                        alt='CR P8 Rally'
-                    ></img>
-                </div>
-                {/* border-box layout for date & time */}
-                {/* FLOAT LEFT */}
-                <div className='eventbox' id='eventbox-location'>
-                    <div className='registrationchurchname'>
-                        {theEvent?.details?.location?.name}
-                    </div>
-                    <div>{theEvent?.location?.street}</div>
-                    <div>
-                        {theEvent?.details?.location?.city},
-                        {theEvent?.details?.location?.state}&nbsp;
-                        {theEvent?.details?.location?.postalCode}
-                    </div>
-                </div>
-                {/* FLOAT RIGHT */}
-                <div className='eventbox' id='eventbox-datetime'>
-                    <div className='eventdate'>{displayDate()}</div>
-                    <div className='eventtime'>{displayTimes()}</div>
-                </div>
-                {/* end border-box layout */}
-                <div className='eventboxclear'></div>
-                <div className='registrationmessage'>
-                    <div>{theEvent?.details?.message}</div>
-                </div>
-
-                <div>
-                    <hr className='registerhorizontalbreak' />
-                </div>
-                <div className='formwrapper'>
-                    <form>
-                        <div className='registrar-data'>
-                            <div className='registration-instructions'>
-                                {currentUser?.isLoggedIn ? (
-                                    <>
-                                        <div>
-                                            You can change the information, if
-                                            you are registering someone else.
-                                        </div>
-                                    </>
-                                ) : (
-                                    <>
-                                        <div>
-                                            You can{' '}
-                                            <button
-                                                className='loginbutton'
-                                                onClick={handleLoginClick}
-                                            >
-                                                LOGIN
-                                            </button>{' '}
-                                            or{' '}
-                                            <button
-                                                className='newregisterbutton'
-                                                onClick={handleRegisterClick}
-                                            >
-                                                SIGN-UP
-                                            </button>{' '}
-                                            an account to save your profile for
-                                            future use.
-                                        </div>
-                                    </>
-                                )}
+                    <div className='registrationdetailswrapper'>
+                        <div className='event_graphics'>
+                            <img
+                                className='eventimage'
+                                src={theEvent?.details?.graphic}
+                                alt='CR P8 Rally'
+                            ></img>
+                        </div>
+                        {/* border-box layout for date & time */}
+                        {/* FLOAT LEFT */}
+                        <div className='eventbox' id='eventbox-location'>
+                            <div className='registrationchurchname'>
+                                {theEvent?.details?.location?.name}
                             </div>
-                            <div className='profilehomesection'>
-                                Contact Information
-                            </div>
-                            <div className='attendee-identity-wrapper'>
-                                <div>
-                                    <label htmlFor='firstName'>
-                                        First name
-                                    </label>
-                                    <input
-                                        type='text'
-                                        name='firstName'
-                                        id='firstName'
-                                        value={firstName}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label htmlFor='lastName'>Last name</label>
-                                    <input
-                                        type='text'
-                                        id='lastName'
-                                        name='lastName'
-                                        onChange={handleChange}
-                                        value={lastName}
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label htmlFor='email'>E-mail</label>
-                                    <input
-                                        type='text'
-                                        id='email'
-                                        name='email'
-                                        onChange={handleChange}
-                                        value={email}
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label htmlFor='phone'>Telephone</label>
-                                    <input
-                                        type='text'
-                                        id='phone'
-                                        name='phone'
-                                        onChange={handleChange}
-                                        value={phone}
-                                        required
-                                    />
-                                </div>
-                            </div>
-                            <div className='profilehomesection'>Address</div>
-
-                            <div className='attendee-address-wrapper'>
-                                <div>
-                                    <label htmlFor='homeStreet'>Street</label>
-                                    <input
-                                        type='text'
-                                        id='homeStreet'
-                                        name='homeStreet'
-                                        onChange={handleChange}
-                                        value={homeStreet}
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label htmlFor='homeCity'>City</label>
-                                    <input
-                                        type='text'
-                                        id='homeCity'
-                                        name='homeCity'
-                                        onChange={handleChange}
-                                        value={homeCity}
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label htmlFor='homeState'>State</label>
-                                    <input
-                                        type='text'
-                                        id='homeState'
-                                        name='homeState'
-                                        onChange={handleChange}
-                                        value={homeState}
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label htmlFor='homePostalCode'>
-                                        Postal Code
-                                    </label>
-                                    <input
-                                        type='text'
-                                        id='homePostalCode'
-                                        name='homePostalCode'
-                                        onChange={handleChange}
-                                        value={homePostalCode}
-                                        required
-                                    />
-                                </div>
-                            </div>
-                            <div className='attendeewrapper'>
-                                <label
-                                    className='attendee-label'
-                                    htmlFor='attendeeCount'
-                                >
-                                    Attendees
-                                </label>
-                                <input
-                                    type='number'
-                                    className='attendee-count-component'
-                                    id='attendeeCount'
-                                    name='attendeeCount'
-                                    onChange={handleChange}
-                                    value={attendeeCount}
-                                    required
-                                />
-                                {/*<NumericInput min='0' max='10' value={attendeeCount} size='2'/>*/}
-                            </div>
-
-                            <div className='meal-wrapper'>
-                                <p className='meal-description-label'>
-                                    This particular event offers a "free" lunch
-                                    at 12 noon, please indicate how many will
-                                    attend the lunch.
-                                </p>
-                                <label
-                                    className='meal-count-label'
-                                    htmlFor='mealCount'
-                                >
-                                    Meal Guests
-                                </label>
-
-                                <input
-                                    type='number'
-                                    className='meal-count-component'
-                                    id='mealCount'
-                                    name='mealCount'
-                                    onChange={handleChange}
-                                    value={mealCount}
-                                    required
-                                />
-                            </div>
+                            <div>{theEvent?.location?.street}</div>
                             <div>
-                                <button
-                                    className='registerbutton'
-                                    onClick={handleRegisterRequest}
-                                >
-                                    Register
-                                </button>
+                                {theEvent?.details?.location?.city},
+                                {theEvent?.details?.location?.state}&nbsp;
+                                {theEvent?.details?.location?.postalCode}
                             </div>
                         </div>
-                    </form>
-                </div>
-            </div>
-        </>
+                        {/* FLOAT RIGHT */}
+                        <div className='eventbox' id='eventbox-datetime'>
+                            <div className='eventdate'>{displayDate()}</div>
+                            <div className='eventtime'>{displayTimes()}</div>
+                        </div>
+                        {/* end border-box layout */}
+                        <div className='eventboxclear'></div>
+                        <div className='registrationmessage'>
+                            <div>{theEvent?.details?.message}</div>
+                        </div>
+
+                        <div>
+                            <hr className='registerhorizontalbreak' />
+                        </div>
+                        <div className='formwrapper'>
+                            <form>
+                                <div className='registrar-data'>
+                                    <div className='registration-instructions'>
+                                        {currentUser?.isLoggedIn ? (
+                                            <>
+                                                <div>
+                                                    You can change the
+                                                    information, if you are
+                                                    registering someone else.
+                                                </div>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <div>
+                                                    You can{' '}
+                                                    <button
+                                                        className='loginbutton'
+                                                        onClick={
+                                                            handleLoginClick
+                                                        }
+                                                    >
+                                                        LOGIN
+                                                    </button>{' '}
+                                                    or{' '}
+                                                    <button
+                                                        className='newregisterbutton'
+                                                        onClick={
+                                                            handleRegisterClick
+                                                        }
+                                                    >
+                                                        SIGN-UP
+                                                    </button>{' '}
+                                                    an account to save your
+                                                    profile for future use.
+                                                </div>
+                                            </>
+                                        )}
+                                    </div>
+                                    <div className='profilehomesection'>
+                                        Contact Information
+                                    </div>
+                                    <div className='attendee-identity-wrapper'>
+                                        <div>
+                                            <label htmlFor='firstName'>
+                                                First name
+                                            </label>
+                                            <input
+                                                type='text'
+                                                name='firstName'
+                                                id='firstName'
+                                                value={firstName}
+                                                onChange={handleChange}
+                                                required
+                                            />
+                                        </div>
+                                        <div>
+                                            <label htmlFor='lastName'>
+                                                Last name
+                                            </label>
+                                            <input
+                                                type='text'
+                                                id='lastName'
+                                                name='lastName'
+                                                onChange={handleChange}
+                                                value={lastName}
+                                                required
+                                            />
+                                        </div>
+                                        <div>
+                                            <label htmlFor='email'>
+                                                E-mail
+                                            </label>
+                                            <input
+                                                type='text'
+                                                id='email'
+                                                name='email'
+                                                onChange={handleChange}
+                                                value={email}
+                                                required
+                                            />
+                                        </div>
+                                        <div>
+                                            <label htmlFor='phone'>
+                                                Telephone
+                                            </label>
+                                            <input
+                                                type='text'
+                                                id='phone'
+                                                name='phone'
+                                                onChange={handleChange}
+                                                value={phone}
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className='profilehomesection'>
+                                        Address
+                                    </div>
+
+                                    <div className='attendee-address-wrapper'>
+                                        <div>
+                                            <label htmlFor='homeStreet'>
+                                                Street
+                                            </label>
+                                            <input
+                                                type='text'
+                                                id='homeStreet'
+                                                name='homeStreet'
+                                                onChange={handleChange}
+                                                value={homeStreet}
+                                                required
+                                            />
+                                        </div>
+                                        <div>
+                                            <label htmlFor='homeCity'>
+                                                City
+                                            </label>
+                                            <input
+                                                type='text'
+                                                id='homeCity'
+                                                name='homeCity'
+                                                onChange={handleChange}
+                                                value={homeCity}
+                                                required
+                                            />
+                                        </div>
+                                        <div>
+                                            <label htmlFor='homeState'>
+                                                State
+                                            </label>
+                                            <input
+                                                type='text'
+                                                id='homeState'
+                                                name='homeState'
+                                                onChange={handleChange}
+                                                value={homeState}
+                                                required
+                                            />
+                                        </div>
+                                        <div>
+                                            <label htmlFor='homePostalCode'>
+                                                Postal Code
+                                            </label>
+                                            <input
+                                                type='text'
+                                                id='homePostalCode'
+                                                name='homePostalCode'
+                                                onChange={handleChange}
+                                                value={homePostalCode}
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className='attendeewrapper'>
+                                        <label
+                                            className='attendee-label'
+                                            htmlFor='attendeeCount'
+                                        >
+                                            Attendees
+                                        </label>
+                                        <input
+                                            type='number'
+                                            className='attendee-count-component'
+                                            id='attendeeCount'
+                                            name='attendeeCount'
+                                            onChange={handleChange}
+                                            value={attendeeCount}
+                                            required
+                                        />
+                                        {/*<NumericInput min='0' max='10' value={attendeeCount} size='2'/>*/}
+                                    </div>
+
+                                    <div className='meal-wrapper'>
+                                        <p className='meal-description-label'>
+                                            This particular event offers a
+                                            "free" lunch at 12 noon, please
+                                            indicate how many will attend the
+                                            lunch.
+                                        </p>
+                                        <label
+                                            className='meal-count-label'
+                                            htmlFor='mealCount'
+                                        >
+                                            Meal Guests
+                                        </label>
+
+                                        <input
+                                            type='number'
+                                            className='meal-count-component'
+                                            id='mealCount'
+                                            name='mealCount'
+                                            onChange={handleChange}
+                                            value={mealCount}
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <button
+                                            className='registerbutton'
+                                            onClick={handleRegisterRequest}
+                                        >
+                                            Register
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </>
             </div>
         </>
     );
-    
-}
+};
 const mapDispatchToProps = (dispatch) => ({
     // setCurrentUser: (user) => dispatch(setCurrentUser(user)),
     setSpinner: () => dispatch(setSpinner()),
@@ -513,5 +535,7 @@ const mapStateToProps = (state) => ({
     pateSystem: state.pate,
     currentUser: state.user.currentUser,
 });
-export default compose(withRouter,connect(mapStateToProps, mapDispatchToProps))(EventRegistration);
-
+export default compose(
+    withRouter,
+    connect(mapStateToProps, mapDispatchToProps)
+)(EventRegistration);
