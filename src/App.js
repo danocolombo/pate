@@ -16,6 +16,7 @@ import ConfirmUser from './pages/registerUser/confirmUser.page';
 import PrivatePage from './pages/privatePage/privatePage';
 import EventDetails from './pages/event/event.page';
 import EventRegistration from './pages/registration/registration.page';
+import Serve from './pages/serve/serve.page';
 //----------------------
 //AMPLIFY INTEGRATION
 //----------------------
@@ -58,6 +59,7 @@ function App() {
             <Route exact path='/register' component={Register} />
             <Route exact path='/confirmUser/:id' component={ConfirmUser} />
             <Route exact path='/privatepage' component={PrivatePage} />
+            <Route exact path='/serve' component={Serve} />
             <Route
                 exact
                 path='/registration/:id'
