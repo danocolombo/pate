@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './serve.styles.scss';
 const StateRepRally = ({ rally }) => {
     const dateToDisplay = () => {
@@ -9,8 +10,10 @@ const StateRepRally = ({ rally }) => {
     };
     return (
         <div className='sr-rally-list-item'>
-            <div className='sr-rally-date'>{dateToDisplay()}</div>
-            <div className='sr-rally-location'>{rally.location.name}</div>
+            <Link to={`/serveevent/${rally.uid}`}>
+                <div className='sr-rally-date'>{dateToDisplay()}</div>
+                <div className='sr-rally-location'>{rally.location.name}</div>
+            </Link>
         </div>
     );
 };
