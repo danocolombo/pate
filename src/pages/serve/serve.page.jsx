@@ -14,24 +14,32 @@ const Serve = ({
     pateSystem,
     currentUser,
 }) => {
-    // const [plan, setPlan] = useState([]);
-
+    
     const history = useHistory();
-    const util = require('util');
+
     useEffect(() => {}, []);
 
     useEffect(() => {}, [pateSystem.showSpinner]);
-
+    const handleSubmitClick = (event) => {
+        event.preventDefault();
+    }
+    
     return pateSystem.showSpinner ? (
         <Spinner />
     ) : (
         <>
             <Header />
             <div className='servepagewrapper'>
-                <div className='serve-pageheader'>SERVE</div>
-                <>
-                    <h2>TESTING</h2>
-                </>
+                <div className='serve-pageheader'>Principle 8 Service</div>
+                <div className='servedetailswrapper'>
+                    <div className='welcome-message'>This page allows you to coordinate events, as well as manage and review details.</div>
+                    <div className='event-list-header'>Your events</div>
+                    <div className='event-list-wrapper'>
+                        <div className='event-list-item'>latest</div>
+                        <div className='event-list-item'>older</div>
+                        <div className='event-list-item'>oldest</div>
+                    </div>
+                </div>
             </div>
         </>
     );
