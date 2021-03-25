@@ -32,7 +32,7 @@ const Serve = ({
     const [contactName, setContactName] = useState('');
     const [contactEmail, setContactEmail] = useState('');
     const [contactPhone, setContactPhone] = useState('');
-    const [status, setStatus] = useState('');
+    const [eventStatus, setEventStatus] = useState('');
     const [eventMessage, setEventMessage] = useState('');
     const [repName, setRepName] = useState('');
     const [repEmail, setRepEmail] = useState('');
@@ -72,7 +72,7 @@ const Serve = ({
                 setContactName(rallyEvent?.contact?.name);
                 setContactEmail(rallyEvent?.contact?.email);
                 setContactPhone(rallyEvent?.contact?.phone);
-                setStatus(rallyEvent?.status);
+                setEventStatus(rallyEvent?.status);
                 setEventMessage(rallyEvent?.message);
                 setRepName(rallyEvent?.coordinator?.name);
                 setRepEmail(rallyEvent?.coordinator?.email);
@@ -123,6 +123,9 @@ const Serve = ({
             case 'approval':
                 setApproval(value);
                 break;
+            case 'eventStatus':
+                setEventStatus(value);
+                break;
             case 'contactName':
                 setContactName(value);
                 break;
@@ -132,10 +135,7 @@ const Serve = ({
             case 'contactPhone':
                 setContactPhone(value);
                 break;
-            case 'status':
-                setStatus(value);
-                break;
-            case 'message':
+            case 'eventMessage':
                 setEventMessage(value);
                 break;
             case 'repName':
@@ -224,6 +224,213 @@ const Serve = ({
                                             name='stateProv'
                                             onChange={handleChange}
                                             value={stateProv}
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor='postalCode'>
+                                            Postal Code
+                                        </label>
+                                        <input
+                                            type='text'
+                                            id='postalCode'
+                                            name='postalCode'
+                                            onChange={handleChange}
+                                            value={postalCode}
+                                            required
+                                        />
+                                    </div>
+                                    {/** church contact info */}
+                                    <div className='church-contact-header'>
+                                        Church Contact
+                                    </div>
+                                    <div>
+                                        <label htmlFor='contactName'>
+                                            Name
+                                        </label>
+                                        <input
+                                            type='text'
+                                            id='contactName'
+                                            name='contactName'
+                                            onChange={handleChange}
+                                            value={contactName}
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor='contactPhone'>
+                                            Phone
+                                        </label>
+                                        <input
+                                            type='text'
+                                            id='contactPhone'
+                                            name='contactPhone'
+                                            onChange={handleChange}
+                                            value={contactPhone}
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor='contactEmail'>
+                                            Email
+                                        </label>
+                                        <input
+                                            type='text'
+                                            id='contactEmail'
+                                            name='contactEmail'
+                                            onChange={handleChange}
+                                            value={contactEmail}
+                                            required
+                                        />
+                                    </div>
+                                    {/** logisitics info */}
+                                    <div className='logistics-header'>
+                                        Logistics
+                                    </div>
+                                    <div>
+                                        <label htmlFor='eventDate'>Date</label>
+                                        <input
+                                            type='text'
+                                            id='eventDate'
+                                            name='eventDate'
+                                            onChange={handleChange}
+                                            value={eventDate}
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor='eventStart'>
+                                            Start Time
+                                        </label>
+                                        <input
+                                            type='text'
+                                            id='eventStart'
+                                            name='eventStart'
+                                            onChange={handleChange}
+                                            value={eventStart}
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor='eventEnd'>
+                                            End Time
+                                        </label>
+                                        <input
+                                            type='text'
+                                            id='eventEnd'
+                                            name='eventEnd'
+                                            onChange={handleChange}
+                                            value={eventEnd}
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor='eventMessage'>
+                                            Message
+                                        </label>
+                                        <input
+                                            type='memo'
+                                            id='eventMessage'
+                                            name='eventMessage'
+                                            onChange={handleChange}
+                                            value={eventMessage}
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor='isApproved'>
+                                            Approved
+                                        </label>
+                                        <input
+                                            type='checkbox'
+                                            id='isApproved'
+                                            name='isApproved'
+                                            onChange={handleChange}
+                                            value={isApproved}
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor='eventStatus'>
+                                            Status
+                                        </label>
+                                        <input
+                                            type='text'
+                                            id='eventStatus'
+                                            name='eventStatus'
+                                            onChange={handleChange}
+                                            value={eventStatus}
+                                            required
+                                        />
+                                    </div>
+                                    {/** meal info */}
+                                    <div className='meal-header'>
+                                        Meal Details
+                                    </div>
+                                    <div>
+                                        <label htmlFor='mealTime'>
+                                            Start Time
+                                        </label>
+                                        <input
+                                            type='text'
+                                            id='mealTime'
+                                            name='mealTime'
+                                            onChange={handleChange}
+                                            value={mealTime}
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor='mealCost'>Cost</label>
+                                        <input
+                                            type='text'
+                                            id='mealCost'
+                                            name='mealCost'
+                                            onChange={handleChange}
+                                            value={mealCost}
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor='mealMessage'>
+                                            Message
+                                        </label>
+                                        <input
+                                            type='memo'
+                                            id='mealMessage'
+                                            name='mealMessage'
+                                            onChange={handleChange}
+                                            value={mealMessage}
+                                            required
+                                        />
+                                    </div>
+                                    {/** logisitics info */}
+                                    <div className='tally-header'>
+                                        Tally Information
+                                    </div>
+                                    <div>
+                                        <label htmlFor='registrations'>
+                                            Registrations
+                                        </label>
+                                        <input
+                                            type='number'
+                                            id='registrations'
+                                            name='registrations'
+                                            onChange={handleChange}
+                                            value={registrations}
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor='attendees'>
+                                            Attendees
+                                        </label>
+                                        <input
+                                            type='number'
+                                            id='attendees'
+                                            name='attendees'
+                                            onChange={handleChange}
+                                            value={attendees}
                                             required
                                         />
                                     </div>
