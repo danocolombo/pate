@@ -1,3 +1,6 @@
+hr {
+    margin: 10px 15px;
+}
 .servepagewrapper {
     display: flex;
     flex-direction: column;
@@ -19,19 +22,17 @@
 }
 .servedetailswrapper {
     text-align: center;
-    // padding: 1rem;
-    // margin: 0.5rem 0;
     padding-top: 10px;
+    padding-bottom: 15px;
     width: 80%;
-    // align-items: center;
     background: #557a95;
     color: white;
     border-right: black solid 1px;
     border-bottom: black solid 1px;
     border-left: black solid 1px;
 }
-.welcome-message {
-
+.message-box {
+    font-family: 'Roboto', sans-serif;
 }
 .event-list-header {
     text-align: center;
@@ -41,4 +42,7 @@
     // width: 80%;
     margin: 3px 0 0 0;
     padding: 5px 0px;
+}
+.event-list-item {
+    margin: 3px 0;
 }
