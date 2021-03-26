@@ -146,11 +146,11 @@ const RegistrationDetails = ({
             endTime: displayThis?.endTime,
             eid: displayThis?.uid,
             location: {
-                name: displayThis?.location?.name,
-                street: displayThis?.location?.street,
-                city: displayThis?.location?.city,
-                stateProv: displayThis?.location?.stateProv,
-                postalCode: displayThis?.location?.postalCode,
+                name: displayThis?.name,
+                street: displayThis?.street,
+                city: displayThis?.city,
+                stateProv: displayThis?.stateProv,
+                postalCode: displayThis?.postalCode,
             },
             rid: registrarId,
             registrar: {
@@ -215,11 +215,9 @@ const RegistrationDetails = ({
         // if (registrarId !== '0') {
         //     await addRegistration(regData);
         // }
-        
+
         history.push('/');
     };
-    
-
 
     return pateSystem.showSpinner ? (
         <Spinner />
@@ -237,13 +235,12 @@ const RegistrationDetails = ({
                 {/* FLOAT LEFT */}
                 <div className='eventbox' id='eventbox-location'>
                     <div className='registrationchurchname'>
-                        {displayThis?.location?.name}
+                        {displayThis?.name}
                     </div>
-                    <div>{displayThis?.location?.street}</div>
+                    <div>{displayThis?.street}</div>
                     <div>
-                        {displayThis?.location?.city},
-                        {displayThis?.location?.state}&nbsp;
-                        {displayThis?.location?.postalCode}
+                        {displayThis?.city},{displayThis?.state}&nbsp;
+                        {displayThis?.postalCode}
                     </div>
                 </div>
                 {/* FLOAT RIGHT */}
@@ -456,9 +453,6 @@ const mapDispatchToProps = (dispatch) => ({
     // updateCurrentUser: (user) => dispatch(updateCurrentUser(user)),
     setSpinner: () => dispatch(setSpinner()),
     clearSpinner: () => dispatch(clearSpinner()),
-
-
-
 });
 const mapStateToProps = (state) => ({
     currentUser: state.user.currentUser,

@@ -1,6 +1,6 @@
 import { StateRepActionTypes } from './stateRep.types';
 export const loadRallies = (rallies) => ({
-    type: StateRepActionTypes.LOAD_RALLIES,
+    type: StateRepActionTypes.LOAD_REP_RALLIES,
     payload: rallies,
 });
 export const clearStateRep = () => ({

@@ -1,4 +1,4 @@
-import { StateRepActionTypes } from './stateRep.types';
+import { StateLeadActionTypes } from './stateLead.types';
 
 const INITIAL_STATE = {
     rally: [],
@@ -6,14 +6,14 @@ const INITIAL_STATE = {
     error: {},
 };
 
-const stateRepReducer = (state = INITIAL_STATE, action) => {
+const stateLeadReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case StateRepActionTypes.LOAD_REP_RALLIES:
+        case StateLeadActionTypes.LOAD_LEAD_RALLIES:
             return {
                 ...state,
                 rally: action.payload,
             };
-        case StateRepActionTypes.CLEAR_STATE_REP:
+        case StateLeadActionTypes.CLEAR_STATE_LEAD:
             return {
                 ...state,
                 rally: null,
@@ -24,4 +24,4 @@ const stateRepReducer = (state = INITIAL_STATE, action) => {
     }
 };
 
-export default stateRepReducer;
+export default stateLeadReducer;

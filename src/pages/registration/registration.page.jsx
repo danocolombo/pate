@@ -184,11 +184,11 @@ const EventRegistration = ({
             endTime: theEvent?.details?.endTime,
             eid: theEvent?.details?.uid,
             location: {
-                name: theEvent?.details?.location?.name,
-                street: theEvent?.details?.location?.street,
-                city: theEvent?.details?.location?.city,
-                stateProv: theEvent?.details?.location?.stateProv,
-                postalCode: theEvent?.details?.location?.postalCode,
+                name: theEvent?.details?.name,
+                street: theEvent?.details?.street,
+                city: theEvent?.details?.city,
+                stateProv: theEvent?.details?.stateProv,
+                postalCode: theEvent?.details?.postalCode,
             },
             rid: registrarId,
             registrar: {
@@ -276,13 +276,13 @@ const EventRegistration = ({
                         {/* FLOAT LEFT */}
                         <div className='eventbox' id='eventbox-location'>
                             <div className='registrationchurchname'>
-                                {theEvent?.details?.location?.name}
+                                {theEvent?.details?.name}
                             </div>
-                            <div>{theEvent?.location?.street}</div>
+                            <div>{theEvent?.street}</div>
                             <div>
-                                {theEvent?.details?.location?.city},
-                                {theEvent?.details?.location?.state}&nbsp;
-                                {theEvent?.details?.location?.postalCode}
+                                {theEvent?.details?.city},
+                                {theEvent?.details?.state}&nbsp;
+                                {theEvent?.details?.postalCode}
                             </div>
                         </div>
                         {/* FLOAT RIGHT */}

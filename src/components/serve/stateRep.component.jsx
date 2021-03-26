@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import StateRepRally from './stateRep-rally.component';
 
 import './serve.styles.scss';
-const StateRep = ({ currentUser, loadRallies, rallies }) => {
+const StateRep = ({ currentUser, rallies }) => {
     useEffect(() => {}, []);
 
     return (

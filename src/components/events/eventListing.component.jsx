@@ -2,7 +2,17 @@ import React, { Fragment } from 'react';
 import StyledLink from '../../components/custom-link/custom-link-yellow.component';
 import './eventListing.styles.scss';
 const EventListing = ({
-    event: { uid, eventDate, startTime, endTime, location },
+    event: {
+        uid,
+        eventDate,
+        startTime,
+        endTime,
+        name,
+        street,
+        city,
+        stateProv,
+        postalCode,
+    },
 }) => {
     //-------------------------------
     // prep data
@@ -44,15 +54,13 @@ const EventListing = ({
                     </div>
                 </div>
                 <div className='address'>
-                    <div className='event-location'>{location.name}</div>
-                    <div className='event-street'>{location.street}</div>
+                    <div className='event-location'>{name}</div>
+                    <div className='event-street'>{street}</div>
                     <div className='event-city-state'>
-                        <span>{location.city}</span>,&nbsp;
-                        <span>{location.state}</span>
+                        <span>{city}</span>,&nbsp;
+                        <span>{stateProv}</span>
                     </div>
-                    <div className='event-postalcode'>
-                        {location.postalCode}
-                    </div>
+                    <div className='event-postalcode'>{postalCode}</div>
                 </div>
                 <div className='linkbutton'>
                     <StyledLink to={`/event/${uid}`}>VIEW DETAILS</StyledLink>

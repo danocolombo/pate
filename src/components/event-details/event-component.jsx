@@ -58,14 +58,11 @@ const EventDetails = ({ theEvent }) => {
                     ></img>
                 </div>
                 <div className='church_info'>
-                    <div className='church_name'>
-                        {displayThis?.location?.name}
-                    </div>
-                    <div>{displayThis?.location?.street}</div>
+                    <div className='church_name'>{displayThis?.name}</div>
+                    <div>{displayThis?.street}</div>
                     <div>
-                        {displayThis?.location?.city},
-                        {displayThis?.location?.stateProv}&nbsp;
-                        {displayThis?.location?.postalCode}
+                        {displayThis?.city},{displayThis?.stateProv}&nbsp;
+                        {displayThis?.postalCode}
                     </div>
                 </div>
                 <div className='event_date'>{displayDate()}</div>

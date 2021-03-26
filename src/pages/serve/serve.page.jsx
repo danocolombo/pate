@@ -9,8 +9,10 @@ import Spinner from '../../components/spinner/Spinner';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import StateRep from '../../components/serve/stateRep.component';
 import StateLead from '../../components/serve/stateLead.component';
-import { loadRegistrations } from '../../redux/registrations/registrations.actions';
+// import { loadRegistrations } from '../../redux/registrations/registrations.actions';
 import { loadRallies } from '../../redux/stateRep/stateRep.actions';
+import { loadStateRallies } from '../../redux/stateLead/stateLead.actions';
+
 const Serve = ({
     setSpinner,
     clearSpinner,
@@ -18,13 +20,22 @@ const Serve = ({
     pateSystem,
     currentUser,
     loadRallies,
+    loadStateRallies,
 }) => {
     const history = useHistory();
 
     useEffect(() => {
         if (!currentUser?.isLoggedIn) history.push('/');
         //get the usersRallies
-        getMyRallies();
+        async function reps() {
+            getMyRallies();
+        }
+        reps();
+
+        //if current user is a state lead, get state rallies
+        if (currentUser?.stateLead) {
+            getStateRallies();
+        }
     }, []);
 
     useEffect(() => {}, [pateSystem.showSpinner]);
@@ -56,8 +67,43 @@ const Serve = ({
         loadRallies(repData);
     };
 
-    const handleSubmitClick = (event) => {
-        event.preventDefault();
+    const getStateRallies = async () => {
+        //this gets the current rallies for the state
+        let searchState = currentUser?.stateLead;
+        let stateData = {};
+        await fetch(
+            'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/events',
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    operation: 'getEventsForLead',
+                    payload: {
+                        Item: {
+                            stateID: searchState,
+                        },
+                    },
+                }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            }
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                const util = require('util');
+                console.log(
+                    'dataBackFromDDB:  \n' +
+                        util.inspect(data, {
+                            showHidden: false,
+                            depth: null,
+                        })
+                );
+
+                stateData = data.body.Items;
+            });
+        // setRallyInfo(rallyInfo.concat(repData));
+
+        loadStateRallies(stateData);
     };
 
     return pateSystem.showSpinner ? (
@@ -72,7 +118,7 @@ const Serve = ({
                         This page allows you to coordinate events, as well as
                         manage and review details.
                     </div>
-                    <StateRep loadRallies={() => this.loadRallies()} />
+                    <StateRep />
 
                     {currentUser?.stateLead ? (
                         <>
@@ -90,6 +136,7 @@ const Serve = ({
 const mapDispatchToProps = (dispatch) => ({
     // setCurrentUser: (user) => dispatch(setCurrentUser(user)),
     loadRallies: (rallies) => dispatch(loadRallies(rallies)),
+    loadStateRallies: (srallies) => dispatch(loadStateRallies(srallies)),
     setSpinner: () => dispatch(setSpinner()),
     clearSpinner: () => dispatch(clearSpinner()),
 });

@@ -72,12 +72,8 @@ const UserRegistrationOverview = ({
                                         {dateToDisplay(r.eventDate)}
                                     </StyledLink>
                                 </td>
-                                <td className='eventname'>
-                                    {r?.location?.name}
-                                </td>
-                                <td className='eventlocation'>
-                                    {r?.location?.city}
-                                </td>
+                                <td className='eventname'>{r?.name}</td>
+                                <td className='eventlocation'>{r?.city}</td>
                                 <td className='cancelButton'>
                                     <Link
                                         onClick={() => {

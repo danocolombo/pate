@@ -8,6 +8,7 @@ import Header from '../../components/header/header.component';
 import Spinner from '../../components/spinner/Spinner';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import { loadRally } from '../../redux/pate/pate.actions';
+
 const Serve = ({
     setSpinner,
     clearSpinner,
@@ -16,6 +17,7 @@ const Serve = ({
     currentUser,
     rallies,
     loadRally,
+    pate,
 }) => {
     let eventID = match.params.id;
     console.log('serveEvent: ' + eventID);
@@ -41,8 +43,8 @@ const Serve = ({
     const [repPhone, setRepPhone] = useState('');
     const [mealTime, setMealTime] = useState('');
     const [mealCost, setMealCost] = useState('');
-    const [mealMessage, setMealMessage] = useState('');
     const [mealCount, setMealCount] = useState(0);
+    const [mealMessage, setMealMessage] = useState('');
     const [attendees, setAttendees] = useState(0);
     const [registrations, setRegistrations] = useState(0);
 
@@ -58,6 +60,7 @@ const Serve = ({
 
     const util = require('util');
     useEffect(() => {
+        if (!currentUser.isLoggedIn) history.push('/');
         //get the reference to the current event and load to useState
         loadEvent();
     }, []);
@@ -73,11 +76,11 @@ const Serve = ({
                 loadRally(rallyEvent);
                 //load the useState
                 setEventDate(rallyEvent?.eventDate);
-                setChurchName(rallyEvent?.location?.name);
-                setStreet(rallyEvent?.location?.street);
-                setCity(rallyEvent?.location?.city);
-                setStateProv(rallyEvent?.location?.stateProv);
-                setPostalCode(rallyEvent?.location.postalCode);
+                setChurchName(rallyEvent?.name);
+                setStreet(rallyEvent?.street);
+                setCity(rallyEvent?.city);
+                setStateProv(rallyEvent?.stateProv);
+                setPostalCode(rallyEvent?.postalCode);
                 setEventStart(rallyEvent?.startTime);
                 setEventEnd(rallyEvent?.endTime);
                 setGraphic(rallyEvent?.graphic);
@@ -102,6 +105,66 @@ const Serve = ({
 
     const handleSubmitClick = (event) => {
         event.preventDefault();
+        console.log('SAVE-SAVE-SAVE');
+        //get rally object to update
+        let newRally = pateSystem?.rally;
+        //now update with form values
+
+        newRally.name = churchName;
+        newRally.street = street;
+        newRally.city = city;
+        newRally.stateProv = stateProv;
+        newRally.postalCode = postalCode;
+        newRally.contact.name = contactName;
+        newRally.contact.phone = contactPhone;
+        newRally.contact.email = contactEmail;
+        newRally.eventDate = eventDate;
+        newRally.startTime = eventStart;
+        newRally.endTime = eventEnd;
+        newRally.message = eventMessage;
+        newRally.approved = isApproved;
+        newRally.status = eventStatus;
+        newRally.meal.startTime = mealTime;
+        newRally.meal.cost = mealCost;
+        newRally.meal.count = mealCount;
+        newRally.meal.message = mealMessage;
+        newRally.registrations = registrations;
+        newRally.attendees = attendees;
+
+        //now update redux for future use.
+        loadRally(newRally);
+        //now save the newRally data to database
+        async function updateDb() {
+            await fetch(
+                'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/events',
+                {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        operation: 'updateEvent',
+                        payload: {
+                            Item: newRally,
+                        },
+                    }),
+                    headers: {
+                        'Content-type': 'application/json; charset=UTF-8',
+                    },
+                }
+            )
+                .then((response) => response.json())
+                .then((data) => {
+                    const util = require('util');
+                    console.log(
+                        'db data returned: \n' +
+                            util.inspect(data, {
+                                showHidden: false,
+                                depth: null,
+                            })
+                    );
+                });
+        }
+        //next call is to async the above update
+        updateDb();
+        history.push('/serve');
     };
     const handleChange = (e) => {
         const { value, name } = e.target;
@@ -119,7 +182,7 @@ const Serve = ({
                 setStateProv(value);
                 break;
             case 'postalCode':
-                setStateProv(value);
+                setPostalCode(value);
                 break;
             case 'eventDate':
                 setEventDate(value);
@@ -456,6 +519,19 @@ const Serve = ({
                                             name='mealCost'
                                             onChange={handleChange}
                                             value={mealCost}
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor='mealCount'>
+                                            Attendees
+                                        </label>
+                                        <input
+                                            type='number'
+                                            id='mealCount'
+                                            name='mealCount'
+                                            onChange={handleChange}
+                                            value={mealCount}
                                             required
                                         />
                                     </div>

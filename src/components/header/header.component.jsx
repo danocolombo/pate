@@ -3,48 +3,33 @@ import { BiLogInCircle, BiLogOutCircle } from 'react-icons/bi';
 import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Auth } from 'aws-amplify';
-import { AmplifySignOut } from '@aws-amplify/ui-react';
-import CustomButton from '../custom-button/custom-button.component';
-import UserStatusBox from '../user-status-box/userStatusBox.component';
 import './header.styles.scss';
-import { ReactComponent as Logo } from '../../assets/pate-logo-white.svg';
 import { clearUser } from '../../redux/user/user.actions';
 import { clearRegistrations } from '../../redux/registrations/registrations.actions';
 import { clearRally } from '../../redux/pate/pate.actions';
+import { clearStateRep } from '../../redux/stateRep/stateRep.actions';
+import { clearStateLead } from '../../redux/stateLead/stateLead.actions';
 
-const Header = ({ currentUser, clearUser, clearRegistrations, clearRally }) => {
-    // useEffect(() => {
-    //     checkWho();
-    // }, []);
-    // useEffect(() => {
-    //     console.log('refresh nav');
-    // }, [currentUser]);
-
-    // const checkWho = async () => {
-    //     await Auth.currentUserInfo().then((user) => {
-    //         console.log('currentUser:\n' + user?.username);
-    //     });
-    // };
-    // const logoutRequest = async () => {
-    //     console.log('LOGOUT->LOGOUT->LOGOUT');
-    //     try {
-    //         await Auth.signOut();
-    //     } catch (error) {
-    //         console.log('error signing out: ', error);
-    //     }
-    //     clearUser(currentUser);
-    // };
+const Header = ({
+    currentUser,
+    clearUser,
+    clearRegistrations,
+    clearRally,
+    clearStateLead,
+    clearStateRep,
+}) => {
     const history = useHistory();
     const logoutRequest = async () => {
-        console.log('LOGOUT->LOGOUT->LOGOUT');
         try {
             await Auth.signOut();
         } catch (error) {
             console.log('error signing out: ', error);
         }
-        clearUser(currentUser);
+        clearUser();
         clearRegistrations();
         clearRally();
+        clearStateLead();
+        clearStateRep();
         history.push('/');
     };
     return (
@@ -84,9 +69,11 @@ const Header = ({ currentUser, clearUser, clearRegistrations, clearRally }) => {
     );
 };
 const mapDispatchToProps = (dispatch) => ({
-    clearUser: (user) => dispatch(clearUser(user)),
+    clearUser: () => dispatch(clearUser()),
     clearRegistrations: () => dispatch(clearRegistrations()),
     clearRally: () => dispatch(clearRally()),
+    clearStateRep: () => dispatch(clearStateRep()),
+    clearStateLead: () => dispatch(clearStateLead()),
 });
 const mapStateToProps = (state) => ({
     currentUser: state.user.currentUser,
