@@ -16,6 +16,7 @@ const Serve = ({
     pateSystem,
     currentUser,
     rallies,
+    leadRallies,
     loadRally,
     pate,
 }) => {
@@ -68,39 +69,85 @@ const Serve = ({
     useEffect(() => {}, [pateSystem.showSpinner]);
 
     const loadEvent = async () => {
-        //get the event reference
+        //get the event reference.
+        // if the eventID is not in our currentUserRallies,
+        // that means that Lead is viewing. Go to the db
+        // and load into pate.rally
+        //????????????????????????????????????????????????
+        let inRallies = false;
         rallies.forEach((rallyEvent) => {
             if (rallyEvent.uid === eventID) {
-                //-----------------
-                // seave the event to redux
-                loadRally(rallyEvent);
-                //load the useState
-                setEventDate(rallyEvent?.eventDate);
-                setChurchName(rallyEvent?.name);
-                setStreet(rallyEvent?.street);
-                setCity(rallyEvent?.city);
-                setStateProv(rallyEvent?.stateProv);
-                setPostalCode(rallyEvent?.postalCode);
-                setEventStart(rallyEvent?.startTime);
-                setEventEnd(rallyEvent?.endTime);
-                setGraphic(rallyEvent?.graphic);
-                setApproved(rallyEvent?.approved);
-                setContactName(rallyEvent?.contact?.name);
-                setContactEmail(rallyEvent?.contact?.email);
-                setContactPhone(rallyEvent?.contact?.phone);
-                setEventStatus(rallyEvent?.status);
-                setEventMessage(rallyEvent?.message);
-                setRepName(rallyEvent?.coordinator?.name);
-                setRepEmail(rallyEvent?.coordinator?.email);
-                setRepPhone(rallyEvent?.coordinator?.phone);
-                setMealTime(rallyEvent?.meal?.startTime);
-                setMealCost(rallyEvent?.meal?.cost);
-                setMealCount(rallyEvent?.meal?.count);
-                setMealMessage(rallyEvent?.meal?.message);
-                setAttendees(rallyEvent?.attendees);
-                setRegistrations(rallyEvent?.registrations);
+                inRallies = true;
             }
         });
+        if (inRallies) {
+            rallies.forEach((rallyEvent) => {
+                if (rallyEvent.uid === eventID) {
+                    //-----------------
+                    // seave the event to redux
+                    loadRally(rallyEvent);
+                    //load the useState
+                    setEventDate(rallyEvent?.eventDate);
+                    setChurchName(rallyEvent?.name);
+                    setStreet(rallyEvent?.street);
+                    setCity(rallyEvent?.city);
+                    setStateProv(rallyEvent?.stateProv);
+                    setPostalCode(rallyEvent?.postalCode);
+                    setEventStart(rallyEvent?.startTime);
+                    setEventEnd(rallyEvent?.endTime);
+                    setGraphic(rallyEvent?.graphic);
+                    setApproved(rallyEvent?.approved);
+                    setContactName(rallyEvent?.contact?.name);
+                    setContactEmail(rallyEvent?.contact?.email);
+                    setContactPhone(rallyEvent?.contact?.phone);
+                    setEventStatus(rallyEvent?.status);
+                    setEventMessage(rallyEvent?.message);
+                    setRepName(rallyEvent?.coordinator?.name);
+                    setRepEmail(rallyEvent?.coordinator?.email);
+                    setRepPhone(rallyEvent?.coordinator?.phone);
+                    setMealTime(rallyEvent?.meal?.startTime);
+                    setMealCost(rallyEvent?.meal?.cost);
+                    setMealCount(rallyEvent?.meal?.count);
+                    setMealMessage(rallyEvent?.meal?.message);
+                    setAttendees(rallyEvent?.attendees);
+                    setRegistrations(rallyEvent?.registrations);
+                }
+            });
+        } else {
+            // go get the rally from staterep leadRallies
+            leadRallies.forEach((rallyEvent) => {
+                if (rallyEvent.uid === eventID) {
+                    //-----------------
+                    // seave the event to redux
+                    loadRally(rallyEvent);
+                    //load the useState
+                    setEventDate(rallyEvent?.eventDate);
+                    setChurchName(rallyEvent?.name);
+                    setStreet(rallyEvent?.street);
+                    setCity(rallyEvent?.city);
+                    setStateProv(rallyEvent?.stateProv);
+                    setPostalCode(rallyEvent?.postalCode);
+                    setEventStart(rallyEvent?.startTime);
+                    setEventEnd(rallyEvent?.endTime);
+                    setGraphic(rallyEvent?.graphic);
+                    setApproved(rallyEvent?.approved);
+                    setContactName(rallyEvent?.contact?.name);
+                    setContactEmail(rallyEvent?.contact?.email);
+                    setContactPhone(rallyEvent?.contact?.phone);
+                    setEventStatus(rallyEvent?.status);
+                    setEventMessage(rallyEvent?.message);
+                    setRepName(rallyEvent?.coordinator?.name);
+                    setRepEmail(rallyEvent?.coordinator?.email);
+                    setRepPhone(rallyEvent?.coordinator?.phone);
+                    setMealTime(rallyEvent?.meal?.startTime);
+                    setMealCost(rallyEvent?.meal?.cost);
+                    setMealCount(rallyEvent?.meal?.count);
+                    setMealMessage(rallyEvent?.meal?.message);
+                    setAttendees(rallyEvent?.attendees);
+                    setRegistrations(rallyEvent?.registrations);
+                }
+            });
+        }
     };
 
     const handleSubmitClick = (event) => {
@@ -602,6 +649,7 @@ const mapStateToProps = (state) => ({
     pateSystem: state.pate,
     currentUser: state.user.currentUser,
     rallies: state.stateRep.rally,
+    leadRallies: state.stateLead.rally,
 });
 export default compose(
     withRouter,

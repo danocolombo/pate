@@ -1,15 +1,20 @@
 .event-list-header {
     text-align: center;
     font-weight: bold;
-    font-size: 1.3em;
-    color: white;
+    font-size: 1.4em;
+    color: black;
     // width: 80%;
     margin: 3px 0 0 0;
     padding: 5px 0px;
+    text-shadow: 1px 1px 0px pink;
 }
 .event-list-item {
     margin: 3px 0;
 }
+.stateleadintro {
+    padding: 0 15px 20px 15px;
+}
+
 .sr-rally-list-item {
     margin: 0 20px 10px 20px;
 }
@@ -22,7 +27,11 @@
 }
 .sr-rally-link {
     text-decoration: none;
-    &:focus, &:hover, &:visited, &:link, &:active {
+    &:focus,
+    &:hover,
+    &:visited,
+    &:link,
+    &:active {
         text-decoration: none;
         color: white;
     }
