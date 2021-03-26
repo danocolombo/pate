@@ -10,8 +10,9 @@ import './header.styles.scss';
 import { ReactComponent as Logo } from '../../assets/pate-logo-white.svg';
 import { clearUser } from '../../redux/user/user.actions';
 import { clearRegistrations } from '../../redux/registrations/registrations.actions';
+import { clearRally } from '../../redux/pate/pate.actions';
 
-const Header = ({ currentUser, clearUser }) => {
+const Header = ({ currentUser, clearUser, clearRegistrations, clearRally }) => {
     // useEffect(() => {
     //     checkWho();
     // }, []);
@@ -43,6 +44,7 @@ const Header = ({ currentUser, clearUser }) => {
         }
         clearUser(currentUser);
         clearRegistrations();
+        clearRally();
         history.push('/');
     };
     return (
@@ -83,6 +85,8 @@ const Header = ({ currentUser, clearUser }) => {
 };
 const mapDispatchToProps = (dispatch) => ({
     clearUser: (user) => dispatch(clearUser(user)),
+    clearRegistrations: () => dispatch(clearRegistrations()),
+    clearRally: () => dispatch(clearRally()),
 });
 const mapStateToProps = (state) => ({
     currentUser: state.user.currentUser,

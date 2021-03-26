@@ -20,3 +20,10 @@
 .sr-rally-location {
     display: inline-block;
 }
+.sr-rally-link {
+    text-decoration: none;
+    &:focus, &:hover, &:visited, &:link, &:active {
+        text-decoration: none;
+        color: white;
+    }
+}

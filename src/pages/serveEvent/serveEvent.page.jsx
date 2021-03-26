@@ -7,6 +7,7 @@ import './serveEvent.styles.scss';
 import Header from '../../components/header/header.component';
 import Spinner from '../../components/spinner/Spinner';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
+import { loadRally } from '../../redux/pate/pate.actions';
 const Serve = ({
     setSpinner,
     clearSpinner,
@@ -14,6 +15,7 @@ const Serve = ({
     pateSystem,
     currentUser,
     rallies,
+    loadRally
 }) => {
     let eventID = match.params.id;
     console.log('serveEvent: ' + eventID);
@@ -50,6 +52,7 @@ const Serve = ({
     useEffect(() => {
         //get the reference to the current event and load to useState
         loadEvent();
+        
     }, []);
 
     useEffect(() => {}, [pateSystem.showSpinner]);
@@ -58,6 +61,9 @@ const Serve = ({
         //get the event reference
         rallies.forEach((rallyEvent) => {
             if (rallyEvent.uid === eventID) {
+                //-----------------
+                // seave the event to redux 
+                loadRally(rallyEvent);
                 //load the useState
                 setEventDate(rallyEvent?.eventDate);
                 setChurchName(rallyEvent?.location?.name);
@@ -452,6 +458,7 @@ const mapDispatchToProps = (dispatch) => ({
     // setCurrentUser: (user) => dispatch(setCurrentUser(user)),
     setSpinner: () => dispatch(setSpinner()),
     clearSpinner: () => dispatch(clearSpinner()),
+    loadRally: (rally) => dispatch(loadRally(rally)),
 });
 const mapStateToProps = (state) => ({
     pateSystem: state.pate,

@@ -8,6 +8,7 @@ import './registration.styles.scss';
 import Header from '../../components/header/header.component';
 import Spinner from '../../components/spinner/Spinner';
 import { addRegistration } from '../../redux/registrations/registrations.actions';
+import { loadRally } from '../../redux/pate/pate.actions';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 const EventRegistration = ({
     setSpinner,
@@ -16,6 +17,7 @@ const EventRegistration = ({
     pateSystem,
     currentUser,
     addRegistration,
+    loadRally,
 }) => {
     // const [plan, setPlan] = useState([]);
     const [attendeeCount, setAttendeeCount] = useState(1);
@@ -70,11 +72,13 @@ const EventRegistration = ({
                     .then((response) => response.json())
                     .then((data) => {
                         const details = data?.body?.Items[0];
-
+                        loadRally(details);
                         setTheEvent({ ...theEvent, details });
                     });
             }
             getTheEvent();
+            // async function rallyToRedux() {loadRally(theEvent);}
+            // rallyToRedux();
         }
     }, []);
 
@@ -514,6 +518,7 @@ const mapDispatchToProps = (dispatch) => ({
     setSpinner: () => dispatch(setSpinner()),
     clearSpinner: () => dispatch(clearSpinner()),
     addRegistration: (registration) => dispatch(addRegistration(registration)),
+    loadRally: (rally) => dispatch(loadRally(rally)),
 });
 const mapStateToProps = (state) => ({
     pateSystem: state.pate,
