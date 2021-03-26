@@ -15,7 +15,7 @@ const Serve = ({
     pateSystem,
     currentUser,
     rallies,
-    loadRally
+    loadRally,
 }) => {
     let eventID = match.params.id;
     console.log('serveEvent: ' + eventID);
@@ -29,7 +29,7 @@ const Serve = ({
     const [eventStart, setEventStart] = useState('');
     const [eventEnd, setEventEnd] = useState('');
     const [graphic, setGraphic] = useState('');
-    const [isApproved, setApproval] = useState(false);
+    const [isApproved, setApproved] = useState(false);
 
     const [contactName, setContactName] = useState('');
     const [contactEmail, setContactEmail] = useState('');
@@ -47,12 +47,19 @@ const Serve = ({
     const [registrations, setRegistrations] = useState(0);
 
     const history = useHistory();
+    const STATUS_VALUE = [
+        'Draft',
+        'Pending',
+        'Rejected',
+        'Available',
+        'Offered',
+        'Archived',
+    ];
 
     const util = require('util');
     useEffect(() => {
         //get the reference to the current event and load to useState
         loadEvent();
-        
     }, []);
 
     useEffect(() => {}, [pateSystem.showSpinner]);
@@ -62,7 +69,7 @@ const Serve = ({
         rallies.forEach((rallyEvent) => {
             if (rallyEvent.uid === eventID) {
                 //-----------------
-                // seave the event to redux 
+                // seave the event to redux
                 loadRally(rallyEvent);
                 //load the useState
                 setEventDate(rallyEvent?.eventDate);
@@ -74,7 +81,7 @@ const Serve = ({
                 setEventStart(rallyEvent?.startTime);
                 setEventEnd(rallyEvent?.endTime);
                 setGraphic(rallyEvent?.graphic);
-                setApproval(rallyEvent?.approved);
+                setApproved(rallyEvent?.approved);
                 setContactName(rallyEvent?.contact?.name);
                 setContactEmail(rallyEvent?.contact?.email);
                 setContactPhone(rallyEvent?.contact?.phone);
@@ -126,8 +133,8 @@ const Serve = ({
             case 'graphicFile':
                 setGraphic(value);
                 break;
-            case 'approval':
-                setApproval(value);
+            case 'isApproved':
+                setApproved(!isApproved);
                 break;
             case 'eventStatus':
                 setEventStatus(value);
@@ -347,27 +354,82 @@ const Serve = ({
                                         <label htmlFor='isApproved'>
                                             Approved
                                         </label>
-                                        <input
-                                            type='checkbox'
-                                            id='isApproved'
-                                            name='isApproved'
-                                            onChange={handleChange}
-                                            value={isApproved}
-                                            required
-                                        />
+                                        {currentUser?.stateLead ? (
+                                            //this is LEAD
+                                            isApproved ? (
+                                                <input
+                                                    type='checkbox'
+                                                    id='isApproved'
+                                                    name='isApproved'
+                                                    checked
+                                                    onClick={handleChange}
+                                                    value='true'
+                                                />
+                                            ) : (
+                                                <input
+                                                    type='checkbox'
+                                                    id='isApproved'
+                                                    name='isApproved'
+                                                    value='true'
+                                                    onClick={handleChange}
+                                                />
+                                            )
+                                        ) : //this is REP
+                                        isApproved ? (
+                                            <input
+                                                type='checkbox'
+                                                id='isApproved'
+                                                name='isApproved'
+                                                checked
+                                                value='true'
+                                                readOnly='true'
+                                            />
+                                        ) : (
+                                            <input
+                                                type='checkbox'
+                                                id='isApproved'
+                                                name='isApproved'
+                                                value='true'
+                                            />
+                                        )}
                                     </div>
                                     <div>
-                                        <label htmlFor='eventStatus'>
+                                        <label
+                                            htmlFor='eventStatus'
+                                            className='sr-event-status-label'
+                                        >
                                             Status
+                                            <span className='sr-event-status-tooltip'>
+                                                Contact your lead for changes
+                                            </span>
                                         </label>
-                                        <input
+
+                                        <select
                                             type='text'
                                             id='eventStatus'
                                             name='eventStatus'
-                                            onChange={handleChange}
                                             value={eventStatus}
-                                            required
-                                        />
+                                            onChange={handleChange}
+                                        >
+                                            <option value='draft'>
+                                                {STATUS_VALUE[0]}
+                                            </option>
+                                            <option value='pending'>
+                                                {STATUS_VALUE[1]}
+                                            </option>
+                                            <option value='rejected'>
+                                                {STATUS_VALUE[2]}
+                                            </option>
+                                            <option value='available'>
+                                                {STATUS_VALUE[3]}
+                                            </option>
+                                            <option value='offered'>
+                                                {STATUS_VALUE[4]}
+                                            </option>
+                                            <option value='archived'>
+                                                {STATUS_VALUE[5]}
+                                            </option>
+                                        </select>
                                     </div>
                                     {/** meal info */}
                                     <div className='meal-header'>
