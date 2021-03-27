@@ -61,6 +61,7 @@ const UserRegistrationOverview = ({
         <>
             <div className='userregistrationswrapper'>
                 <div className='tablewrapper'>
+                    { registrations ? (
                     <table className='registrationtable'>
                         {registrations.map((r) => (
                             <tr>
@@ -72,8 +73,8 @@ const UserRegistrationOverview = ({
                                         {dateToDisplay(r.eventDate)}
                                     </StyledLink>
                                 </td>
-                                <td className='eventname'>{r?.name}</td>
-                                <td className='eventlocation'>{r?.city}</td>
+                                <td className='eventname'>{r?.locationName}</td>
+                                <td className='eventlocation'>{r?.locationCity}</td>
                                 <td className='cancelButton'>
                                     <Link
                                         onClick={() => {
@@ -85,7 +86,7 @@ const UserRegistrationOverview = ({
                                 </td>
                             </tr>
                         ))}
-                    </table>
+                    </table>):null};
                 </div>
             </div>
         </>

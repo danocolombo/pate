@@ -20,6 +20,7 @@ const EventRegistration = ({
     loadRally,
 }) => {
     // const [plan, setPlan] = useState([]);
+    const [isEdit, setIsEdit] = useState(false);
     const [attendeeCount, setAttendeeCount] = useState(1);
     const [mealCount, setMealCount] = useState(0);
     const [firstName, setFirstName] = useState(currentUser?.firstName);
@@ -50,6 +51,7 @@ const EventRegistration = ({
             regCheck = id.substring(0, 3);
             if (regCheck === 'REG') {
                 id = id.slice(3);
+                setIsEdit(true);
             }
             // const regCheck = id.subString(0,3);
             // console.log("check:" + regCheck);
@@ -79,6 +81,7 @@ const EventRegistration = ({
             getTheEvent();
             // async function rallyToRedux() {loadRally(theEvent);}
             // rallyToRedux();
+            console.log('isEdit: ' + isEdit);
         }
     }, []);
 
@@ -497,12 +500,30 @@ const EventRegistration = ({
                                         />
                                     </div>
                                     <div>
-                                        <button
-                                            className='registerbutton'
-                                            onClick={handleRegisterRequest}
-                                        >
-                                            Register
-                                        </button>
+                                        {isEdit ? (
+                                            <>
+                                            <button
+                                                className='registerbutton'
+                                                onClick={handleRegisterRequest}
+                                            >
+                                                Update
+                                            </button>
+                                            <button
+                                                className='registerbutton'
+                                                onClick={() => history.push('/profile')}
+                                            >
+                                                Cancel
+                                            </button>
+                                            </>
+                                            
+                                        ):(
+                                            <button
+                                                className='registerbutton'
+                                                onClick={handleRegisterRequest}
+                                            >
+                                                Register
+                                            </button>
+                                        )}
                                     </div>
                                 </div>
                             </form>

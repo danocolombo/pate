@@ -25,11 +25,14 @@ const Header = ({
         } catch (error) {
             console.log('error signing out: ', error);
         }
-        clearUser();
-        clearRegistrations();
-        clearRally();
-        clearStateLead();
-        clearStateRep();
+        async function logoffUser() {
+            clearUser();
+            clearRegistrations();
+            clearRally();
+            clearStateLead();
+            clearStateRep();
+        };
+        logoffUser();
         history.push('/');
     };
     return (
@@ -45,14 +48,14 @@ const Header = ({
                         <ul className='main-nav__items'>
                             {currentUser?.stateRep || currentUser?.stateLead ? (
                                 <li className='main-nav__item'>
-                                    <Link to='/serve'>SERVE</Link>
+                                    <Link to='/serve' className='main-navigation-button'>SERVE</Link>
                                 </li>
                             ) : null}
                             <li className='main-nav__item'>
-                                <Link to='/profile'>PROFILE</Link>
+                                <Link to='/profile' className='main-navigation-button'>PROFILE</Link>
                             </li>
                             <li className='main-nav__item'>
-                                <Link onClick={logoutRequest}>LOGOUT</Link>
+                                <Link onClick={logoutRequest} className='main-navigation-button'>LOGOUT</Link>
                             </li>
                         </ul>
                     ) : (

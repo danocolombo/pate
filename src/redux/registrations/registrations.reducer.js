@@ -5,14 +5,13 @@ import {
 } from './registrations.utils';
 
 const INITIAL_STATE = {
-    registration: null,
+    tempRegistration: null,
     confirmed: [],
     loading: false,
     error: {},
 };
 
 const registrationsReducer = (state = INITIAL_STATE, action) => {
-    console.log('____________IN REDUCER: ' + action.type);
     switch (action.type) {
         case RegistrationsActionTypes.LOAD_REGISTRATIONS:
             return {
@@ -37,6 +36,16 @@ const registrationsReducer = (state = INITIAL_STATE, action) => {
                     action.payload
                 ),
             };
+            case RegistrationsActionTypes.LOAD_TEMP_REGISTRATION:
+                return {
+                    ...state,
+                    tempRegisration: action.payload,
+                };
+            case RegistrationsActionTypes.CLEAR_TEMP_REGISTRATION:
+                return {
+                    ...state,
+                    tempRegisration: null
+                };
         default:
             return state;
     }

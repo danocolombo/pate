@@ -40,6 +40,7 @@ const RegistrationDetails = ({
     useEffect(() => {
         //if the id is REG, then we need to get registration.
         console.log('REGISTRATION-DETAILS-COMPONENT::id = ' + uid);
+        
     }, []);
     //get data ready to display
     const displayThis = theEvent?.body?.Items[0];
@@ -145,13 +146,12 @@ const RegistrationDetails = ({
             startTime: displayThis?.startTime,
             endTime: displayThis?.endTime,
             eid: displayThis?.uid,
-            location: {
-                name: displayThis?.name,
-                street: displayThis?.street,
-                city: displayThis?.city,
-                stateProv: displayThis?.stateProv,
-                postalCode: displayThis?.postalCode,
-            },
+            locationName: displayThis?.name,
+            locationStreet: displayThis?.street,
+            locationCity: displayThis?.city,
+            locationStateProv: displayThis?.stateProv,
+            locationPostalCode: displayThis?.postalCode,
+            
             rid: registrarId,
             registrar: {
                 firstName: firstName,
@@ -231,6 +231,7 @@ const RegistrationDetails = ({
                         alt='CR P8 Rally'
                     ></img>
                 </div>
+                
                 {/* border-box layout for date & time */}
                 {/* FLOAT LEFT */}
                 <div className='eventbox' id='eventbox-location'>
@@ -292,7 +293,7 @@ const RegistrationDetails = ({
                                 )}
                             </div>
                             <div className='profilehomesection'>
-                                Contact Information
+                                Contact - Information
                             </div>
                             <div className='attendee-identity-wrapper'>
                                 <div>

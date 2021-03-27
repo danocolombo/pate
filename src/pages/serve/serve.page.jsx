@@ -114,7 +114,7 @@ const Serve = ({
             <div className='servepagewrapper'>
                 <div className='serve-pageheader'>Principle 8 Service</div>
                 <div className='servedetailswrapper'>
-                    <div className='message-box'>
+                    <div className='serve-page-message-box'>
                         This page allows you to coordinate events, as well as
                         manage and review details.
                     </div>

@@ -53,6 +53,10 @@
     width: calc(100% - 75px);
     vertical-align: middle;
 }
+.main-navigation-button {
+    // background-color: lightgray;
+    color: white;
+}
 .main-nav__items {
     margin: 0;
     padding: 0;
@@ -67,6 +71,11 @@
     text-decoration: none;
     color: white;
     font-weight: bold;
+
+    // &:hover {
+    //     text-decoration: none;
+    //     background-color: lightgray;
+    // }
     // font-family: 'Abril Fatface', cursive;
 }
 

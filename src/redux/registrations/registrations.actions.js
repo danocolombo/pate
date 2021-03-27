@@ -17,3 +17,12 @@ export const clearRegistrations = () => ({
     type: RegistrationsActionTypes.CLEAR_REGISTRATIONS,
     payload: null,
 });
+
+export const loadTempRegistration = (rally) => ({
+    type: RegistrationsActionTypes.LOAD_TEMP_REGISTRATION,
+    payload: rally,
+});
+export const clearTempRegistration = () => ({
+    type: RegistrationsActionTypes.CLEAR_TEMP_REGISTRATION,
+    payload: null,
+});

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
+import { useHistory } from 'react-router-dom';
 import { withAuthenticator } from '@aws-amplify/ui-react';
 
 import './profile.styles.scss';
@@ -11,11 +12,10 @@ import PersonalProfile from '../../components/profile/profile.component';
 import UserRegistrationOverview from '../../components/userregistrationsoverview/userregistrationsoverview.component';
 
 const UserProfile = ({ currentUser, pateSystem }) => {
+    const history = useHistory();
     useEffect(() => {
-        if (currentUser.isLoggedIn) {
-            console.log('INININININININ');
-        } else {
-            console.log('NONONONONONONO');
+        if (!currentUser.isLoggedIn) {
+            history.push('/');
         }
     }, []);
     // render() {
