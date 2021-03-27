@@ -36,16 +36,18 @@ const registrationsReducer = (state = INITIAL_STATE, action) => {
                     action.payload
                 ),
             };
-            case RegistrationsActionTypes.LOAD_TEMP_REGISTRATION:
-                return {
-                    ...state,
-                    tempRegisration: action.payload,
-                };
-            case RegistrationsActionTypes.CLEAR_TEMP_REGISTRATION:
-                return {
-                    ...state,
-                    tempRegisration: null
-                };
+        case RegistrationsActionTypes.LOAD_TEMP_REGISTRATION:
+            console.log('we made it to the reducer (LOAD_TEMP_REGISTRATION)');
+            return {
+                ...state,
+                tempRegistration: action.payload,
+            };
+        case RegistrationsActionTypes.CLEAR_TEMP_REGISTRATION:
+            console.log('we made it to the reducer (CLEAR_TEMP_REGISTRATION)');
+            return {
+                ...state,
+                tempRegistration: null,
+            };
         default:
             return state;
     }

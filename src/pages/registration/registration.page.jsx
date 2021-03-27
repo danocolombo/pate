@@ -7,7 +7,11 @@ import { withRouter } from 'react-router';
 import './registration.styles.scss';
 import Header from '../../components/header/header.component';
 import Spinner from '../../components/spinner/Spinner';
-import { addRegistration } from '../../redux/registrations/registrations.actions';
+import {
+    addRegistration,
+    loadTempRegistration,
+    clearTempRegistration,
+} from '../../redux/registrations/registrations.actions';
 import { loadRally } from '../../redux/pate/pate.actions';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 const EventRegistration = ({
@@ -16,7 +20,10 @@ const EventRegistration = ({
     match,
     pateSystem,
     currentUser,
+    registrations,
     addRegistration,
+    loadTempRegistration,
+    clearTempRegistration,
     loadRally,
 }) => {
     // const [plan, setPlan] = useState([]);
@@ -46,11 +53,12 @@ const EventRegistration = ({
         //means that the request is to get a registration already
         //saved.
         let regCheck = '';
-
+        let weAreEditting = false;
         if (id.length > 3) {
             regCheck = id.substring(0, 3);
             if (regCheck === 'REG') {
                 id = id.slice(3);
+                weAreEditting = true;
                 setIsEdit(true);
             }
             // const regCheck = id.subString(0,3);
@@ -79,11 +87,58 @@ const EventRegistration = ({
                     });
             }
             getTheEvent();
-            // async function rallyToRedux() {loadRally(theEvent);}
-            // rallyToRedux();
-            console.log('isEdit: ' + isEdit);
+            async function preClean() {
+                clearTempRegistration();
+            }
+            preClean();
+            if (weAreEditting) {
+                //copy registrations.confirmed to registrations.tempRegistration
+                registrations.confirmed.forEach((reg) => {
+                    if (reg.eid === id) {
+                        async function copyReg() {
+                            loadTempRegistration(reg);
+                        }
+                        copyReg();
+                    }
+                });
+            }
         }
     }, []);
+    useEffect(() => {
+        //when we get tempRegistation, load state
+        console.log('USE_EFFECT for registrations.tempRegistration');
+        if (registrations.tempRegistration) {
+            setAttendeeCount(registrations.tempRegistration?.attendeeCount);
+            setMealCount(registrations.tempRegistration?.mealCount);
+            setFirstName(registrations.tempRegistration?.registrar.firstName);
+            setLastName(registrations.tempRegistration?.registrar.lastName);
+            setEmail(registrations.tempRegistration?.registrar.email);
+            setPhone(registrations.tempRegistration?.registrar.phone);
+            setHomeStreet(
+                registrations.tempRegistration?.registrar.residence.street
+            );
+            setHomeCity(
+                registrations.tempRegistration?.registrar.residence.city
+            );
+            setHomeState(
+                registrations.tempRegistration?.registrar.residence.stateProv
+            );
+            setHomePostalCode(
+                registrations.tempRegistration?.registrar.residence.postalCode
+            );
+        } else {
+            setAttendeeCount(1);
+            setMealCount(0);
+            setFirstName('');
+            setLastName('');
+            setEmail('');
+            setPhone('');
+            setHomeStreet('');
+            setHomeCity('');
+            setHomeState('');
+            setHomePostalCode('');
+        }
+    }, [registrations.tempRegistration]);
 
     useEffect(() => {}, [pateSystem.showSpinner]);
     const displayDate = () => {
@@ -123,6 +178,13 @@ const EventRegistration = ({
         } else {
             return null;
         }
+    };
+    const handleCancel = (e) => {
+        async function purgeTempReg() {
+            clearTempRegistration();
+        }
+        purgeTempReg();
+        history.push('/profile');
     };
     const handleChange = (e) => {
         const { value, name } = e.target;
@@ -502,21 +564,22 @@ const EventRegistration = ({
                                     <div>
                                         {isEdit ? (
                                             <>
-                                            <button
-                                                className='registerbutton'
-                                                onClick={handleRegisterRequest}
-                                            >
-                                                Update
-                                            </button>
-                                            <button
-                                                className='registerbutton'
-                                                onClick={() => history.push('/profile')}
-                                            >
-                                                Cancel
-                                            </button>
+                                                <button
+                                                    className='registerbutton'
+                                                    onClick={
+                                                        handleRegisterRequest
+                                                    }
+                                                >
+                                                    Update
+                                                </button>
+                                                <button
+                                                    className='registerbutton'
+                                                    onClick={handleCancel}
+                                                >
+                                                    Cancel
+                                                </button>
                                             </>
-                                            
-                                        ):(
+                                        ) : (
                                             <button
                                                 className='registerbutton'
                                                 onClick={handleRegisterRequest}
@@ -540,10 +603,13 @@ const mapDispatchToProps = (dispatch) => ({
     clearSpinner: () => dispatch(clearSpinner()),
     addRegistration: (registration) => dispatch(addRegistration(registration)),
     loadRally: (rally) => dispatch(loadRally(rally)),
+    loadTempRegistration: (reg) => dispatch(loadTempRegistration(reg)),
+    clearTempRegistration: () => dispatch(clearTempRegistration()),
 });
 const mapStateToProps = (state) => ({
     pateSystem: state.pate,
     currentUser: state.user.currentUser,
+    registrations: state.registrations,
 });
 export default compose(
     withRouter,

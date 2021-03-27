@@ -8,7 +8,10 @@ import CustomButton from '../../components/custom-button/custom-button.component
 import Header from '../../components/header/header.component';
 import Spinner from '../../components/spinner/Spinner';
 //----- actions needed -------
-import { loadRegistrations } from '../../redux/registrations/registrations.actions';
+import {
+    loadRegistrations,
+    clearTempRegistration,
+} from '../../redux/registrations/registrations.actions';
 import { setCurrentUser } from '../../redux/user/user.actions';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import './signin.styles.scss';
@@ -19,6 +22,7 @@ const SignIn = ({
     setSpinner,
     clearSpinner,
     loadRegistrations,
+    clearTempRegistration,
     pateSystem,
     currentUser,
 }) => {
@@ -71,6 +75,8 @@ const SignIn = ({
             });
             await saveUser(currentUserInfo, currentSession);
             await getRegistrations(currentUserInfo.attributes.sub);
+            //generic cleanup
+            await clearTempRegistration();
 
             clearSpinner();
             history.push('/');
@@ -306,6 +312,7 @@ const mapDispatchToProps = (dispatch) => ({
     clearSpinner: () => dispatch(clearSpinner()),
     loadRegistrations: (registrations) =>
         dispatch(loadRegistrations(registrations)),
+    clearTempRegistration: () => dispatch(clearTempRegistration),
 });
 const mapStateToProps = (state) => ({
     pateSystem: state.pate,

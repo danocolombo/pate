@@ -5,7 +5,10 @@ import { connect } from 'react-redux';
 import { Auth } from 'aws-amplify';
 import './header.styles.scss';
 import { clearUser } from '../../redux/user/user.actions';
-import { clearRegistrations } from '../../redux/registrations/registrations.actions';
+import {
+    clearRegistrations,
+    clearTempRegistration,
+} from '../../redux/registrations/registrations.actions';
 import { clearRally } from '../../redux/pate/pate.actions';
 import { clearStateRep } from '../../redux/stateRep/stateRep.actions';
 import { clearStateLead } from '../../redux/stateLead/stateLead.actions';
@@ -14,6 +17,7 @@ const Header = ({
     currentUser,
     clearUser,
     clearRegistrations,
+    clearTempRegistration,
     clearRally,
     clearStateLead,
     clearStateRep,
@@ -28,10 +32,11 @@ const Header = ({
         async function logoffUser() {
             clearUser();
             clearRegistrations();
+            clearTempRegistration();
             clearRally();
             clearStateLead();
             clearStateRep();
-        };
+        }
         logoffUser();
         history.push('/');
     };
@@ -48,14 +53,29 @@ const Header = ({
                         <ul className='main-nav__items'>
                             {currentUser?.stateRep || currentUser?.stateLead ? (
                                 <li className='main-nav__item'>
-                                    <Link to='/serve' className='main-navigation-button'>SERVE</Link>
+                                    <Link
+                                        to='/serve'
+                                        className='main-navigation-button'
+                                    >
+                                        SERVE
+                                    </Link>
                                 </li>
                             ) : null}
                             <li className='main-nav__item'>
-                                <Link to='/profile' className='main-navigation-button'>PROFILE</Link>
+                                <Link
+                                    to='/profile'
+                                    className='main-navigation-button'
+                                >
+                                    PROFILE
+                                </Link>
                             </li>
                             <li className='main-nav__item'>
-                                <Link onClick={logoutRequest} className='main-navigation-button'>LOGOUT</Link>
+                                <Link
+                                    onClick={logoutRequest}
+                                    className='main-navigation-button'
+                                >
+                                    LOGOUT
+                                </Link>
                             </li>
                         </ul>
                     ) : (
@@ -74,6 +94,7 @@ const Header = ({
 const mapDispatchToProps = (dispatch) => ({
     clearUser: () => dispatch(clearUser()),
     clearRegistrations: () => dispatch(clearRegistrations()),
+    clearTempRegistration: () => dispatch(clearTempRegistration()),
     clearRally: () => dispatch(clearRally()),
     clearStateRep: () => dispatch(clearStateRep()),
     clearStateLead: () => dispatch(clearStateLead()),
