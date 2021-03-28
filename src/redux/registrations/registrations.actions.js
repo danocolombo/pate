@@ -26,3 +26,19 @@ export const clearTempRegistration = () => ({
     type: RegistrationsActionTypes.CLEAR_TEMP_REGISTRATION,
     payload: null,
 });
+export const loadEventRegistrations = (registrations) => ({
+    type: RegistrationsActionTypes.LOAD_EVENT_REGISTRATIONS,
+    payload: registrations,
+});
+export const clearEventRegistrations = () => ({
+    type: RegistrationsActionTypes.CLEAR_EVENT_REGISTRATIONS,
+    payload: null,
+});
+export const addEventRegistration = (registration) => ({
+    type: RegistrationsActionTypes.ADD_EVENT_REGISTRATION,
+    payload: registration,
+});
+export const removeEventRegistration = () => ({
+    type: RegistrationsActionTypes.REMOVE_EVENT_REGISTRATION,
+    payload: null,
+});

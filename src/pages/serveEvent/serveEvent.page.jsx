@@ -20,7 +20,7 @@ const Serve = ({
     loadRally,
     pate,
 }) => {
-    let eventID = match.params.id;
+    let eventID = match?.params?.id;
     console.log('serveEvent: ' + eventID);
     // const [plan, setPlan] = useState([]);
     const [churchName, setChurchName] = useState('');

@@ -1,12 +1,13 @@
 import { RegistrationsActionTypes } from './registrations.types';
 import {
-    addItemToConfirmed,
-    removeItemFromConfirmed,
+    addItemToRegistrations,
+    removeItemFromRegistrations,
 } from './registrations.utils';
 
 const INITIAL_STATE = {
     tempRegistration: null,
     confirmed: [],
+    eventRegistrations: [],
     loading: false,
     error: {},
 };
@@ -26,27 +27,48 @@ const registrationsReducer = (state = INITIAL_STATE, action) => {
         case RegistrationsActionTypes.ADD_REGISTRATION:
             return {
                 ...state,
-                confirmed: addItemToConfirmed(state.confirmed, action.payload),
+                confirmed: addItemToRegistrations(state.confirmed, action.payload),
             };
         case RegistrationsActionTypes.REMOVE_REGISTRATION:
             return {
                 ...state,
-                confirmed: removeItemFromConfirmed(
+                confirmed: removeItemFromRegistrations(
                     state.confirmed,
                     action.payload
                 ),
             };
         case RegistrationsActionTypes.LOAD_TEMP_REGISTRATION:
-            console.log('we made it to the reducer (LOAD_TEMP_REGISTRATION)');
             return {
                 ...state,
                 tempRegistration: action.payload,
             };
         case RegistrationsActionTypes.CLEAR_TEMP_REGISTRATION:
-            console.log('we made it to the reducer (CLEAR_TEMP_REGISTRATION)');
             return {
                 ...state,
                 tempRegistration: null,
+            };
+        case RegistrationsActionTypes.LOAD_EVENT_REGISTRATIONS:
+            return {
+                ...state,
+                eventRegistrations: action.payload,
+            };
+        case RegistrationsActionTypes.CLEAR_EVENT_REGISTRATIONS:
+            return {
+                ...state,
+                eventRegistrations: null,
+            };
+        case RegistrationsActionTypes.ADD_EVENT_REGISTRATION:
+            return {
+                ...state,
+                eventRegistrations: addItemToRegistrations(state.eventRegistrations, action.payload),
+            };
+        case RegistrationsActionTypes.REMOVE_EVENT_REGISTRATION:
+            return {
+                ...state,
+                confirmed: removeItemFromRegistrations(
+                    state.eventRegistrations,
+                    action.payload
+                ),
             };
         default:
             return state;

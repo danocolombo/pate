@@ -1,4 +1,4 @@
-export const addItemToConfirmed = (registrations, registrationToAdd) => {
+export const addItemToRegistrations = (registrations, registrationToAdd) => {
     const existingRegistrations = registrations.find(
         (registration) => registration.uid === registrationToAdd.uid
     );
@@ -12,22 +12,11 @@ export const addItemToConfirmed = (registrations, registrationToAdd) => {
     }
     return [...registrations, { ...registrationToAdd }];
 };
-// export const addItemToCart = (cartItems, cartItemToAdd) => {
-//   const existingCartItem = cartItems.find(
-//     cartItem => cartItem.id === cartItemToAdd.id
-//   );
 
-//   if (existingCartItem) {
-//     return cartItems.map(cartItem =>
-//       cartItem.id === cartItemToAdd.id
-//         ? { ...cartItem, quantity: cartItem.quantity + 1 }
-//         : cartItem
-//     );
-//   }
-
-//   return [...cartItems, { ...cartItemToAdd, quantity: 1 }];
-// };
-export const removeItemFromConfirmed = (
+//----------------------------------------
+// remove registration from user confirmed
+//----------------------------------------
+export const removeItemFromRegistrations = (
     registrations,
     registrationToRemove
 ) => {
