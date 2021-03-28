@@ -6,8 +6,13 @@ import { withRouter } from 'react-router';
 import './serveEvent.styles.scss';
 import Header from '../../components/header/header.component';
 import Spinner from '../../components/spinner/Spinner';
+import RegistrationItem from '../../components/registration-serve-list-item/registrationServeListItem.component';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import { loadRally } from '../../redux/pate/pate.actions';
+import {
+    loadEventRegistrations,
+    clearEventRegistrations,
+} from '../../redux/registrations/registrations.actions';
 
 const Serve = ({
     setSpinner,
@@ -16,8 +21,11 @@ const Serve = ({
     pateSystem,
     currentUser,
     rallies,
+    registrations,
     leadRallies,
     loadRally,
+    loadEventRegistrations,
+    clearEventRegistrations,
     pate,
 }) => {
     let eventID = match?.params?.id;
@@ -46,8 +54,8 @@ const Serve = ({
     const [mealCost, setMealCost] = useState('');
     const [mealCount, setMealCount] = useState(0);
     const [mealMessage, setMealMessage] = useState('');
-    const [attendees, setAttendees] = useState(0);
-    const [registrations, setRegistrations] = useState(0);
+    const [attendeeCount, setAttendeeCount] = useState(0);
+    const [registrationCount, setRegistrationCount] = useState(0);
 
     const history = useHistory();
     const STATUS_VALUE = [
@@ -63,11 +71,12 @@ const Serve = ({
     useEffect(() => {
         if (!currentUser.isLoggedIn) history.push('/');
         //get the reference to the current event and load to useState
-        if(match?.params?.id){
+        if (match?.params?.id) {
             loadEvent();
-            //loadRegistrations();
+            loadRegistrations();
+        } else {
+            clearEventRegistrations();
         }
-        
     }, []);
 
     useEffect(() => {}, [pateSystem.showSpinner]);
@@ -113,8 +122,8 @@ const Serve = ({
                     setMealCost(rallyEvent?.meal?.cost);
                     setMealCount(rallyEvent?.meal?.count);
                     setMealMessage(rallyEvent?.meal?.message);
-                    setAttendees(rallyEvent?.attendees);
-                    setRegistrations(rallyEvent?.registrations);
+                    setAttendeeCount(rallyEvent?.attendees);
+                    setRegistrationCount(rallyEvent?.registrations);
                 }
             });
         } else {
@@ -147,13 +156,13 @@ const Serve = ({
                     setMealCost(rallyEvent?.meal?.cost);
                     setMealCount(rallyEvent?.meal?.count);
                     setMealMessage(rallyEvent?.meal?.message);
-                    setAttendees(rallyEvent?.attendees);
-                    setRegistrations(rallyEvent?.registrations);
+                    setAttendeeCount(rallyEvent?.attendees);
+                    setRegistrationCount(rallyEvent?.registrations);
                 }
             });
         }
     };
-    const loadRegistrations = () => {
+    const loadRegistrations = async () => {
         //---------------------------------------------------
         //this function gets the registratoins for an event
         //and loads the instances into redux
@@ -164,7 +173,42 @@ const Serve = ({
         //       "eid": "65ff55fb33fe4c0447b086188f2e9b1f"
         //     }
         // }
-    }
+        async function getEventRegistrations() {
+            try {
+                fetch(
+                    'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/registrations',
+                    {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            operation: 'getRegistrationsForEvent',
+                            payload: {
+                                eid: match?.params?.id,
+                            },
+                        }),
+                        headers: {
+                            'Content-type': 'application/json; charset=UTF-8',
+                        },
+                    }
+                )
+                    .then((response) => response.json())
+                    .then((data) => {
+                        const util = require('util');
+                        console.log(
+                            'registrations-data:\n' +
+                                util.inspect(data.body, {
+                                    showHidden: false,
+                                    depth: null,
+                                })
+                        );
+                        loadEventRegistrations(data?.body?.Items);
+                    });
+            } catch (error) {
+                clearSpinner();
+                console.log('Error fetching registrations \n' + error);
+            }
+        }
+        await getEventRegistrations();
+    };
     const handleSubmitClick = (event) => {
         event.preventDefault();
         console.log('SAVE-SAVE-SAVE');
@@ -190,8 +234,8 @@ const Serve = ({
         newRally.meal.cost = mealCost;
         newRally.meal.count = mealCount;
         newRally.meal.message = mealMessage;
-        newRally.registrations = registrations;
-        newRally.attendees = attendees;
+        newRally.registrations = registrationCount;
+        newRally.attendees = attendeeCount;
 
         //now update redux for future use.
         loadRally(newRally);
@@ -298,10 +342,10 @@ const Serve = ({
                 setMealMessage(value);
                 break;
             case 'attendanceCount':
-                setAttendees(value);
+                setAttendeeCount(value);
                 break;
             case 'registrationCount':
-                setRegistrations(value);
+                setRegistrationCount(value);
                 break;
             default:
                 break;
@@ -313,10 +357,10 @@ const Serve = ({
         <>
             <Header />
             <div className='servepagewrapper'>
-                <div className='serve-pageheader'>SERVE</div>
+                <div className='serve-pageheader'>EVENT</div>
                 <>
                     <>
-                        <div className='registeruserwrapper'>
+                        <div className='serve-event-content-wrapper'>
                             <div className='registerform'>
                                 <form>
                                     <div>
@@ -623,7 +667,7 @@ const Serve = ({
                                             id='registrations'
                                             name='registrations'
                                             onChange={handleChange}
-                                            value={registrations}
+                                            value={registrationCount}
                                             required
                                         />
                                     </div>
@@ -636,7 +680,7 @@ const Serve = ({
                                             id='attendees'
                                             name='attendees'
                                             onChange={handleChange}
-                                            value={attendees}
+                                            value={attendeeCount}
                                             required
                                         />
                                     </div>
@@ -650,6 +694,19 @@ const Serve = ({
                         </div>
                     </>
                 </>
+                <div className='serve-pageheader'>REGISTRATIONS</div>
+                <div className='serve-event-content-wrapper'>
+                    {Object.keys(registrations?.eventRegistrations).length >
+                    0 ? (
+                        registrations.eventRegistrations.map((reg) => (
+                            <RegistrationItem key={reg.uid} regItem={reg} />
+                        ))
+                    ) : (
+                        <div className='serve-item-none-to-report-message'>
+                            None to report
+                        </div>
+                    )}
+                </div>
             </div>
         </>
     );
@@ -659,12 +716,16 @@ const mapDispatchToProps = (dispatch) => ({
     setSpinner: () => dispatch(setSpinner()),
     clearSpinner: () => dispatch(clearSpinner()),
     loadRally: (rally) => dispatch(loadRally(rally)),
+    loadEventRegistrations: (registrations) =>
+        dispatch(loadEventRegistrations(registrations)),
+    clearEventRegistrations: () => dispatch(clearEventRegistrations()),
 });
 const mapStateToProps = (state) => ({
     pateSystem: state.pate,
     currentUser: state.user.currentUser,
     rallies: state.stateRep.rally,
     leadRallies: state.stateLead.rally,
+    registrations: state.registrations,
 });
 export default compose(
     withRouter,
