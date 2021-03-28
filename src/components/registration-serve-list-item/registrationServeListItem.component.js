@@ -4,7 +4,7 @@ const RegistrationItem = ({ regItem }) => {
     return (
         <>
             <div className='serve-event-register-item-wrapper'>
-                <a href={`/registration/REG${regItem.eid}`}>
+                <a href={`/registration/REG${regItem.uid}`}>
                     <div className='serve-event-register-item-name'>
                         {regItem.registrar.firstName}{' '}
                         {regItem.registrar.lastName}
