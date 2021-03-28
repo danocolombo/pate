@@ -63,7 +63,11 @@ const Serve = ({
     useEffect(() => {
         if (!currentUser.isLoggedIn) history.push('/');
         //get the reference to the current event and load to useState
-        loadEvent();
+        if(match?.params?.id){
+            loadEvent();
+            //loadRegistrations();
+        }
+        
     }, []);
 
     useEffect(() => {}, [pateSystem.showSpinner]);
@@ -149,7 +153,18 @@ const Serve = ({
             });
         }
     };
-
+    const loadRegistrations = () => {
+        //---------------------------------------------------
+        //this function gets the registratoins for an event
+        //and loads the instances into redux
+        //---------------------------------------------------
+        // {
+        //     "operation": "getRegistrationsForEvent",
+        //     "payload": {
+        //       "eid": "65ff55fb33fe4c0447b086188f2e9b1f"
+        //     }
+        // }
+    }
     const handleSubmitClick = (event) => {
         event.preventDefault();
         console.log('SAVE-SAVE-SAVE');
