@@ -51,6 +51,14 @@ const PersonalProfile = ({
             email: email,
             phone: phone,
         };
+        //add staterep and or statelead
+        if (currentUser?.stateRep) {
+            coreUser.stateRep = currentUser.stateRep;
+        }
+        //add staterep and or statelead
+        if (currentUser?.stateLead) {
+            coreUser.stateLead = currentUser.stateLead;
+        }
 
         //section for address....
         let residence = {};
