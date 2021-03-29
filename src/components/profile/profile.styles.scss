@@ -6,8 +6,13 @@
     width: 80%;
     height: auto;
     // align-items: center;
-    background: lightgray;
-    color: black;
+    background: #557a95;
+    color: white;
+    border-left: black solid 1px;
+    border-right: black solid 1px;
+    border-bottom: black solid 1px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 .profileform {
     text-align: right;
@@ -19,15 +24,23 @@
 }
 .profilehomesection {
     text-align: center;
+    font-size: 1.2em;
+    font-weight: bold;
     margin: 10px 0 10px 0;
 }
 .churchsection {
     font-size: 1.2em;
     text-align: center;
+    font-weight: bold;
     margin: 10px 0 10px 0;
-    
 }
 .profilebutton {
     text-align: center;
     margin-top: 10px;
+}
+.updatebutton {
+    background-color: yellow;
+    padding: 2px 5px;
+    margin: 5px;
+    border-radius: 2px;
 }

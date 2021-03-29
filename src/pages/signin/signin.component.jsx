@@ -8,7 +8,10 @@ import CustomButton from '../../components/custom-button/custom-button.component
 import Header from '../../components/header/header.component';
 import Spinner from '../../components/spinner/Spinner';
 //----- actions needed -------
-import { loadRegistrations } from '../../redux/registrations/registrations.actions';
+import {
+    loadRegistrations,
+    clearTempRegistration,
+} from '../../redux/registrations/registrations.actions';
 import { setCurrentUser } from '../../redux/user/user.actions';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import './signin.styles.scss';
@@ -19,6 +22,7 @@ const SignIn = ({
     setSpinner,
     clearSpinner,
     loadRegistrations,
+    clearTempRegistration,
     pateSystem,
     currentUser,
 }) => {
@@ -71,6 +75,9 @@ const SignIn = ({
             });
             await saveUser(currentUserInfo, currentSession);
             await getRegistrations(currentUserInfo.attributes.sub);
+            //generic cleanup
+            await clearTempRegistration();
+
             clearSpinner();
             history.push('/');
         } catch (error) {
@@ -114,7 +121,7 @@ const SignIn = ({
                                     depth: null,
                                 })
                         );
-                        loadRegistrations(data.body);
+                        loadRegistrations(data.body.Items);
                     });
             } catch (error) {
                 clearSpinner();
@@ -191,8 +198,12 @@ const SignIn = ({
             userDetails.jwt = userSession?.idToken?.jwtToken;
         }
         // if they are a state rep...
-        if (dbUser?.repInfo) {
-            userDetails.stateRep = dbUser?.repInfo?.stateProv;
+        if (dbUser?.stateRep) {
+            userDetails.stateRep = dbUser?.stateRep;
+        }
+        // if they are a state lead...
+        if (dbUser?.stateLead) {
+            userDetails.stateLead = dbUser?.stateLead;
         }
         //if there is address,
         if (dbUser?.residence) {
@@ -246,34 +257,50 @@ const SignIn = ({
     ) : (
         <>
             <Header />
-            <div className='signin-title-wrapper'>
-                <div className='signin-page-title'>Login Page</div>
-            </div>
-            <div className='signin-wrapper'>
-                <FormInput
-                    name='username'
-                    className='form-component'
-                    type='username'
-                    handleChange={handleChange}
-                    value={username}
-                    label='login'
-                    required
-                />
-                <FormInput
-                    name='password'
-                    className='form-component'
-                    type='password'
-                    value={password}
-                    handleChange={handleChange}
-                    label='password'
-                    required
-                />
-                <div className='buttons'>
-                    <CustomButton onClick={signIn}> Sign in </CustomButton>
-                </div>
-                <div className='register-offer-wrapper'>
-                    If you don't have an account,{' '}
-                    <Link to={'/register'}>click here</Link> to register.
+
+            <div className='signin-page-wrapper'>
+                <div className='signin-box'>
+                    <div className='signin-title-box'>
+                        <h3>Login</h3>
+                    </div>
+                    <div className='signin-wrapper'>
+                        <div className='username-wrapper'>
+                            <FormInput
+                                name='username'
+                                className='form-component'
+                                type='username'
+                                handleChange={handleChange}
+                                value={username}
+                                label='login'
+                                required
+                            />
+                        </div>
+                        <div className='password-wrapper'>
+                            <FormInput
+                                name='password'
+                                className='form-component'
+                                type='password'
+                                value={password}
+                                handleChange={handleChange}
+                                label='password'
+                                required
+                            />
+                        </div>
+                    </div>
+                    <div className='button-wrapper'>
+                        <CustomButton
+                            onClick={signIn}
+                            className='register-button'
+                        >
+                            {' '}
+                            Sign in{' '}
+                        </CustomButton>
+                    </div>
+                    <div className='register-offer-wrapper'>
+                        If you don't have an account,
+                        <br />
+                        <Link to={'/register'}>click here</Link> to register.
+                    </div>
                 </div>
             </div>
         </>
@@ -285,6 +312,7 @@ const mapDispatchToProps = (dispatch) => ({
     clearSpinner: () => dispatch(clearSpinner()),
     loadRegistrations: (registrations) =>
         dispatch(loadRegistrations(registrations)),
+    clearTempRegistration: () => dispatch(clearTempRegistration),
 });
 const mapStateToProps = (state) => ({
     pateSystem: state.pate,

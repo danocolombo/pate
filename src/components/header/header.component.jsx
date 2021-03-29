@@ -1,50 +1,103 @@
 import React, { useEffect } from 'react';
 import { BiLogInCircle, BiLogOutCircle } from 'react-icons/bi';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Auth } from 'aws-amplify';
-import { AmplifySignOut } from '@aws-amplify/ui-react';
-import CustomButton from '../custom-button/custom-button.component';
-import UserStatusBox from '../user-status-box/userStatusBox.component';
 import './header.styles.scss';
-import { ReactComponent as Logo } from '../../assets/pate-logo-white.svg';
 import { clearUser } from '../../redux/user/user.actions';
+import {
+    clearRegistrations,
+    clearTempRegistration,
+} from '../../redux/registrations/registrations.actions';
+import { clearRally } from '../../redux/pate/pate.actions';
+import { clearStateRep } from '../../redux/stateRep/stateRep.actions';
+import { clearStateLead } from '../../redux/stateLead/stateLead.actions';
 
-const Header = ({ currentUser, clearUser }) => {
-    // useEffect(() => {
-    //     checkWho();
-    // }, []);
-    // useEffect(() => {
-    //     console.log('refresh nav');
-    // }, [currentUser]);
-
-    // const checkWho = async () => {
-    //     await Auth.currentUserInfo().then((user) => {
-    //         console.log('currentUser:\n' + user?.username);
-    //     });
-    // };
-    // const logoutRequest = async () => {
-    //     console.log('LOGOUT->LOGOUT->LOGOUT');
-    //     try {
-    //         await Auth.signOut();
-    //     } catch (error) {
-    //         console.log('error signing out: ', error);
-    //     }
-    //     clearUser(currentUser);
-    // };
-
+const Header = ({
+    currentUser,
+    clearUser,
+    clearRegistrations,
+    clearTempRegistration,
+    clearRally,
+    clearStateLead,
+    clearStateRep,
+}) => {
+    const history = useHistory();
+    const logoutRequest = async () => {
+        try {
+            await Auth.signOut();
+        } catch (error) {
+            console.log('error signing out: ', error);
+        }
+        async function logoffUser() {
+            clearUser();
+            clearRegistrations();
+            clearTempRegistration();
+            clearRally();
+            clearStateLead();
+            clearStateRep();
+        }
+        logoffUser();
+        history.push('/');
+    };
     return (
-        <div className='header'>
-            <Link className='logo-container' to='/'>
-                <Logo className='logo' />
-            </Link>
-
-            <UserStatusBox />
-        </div>
+        <>
+            <header className='main-header'>
+                <div>
+                    <Link to='/' className='brand-name'>
+                        PATE
+                    </Link>
+                </div>
+                <nav className='main-nav'>
+                    {currentUser?.isLoggedIn ? (
+                        <ul className='main-nav__items'>
+                            {currentUser?.stateRep || currentUser?.stateLead ? (
+                                <li className='main-nav__item'>
+                                    <Link
+                                        to='/serve'
+                                        className='main-navigation-button'
+                                    >
+                                        SERVE
+                                    </Link>
+                                </li>
+                            ) : null}
+                            <li className='main-nav__item'>
+                                <Link
+                                    to='/profile'
+                                    className='main-navigation-button'
+                                >
+                                    PROFILE
+                                </Link>
+                            </li>
+                            <li className='main-nav__item'>
+                                <Link
+                                    onClick={logoutRequest}
+                                    className='main-navigation-button'
+                                >
+                                    LOGOUT
+                                </Link>
+                            </li>
+                        </ul>
+                    ) : (
+                        <li className='main-nav__item'>
+                            {/*<a href='/signin'>Login/Sign-up</a>*/}
+                            <li className='main-nav__item'>
+                                <Link to='/signin'>Login/Sign-up</Link>
+                            </li>
+                        </li>
+                    )}
+                </nav>
+            </header>
+        </>
     );
 };
 const mapDispatchToProps = (dispatch) => ({
-    clearUser: (user) => dispatch(clearUser(user)),
+    clearUser: () => dispatch(clearUser()),
+    clearRegistrations: () => dispatch(clearRegistrations()),
+    clearTempRegistration: () => dispatch(clearTempRegistration()),
+    clearRally: () => dispatch(clearRally()),
+    clearStateRep: () => dispatch(clearStateRep()),
+    clearStateLead: () => dispatch(clearStateLead()),
 });
 const mapStateToProps = (state) => ({
     currentUser: state.user.currentUser,

@@ -9,11 +9,11 @@ import EventDetails from '../../components/event-details/event-component';
 import Header from '../../components/header/header.component';
 import Spinner from '../../components/spinner/Spinner';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
+import { loadRally } from '../../redux/pate/pate.actions';
 //class Events extends React.Component {
 const Events = ({
     currentUser,
     match,
-    loadRegistrations,
     setSpinner,
     clearSpinner,
     pateSystem,
@@ -44,6 +44,7 @@ const Events = ({
                 .then((data) => {
                     // this.setState({ plan: data });
                     setplan(data);
+                    loadRally(data);
                 });
         }
         fetchEvent();
@@ -74,10 +75,11 @@ const Events = ({
 const mapDispatchToProps = (dispatch) => ({
     setSpinner: () => dispatch(setSpinner()),
     clearSpinner: () => dispatch(clearSpinner()),
+    loadRally: (rally) => dispatch(loadRally(rally)),
 });
 const mapStateToProps = (state) => ({
     currentUser: state.user.currentUser,
-    registrations: state.registrations.currentRegistrations,
+    registrations: state.registrations.confirmed,
     pateSystem: state.pate,
 });
 export default compose(

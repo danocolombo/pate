@@ -33,7 +33,9 @@ const PersonalProfile = ({
     const [churchState, setChurchState] = useState(
         currentUser?.church?.stateProv
     );
-
+    useEffect(() => {
+        if (!currentUser.isLoggedIn) history.push('/');
+    }, []);
     useEffect(() => {}, [pateSystem.showSpinner]);
 
     const handleSubmitClick = (event) => {
@@ -49,6 +51,14 @@ const PersonalProfile = ({
             email: email,
             phone: phone,
         };
+        //add staterep and or statelead
+        if (currentUser?.stateRep) {
+            coreUser.stateRep = currentUser.stateRep;
+        }
+        //add staterep and or statelead
+        if (currentUser?.stateLead) {
+            coreUser.stateLead = currentUser.stateLead;
+        }
 
         //section for address....
         let residence = {};
@@ -171,7 +181,7 @@ const PersonalProfile = ({
             case 'firstName':
                 setFirstName(value);
                 break;
-            case 'lastNaem':
+            case 'lastName':
                 setLastName(value);
                 break;
             case 'email':
@@ -339,8 +349,13 @@ const PersonalProfile = ({
                                 />
                             </div>
                         </div>
-                        <div className='updateButton'>
-                            <button onClick={handleSubmitClick}>UPDATE</button>
+                        <div className='updatebuttonwrapper'>
+                            <button
+                                className='updatebutton'
+                                onClick={handleSubmitClick}
+                            >
+                                UPDATE
+                            </button>
                         </div>
                     </form>
                 </div>

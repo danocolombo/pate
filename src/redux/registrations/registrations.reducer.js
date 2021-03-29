@@ -1,60 +1,78 @@
 import { RegistrationsActionTypes } from './registrations.types';
+import {
+    addItemToRegistrations,
+    removeItemFromRegistrations,
+} from './registrations.utils';
 
 const INITIAL_STATE = {
-    currentRegistrations: {
-        isLoading: false,
-        count: 0,
-    },
+    tempRegistration: null,
+    confirmed: [],
+    eventRegistrations: [],
+    loading: false,
+    error: {},
 };
 
 const registrationsReducer = (state = INITIAL_STATE, action) => {
-    console.log('____________IN REDUCER: ' + action.type);
     switch (action.type) {
         case RegistrationsActionTypes.LOAD_REGISTRATIONS:
             return {
                 ...state,
-                currentRegistrations: action.payload,
+                confirmed: action.payload,
             };
         case RegistrationsActionTypes.CLEAR_REGISTRATIONS:
             return {
                 ...state,
-                currentRegistrations: null,
+                confirmed: null,
             };
         case RegistrationsActionTypes.ADD_REGISTRATION:
-            // this is not tested, this was copied from 
-            // Traversy project dev_connector2.0
             return {
-                state,
-            }
-            
-            case RegistrationsActionTypes.REMOVE_REGISTRATION:
-                // this is not tested, this was copied from 
-                // Traversy project dev_connector2.0
-                return {
-                    state,
-                }
-                
+                ...state,
+                confirmed: addItemToRegistrations(state.confirmed, action.payload),
+            };
+        case RegistrationsActionTypes.REMOVE_REGISTRATION:
+            return {
+                ...state,
+                confirmed: removeItemFromRegistrations(
+                    state.confirmed,
+                    action.payload
+                ),
+            };
+        case RegistrationsActionTypes.LOAD_TEMP_REGISTRATION:
+            return {
+                ...state,
+                tempRegistration: action.payload,
+            };
+        case RegistrationsActionTypes.CLEAR_TEMP_REGISTRATION:
+            return {
+                ...state,
+                tempRegistration: null,
+            };
+        case RegistrationsActionTypes.LOAD_EVENT_REGISTRATIONS:
+            return {
+                ...state,
+                eventRegistrations: action.payload,
+            };
+        case RegistrationsActionTypes.CLEAR_EVENT_REGISTRATIONS:
+            return {
+                ...state,
+                eventRegistrations: null,
+            };
+        case RegistrationsActionTypes.ADD_EVENT_REGISTRATION:
+            return {
+                ...state,
+                eventRegistrations: addItemToRegistrations(state.eventRegistrations, action.payload),
+            };
+        case RegistrationsActionTypes.REMOVE_EVENT_REGISTRATION:
+            return {
+                ...state,
+                confirmed: removeItemFromRegistrations(
+                    state.eventRegistrations,
+                    action.payload
+                ),
+            };
         default:
             return state;
     }
 };
 
 export default registrationsReducer;
-//---------------------------------
-            // this would remove an entry from an array like
-            // 
-            // const initialState = {
-            //     posts: [],
-            //     post: null,
-            //     loading: true,
-            //     error: {}
-            //   };
-            //===========================
-            // then the switch case...
-            // return {
-            //     ...state,
-            //     posts: [payload, ...state.posts],
-            //     loading: false
-            // };
-
-            

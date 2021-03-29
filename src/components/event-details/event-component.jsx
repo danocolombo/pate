@@ -7,10 +7,10 @@ const EventDetails = ({ theEvent }) => {
 
     //get data ready to display
     const displayThis = theEvent?.body?.Items[0];
-    console.log(
-        'component.dislayThis: \n' +
-            util.inspect(displayThis, { showHidden: false, depth: null })
-    );
+    // console.log(
+    //     'component.dislayThis: \n' +
+    //         util.inspect(displayThis, { showHidden: false, depth: null })
+    // );
     const displayDate = () => {
         // format the date and return it
         let y = parseInt(displayThis?.eventDate.substring(0, 4));
@@ -58,14 +58,11 @@ const EventDetails = ({ theEvent }) => {
                     ></img>
                 </div>
                 <div className='church_info'>
-                    <div className='church_name'>
-                        {displayThis?.location?.name}
-                    </div>
-                    <div>{displayThis?.location?.street}</div>
+                    <div className='church_name'>{displayThis?.name}</div>
+                    <div>{displayThis?.street}</div>
                     <div>
-                        {displayThis?.location?.city},
-                        {displayThis?.location?.state}&nbsp;
-                        {displayThis?.location?.postalCode}
+                        {displayThis?.city},{displayThis?.stateProv}&nbsp;
+                        {displayThis?.postalCode}
                     </div>
                 </div>
                 <div className='event_date'>{displayDate()}</div>

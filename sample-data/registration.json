@@ -1,0 +1,29 @@
+{
+  "uid": "bcfafc3a9b674a893bd3c8aaacd11d6d",
+  "startTime": "13:00",
+  "attendees": 2,
+  "mealGuests": 2,
+  "location": {
+    "name": "Southcrest Church",
+    "steet": "365 International Park",
+    "stateProv": "GA",
+    "city": "Newnan",
+    "postalCode": "30265"
+  },
+  "endTime": "16:00",
+  "eventDate": "20210522",
+  "eid": "65ff55fb33fe4c0447b086188f2e9b1f",
+  "rid": "dab7ca09-95c5-4a39-8301-2683e768f181",
+  "registrar": {
+    "firstName": "Fortson",
+    "lastName": "Guru",
+    "email": "fortsonguru@gmail.com",
+    "phone": "7066042494",
+    "residence":{
+        "street": "2303 Leah Dr.",
+        "city":"Columbus",
+        "stateProv": "GA",
+        "postalCode": "31909"
+    }
+  }
+}
