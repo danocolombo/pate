@@ -29,12 +29,13 @@ const pateReducer = (state = INITIAL_STATE, action = null) => {
                 ...state,
                 rally: null
             };
-        case PateActionTypes.SET_REGISTRATION:
+        case PateActionTypes.SET_PATE_REGISTRATION:
+            console.log('SET_PATE_REGISTRATION case point');
             return{
                 ...state,
                 registration: action.payload
             };
-        case PateActionTypes.CLEAR_REGISTRATION:
+        case PateActionTypes.CLEAR_PATE_REGISTRATION:
             return{
                 ...state,
                 registration: null

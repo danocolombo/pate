@@ -51,6 +51,13 @@ const PersonalProfile = ({
             email: email,
             phone: phone,
         };
+        //need to add stateRep & stateLead if set...
+        if(currentUser?.stateRep){
+            coreUser.stateRep = currentUser.stateRep;
+        }
+        if(currentUser.stateLead){
+            coreUser.stateLead = currentUser.stateLead;
+        }
         //add staterep and or statelead
         if (currentUser?.stateRep) {
             coreUser.stateRep = currentUser.stateRep;

@@ -750,20 +750,6 @@ const Serve = ({
                         )
                         
                     ): <div>NO</div>}
-
-
-                {/*
-                    {Object.keys(registrations?.eventRegistrations).length >
-                    0 ? (
-                        registrations.eventRegistrations.map((reg) => (
-                            <RegistrationItem key={reg.uid} regItem={reg} />
-                        ))
-                    ) : (
-                        <div className='serve-item-none-to-report-message'>
-                            None to report
-                        </div>
-                    )}
-                    */}   
                 </div>
             </div>
         </>

@@ -26,31 +26,6 @@ import EditRegistration from './pages/edit-registration/edit-registration.page';
 import { Auth } from 'aws-amplify';
 
 function App() {
-    // const [isLoggedIn, setLoggedIn] = useState(false);
-    // const checkLoggedInState = () => {
-    //     Auth.currentAuthenticatedUser()
-    //         .then((sess) => {
-    //             console.log('logged in');
-    //             setLoggedIn(true);
-    //         })
-    //         .catch(() => {
-    //             console.log('not logged in');
-    //             setLoggedIn(false);
-    //         });
-    // };
-    // useEffect(() => {
-    //     chegitckLoggedInState();
-    // }, []);
-    // const signOut = async () => {
-    //     try {
-    //         await Auth.signOut();
-    //         setLoggedIn(false);
-    //     } catch (error) {
-    //         console.log('Error logging out:\n:' + error);
-    //     }
-    // };
-
-    // render() {
     return (
         <Router>
             <Route exact path='/' component={Events} />
