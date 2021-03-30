@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { compose } from 'redux';
 import { withRouter } from 'react-router';
@@ -13,7 +14,7 @@ import {
     loadEventRegistrations,
     clearEventRegistrations,
 } from '../../redux/registrations/registrations.actions';
-
+// import { getEventRegistrations } from './server-event.actions';
 const Serve = ({
     setSpinner,
     clearSpinner,
@@ -27,6 +28,7 @@ const Serve = ({
     loadEventRegistrations,
     clearEventRegistrations,
     pate,
+    
 }) => {
     let eventID = match?.params?.id;
     console.log('serveEvent: ' + eventID);
@@ -72,14 +74,60 @@ const Serve = ({
         if (!currentUser.isLoggedIn) history.push('/');
         //get the reference to the current event and load to useState
         if (match?.params?.id) {
-            loadEvent();
-            loadRegistrations();
-        } else {
             clearEventRegistrations();
+            loadEvent();
+            // loadRegistrations();
+            getEventRegistrations(eventID);
+        } else {
+            // clearEventRegistrations();
         }
     }, []);
 
     useEffect(() => {}, [pateSystem.showSpinner]);
+
+    const getEventRegistrations = (eid) => {
+        try {
+            console.log('@@@@@@@@@@@@@@@@@@@@@@@@@');
+            console.log('getEventRegistrations :: eid (' + eid + ')');
+            try {
+                fetch(
+                    'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/registrations',
+                    {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            operation: 'getRegistrationsForEvent',
+                            payload: {
+                                eid: eid,
+                            },
+                        }),
+                        headers: {
+                            'Content-type': 'application/json; charset=UTF-8',
+                        },
+                    }
+                )
+                    .then((response) => response.json())
+                    .then((data) => {
+                        const util = require('util');
+                        console.log(
+                            'registrations-data:\n' +
+                                util.inspect(data.body, {
+                                    showHidden: false,
+                                    depth: null,
+                                })
+                        );
+                        loadEventRegistrations(data?.body?.Items);
+                    });
+            } catch (error) {
+                console.log('Error fetching registrations \n' + error);
+                console.err(error);
+            }
+    
+            // dispatch({type: GET_EVENT_REGISTRATIONS});
+        } catch (err) {
+            console.log('getEventRegistrations ERR');
+            console.error(err);
+        }
+    }
 
     const loadEvent = async () => {
         //get the event reference.
@@ -696,6 +744,15 @@ const Serve = ({
                 </>
                 <div className='serve-pageheader'>REGISTRATIONS</div>
                 <div className='serve-event-content-wrapper'>
+                    {registrations?.eventRegistrations ? (
+                        registrations.eventRegistrations.map((rege) =>
+                            <RegistrationItem key={rege.uid} regItem={rege} />
+                        )
+                        
+                    ): <div>NO</div>}
+
+
+                {/*
                     {Object.keys(registrations?.eventRegistrations).length >
                     0 ? (
                         registrations.eventRegistrations.map((reg) => (
@@ -706,6 +763,7 @@ const Serve = ({
                             None to report
                         </div>
                     )}
+                    */}   
                 </div>
             </div>
         </>
@@ -720,6 +778,9 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch(loadEventRegistrations(registrations)),
     clearEventRegistrations: () => dispatch(clearEventRegistrations()),
 });
+// Serve.propTypes = {
+//     getEventRegistrations: PropTypes.func.isRequired,
+// }
 const mapStateToProps = (state) => ({
     pateSystem: state.pate,
     currentUser: state.user.currentUser,

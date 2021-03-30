@@ -8,6 +8,7 @@ import { clearUser } from '../../redux/user/user.actions';
 import {
     clearRegistrations,
     clearTempRegistration,
+    clearEventRegistrations
 } from '../../redux/registrations/registrations.actions';
 import { clearRally } from '../../redux/pate/pate.actions';
 import { clearStateRep } from '../../redux/stateRep/stateRep.actions';
@@ -18,6 +19,7 @@ const Header = ({
     clearUser,
     clearRegistrations,
     clearTempRegistration,
+    clearEventRegistrations,
     clearRally,
     clearStateLead,
     clearStateRep,
@@ -33,6 +35,7 @@ const Header = ({
             clearUser();
             clearRegistrations();
             clearTempRegistration();
+            clearEventRegistrations();
             clearRally();
             clearStateLead();
             clearStateRep();
@@ -95,6 +98,7 @@ const mapDispatchToProps = (dispatch) => ({
     clearUser: () => dispatch(clearUser()),
     clearRegistrations: () => dispatch(clearRegistrations()),
     clearTempRegistration: () => dispatch(clearTempRegistration()),
+    clearEventRegistrations: () => dispatch(clearEventRegistrations()),
     clearRally: () => dispatch(clearRally()),
     clearStateRep: () => dispatch(clearStateRep()),
     clearStateLead: () => dispatch(clearStateLead()),

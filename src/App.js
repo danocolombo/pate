@@ -18,6 +18,7 @@ import EventDetails from './pages/event/event.page';
 import EventRegistration from './pages/registration/registration.page';
 import Serve from './pages/serve/serve.page';
 import ServeEvent from './pages/serveEvent/serveEvent.page';
+import EditRegistration from './pages/edit-registration/edit-registration.page';
 //----------------------
 //AMPLIFY INTEGRATION
 //----------------------
@@ -38,7 +39,7 @@ function App() {
     //         });
     // };
     // useEffect(() => {
-    //     checkLoggedInState();
+    //     chegitckLoggedInState();
     // }, []);
     // const signOut = async () => {
     //     try {
@@ -67,6 +68,7 @@ function App() {
                 path='/registration/:id'
                 component={EventRegistration}
             />
+            <Route exact path='/editregistration/:eid/:rid' component={EditRegistration}/>
             <Route exact path='/event/:id' component={EventDetails} />
         </Router>
     );
