@@ -28,7 +28,6 @@ const Serve = ({
     loadEventRegistrations,
     clearEventRegistrations,
     pate,
-    
 }) => {
     let eventID = match?.params?.id;
     console.log('serveEvent: ' + eventID);
@@ -121,13 +120,13 @@ const Serve = ({
                 console.log('Error fetching registrations \n' + error);
                 console.err(error);
             }
-    
+
             // dispatch({type: GET_EVENT_REGISTRATIONS});
         } catch (err) {
             console.log('getEventRegistrations ERR');
             console.error(err);
         }
-    }
+    };
 
     const loadEvent = async () => {
         //get the event reference.
@@ -745,11 +744,18 @@ const Serve = ({
                 <div className='serve-pageheader'>REGISTRATIONS</div>
                 <div className='serve-event-content-wrapper'>
                     {registrations?.eventRegistrations ? (
-                        registrations.eventRegistrations.map((rege) =>
+                        registrations.eventRegistrations.map((rege) => (
                             <RegistrationItem key={rege.uid} regItem={rege} />
-                        )
-                        
-                    ): <div>NO</div>}
+                        ))
+                    ) : (
+                        <div>NO</div>
+                    )}
+                </div>
+                <div className='serve-event__delete-box'>
+                    <hr className='serve-event__delete-box__horizontal-line' />
+                    <button className='serve-event__delete-button' onClick=''>
+                        DELETE EVENT
+                    </button>
                 </div>
             </div>
         </>
