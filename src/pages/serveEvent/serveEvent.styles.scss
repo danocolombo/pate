@@ -69,3 +69,20 @@
     display: inline-block;
     padding-left: 10px;
 }
+
+.serve-event__delete-box {
+    background: lightgray;
+    width: 80%;
+    text-align: center;
+}
+.serve-event__delete-box__horizontal-line {
+    border-top: 3px dotted red;
+}
+.serve-event__delete-button {
+    background-color: red;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    font-size: 1em;
+    margin: 10px 0px;
+}

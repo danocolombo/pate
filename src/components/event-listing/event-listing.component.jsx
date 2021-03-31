@@ -45,7 +45,7 @@ const EventListing = ({
     return (
         <Fragment>
             <div className='event-box'>
-                <div className='date-box'>
+                <div className='event-listing__date-box'>
                     <div className='event-month'>
                         <h3>
                             {month2Display(eventDate)}&nbsp;
@@ -53,17 +53,21 @@ const EventListing = ({
                         </h3>
                     </div>
                 </div>
-                <div className='address'>
-                    <div className='event-location'>{name}</div>
-                    <div className='event-street'>{street}</div>
-                    <div className='event-city-state'>
-                        <span>{city}</span>,&nbsp;
-                        <span>{stateProv}</span>
+                <div className='event-listing__address-box'>
+                    <div className='event-listing__address-box'>
+                        <div className='event-location'>{name}</div>
+                        <div className='event-street'>{street}</div>
+                        <div className='event-city-state'>
+                            <span>{city}</span>,&nbsp;
+                            <span>{stateProv}</span>
+                        </div>
+                        <div className='event-postalcode'>{postalCode}</div>
                     </div>
-                    <div className='event-postalcode'>{postalCode}</div>
-                </div>
-                <div className='linkbutton'>
-                    <StyledLink to={`/event/${uid}`}>VIEW DETAILS</StyledLink>
+                    <div className='linkbutton'>
+                        <StyledLink to={`/event/${uid}`}>
+                            VIEW DETAILS
+                        </StyledLink>
+                    </div>
                 </div>
             </div>
         </Fragment>

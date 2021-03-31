@@ -5,11 +5,11 @@
     padding-top: 0px;
     width: 80%;
     // align-items: center;
-    background-color: url("https://pate-images.s3.amazonaws.com/background.jpg");
+    background-color: url('https://pate-images.s3.amazonaws.com/background.jpg');
     // background: #557a95;
     color: white;
 }
-.date-box {
+.event-listing__date-box {
     background-color: #379683;
     border-top: black solid 1px;
     border-left: black solid 1px;
@@ -18,16 +18,20 @@
     margin-top: 10px;
     padding: 2px 0;
 }
-.event-month {
-}
 .event-location {
     font-size: 1.2em;
     font-weight: bold;
+}
+.event-listing__address-box {
+    background-color: lightgray;
+    color: black;
+    border: black solid 1px;
 }
 .address {
     padding-left: 10px;
     border-left: black solid 1px;
     border-right: black solid 1px;
+    padding-bottom: 10px;
 }
 .event-street {
     padding-left: 10px;
@@ -39,7 +43,8 @@
     padding-left: 10px;
 }
 .linkbutton {
-    margin-bottom: 10px;
+    background-color: #379683;
+    // margin-bottom: 10px;
     padding-bottom: 10px;
     padding-top: 10px;
     border-left: black solid 1px;

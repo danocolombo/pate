@@ -38,7 +38,7 @@ const EventRegistration = ({
         currentUser?.residence?.street
     );
     const [homeCity, setHomeCity] = useState(currentUser?.residence?.city);
-    const [homeState, setHomeState] = useState(
+    const [homeStateProv, setHomeStateProv] = useState(
         currentUser?.residence?.stateProv
     );
     const [homePostalCode, setHomePostalCode] = useState(
@@ -185,7 +185,7 @@ const EventRegistration = ({
             setHomeCity(
                 registrations.tempRegistration?.registrar?.residence?.city
             );
-            setHomeState(
+            setHomeStateProv(
                 registrations.tempRegistration?.registrar?.residence?.stateProv
             );
             setHomePostalCode(
@@ -205,7 +205,7 @@ const EventRegistration = ({
             setPhone('');
             setHomeStreet('');
             setHomeCity('');
-            setHomeState('');
+            setHomeStateProv('');
             setHomePostalCode('');
             setChurchName('');
             setChurchCity('');
@@ -280,8 +280,8 @@ const EventRegistration = ({
             case 'homeCity':
                 setHomeCity(value);
                 break;
-            case 'homeState':
-                setHomeState(value);
+            case 'homeStateProv':
+                setHomeStateProv(value);
                 break;
             case 'homePostalCode':
                 setHomePostalCode(value);
@@ -298,7 +298,7 @@ const EventRegistration = ({
             case 'churchCity':
                 setChurchCity(value);
                 break;
-            case 'churchPostalCode':
+            case 'churchStateProv':
                 setChurchStateProv(value);
                 break;
             default:
@@ -315,8 +315,74 @@ const EventRegistration = ({
     };
     const handleRegisterRequest = async (e) => {
         e.preventDefault();
+
         // this function pulls the data together and creates
         // an object to update database.
+        //-----------------------------------------------------
+        // all fields are required.
+        //-----------------------------------------------------
+        let fieldMessage = {};
+        let okayToProceed = true;
+        if (firstName.length < 2) {
+            okayToProceed = false;
+            fieldMessage.First_Name = 'is required';
+        }
+        if (lastName.length < 2) {
+            okayToProceed = false;
+            fieldMessage.Last_Name = 'is required';
+        }
+        if (email.length < 10) {
+            okayToProceed = false;
+            fieldMessage.Email = 'is required';
+        }
+        if (phone.length < 10) {
+            okayToProceed = false;
+            fieldMessage.Phone = 'is required';
+        }
+        if (homeStreet.length < 5) {
+            okayToProceed = false;
+            fieldMessage.Home_Street = 'is required';
+        }
+        if (homeCity.length < 2) {
+            okayToProceed = false;
+            fieldMessage.City = 'is required';
+        }
+        if (homeStateProv.length < 2) {
+            okayToProceed = false;
+            fieldMessage.Home_State = 'is required';
+        }
+        if (homePostalCode.length < 5) {
+            okayToProceed = false;
+            fieldMessage.Postal_Code = 'is required';
+        }
+        if (churchName.length < 5) {
+            okayToProceed = false;
+            fieldMessage.Church_Name = 'is required';
+        }
+        if (churchCity.length < 3) {
+            okayToProceed = false;
+            fieldMessage.Church_City = 'is required';
+        }
+        if (churchStateProv.length < 2) {
+            okayToProceed = false;
+            fieldMessage.Church_State = 'is required';
+        }
+        if (attendeeCount > 10) {
+            okayToProceed = false;
+            fieldMessage.Attendees = 'limited to 10 per registration';
+        }
+        if (mealCount > attendeeCount) {
+            okayToProceed = false;
+            fieldMessage.Meals = 'only available to attendees';
+        }
+
+        if (!okayToProceed) {
+            alert(
+                'Please correct your request.\n' + JSON.stringify(fieldMessage)
+            );
+            return;
+        }
+
         //========================================
         // check to see if he registration request is from
         // a logged in user. If not, set the rid to 0.
@@ -351,31 +417,70 @@ const EventRegistration = ({
                 residence: {
                     street: homeStreet,
                     city: homeCity,
-                    stateProv: homeState,
+                    stateProv: homeStateProv,
                     postalCode: homePostalCode,
                 },
             },
             attendeeCount: attendeeCount,
             mealCount: mealCount,
         };
-        // const util = require('util');
-        // console.log(
-        //     'regData: \n' +
-        //         util.inspect(regData, { showHidden: false, depth: null })
-        // );
 
         // post the registration to API and return to /
         //====================================================
         // async function updateDb() {
+        try {
+            await fetch(
+                'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/registrations',
+                {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        operation: 'createRegistration',
+                        payload: {
+                            Item: regData,
+                        },
+                    }),
+                    headers: {
+                        'Content-type': 'application/json; charset=UTF-8',
+                    },
+                }
+            )
+                .then((response) => response.json())
+                .then((data) => {
+                    const util = require('util');
+                    console.log(
+                        'db data returned: \n' +
+                            util.inspect(data, {
+                                showHidden: false,
+                                depth: null,
+                            })
+                    );
+                    // if (registrarId !== '0') {
+                    //     addRegistration(regData);
+                    // }
+                });
+        } catch (error) {
+            console.log(JSON.stringify(error));
+        }
+        //====================================
+        // update the event with the numbers
+        //====================================
+        let eventUpdate = {
+            uid: pateSystem.rally.uid,
+            adjustments: {
+                registrationCount: attendeeCount,
+                mealCount: mealCount,
+            },
+        };
+        //===========================
+        // now send event update to API
+        //-------------------------------
         await fetch(
-            'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/registrations',
+            'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/events',
             {
                 method: 'POST',
                 body: JSON.stringify({
-                    operation: 'createRegistration',
-                    payload: {
-                        Item: regData,
-                    },
+                    operation: 'maintainNumbers',
+                    payload: eventUpdate,
                 }),
                 headers: {
                     'Content-type': 'application/json; charset=UTF-8',
@@ -384,28 +489,18 @@ const EventRegistration = ({
         )
             .then((response) => response.json())
             .then((data) => {
-                const util = require('util');
-                console.log(
-                    'db data returned: \n' +
-                        util.inspect(data, {
-                            showHidden: false,
-                            depth: null,
-                        })
-                );
-                // if (registrarId !== '0') {
-                //     addRegistration(regData);
-                // }
+                console.log('maintainEventNumbers successful');
             });
 
-        //=====================================
-        // add the registration to redux
-        //=====================================
-        // if (registrarId !== '0') {
-        //     await addRegistration(regData);
+        // //=====================================
+        // // add the registration to redux
+        // //=====================================
+        // // if (registrarId !== '0') {
+        // //     await addRegistration(regData);
+        // // }
+        // if (currentUser?.isLoggedIn) {
+        //     await addRegistration(theEvent.details);
         // }
-        if (currentUser?.isLoggedIn) {
-            await addRegistration(theEvent.details);
-        }
         history.push('/');
     };
     const populateUserInfo = () => {
@@ -415,7 +510,7 @@ const EventRegistration = ({
         setPhone(currentUser?.phone);
         setHomeStreet(currentUser?.residence?.street);
         setHomeCity(currentUser?.residence?.city);
-        setHomeState(currentUser?.residence?.stateProv);
+        setHomeStateProv(currentUser?.residence?.stateProv);
         setHomePostalCode(currentUser?.residence?.postalCode);
         setChurchName(currentUser?.church?.name);
         setChurchCity(currentUser?.church?.city);
@@ -601,15 +696,15 @@ const EventRegistration = ({
                                                 />
                                             </div>
                                             <div>
-                                                <label htmlFor='homeState'>
+                                                <label htmlFor='homeStateProv'>
                                                     State
                                                 </label>
                                                 <input
                                                     type='text'
-                                                    id='homeState'
-                                                    name='homeState'
+                                                    id='homeStateProv'
+                                                    name='homeStateProv'
                                                     onChange={handleChange}
-                                                    value={homeState}
+                                                    value={homeStateProv}
                                                     required
                                                 />
                                             </div>
@@ -711,31 +806,12 @@ const EventRegistration = ({
                                         />
                                     </div>
                                     <div>
-                                        {isEdit ? (
-                                            <>
-                                                <button
-                                                    className='register-button'
-                                                    onClick={
-                                                        handleRegisterRequest
-                                                    }
-                                                >
-                                                    Update
-                                                </button>
-                                                <button
-                                                    className='registerbutton'
-                                                    onClick={handleCancel}
-                                                >
-                                                    Cancel
-                                                </button>
-                                            </>
-                                        ) : (
-                                            <button
-                                                className='registerbutton'
-                                                onClick={handleRegisterRequest}
-                                            >
-                                                Register
-                                            </button>
-                                        )}
+                                        <button
+                                            className='registerbutton'
+                                            onClick={handleRegisterRequest}
+                                        >
+                                            Register
+                                        </button>
                                     </div>
                                 </div>
                             </form>

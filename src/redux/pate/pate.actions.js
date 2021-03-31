@@ -1,4 +1,3 @@
-import registrationsReducer from '../registrations/registrations.reducer';
 import { PateActionTypes } from './pate.types';
 
 export const setSpinner = () => ({
@@ -15,11 +14,11 @@ export const clearRally = () => ({
     type: PateActionTypes.CLEAR_RALLY,
     payload: null
 });
-export const setRegistration = (registration) => ({
-    type: PateActionTypes.SET_REGISTRATION,
+export const loadRegistration = (registration) => ({
+    type: PateActionTypes.SET_PATE_REGISTRATION,
     payload: registration
 });
 export const clearRegistration = () => ({
-    type: PateActionTypes.CLEAR_REGISTRATION,
+    type: PateActionTypes.CLEAR_PATE_REGISTRATION,
     payload: null
 });

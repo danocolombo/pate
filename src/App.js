@@ -18,6 +18,7 @@ import EventDetails from './pages/event/event.page';
 import EventRegistration from './pages/registration/registration.page';
 import Serve from './pages/serve/serve.page';
 import ServeEvent from './pages/serveEvent/serveEvent.page';
+import EditRegistration from './pages/edit-registration/edit-registration.page';
 //----------------------
 //AMPLIFY INTEGRATION
 //----------------------
@@ -25,31 +26,6 @@ import ServeEvent from './pages/serveEvent/serveEvent.page';
 import { Auth } from 'aws-amplify';
 
 function App() {
-    // const [isLoggedIn, setLoggedIn] = useState(false);
-    // const checkLoggedInState = () => {
-    //     Auth.currentAuthenticatedUser()
-    //         .then((sess) => {
-    //             console.log('logged in');
-    //             setLoggedIn(true);
-    //         })
-    //         .catch(() => {
-    //             console.log('not logged in');
-    //             setLoggedIn(false);
-    //         });
-    // };
-    // useEffect(() => {
-    //     checkLoggedInState();
-    // }, []);
-    // const signOut = async () => {
-    //     try {
-    //         await Auth.signOut();
-    //         setLoggedIn(false);
-    //     } catch (error) {
-    //         console.log('Error logging out:\n:' + error);
-    //     }
-    // };
-
-    // render() {
     return (
         <Router>
             <Route exact path='/' component={Events} />
@@ -67,6 +43,7 @@ function App() {
                 path='/registration/:id'
                 component={EventRegistration}
             />
+            <Route exact path='/editregistration/:eid/:rid' component={EditRegistration}/>
             <Route exact path='/event/:id' component={EventDetails} />
         </Router>
     );

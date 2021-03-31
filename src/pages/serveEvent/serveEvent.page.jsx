@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { compose } from 'redux';
 import { withRouter } from 'react-router';
@@ -13,7 +14,7 @@ import {
     loadEventRegistrations,
     clearEventRegistrations,
 } from '../../redux/registrations/registrations.actions';
-
+// import { getEventRegistrations } from './server-event.actions';
 const Serve = ({
     setSpinner,
     clearSpinner,
@@ -53,6 +54,7 @@ const Serve = ({
     const [mealTime, setMealTime] = useState('');
     const [mealCost, setMealCost] = useState('');
     const [mealCount, setMealCount] = useState(0);
+    const [mealsServed, setMealsServed] = useState(0);
     const [mealMessage, setMealMessage] = useState('');
     const [attendeeCount, setAttendeeCount] = useState(0);
     const [registrationCount, setRegistrationCount] = useState(0);
@@ -72,14 +74,60 @@ const Serve = ({
         if (!currentUser.isLoggedIn) history.push('/');
         //get the reference to the current event and load to useState
         if (match?.params?.id) {
-            loadEvent();
-            loadRegistrations();
-        } else {
             clearEventRegistrations();
+            loadEvent();
+            // loadRegistrations();
+            getEventRegistrations(eventID);
+        } else {
+            // clearEventRegistrations();
         }
     }, []);
 
     useEffect(() => {}, [pateSystem.showSpinner]);
+
+    const getEventRegistrations = (eid) => {
+        try {
+            console.log('@@@@@@@@@@@@@@@@@@@@@@@@@');
+            console.log('getEventRegistrations :: eid (' + eid + ')');
+            try {
+                fetch(
+                    'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/registrations',
+                    {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            operation: 'getRegistrationsForEvent',
+                            payload: {
+                                eid: eid,
+                            },
+                        }),
+                        headers: {
+                            'Content-type': 'application/json; charset=UTF-8',
+                        },
+                    }
+                )
+                    .then((response) => response.json())
+                    .then((data) => {
+                        const util = require('util');
+                        console.log(
+                            'registrations-data:\n' +
+                                util.inspect(data.body, {
+                                    showHidden: false,
+                                    depth: null,
+                                })
+                        );
+                        loadEventRegistrations(data?.body?.Items);
+                    });
+            } catch (error) {
+                console.log('Error fetching registrations \n' + error);
+                console.err(error);
+            }
+
+            // dispatch({type: GET_EVENT_REGISTRATIONS});
+        } catch (err) {
+            console.log('getEventRegistrations ERR');
+            console.error(err);
+        }
+    };
 
     const loadEvent = async () => {
         //get the event reference.
@@ -120,7 +168,8 @@ const Serve = ({
                     setRepPhone(rallyEvent?.coordinator?.phone);
                     setMealTime(rallyEvent?.meal?.startTime);
                     setMealCost(rallyEvent?.meal?.cost);
-                    setMealCount(rallyEvent?.meal?.count);
+                    setMealCount(rallyEvent?.meal?.mealCount);
+                    setMealsServed(rallyEvent?.meal?.mealsServed);
                     setMealMessage(rallyEvent?.meal?.message);
                     setAttendeeCount(rallyEvent?.attendees);
                     setRegistrationCount(rallyEvent?.registrations);
@@ -154,7 +203,8 @@ const Serve = ({
                     setRepPhone(rallyEvent?.coordinator?.phone);
                     setMealTime(rallyEvent?.meal?.startTime);
                     setMealCost(rallyEvent?.meal?.cost);
-                    setMealCount(rallyEvent?.meal?.count);
+                    setMealCount(rallyEvent?.meal?.mealCount);
+                    setMealsServed(rallyEvent?.meal?.mealsServed);
                     setMealMessage(rallyEvent?.meal?.message);
                     setAttendeeCount(rallyEvent?.attendees);
                     setRegistrationCount(rallyEvent?.registrations);
@@ -232,7 +282,8 @@ const Serve = ({
         newRally.status = eventStatus;
         newRally.meal.startTime = mealTime;
         newRally.meal.cost = mealCost;
-        newRally.meal.count = mealCount;
+        newRally.meal.mealCount = mealCount;
+        newRally.meal.mealsServed = mealsServed;
         newRally.meal.message = mealMessage;
         newRally.registrations = registrationCount;
         newRally.attendees = attendeeCount;
@@ -337,6 +388,9 @@ const Serve = ({
                 break;
             case 'mealCount':
                 setMealCount(value);
+                break;
+            case 'mealsServed':
+                setMealsServed(value);
                 break;
             case 'mealMessage':
                 setMealMessage(value);
@@ -630,7 +684,7 @@ const Serve = ({
                                     </div>
                                     <div>
                                         <label htmlFor='mealCount'>
-                                            Attendees
+                                            Planned
                                         </label>
                                         <input
                                             type='number'
@@ -638,6 +692,20 @@ const Serve = ({
                                             name='mealCount'
                                             onChange={handleChange}
                                             value={mealCount}
+                                            readOnly
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor='mealsServed'>
+                                            Served
+                                        </label>
+                                        <input
+                                            type='number'
+                                            id='mealsServed'
+                                            name='mealsServed'
+                                            onChange={handleChange}
+                                            value={mealsServed}
                                             required
                                         />
                                     </div>
@@ -669,6 +737,7 @@ const Serve = ({
                                             onChange={handleChange}
                                             value={registrationCount}
                                             required
+                                            readOnly
                                         />
                                     </div>
                                     <div>
@@ -696,16 +765,19 @@ const Serve = ({
                 </>
                 <div className='serve-pageheader'>REGISTRATIONS</div>
                 <div className='serve-event-content-wrapper'>
-                    {Object.keys(registrations?.eventRegistrations).length >
-                    0 ? (
-                        registrations.eventRegistrations.map((reg) => (
-                            <RegistrationItem key={reg.uid} regItem={reg} />
+                    {registrations?.eventRegistrations ? (
+                        registrations.eventRegistrations.map((rege) => (
+                            <RegistrationItem key={rege.uid} regItem={rege} />
                         ))
                     ) : (
-                        <div className='serve-item-none-to-report-message'>
-                            None to report
-                        </div>
+                        <div>NO</div>
                     )}
+                </div>
+                <div className='serve-event__delete-box'>
+                    <hr className='serve-event__delete-box__horizontal-line' />
+                    <button className='serve-event__delete-button' onClick=''>
+                        DELETE EVENT
+                    </button>
                 </div>
             </div>
         </>
@@ -720,6 +792,9 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch(loadEventRegistrations(registrations)),
     clearEventRegistrations: () => dispatch(clearEventRegistrations()),
 });
+// Serve.propTypes = {
+//     getEventRegistrations: PropTypes.func.isRequired,
+// }
 const mapStateToProps = (state) => ({
     pateSystem: state.pate,
     currentUser: state.user.currentUser,

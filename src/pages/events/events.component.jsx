@@ -7,7 +7,7 @@ import {
 } from '../../include/api_headers';
 
 import './events.styles.scss';
-import EventListing from '../../components/events/eventListing.component';
+import EventListing from '../../components/event-listing/event-listing.component';
 import Header from '../../components/header/header.component';
 import Spinner from '../../components/spinner/Spinner';
 class Events extends React.Component {

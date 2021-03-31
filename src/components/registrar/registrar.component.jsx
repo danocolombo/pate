@@ -10,6 +10,8 @@ import {
 } from '../../redux/registrations/registrations.actions';
 const Registrar = ({
     regData,
+    currentUser,
+    pateSystem,
     loadTempRegistration,
     clearTempRegistration,
     setSpinner,
@@ -27,7 +29,7 @@ const Registrar = ({
     const [homeCity, setHomeCity] = useState(
         regData?.registrar?.residence?.city
     );
-    const [homeState, setHomeState] = useState(
+    const [homeStateProv, setHomeStateProv] = useState(
         regData?.registrar?.residence?.stateProv
     );
     const [homePostalCode, setHomePostalCode] = useState(
@@ -48,47 +50,149 @@ const Registrar = ({
         purgeTempReg();
         history.push('/profile');
     };
-    const handleRegisterRequest = async (e) => {
+    const handleRegistrationUpdateRequest = async (e) => {
         e.preventDefault();
         // this function pulls the data together and creates
         // an object to update database.
         //========================================
-        // check to see if he registration request is from
-        // a logged in user. If not, set the rid to 0.
+        // first make sure all the required fields are
+        // not blanked out upon edit request.
+        //-------------------------------------------
+        let fieldMessage = {};
+        let okayToProceed = true;
+        if (firstName.length < 2) {
+            okayToProceed = false;
+            fieldMessage.First_Name = 'is required';
+        }
+        if (lastName.length < 2) {
+            okayToProceed = false;
+            fieldMessage.Last_Name = 'is required';
+        }
+        if (email.length < 10) {
+            okayToProceed = false;
+            fieldMessage.Email = 'is required';
+        }
+        if (phone.length < 10) {
+            okayToProceed = false;
+            fieldMessage.Phone = 'is required';
+        }
+        if (homeStreet.length < 5) {
+            okayToProceed = false;
+            fieldMessage.Home_Street = 'is required';
+        }
+        if (homeCity.length < 2) {
+            okayToProceed = false;
+            fieldMessage.City = 'is required';
+        }
+        if (homeStateProv.length < 2) {
+            okayToProceed = false;
+            fieldMessage.Home_State = 'is required';
+        }
+        if (homePostalCode.length < 5) {
+            okayToProceed = false;
+            fieldMessage.Postal_Code = 'is required';
+        }
+        if (churchName.length < 5) {
+            okayToProceed = false;
+            fieldMessage.Church_Name = 'is required';
+        }
+        if (churchCity.length < 3) {
+            okayToProceed = false;
+            fieldMessage.Church_City = 'is required';
+        }
+        if (churchStateProv.length < 2) {
+            okayToProceed = false;
+            fieldMessage.Church_State = 'is required';
+        }
+        if (attendeeCount > 10) {
+            okayToProceed = false;
+            fieldMessage.Attendees = 'limited to 10 per registration';
+        }
+        if (mealCount > attendeeCount) {
+            okayToProceed = false;
+            fieldMessage.Meals = 'only available to attendees';
+        }
 
-        let regDataOriginal = {
-            eventDate: regData?.eventDate,
-            startTime: regData?.startTime,
-            endTime: regData?.endTime,
-            eid: regData?.uid,
-            location: {
-                name: regData?.name,
-                street: regData?.street,
-                city: regData?.city,
-                stateProv: regData?.stateProv,
-                postalCode: regData?.postalCode,
-            },
-            church: {
-                name: churchName,
-                city: churchCity,
-                stateProv: churchStateProv,
-            },
-            rid: regData?.registrar?.uid,
-            registrar: {
-                firstName: firstName,
-                lastName: lastName,
-                email: email,
-                phone: phone,
-                residence: {
-                    street: homeStreet,
-                    city: homeCity,
-                    stateProv: homeState,
-                    postalCode: homePostalCode,
-                },
-            },
-            attendeeCount: attendeeCount,
-            mealCount: mealCount,
-        };
+        if (!okayToProceed) {
+            alert(
+                'Please correct your request.\n' + JSON.stringify(fieldMessage)
+            );
+            return;
+        }
+        // now copy the original full registration record into object.
+
+        let regPayload = pateSystem?.registration;
+        //update with latest data...
+        regPayload.registrar.firstName = firstName;
+        regPayload.registrar.lastName = lastName;
+        regPayload.registrar.phone = phone;
+        regPayload.registrar.email = email;
+        regPayload.registrar.residence.street = homeStreet;
+        regPayload.registrar.residence.city = homeCity;
+        regPayload.registrar.residence.stateProv = homeStateProv;
+        regPayload.registrar.residence.postalCode = homePostalCode;
+        regPayload.church.name = churchName;
+        regPayload.church.city = churchCity;
+        regPayload.church.stateProv = churchStateProv;
+        regPayload.attendeeCount = attendeeCount;
+        regPayload.mealCount = mealCount;
+
+        //check if there was an edit done. If not, go back
+        if (regPayload === pateSystem.registration) {
+            //if this was registrar, go back to profile
+            if (currentUser.uid === regPayload.rid) {
+                history.push('/profile');
+            } else {
+                history.push('/serve');
+            }
+        }
+        //check if numbers changed....
+        let numberAdjustments = {};
+        if (
+            regPayload.attendeeCount !== pateSystem.registrations.attendeeCount
+        ) {
+            //determine difference
+            let delta =
+                regPayload.attendeeCount -
+                pateSystem.registrations.attendeeCount;
+            numberAdjustments.registrationCount = delta.toString();
+        }
+        if (
+            regPayload.meal.mealCount !==
+            pateSystem.registrations.meal.mealCount
+        ) {
+            //determine difference
+            let delta =
+                regPayload.meal.mealCount -
+                pateSystem.registrations.meal.mealCount;
+            numberAdjustments.mealCount = delta.toString();
+        }
+        if (regPayload.attendance !== pateSystem.registrations.attendance) {
+            let delta =
+                regPayload.attendance - pateSystem.registrations.attendance;
+            numberAdjustments.attendance = delta.toString();
+        }
+        if (
+            regPayload.meal.mealsServed !==
+            pateSystem.registrations.meal.mealsServed
+        ) {
+            let delta =
+                regPayload.meal.mealsServed -
+                pateSystem.registrations.meal.mealsServed;
+            numberAdjustments.mealsServed = delta.toString();
+        }
+        /****************** 
+        "request": {
+            "uid": "65ff55fb33fe4c0447b086188f2e9b1g",
+            "adjustments": {
+                "registrationCount": "2",
+                "mealCount": "2",
+                "attendance": "0",
+                "mealsServed": "0",
+            }
+        }
+        ********************/
+
         // const util = require('util');
         // console.log(
         //     'regData: \n' +
@@ -152,8 +256,8 @@ const Registrar = ({
             case 'homeCity':
                 setHomeCity(value);
                 break;
-            case 'homeState':
-                setHomeState(value);
+            case 'homeStateProv':
+                setHomeStateProv(value);
                 break;
             case 'homePostalCode':
                 setHomePostalCode(value);
@@ -277,15 +381,15 @@ const Registrar = ({
                                                 />
                                             </div>
                                             <div>
-                                                <label htmlFor='homeState'>
+                                                <label htmlFor='homeStateProv'>
                                                     State
                                                 </label>
                                                 <input
                                                     type='text'
-                                                    id='homeState'
-                                                    name='homeState'
+                                                    id='homeStateProv'
+                                                    name='homeStateProv'
                                                     onChange={handleChange}
-                                                    value={homeState}
+                                                    value={homeStateProv}
                                                     required
                                                 />
                                             </div>
@@ -389,7 +493,9 @@ const Registrar = ({
                                     <div>
                                         <button
                                             className='register-button'
-                                            onClick={handleRegisterRequest}
+                                            onClick={
+                                                handleRegistrationUpdateRequest
+                                            }
                                         >
                                             Update
                                         </button>
@@ -399,6 +505,16 @@ const Registrar = ({
                                         >
                                             Cancel
                                         </button>
+                                        {currentUser?.stateLead ===
+                                            pateSystem?.registration?.location
+                                                ?.stateProv ||
+                                        currentUser.uid ===
+                                            pateSystem?.rally?.coordinator
+                                                ?.id ? (
+                                            <button className='registration-registrar__delete-button'>
+                                                DELETE
+                                            </button>
+                                        ) : null}
                                     </div>
                                 </div>
                             </form>
