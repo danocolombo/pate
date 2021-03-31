@@ -55,7 +55,7 @@ const Events = ({
     //     post._id === payload.id ? { ...post, likes: payload.likes } : post
     //   ),
 
-    return pateSystem.showSpinner ? (
+    return plan === null ? (
         <Spinner />
     ) : (
         <>
