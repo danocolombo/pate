@@ -54,6 +54,7 @@ const Serve = ({
     const [mealTime, setMealTime] = useState('');
     const [mealCost, setMealCost] = useState('');
     const [mealCount, setMealCount] = useState(0);
+    const [mealsServed, setMealsServed] = useState(0);
     const [mealMessage, setMealMessage] = useState('');
     const [attendeeCount, setAttendeeCount] = useState(0);
     const [registrationCount, setRegistrationCount] = useState(0);
@@ -167,7 +168,8 @@ const Serve = ({
                     setRepPhone(rallyEvent?.coordinator?.phone);
                     setMealTime(rallyEvent?.meal?.startTime);
                     setMealCost(rallyEvent?.meal?.cost);
-                    setMealCount(rallyEvent?.meal?.count);
+                    setMealCount(rallyEvent?.meal?.mealCount);
+                    setMealsServed(rallyEvent?.meal?.mealsServed);
                     setMealMessage(rallyEvent?.meal?.message);
                     setAttendeeCount(rallyEvent?.attendees);
                     setRegistrationCount(rallyEvent?.registrations);
@@ -201,7 +203,8 @@ const Serve = ({
                     setRepPhone(rallyEvent?.coordinator?.phone);
                     setMealTime(rallyEvent?.meal?.startTime);
                     setMealCost(rallyEvent?.meal?.cost);
-                    setMealCount(rallyEvent?.meal?.count);
+                    setMealCount(rallyEvent?.meal?.mealCount);
+                    setMealsServed(rallyEvent?.meal?.mealsServed);
                     setMealMessage(rallyEvent?.meal?.message);
                     setAttendeeCount(rallyEvent?.attendees);
                     setRegistrationCount(rallyEvent?.registrations);
@@ -279,7 +282,8 @@ const Serve = ({
         newRally.status = eventStatus;
         newRally.meal.startTime = mealTime;
         newRally.meal.cost = mealCost;
-        newRally.meal.count = mealCount;
+        newRally.meal.mealCount = mealCount;
+        newRally.meal.mealsServed = mealsServed;
         newRally.meal.message = mealMessage;
         newRally.registrations = registrationCount;
         newRally.attendees = attendeeCount;
@@ -384,6 +388,9 @@ const Serve = ({
                 break;
             case 'mealCount':
                 setMealCount(value);
+                break;
+            case 'mealsServed':
+                setMealsServed(value);
                 break;
             case 'mealMessage':
                 setMealMessage(value);
@@ -677,7 +684,7 @@ const Serve = ({
                                     </div>
                                     <div>
                                         <label htmlFor='mealCount'>
-                                            Attendees
+                                            Planned
                                         </label>
                                         <input
                                             type='number'
@@ -685,6 +692,20 @@ const Serve = ({
                                             name='mealCount'
                                             onChange={handleChange}
                                             value={mealCount}
+                                            readOnly
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor='mealsServed'>
+                                            Served
+                                        </label>
+                                        <input
+                                            type='number'
+                                            id='mealsServed'
+                                            name='mealsServed'
+                                            onChange={handleChange}
+                                            value={mealsServed}
                                             required
                                         />
                                     </div>
@@ -716,6 +737,7 @@ const Serve = ({
                                             onChange={handleChange}
                                             value={registrationCount}
                                             required
+                                            readOnly
                                         />
                                     </div>
                                     <div>
