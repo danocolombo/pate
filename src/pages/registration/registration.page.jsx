@@ -314,7 +314,8 @@ const EventRegistration = ({
         history.push('/register');
     };
     const handleRegisterRequest = async (e) => {
-        // e.preventDefault();
+        e.preventDefault();
+
         // this function pulls the data together and creates
         // an object to update database.
         //-----------------------------------------------------
@@ -424,21 +425,6 @@ const EventRegistration = ({
             mealCount: mealCount,
         };
 
-        const util = require('util');
-        console.log(
-            'what we got: \n' +
-                util.inspect(regData, {
-                    showHidden: false,
-                    depth: null,
-                })
-        );
-        console.log('$$$$\n' + JSON.stringify(regData) + '\n$$$$\n');
-        // const util = require('util');
-        // console.log(
-        //     'regData: \n' +
-        //         util.inspect(regData, { showHidden: false, depth: null })
-        // );
-
         // post the registration to API and return to /
         //====================================================
         // async function updateDb() {
@@ -475,15 +461,46 @@ const EventRegistration = ({
         } catch (error) {
             console.log(JSON.stringify(error));
         }
-        //=====================================
-        // add the registration to redux
-        //=====================================
-        // if (registrarId !== '0') {
-        //     await addRegistration(regData);
+        //====================================
+        // update the event with the numbers
+        //====================================
+        let eventUpdate = {
+            uid: pateSystem.rally.uid,
+            adjustments: {
+                registrationCount: attendeeCount,
+                mealCount: mealCount,
+            },
+        };
+        //===========================
+        // now send event update to API
+        //-------------------------------
+        await fetch(
+            'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/events',
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    operation: 'maintainNumbers',
+                    payload: eventUpdate,
+                }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            }
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                console.log('maintainEventNumbers successful');
+            });
+
+        // //=====================================
+        // // add the registration to redux
+        // //=====================================
+        // // if (registrarId !== '0') {
+        // //     await addRegistration(regData);
+        // // }
+        // if (currentUser?.isLoggedIn) {
+        //     await addRegistration(theEvent.details);
         // }
-        if (currentUser?.isLoggedIn) {
-            await addRegistration(theEvent.details);
-        }
         history.push('/');
     };
     const populateUserInfo = () => {
@@ -789,33 +806,12 @@ const EventRegistration = ({
                                         />
                                     </div>
                                     <div>
-                                        {isEdit ? (
-                                            <>
-                                                <button
-                                                    className='register-button'
-                                                    onClick={() =>
-                                                        handleRegisterClick()
-                                                    }
-                                                >
-                                                    Update
-                                                </button>
-                                                <button
-                                                    className='registerbutton'
-                                                    onClick={handleCancel}
-                                                >
-                                                    Cancel
-                                                </button>
-                                            </>
-                                        ) : (
-                                            <button
-                                                className='registerbutton'
-                                                onClick={() =>
-                                                    handleRegisterRequest()
-                                                }
-                                            >
-                                                Register
-                                            </button>
-                                        )}
+                                        <button
+                                            className='registerbutton'
+                                            onClick={handleRegisterRequest}
+                                        >
+                                            Register
+                                        </button>
                                     </div>
                                 </div>
                             </form>
