@@ -149,36 +149,36 @@ const Registrar = ({
         //check if numbers changed....
         let numberAdjustments = {};
         if (
-            regPayload.attendeeCount !== pateSystem.registrations.attendeeCount
+            regPayload?.attendeeCount !== pateSystem?.registration?.attendeeCount
         ) {
             //determine difference
             let delta =
                 regPayload.attendeeCount -
-                pateSystem.registrations.attendeeCount;
+                pateSystem.registration.attendeeCount;
             numberAdjustments.registrationCount = delta.toString();
         }
         if (
-            regPayload.meal.mealCount !==
-            pateSystem.registrations.meal.mealCount
+            regPayload?.meal?.mealCount !==
+            pateSystem?.registration?.meal?.mealCount
         ) {
             //determine difference
             let delta =
                 regPayload.meal.mealCount -
-                pateSystem.registrations.meal.mealCount;
+                pateSystem.registration.meal.mealCount;
             numberAdjustments.mealCount = delta.toString();
         }
-        if (regPayload.attendance !== pateSystem.registrations.attendance) {
+        if (regPayload?.attendance !== pateSystem?.registration?.attendance) {
             let delta =
-                regPayload.attendance - pateSystem.registrations.attendance;
+                regPayload.attendance - pateSystem.registration.attendance;
             numberAdjustments.attendance = delta.toString();
         }
         if (
-            regPayload.meal.mealsServed !==
-            pateSystem.registrations.meal.mealsServed
+            regPayload?.meal?.mealsServed !==
+            pateSystem?.registration?.meal?.mealsServed
         ) {
             let delta =
                 regPayload.meal.mealsServed -
-                pateSystem.registrations.meal.mealsServed;
+                pateSystem.registration.meal.mealsServed;
             numberAdjustments.mealsServed = delta.toString();
         }
         /****************** 
@@ -207,7 +207,7 @@ const Registrar = ({
             {
                 method: 'POST',
                 body: JSON.stringify({
-                    operation: 'createRegistration',
+                    operation: 'updateRegistration',
                     payload: {
                         Item: regData,
                     },

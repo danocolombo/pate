@@ -495,12 +495,10 @@ const EventRegistration = ({
         // //=====================================
         // // add the registration to redux
         // //=====================================
-        // // if (registrarId !== '0') {
-        // //     await addRegistration(regData);
-        // // }
-        // if (currentUser?.isLoggedIn) {
-        //     await addRegistration(theEvent.details);
-        // }
+        if (registrarId !== '0') {
+            await addRegistration(regData);
+        }
+        
         history.push('/');
     };
     const populateUserInfo = () => {
