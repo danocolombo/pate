@@ -26,7 +26,7 @@ export const removeItemFromRegistrations = (
         (registration) => registration.uid === target.id
     );
 
-    if (existingRegistration.quantity === 1) {
+    if (existingRegistration) {
         return registrations.filter(
             (registration) => registration.uid !== target.id
         );

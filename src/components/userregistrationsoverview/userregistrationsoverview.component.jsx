@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import StyledLink from '../../components/custom-link/custom-link-white.component';
 import './userregistrationsoverview.styles.scss';
 import { removeRegistration } from '../../redux/registrations/registrations.actions';
@@ -9,6 +9,10 @@ const UserRegistrationOverview = ({
     registrations,
     removeRegistration,
 }) => {
+    const history = useHistory();
+    if(!currentUser?.isLoggedIn){
+        history.push('/');
+    }
     // const util = require('util');
     // console.log(
     //     '&%&%&%&%&%___registrations___&%&%&%&%&%\n' +
@@ -36,8 +40,8 @@ const UserRegistrationOverview = ({
                 body: JSON.stringify({
                     operation: 'deleteRegistration',
                     payload: {
-                        Key: { uid: registration.uid },
-                    },
+                        Key: { uid: registration.uid }
+                    }
                 }),
                 headers: {
                     'Content-type': 'application/json; charset=UTF-8',
@@ -115,15 +119,15 @@ const UserRegistrationOverview = ({
                                       {reg?.location?.stateProv}
                                   </div>
 
-                                  {reg.registrar.firstName !=
-                                  currentUser.firstName ? (
-                                      <span>({reg.registrar.firstName})</span>
+                                  {reg.registrar?.firstName !==
+                                  currentUser?.firstName ? (
+                                      <span>({reg.registrar?.firstName})</span>
                                   ) : null}
 
                                   <div className='user-reg-overview__cancel-button'>
                                       <Link
                                           onClick={() => {
-                                              handleCancellation(reg.uid);
+                                              handleCancellation(reg);
                                           }}
                                       >
                                           X

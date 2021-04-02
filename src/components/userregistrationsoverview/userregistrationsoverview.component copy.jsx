@@ -6,7 +6,7 @@ import './userregistrationsoverview.styles.scss';
 import { removeRegistration } from '../../redux/registrations/registrations.actions';
 const UserRegistrationOverview = ({
     currentUser,
-    registrationInfo,
+    registrations,
     removeRegistration,
 }) => {
     // const util = require('util');
@@ -14,11 +14,7 @@ const UserRegistrationOverview = ({
     //     '&%&%&%&%&%___registrations___&%&%&%&%&%\n' +
     //         util.inspect(registrationInfo, { showHidden: false, depth: null })
     // );
-    const registrations = registrationInfo;
-
-    if (registrations) {
-        registrations.forEach((r) => {});
-    }
+    // const registrations = registrationInfo;
     const dateToDisplay = (dt) => {
         const y = dt.substring(0, 4);
         const m = parseInt(dt.substring(4, 6));
@@ -99,7 +95,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 const mapStateToProps = (state) => ({
     currentUser: state.user.currentUser,
-    registrationInfo: state.registrations.confirmed,
+    registrations: state.registrations.confirmed,
 });
 export default connect(
     mapStateToProps,
