@@ -1,0 +1,18 @@
+.modal-wrapper {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: 'translate(-50%, -50%)';
+    background-color: #fafafa;
+    padding: 50px;
+    z-index: 1000;
+}
+.modal-overlay {
+    position: fixed;
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background: 'rgba(0,0,0,.6)';
+    z-index: 1000;
+}

@@ -8,7 +8,7 @@ import { clearUser } from '../../redux/user/user.actions';
 import {
     clearRegistrations,
     clearTempRegistration,
-    clearEventRegistrations
+    clearEventRegistrations,
 } from '../../redux/registrations/registrations.actions';
 import { clearRally } from '../../redux/pate/pate.actions';
 import { clearStateRep } from '../../redux/stateRep/stateRep.actions';

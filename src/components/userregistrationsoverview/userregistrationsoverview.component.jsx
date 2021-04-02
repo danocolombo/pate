@@ -61,11 +61,11 @@ const UserRegistrationOverview = ({
         let eventUpdate = {
             uid: registration.eid,
             adjustments: {
-                registrationCount: (registration.attendeeCount * -1),
-            }
-        }
-        const mCount = parseInt(registration.mealCount,10) * -1;
-        if(mCount != 0){
+                registrationCount: registration.attendeeCount * -1,
+            },
+        };
+        const mCount = parseInt(registration.mealCount, 10) * -1;
+        if (mCount != 0) {
             eventUpdate.adjustments.mealCount = mCount;
         }
         await fetch(
@@ -85,7 +85,7 @@ const UserRegistrationOverview = ({
             .then((data) => {
                 console.log('maintainEventNumbers successful');
             });
-        
+
         //remove the redux reference to the event
         await removeRegistration(registration.uid);
         //??????
@@ -95,31 +95,44 @@ const UserRegistrationOverview = ({
     return (
         <>
             <div className='user-reg-overview__wrapper'>
-                {registrations ? (
-                    registrations.map(reg => (
-                        <>
-                            <div className='user-reg-overview__item'>
-                                <div className='user-reg-overview__date'>
-                                    <StyledLink
-                                        style={{ textDecoration: 'none' }}
-                                        to={`/editregistration/${reg.eid}/${reg.uid}`}
-                                        >{dateToDisplay(reg.eventDate)}
-                                    </StyledLink>
-                                </div>
-                                <div className='user-reg-overview__name'>{reg?.location.name}</div>
-                                { (reg.registrar.firstName != currentUser.firstName) ?
-                                    <span>({reg.registrar.firstName})</span>
-                                :null}
-                                <div className='user-reg-overview__city-state'>{reg?.location?.city}, {reg?.location?.stateProv}</div>
-                                <div className='user-reg-overview__cancel-button'>
-                                    <Link onClick={() => {
-                                        handleCancellation(reg.uid);
-                                    }}>X</Link>
-                                </div>
-                            </div>
-                        </>
-                    ))
-                ):null}
+                {registrations
+                    ? registrations.map((reg) => (
+                          <>
+                              <div className='user-reg-overview__item'>
+                                  <div className='user-reg-overview__date'>
+                                      <StyledLink
+                                          style={{ textDecoration: 'none' }}
+                                          to={`/editregistration/${reg.eid}/${reg.uid}`}
+                                      >
+                                          {dateToDisplay(reg.eventDate)}
+                                      </StyledLink>
+                                  </div>
+
+                                  <div className='user-reg-overview__name'>
+                                      {reg?.location.name}
+                                      <br />
+                                      {reg?.location?.city},{' '}
+                                      {reg?.location?.stateProv}
+                                  </div>
+
+                                  {reg.registrar.firstName !=
+                                  currentUser.firstName ? (
+                                      <span>({reg.registrar.firstName})</span>
+                                  ) : null}
+
+                                  <div className='user-reg-overview__cancel-button'>
+                                      <Link
+                                          onClick={() => {
+                                              handleCancellation(reg.uid);
+                                          }}
+                                      >
+                                          X
+                                      </Link>
+                                  </div>
+                              </div>
+                          </>
+                      ))
+                    : null}
             </div>
         </>
     );

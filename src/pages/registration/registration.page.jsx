@@ -7,6 +7,7 @@ import { withRouter } from 'react-router';
 import './registration.styles.scss';
 import Header from '../../components/header/header.component';
 import Spinner from '../../components/spinner/Spinner';
+
 import {
     addRegistration,
     loadTempRegistration,
@@ -14,6 +15,7 @@ import {
 } from '../../redux/registrations/registrations.actions';
 import { loadRally } from '../../redux/pate/pate.actions';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
+import InputError from '../../components/modals/registration/input-error.component';
 const EventRegistration = ({
     setSpinner,
     clearSpinner,
@@ -28,6 +30,7 @@ const EventRegistration = ({
 }) => {
     // const [plan, setPlan] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
+    const [inputModalVisible, setInputModalVisible] = useState(false);
     const [attendeeCount, setAttendeeCount] = useState(1);
     const [mealCount, setMealCount] = useState(0);
     const [firstName, setFirstName] = useState(currentUser?.firstName);
@@ -380,6 +383,14 @@ const EventRegistration = ({
             alert(
                 'Please correct your request.\n' + JSON.stringify(fieldMessage)
             );
+            setInputModalVisible(true);
+            <InputError
+                open={inputModalVisible}
+                onClose={() => setInputModalVisible(false)}
+            >
+                <div>Please correct your request.</div>
+                <div>{JSON.stringify(fieldMessage)}</div>
+            </InputError>;
             return;
         }
 
@@ -498,7 +509,7 @@ const EventRegistration = ({
         if (registrarId !== '0') {
             await addRegistration(regData);
         }
-        
+
         history.push('/');
     };
     const populateUserInfo = () => {

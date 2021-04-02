@@ -4,14 +4,14 @@
     margin: 0;
     width: 80%;
     height: auto;
-    background: #B1A296;
+    background: #b1a296;
     color: white;
     border-bottom-right-radius: 10px;
     border-left: black solid 1px;
     border-bottom-left-radius: 10px;
     border-right: black solid 1px;
     border-bottom: black solid 1px;
-    padding-bottom:10px;
+    padding-bottom: 10px;
 }
 
 .registrationtable {
@@ -33,6 +33,7 @@
 }
 user-reg-overview__item {
     padding: 10px 10px;
+    position: relative;
 }
 .user-reg-overview__date {
     display: inline-block;
@@ -50,6 +51,6 @@ user-reg-overview__item {
 }
 .user-reg-overview__cancel-button {
     display: inline-block;
-    text-align: right;
-    vertical-align: middle;
+
+    cursor: pointer;
 }
