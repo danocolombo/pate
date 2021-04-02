@@ -18,7 +18,9 @@ const Registrar = ({
     clearSpinner,
 }) => {
     const [attendeeCount, setAttendeeCount] = useState(regData?.attendeeCount);
-    const [mealCount, setMealCount] = useState(regData?.mealCount);
+    const [mealCount, setMealCount] = useState(
+        regData?.mealCount ? regData.mealCount : 0
+    );
     const [firstName, setFirstName] = useState(regData?.registrar?.firstName);
     const [lastName, setLastName] = useState(regData?.registrar?.lastName);
     const [email, setEmail] = useState(regData?.registrar?.email);
@@ -52,6 +54,11 @@ const Registrar = ({
     };
     const handleRegistrationUpdateRequest = async (e) => {
         e.preventDefault();
+        let oldAttendanceCount = 0;
+        oldAttendanceCount = parseInt(pateSystem?.registration?.attendeeCount);
+        let oldMealCount = 0;
+        oldMealCount = parseInt(pateSystem?.registration?.mealCount, 10);
+        console.log('oldReg.mealCount: ' + oldMealCount);
         // this function pulls the data together and creates
         // an object to update database.
         //========================================
@@ -104,13 +111,25 @@ const Registrar = ({
             okayToProceed = false;
             fieldMessage.Church_State = 'is required';
         }
-        if (attendeeCount > 10) {
+        let attendeeNumber = parseInt(attendeeCount);
+        if (isNaN(attendeeNumber)) {
             okayToProceed = false;
-            fieldMessage.Attendees = 'limited to 10 per registration';
+            fieldMessage.AttendeeValue = 'value has to be a number';
+        } else {
+            if (attendeeCount > 10) {
+                okayToProceed = false;
+                fieldMessage.Attendees = 'limited to 10 per registration';
+            }
         }
-        if (mealCount > attendeeCount) {
+        let mealNumber = parseInt(mealCount);
+        if (isNaN(mealNumber)) {
             okayToProceed = false;
-            fieldMessage.Meals = 'only available to attendees';
+            fieldMessage.MealsValue = 'value has to be a number';
+        } else {
+            if (mealCount > attendeeCount) {
+                okayToProceed = false;
+                fieldMessage.Meals = 'only available to attendees';
+            }
         }
 
         if (!okayToProceed) {
@@ -121,7 +140,9 @@ const Registrar = ({
         }
         // now copy the original full registration record into object.
 
-        let regPayload = pateSystem?.registration;
+        let regPayload = {};
+        regPayload = Object.assign(pateSystem?.registration);
+
         //update with latest data...
         regPayload.registrar.firstName = firstName;
         regPayload.registrar.lastName = lastName;
@@ -137,68 +158,61 @@ const Registrar = ({
         regPayload.attendeeCount = attendeeCount;
         regPayload.mealCount = mealCount;
 
-        //check if there was an edit done. If not, go back
-        if (regPayload === pateSystem.registration) {
-            //if this was registrar, go back to profile
-            if (currentUser.uid === regPayload.rid) {
-                history.push('/profile');
-            } else {
-                history.push('/serve');
-            }
-        }
         //check if numbers changed....
         let numberAdjustments = {};
-        if (
-            regPayload?.attendeeCount !== pateSystem?.registration?.attendeeCount
-        ) {
+        let numbersNeedUpdating = false;
+        if (attendeeNumber !== oldAttendanceCount) {
             //determine difference
-            let delta =
-                regPayload.attendeeCount -
-                pateSystem.registration.attendeeCount;
-            numberAdjustments.registrationCount = delta.toString();
+            numbersNeedUpdating = true;
+            let delta = attendeeNumber - oldAttendanceCount;
+            numberAdjustments.registrationCount = delta;
         }
-        if (
-            regPayload?.meal?.mealCount !==
-            pateSystem?.registration?.meal?.mealCount
-        ) {
+        if (mealNumber !== oldMealCount) {
             //determine difference
-            let delta =
-                regPayload.meal.mealCount -
-                pateSystem.registration.meal.mealCount;
-            numberAdjustments.mealCount = delta.toString();
+            numbersNeedUpdating = true;
+            let delta = mealNumber - oldMealCount;
+            numberAdjustments.mealCount = delta;
         }
-        if (regPayload?.attendance !== pateSystem?.registration?.attendance) {
-            let delta =
-                regPayload.attendance - pateSystem.registration.attendance;
-            numberAdjustments.attendance = delta.toString();
+        if (numbersNeedUpdating) {
+            /****************** 
+                "request": {
+                    "uid": "65ff55fb33fe4c0447b086188f2e9b1g",
+                    "adjustments": {
+                        "registrationCount": "2",
+                        "mealCount": "2",
+                        "attendance": "0",
+                        "mealsServed": "0",
+                    }
+                }
+            ********************/
+            let numUpdate = {
+                uid: regPayload.eid,
+                adjustments: numberAdjustments,
+            };
+            const util = require('util');
+            console.log(
+                'numUpdate: \n' +
+                    util.inspect(numUpdate, { showHidden: false, depth: null })
+            );
+            console.log('going to update numbers');
+            await fetch(
+                'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/events',
+                {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        operation: 'maintainNumbers',
+                        payload: numUpdate,
+                    }),
+                    headers: {
+                        'Content-type': 'application/json; charset=UTF-8',
+                    },
+                }
+            )
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log('maintainEventNumbers successful');
+                });
         }
-        if (
-            regPayload?.meal?.mealsServed !==
-            pateSystem?.registration?.meal?.mealsServed
-        ) {
-            let delta =
-                regPayload.meal.mealsServed -
-                pateSystem.registration.meal.mealsServed;
-            numberAdjustments.mealsServed = delta.toString();
-        }
-        /****************** 
-        "request": {
-            "uid": "65ff55fb33fe4c0447b086188f2e9b1g",
-            "adjustments": {
-                "registrationCount": "2",
-                "mealCount": "2",
-                "attendance": "0",
-                "mealsServed": "0",
-            }
-        }
-        ********************/
-
-        // const util = require('util');
-        // console.log(
-        //     'regData: \n' +
-        //         util.inspect(regData, { showHidden: false, depth: null })
-        // );
-
         // post the registration to API and return to /
         //====================================================
         // async function updateDb() {

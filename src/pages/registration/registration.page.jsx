@@ -432,8 +432,8 @@ const EventRegistration = ({
                     postalCode: homePostalCode,
                 },
             },
-            attendeeCount: attendeeCount,
-            mealCount: mealCount,
+            attendeeCount: parseInt(attendeeCount, 10),
+            mealCount: parseInt(mealCount, 10),
         };
 
         // post the registration to API and return to /
