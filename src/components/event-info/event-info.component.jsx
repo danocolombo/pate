@@ -20,9 +20,9 @@ const EventInfo = ({ eventInfo }) => {
                         </div>
                         <div>{eventInfo?.street}</div>
                         <div>
-                            {eventInfo?.rally?.city},
-                            {eventInfo?.rally?.stateProv}&nbsp;
-                            {eventInfo?.rally?.postalCode}
+                            {eventInfo?.city},
+                            {eventInfo?.stateProv}&nbsp;
+                            {eventInfo?.postalCode}
                         </div>
                     </div>
                     {/* Date/Time definition */}
