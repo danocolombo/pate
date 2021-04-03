@@ -8,6 +8,8 @@ import {
     loadTempRegistration,
     clearTempRegistration,
 } from '../../redux/registrations/registrations.actions';
+import PhoneInput from 'react-phone-input-2';
+import './registrar.styles.scss';
 const Registrar = ({
     regData,
     currentUser,
@@ -351,16 +353,22 @@ const Registrar = ({
                                                 />
                                             </div>
                                             <div>
-                                                <label htmlFor='phone'>
-                                                    Telephone
-                                                </label>
-                                                <input
-                                                    type='text'
-                                                    id='phone'
-                                                    name='phone'
-                                                    onChange={handleChange}
+                                                <PhoneInput
+                                                    onlyCountries={['us']}
+                                                    country='us'
+                                                    placeholder='(702) 123-4567'
+                                                    disableCountryCode
+                                                    disableDropdown
                                                     value={phone}
-                                                    required
+                                                    onChange={(phone) =>
+                                                        setPhone(phone)
+                                                    }
+                                                    inputProps={{
+                                                        name: 'phone',
+                                                        required: true,
+                                                        placeholder:
+                                                            '(706) 396-1234',
+                                                    }}
                                                 />
                                             </div>
                                         </div>

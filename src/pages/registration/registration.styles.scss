@@ -32,7 +32,7 @@
 }
 //----------- from registration details original page
 .registrationdetailswrapper {
-    text-align: center;
+    text-align: right;
     // padding: 1rem;
     // margin: 0.5rem 0;
     padding-top: 10px;
@@ -171,7 +171,9 @@
     text-decoration: none;
     cursor: pointer;
 }
-.register-contact-label, .register-address-label, .register-church-label {
+.register-contact-label,
+.register-address-label,
+.register-church-label {
     font-weight: bold;
     font-size: 1.3em;
 }
@@ -214,10 +216,9 @@
     margin-bottom: 10px;
 }
 .register-church-header {
-
 }
 .register-church-wrapper {
-    margin-top:10px;
+    margin-top: 10px;
     display: inline-block;
     width: 40%;
     text-align: left;
