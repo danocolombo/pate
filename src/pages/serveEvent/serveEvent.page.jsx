@@ -145,6 +145,14 @@ const Serve = ({
             rallies.forEach((rallyEvent) => {
                 if (rallyEvent.uid === eventID) {
                     //-----------------
+                    // convert the eventDate from number to date to display
+                    let ddbDate = rallyEvent.eventDate;
+                    const y = ddbDate.substring(0, 4);
+                    const m = ddbDate.substring(4, 6);
+                    const d = ddbDate.substring(6, 8);
+                    let smDate =
+                        y.toString() + '-' + m.toString() + '-' + d.toString();
+                    rallyEvent.eventDate = smDate;
                     // seave the event to redux
                     loadRally(rallyEvent);
                     //load the useState
@@ -180,6 +188,14 @@ const Serve = ({
             leadRallies.forEach((rallyEvent) => {
                 if (rallyEvent.uid === eventID) {
                     //-----------------
+                    // convert the eventDate from number to date to display
+                    let ddbDate = rallyEvent.eventDate;
+                    const y = ddbDate.substring(0, 4);
+                    const m = ddbDate.substring(4, 6);
+                    const d = ddbDate.substring(6, 8);
+                    let smDate =
+                        y.toString() + '-' + m.toString() + '-' + d.toString();
+                    rallyEvent.eventDate = smDate;
                     // seave the event to redux
                     loadRally(rallyEvent);
                     //load the useState
@@ -274,7 +290,7 @@ const Serve = ({
         newRally.contact.name = contactName;
         newRally.contact.phone = contactPhone;
         newRally.contact.email = contactEmail;
-        newRally.eventDate = eventDate;
+        newRally.eventDate = eventDate.replace(/-/g, '');
         newRally.startTime = eventStart;
         newRally.endTime = eventEnd;
         newRally.message = eventMessage;
@@ -290,6 +306,7 @@ const Serve = ({
 
         //now update redux for future use.
         loadRally(newRally);
+        //reload stateRep and stateLead
         //now save the newRally data to database
         async function updateDb() {
             await fetch(
@@ -340,6 +357,12 @@ const Serve = ({
                 break;
             case 'postalCode':
                 setPostalCode(value);
+                break;
+            case 'rallyDate':
+                console.log('rallyDate:' + value);
+                setEventDate(value);
+                console.log('eventDate: ' + eventDate);
+                console.log('make it?');
                 break;
             case 'eventDate':
                 setEventDate(value);
@@ -524,7 +547,18 @@ const Serve = ({
                                         Logistics
                                     </div>
                                     <div>
-                                        <label htmlFor='eventDate'>Date</label>
+                                        <label htmlFor='eventDate'>
+                                            Date (yyyy-mm-dd)
+                                        </label>
+                                        <input
+                                            type='date'
+                                            id='rallyDate'
+                                            name='rallyDate'
+                                            onChange={handleChange}
+                                            value={eventDate}
+                                            required
+                                        />
+                                        {/*}
                                         <input
                                             type='text'
                                             id='eventDate'
@@ -532,7 +566,7 @@ const Serve = ({
                                             onChange={handleChange}
                                             value={eventDate}
                                             required
-                                        />
+                                        /> */}
                                     </div>
                                     <div>
                                         <label htmlFor='eventStart'>
