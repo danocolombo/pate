@@ -1,5 +1,15 @@
 export const updateItemInRallyList = (rally, rallyToUpdate) => {
     //this function will update the specified rally, if it exists
+    let updatedRallies = [];
+    rally.map((r) => {
+        if (r.uid === rallyToUpdate){
+            updatedRallies.push(rallyToUpdate);
+        }else{
+            updatedRallies.push(r);
+        }
+    })
+    rally = JSON.parse(JSON.stringify(updatedRallies));
+    return rally;
 };
 // export const addItemToRegistrations = (registrations, registrationToAdd) => {
 //     const existingRegistrations = registrations.find(

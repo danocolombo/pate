@@ -57,14 +57,14 @@ const UserProfile = ({
         )
           .then((response) => response.json())
           .then((data) => {
-            const util = require("util");
-            console.log(
-              "registrations-data:\n" +
-                util.inspect(data.body, {
-                  showHidden: false,
-                  depth: null,
-                })
-            );
+            // const util = require("util");
+            // console.log(
+            //   "registrations-data:\n" +
+            //     util.inspect(data.body, {
+            //       showHidden: false,
+            //       depth: null,
+            //     })
+            // );
             theRegistration = data?.body?.Items[0];
             if (theRegistration) {
               clearRegistration();
