@@ -32,7 +32,7 @@
 }
 //----------- from registration details original page
 .registrationdetailswrapper {
-    text-align: right;
+    text-align: left;
     // padding: 1rem;
     // margin: 0.5rem 0;
     padding-top: 10px;
@@ -41,7 +41,7 @@
     background: #557a95;
     color: white;
     border-right: black solid 1px;
-    border-bottom: black solid 1px;
+    // border-bottom: black solid 1px;
     border-left: black solid 1px;
 }
 .eventgraphics {
@@ -176,9 +176,10 @@
 .register-church-label {
     font-weight: bold;
     font-size: 1.3em;
+    padding-left: 10%
 }
 .attendeewrapper {
-    margin: 10px 0;
+    margin: 10px 0 10px 10%;
 }
 .attendee-count-label {
     margin-right: 5px;
@@ -194,6 +195,8 @@
     text-align: center;
     display: inline-block;
     padding: 5px;
+    margin-left: 10%;
+
 }
 .meal-description-label {
     font-size: 0.7em;
@@ -222,4 +225,12 @@
     display: inline-block;
     width: 40%;
     text-align: left;
+}
+.react-tel-input {
+    display: inline-block;
+    margin-left:10%;
+}
+.special-label {
+    display: inline-block;
+    padding-right: 10px;
 }
