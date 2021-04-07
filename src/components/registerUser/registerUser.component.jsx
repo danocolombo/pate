@@ -6,7 +6,6 @@ import Spinner from '../../components/spinner/Spinner';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import { setAlert } from '../../redux/alert/alert.action';
 import './registerUser.styles.scss';
-import { BiLogIn } from 'react-icons/bi';
 const RegisterUserDetails = ({
     currentUser,
     setSpinner,
@@ -27,7 +26,7 @@ const RegisterUserDetails = ({
         event.preventDefault();
         let alertPayload = {};
         //minimum length of login is 4 characters
-        if (userName.length<4) {
+        if (userName.length < 4) {
             alertPayload = {
                 msg: 'Username length has to be 4 characters',
                 alertType: 'danger',
@@ -35,7 +34,7 @@ const RegisterUserDetails = ({
             setAlert(alertPayload);
             return;
         }
-        
+
         if (password1 !== password2) {
             alertPayload = {
                 msg: 'Entered passwords need to match',
@@ -44,10 +43,10 @@ const RegisterUserDetails = ({
             setAlert(alertPayload);
             return;
         }
-        // let's check email contents
-        if (email.length < 8){
+        // passwords need to be at least 8 characters
+        if (password1.length < 8) {
             alertPayload = {
-                msg: 'Passwords minimum length: 8',
+                msg: 'Password minimum length: 8',
                 alertType: 'danger',
             };
             setAlert(alertPayload);
@@ -55,7 +54,7 @@ const RegisterUserDetails = ({
         }
         //email needs to be acceptable format
         let EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        if(!EMAIL_REGEX.test(email)){
+        if (!EMAIL_REGEX.test(email)) {
             alertPayload = {
                 msg: 'Valid email address is required.',
                 alertType: 'danger',
@@ -90,14 +89,20 @@ const RegisterUserDetails = ({
                             break;
                         case 'InvalidPasswordException':
                             alertPayload = {
-                                msg: 'Password does not meet requirements.\n[' + err.message + ']',
+                                msg:
+                                    'Password does not meet requirements.\n[' +
+                                    err.message +
+                                    ']',
                                 alertType: 'danger',
                                 timeout: 10000,
                             };
                             break;
                         default:
                             alertPayload = {
-                                msg: 'Registration error: ['+JSON.stringify(err)+']',
+                                msg:
+                                    'Registration error: [' +
+                                    JSON.stringify(err) +
+                                    ']',
                                 alertType: 'danger',
                                 timeout: 10000,
                             };
@@ -108,7 +113,7 @@ const RegisterUserDetails = ({
                 });
         } catch (error) {
             alertPayload = {
-                msg: 'Registration error: ['+JSON.stringify(error)+']',
+                msg: 'Registration error: [' + JSON.stringify(error) + ']',
                 alertType: 'danger',
             };
             console.log('error3: error.code');

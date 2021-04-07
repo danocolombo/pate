@@ -386,11 +386,12 @@ const EventRegistration = ({
                 'Please correct your request.\n' + JSON.stringify(fieldMessage)
             );
             const alertPayload = {
-                msg: 'Please fill in all fields',
+                msg: 'ALL FIELDS ARE REQUIRED',
                 alertType: 'danger',
             };
             setAlert(alertPayload);
-            setInputModalVisible(true);
+            window.scrollTo(0, 0);
+            // setInputModalVisible(true);
             <InputError
                 open={inputModalVisible}
                 onClose={() => setInputModalVisible(false)}
