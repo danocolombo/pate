@@ -59,16 +59,30 @@ const SignIn = ({
                             })
                             .catch((e) => {
                                 const alertPayload = {
-                                    msg: 'Authentication failed. Please check your credentials',
+                                    msg:
+                                        'Authentication failed. Please check your credentials',
                                     alertType: 'danger',
                                 };
                                 setAlert(alertPayload);
-                                console.log(e);
-                                console.log('ERROR1');
+                                return;
                             });
                     } else {
-                        // other situations
-                        console.log('ERROR2');
+                        // the user is good to go....
+                        console.log(
+                            'this is where we check for currentUser.firstName'
+                        );
+                        // if (currentUser?.firstName) {
+                        //     // if we have a first name saved, we presume profile is filled in
+                        //     history.push('/');
+                        // } else {
+                        //     alertPayload = {
+                        //         msg:
+                        //             'Please complete your profile to complete registration process.',
+                        //         alertType: 'warning',
+                        //         timeout: 10000,
+                        //     };
+                        //     history.push('/profile');
+                        // }
                     }
                 })
                 .catch((e) => {
@@ -79,15 +93,16 @@ const SignIn = ({
                                 alertType: 'danger',
                             };
                             break;
-                    
+
                         default:
                             alertPayload = {
-                                msg: 'Signin error: ['+e.message+']',
+                                msg: 'Signin error: [' + e.message + ']',
                                 alertType: 'danger',
                             };
                             break;
                     }
                     setAlert(alertPayload);
+                    return;
                 });
 
             let currentUserInfo = {};
@@ -102,21 +117,33 @@ const SignIn = ({
             await getRegistrations(currentUserInfo.attributes.sub);
             //generic cleanup
             await clearTempRegistration();
-
             clearSpinner();
+            if (currentUser?.firstName) {
+                // if we have a first name saved, we presume profile is filled in
+                history.push('/');
+            } else {
+                alertPayload = {
+                    msg:
+                        'Please complete your profile to complete registration process.',
+                    alertType: 'warning',
+                    timeout: 10000,
+                };
+                history.push('/profile');
+            }
             history.push('/');
         } catch (error) {
             switch (error) {
                 case 'No current user':
                     alertPayload = {
-                        msg: 'Authentication failed. Please check your credentials',
+                        msg:
+                            'Authentication failed. Please check your credentials',
                         alertType: 'danger',
                     };
                     break;
-            
+
                 default:
                     alertPayload = {
-                        msg: 'Unknown error signing in.['+error+']',
+                        msg: 'Unknown error signing in.[' + error + ']',
                         alertType: 'danger',
                     };
                     break;
@@ -196,6 +223,12 @@ const SignIn = ({
                 });
         } catch (error) {
             clearSpinner();
+            let alertPayload = {
+                msg: 'Error fetching registrations: [' + error.message + ']',
+                alertType: 'danger',
+            };
+
+            setAlert(alertPayload);
             console.log('Error fetching registrations \n' + error);
         }
 
@@ -216,7 +249,7 @@ const SignIn = ({
             userDetails.role = 'guest';
             userDetails.status = 'active';
             userDetails.phone = '';
-            userDetails.dislayName = userInfo?.username;
+            userDetails.displayName = userInfo?.username;
             userDetails.firstName = '';
             userDetails.lastName = '';
             // session values
@@ -229,7 +262,7 @@ const SignIn = ({
             userDetails.role = dbUser?.role;
             userDetails.status = dbUser?.status;
             userDetails.phone = dbUser?.phone;
-            userDetails.dislayName = dbUser.displayName;
+            userDetails.displayName = dbUser.displayName;
             userDetails.firstName = dbUser.firstName;
             userDetails.lastName = dbUser.lastName;
             userDetails.uid = userInfo?.attributes?.sub;

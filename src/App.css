@@ -73,3 +73,7 @@
     background: green;
     color: #fff;
 }
+.alert-warning {
+    background: yellow;
+    color: black;
+}
