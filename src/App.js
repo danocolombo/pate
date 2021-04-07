@@ -28,9 +28,11 @@ import { Auth } from 'aws-amplify';
 
 function App() {
     return (
+        <>
+        <Alert />
         <Router>
-            <Alert />
-            <>
+            
+            
                 <Route exact path='/' component={Events} />
                 {/*  <Route path='/shop' component={ShopPage} />
                       // <Route exact path='/checkout' component={CheckoutPage} /> */}
@@ -52,8 +54,9 @@ function App() {
                     component={EditRegistration}
                 />
                 <Route exact path='/event/:id' component={EventDetails} />
-            </>
+            
         </Router>
+        </>
     );
     // }
 }

@@ -14,12 +14,14 @@ import {
 } from '../../redux/registrations/registrations.actions';
 import { setCurrentUser } from '../../redux/user/user.actions';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
+import { setAlert } from '../../redux/alert/alert.action';
 import './signin.styles.scss';
 
 const SignIn = ({
     onSignIn,
     setCurrentUser,
     setSpinner,
+    setAlert,
     clearSpinner,
     loadRegistrations,
     clearTempRegistration,
@@ -32,6 +34,7 @@ const SignIn = ({
     useEffect(() => {}, [pateSystem.showSpinner]);
     const signIn = async () => {
         //display spinner
+        let alertPayload = {};
         setSpinner();
         try {
             // let userDetails = {};
@@ -55,14 +58,22 @@ const SignIn = ({
                                 console.log(user);
                             })
                             .catch((e) => {
+                                const alertPayload = {
+                                    msg: 'Authentication failed. Please check your credentials',
+                                    alertType: 'danger',
+                                };
+                                setAlert(alertPayload);
                                 console.log(e);
+                                console.log('ERROR1');
                             });
                     } else {
                         // other situations
+                        console.log('ERROR2');
                     }
                 })
                 .catch((e) => {
                     console.log(e);
+                    console.log('ERROR3');
                 });
 
             let currentUserInfo = {};
@@ -81,8 +92,23 @@ const SignIn = ({
             clearSpinner();
             history.push('/');
         } catch (error) {
+            switch (error) {
+                case 'No current user':
+                    alertPayload = {
+                        msg: 'Authentication failed. Please check your credentials',
+                        alertType: 'danger',
+                    };
+                    break;
+            
+                default:
+                    alertPayload = {
+                        msg: 'Unknown error signing in.['+error+']',
+                        alertType: 'danger',
+                    };
+                    break;
+            }
+            setAlert(alertPayload);
             clearSpinner();
-            console.log('Error signing in' + error);
         }
     };
     const changePassword = async () => {
@@ -309,6 +335,7 @@ const SignIn = ({
 const mapDispatchToProps = (dispatch) => ({
     setCurrentUser: (user) => dispatch(setCurrentUser(user)),
     setSpinner: () => dispatch(setSpinner()),
+    setAlert: (payload) => dispatch(setAlert(payload)),
     clearSpinner: () => dispatch(clearSpinner()),
     loadRegistrations: (registrations) =>
         dispatch(loadRegistrations(registrations)),
@@ -317,5 +344,6 @@ const mapDispatchToProps = (dispatch) => ({
 const mapStateToProps = (state) => ({
     pateSystem: state.pate,
     currentUser: state.user.currentUser,
+    alerts: state.alert,
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
