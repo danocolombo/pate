@@ -72,8 +72,22 @@ const SignIn = ({
                     }
                 })
                 .catch((e) => {
-                    console.log(e);
-                    console.log('ERROR3');
+                    switch (e.code) {
+                        case 'UserNotFoundException':
+                            alertPayload = {
+                                msg: e.message,
+                                alertType: 'danger',
+                            };
+                            break;
+                    
+                        default:
+                            alertPayload = {
+                                msg: 'Signin error: ['+e.message+']',
+                                alertType: 'danger',
+                            };
+                            break;
+                    }
+                    setAlert(alertPayload);
                 });
 
             let currentUserInfo = {};
