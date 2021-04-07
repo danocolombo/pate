@@ -19,6 +19,7 @@ import EventRegistration from './pages/registration/registration.page';
 import Serve from './pages/serve/serve.page';
 import ServeEvent from './pages/serveEvent/serveEvent.page';
 import EditRegistration from './pages/edit-registration/edit-registration.page';
+import Alert from './components/alert/alert.component';
 //----------------------
 //AMPLIFY INTEGRATION
 //----------------------
@@ -28,23 +29,30 @@ import { Auth } from 'aws-amplify';
 function App() {
     return (
         <Router>
-            <Route exact path='/' component={Events} />
-            {/*  <Route path='/shop' component={ShopPage} />
+            <Alert />
+            <>
+                <Route exact path='/' component={Events} />
+                {/*  <Route path='/shop' component={ShopPage} />
                       // <Route exact path='/checkout' component={CheckoutPage} /> */}
-            <Route exact path='/profile' component={Profile} />
-            <Route path='/signin' render={() => <SignIn />} />
-            <Route exact path='/register' component={Register} />
-            <Route exact path='/confirmUser/:id' component={ConfirmUser} />
-            <Route exact path='/privatepage' component={PrivatePage} />
-            <Route exact path='/serve' component={Serve} />
-            <Route exact path='/serveevent/:id' component={ServeEvent} />
-            <Route
-                exact
-                path='/registration/:id'
-                component={EventRegistration}
-            />
-            <Route exact path='/editregistration/:eid/:rid' component={EditRegistration}/>
-            <Route exact path='/event/:id' component={EventDetails} />
+                <Route exact path='/profile' component={Profile} />
+                <Route path='/signin' render={() => <SignIn />} />
+                <Route exact path='/register' component={Register} />
+                <Route exact path='/confirmUser/:id' component={ConfirmUser} />
+                <Route exact path='/privatepage' component={PrivatePage} />
+                <Route exact path='/serve' component={Serve} />
+                <Route exact path='/serveevent/:id' component={ServeEvent} />
+                <Route
+                    exact
+                    path='/registration/:id'
+                    component={EventRegistration}
+                />
+                <Route
+                    exact
+                    path='/editregistration/:eid/:rid'
+                    component={EditRegistration}
+                />
+                <Route exact path='/event/:id' component={EventDetails} />
+            </>
         </Router>
     );
     // }

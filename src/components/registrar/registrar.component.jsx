@@ -4,6 +4,7 @@ import { compose } from 'redux';
 import { withRouter } from 'react-router';
 import { useHistory } from 'react-router-dom';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
+import { setAlert } from '../../redux/alert/alert.action';
 import {
     loadTempRegistration,
     clearTempRegistration,
@@ -17,6 +18,7 @@ const Registrar = ({
     loadTempRegistration,
     clearTempRegistration,
     setSpinner,
+    setAlert,
     clearSpinner,
 }) => {
     const [attendeeCount, setAttendeeCount] = useState(regData?.attendeeCount);
@@ -138,6 +140,9 @@ const Registrar = ({
             alert(
                 'Please correct your request.\n' + JSON.stringify(fieldMessage)
             );
+            let msg =
+                'Please correct your request.\n' + JSON.stringify(fieldMessage);
+            setAlert(msg, 'danger');
             return;
         }
         // now copy the original full registration record into object.
@@ -551,6 +556,7 @@ const Registrar = ({
 const mapDispatchToProps = (dispatch) => ({
     // setCurrentUser: (user) => dispatch(setCurrentUser(user)),
     setSpinner: () => dispatch(setSpinner()),
+    setAlert: (msg, alertType) => dispatch(setAlert(msg, alertType)),
     clearSpinner: () => dispatch(clearSpinner()),
     loadTempRegistration: (reg) => dispatch(loadTempRegistration(reg)),
     clearTempRegistration: () => dispatch(clearTempRegistration()),
