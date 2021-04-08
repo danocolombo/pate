@@ -60,7 +60,7 @@ const Serve = ({
         )
             .then((response) => response.json())
             .then((data) => {
-                repData = data.body.Items;
+                repData = data.body;
             });
         // setRallyInfo(rallyInfo.concat(repData));
 
