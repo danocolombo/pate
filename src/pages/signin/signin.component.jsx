@@ -329,53 +329,104 @@ const SignIn = ({
         <Spinner />
     ) : (
         <>
-            <Header />
+            <>
+                <Header />
 
-            <div className='signin-page-wrapper'>
-                <div className='signin-box'>
-                    <div className='signin-title-box'>
-                        <h3>Login</h3>
-                    </div>
-                    <div className='signin-wrapper'>
-                        <div className='username-wrapper'>
-                            <FormInput
-                                name='username'
-                                className='form-component'
-                                type='username'
-                                handleChange={handleChange}
-                                value={username}
-                                label='login'
-                                required
-                            />
+                <div className='signin-page-wrapper'>
+                    <div className='signin-box'>
+                        <div className='signin-title-box'>
+                            <h3>Login</h3>
                         </div>
-                        <div className='password-wrapper'>
-                            <FormInput
-                                name='password'
-                                className='form-component'
-                                type='password'
-                                value={password}
-                                handleChange={handleChange}
-                                label='password'
-                                required
-                            />
+                        <div className='signin-wrapper'>
+                            <div className='username-wrapper'>
+                                <FormInput
+                                    name='username'
+                                    className='form-component'
+                                    type='username'
+                                    handleChange={handleChange}
+                                    value={username}
+                                    label='login'
+                                    required
+                                />
+                            </div>
+                            <div className='password-wrapper'>
+                                <FormInput
+                                    name='password'
+                                    className='form-component'
+                                    type='password'
+                                    value={password}
+                                    handleChange={handleChange}
+                                    label='password'
+                                    required
+                                />
+                            </div>
                         </div>
-                    </div>
-                    <div className='button-wrapper'>
-                        <CustomButton
-                            onClick={signIn}
-                            className='register-button'
-                        >
-                            {' '}
-                            Sign in{' '}
-                        </CustomButton>
-                    </div>
-                    <div className='register-offer-wrapper'>
-                        If you don't have an account,
-                        <br />
-                        <Link to={'/register'}>click here</Link> to register.
+                        <div className='button-wrapper'>
+                            <CustomButton
+                                onClick={signIn}
+                                className='register-button'
+                            >
+                                {' '}
+                                Sign in{' '}
+                            </CustomButton>
+                        </div>
+                        <div className='register-offer-wrapper'>
+                            If you don't have an account,
+                            <br />
+                            <Link to={'/register'}>click here</Link> to
+                            register.
+                        </div>
                     </div>
                 </div>
-            </div>
+            </>
+            <>
+                <div className='signin-page_signin-wrapper'>
+                    <div className='confirmform'>
+                        <div className='signin-title-box'>
+                            <h3>Login</h3>
+                        </div>
+                        <form>
+                            <div>
+                                <label htmlFor='email'>User Name</label>
+                                <input
+                                    type='text'
+                                    name='userName'
+                                    id='userName'
+                                    value=''
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor='code'>Code</label>
+                                <input
+                                    type='text'
+                                    id='code'
+                                    name='code'
+                                    onChange={handleChange}
+                                    value=''
+                                    required
+                                />
+                            </div>
+                            <div className='button-wrapper'>
+                                <CustomButton
+                                    onClick={signIn}
+                                    className='register-button'
+                                >
+                                    {' '}
+                                    Sign in{' '}
+                                </CustomButton>
+                            </div>
+                        </form>
+                        <div className='register-offer-wrapper'>
+                            If you don't have an account,
+                            <br />
+                            <Link to={'/register'}>click here</Link> to
+                            register.
+                        </div>
+                    </div>
+                </div>
+            </>
         </>
     );
 };

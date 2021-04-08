@@ -1,3 +1,15 @@
+.signin-page_signin-wrapper {
+    text-align: center;
+    // padding: 1rem;
+    // margin: 0.5rem 0;
+    // padding-top: 10px;
+    margin-left: 10%;
+    width: 80%;
+    height: auto;
+    // align-items: center;
+    background: #557a95;
+    color: black;
+}
 .signin-page-wrapper {
     display: flex;
     flex-direction: column;
@@ -8,6 +20,9 @@
     padding-left: 10px;
     // border-left: black solid 1px;
     // border-right: black solid 1px;
+}
+signin-page_signin-box {
+    margin-right: 10px;
 }
 .signin-box {
     // text-align: center;
