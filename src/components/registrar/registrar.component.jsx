@@ -422,7 +422,7 @@ const Registrar = ({
                                             </div>
                                             <div>
                                                 <label htmlFor='homePostalCode'>
-                                                    Postal Code
+                                                    Zipcode
                                                 </label>
                                                 <input
                                                     type='text'
@@ -435,9 +435,9 @@ const Registrar = ({
                                             </div>
                                         </div>
                                         <div className='register-church-label'>
-                                            Your Church/CR Information
+                                            Your CR Information
                                         </div>
-                                        <label htmlFor='churchName'>Name</label>
+                                        <label htmlFor='churchName'>Church</label>
                                         <input
                                             type='text'
                                             id='churchName'
@@ -517,9 +517,9 @@ const Registrar = ({
                                             required
                                         />
                                     </div>
-                                    <div>
+                                    <div className='registrar-component_button-wrapper'>
                                         <button
-                                            className='register-button'
+                                            className='registrar-component_button-register'
                                             onClick={
                                                 handleRegistrationUpdateRequest
                                             }
@@ -527,7 +527,7 @@ const Registrar = ({
                                             Update
                                         </button>
                                         <button
-                                            className='registerbutton'
+                                            className='registrar-component_button-cancel'
                                             onClick={handleCancel}
                                         >
                                             Cancel
@@ -538,8 +538,8 @@ const Registrar = ({
                                         currentUser.uid ===
                                             pateSystem?.rally?.coordinator
                                                 ?.id ? (
-                                            <button className='registration-registrar__delete-button'>
-                                                DELETE
+                                            <button className='registrar-component_button-delete'>
+                                                Delete
                                             </button>
                                         ) : null}
                                     </div>

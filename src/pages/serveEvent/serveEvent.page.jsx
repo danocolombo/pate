@@ -899,12 +899,14 @@ const Serve = ({
                                 <div>NO</div>
                             )}
                         </div>
+                        {/*
                         <div className='serve-event__delete-box'>
                             <hr className='serve-event__delete-box__horizontal-line' />
                             <button className='serve-event__delete-button' onClick=''>
                                 DELETE EVENT
                             </button>
                         </div>
+                        */}
                     </>
                 ):null}
             </div>
