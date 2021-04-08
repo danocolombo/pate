@@ -20,6 +20,7 @@ import Serve from './pages/serve/serve.page';
 import ServeEvent from './pages/serveEvent/serveEvent.page';
 import EditRegistration from './pages/edit-registration/edit-registration.page';
 import Alert from './components/alert/alert.component';
+import Support from './pages/support/support.page';
 //----------------------
 //AMPLIFY INTEGRATION
 //----------------------
@@ -29,10 +30,8 @@ import { Auth } from 'aws-amplify';
 function App() {
     return (
         <>
-        <Alert />
-        <Router>
-            
-            
+            <Alert />
+            <Router>
                 <Route exact path='/' component={Events} />
                 {/*  <Route path='/shop' component={ShopPage} />
                       // <Route exact path='/checkout' component={CheckoutPage} /> */}
@@ -42,6 +41,7 @@ function App() {
                 <Route exact path='/confirmUser/:id' component={ConfirmUser} />
                 <Route exact path='/privatepage' component={PrivatePage} />
                 <Route exact path='/serve' component={Serve} />
+                <Route exact path='/support' component={Support} />
                 <Route exact path='/serveevent/:id' component={ServeEvent} />
                 <Route
                     exact
@@ -54,8 +54,7 @@ function App() {
                     component={EditRegistration}
                 />
                 <Route exact path='/event/:id' component={EventDetails} />
-            
-        </Router>
+            </Router>
         </>
     );
     // }
