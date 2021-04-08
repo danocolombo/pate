@@ -4,10 +4,11 @@
     // margin: 0.5rem 0;
     // padding-top: 10px;
     margin-left: 10%;
+    margin-top: 10px;
     width: 80%;
     height: auto;
     // align-items: center;
-    background: #557a95;
+    background: lightgray;
     color: black;
 }
 .signin-page-wrapper {
@@ -44,18 +45,42 @@ signin-page_signin-box {
     border-left: black solid 1px;
     border-right: black solid 1px;
     border-bottom: black double 1px;
+    text-align: center;
+    color: white;
     // margin-top: 10px;
-    padding: 2px 0;
+    // padding: 2px 0;
 }
-.button-wrapper {
+.signin-page_signin-form {
+    
+    margin: 10px 15% 0 0;
+}
+.signin-page_input-line {
+    margin: 5px 0 5px 0;
+}
+.signin-page_input-label{
+    display: inline-block;
+    margin-right: 10px;
+    color: black
+}
+.signin-page_button-wrapper {
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.signin-page_register-offer-wrapper {
     text-align: center;
     width: 100%;
     display: inline-block;
     padding-left: 0;
     margin-bottom: 5px;
-    // border-right: black solid 1px;
-
-    // border-left: black solid 1px;
+    color: black;
+}
+.signin-page_register-link {
+    text-decoration: none;
+}
+.signin-page_register-link :visited 
+.signin-page_register-link :active{
+    color: yellow;
 }
 .register-button {
     font-family: 'Abril Fatface', cursive;

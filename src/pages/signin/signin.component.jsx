@@ -331,7 +331,7 @@ const SignIn = ({
         <>
             <>
                 <Header />
-
+{/*
                 <div className='signin-page-wrapper'>
                     <div className='signin-box'>
                         <div className='signin-title-box'>
@@ -378,37 +378,40 @@ const SignIn = ({
                         </div>
                     </div>
                 </div>
+*/}
             </>
             <>
                 <div className='signin-page_signin-wrapper'>
-                    <div className='confirmform'>
+                    <div>
                         <div className='signin-title-box'>
                             <h3>Login</h3>
                         </div>
-                        <form>
-                            <div>
-                                <label htmlFor='email'>User Name</label>
+                        <form className='signin-page_signin-form'>
+                            <div className='signin-page_input-line'>
+                                
+                                <div className='signin-page_input-label'>Username</div>
                                 <input
                                     type='text'
-                                    name='userName'
-                                    id='userName'
-                                    value=''
+                                    name='username'
+                                    id='username'
+                                    value={username}
                                     onChange={handleChange}
                                     required
                                 />
                             </div>
-                            <div>
-                                <label htmlFor='code'>Code</label>
+                            <div className='signin-page_input-line'>
+                                
+                                <div className='signin-page_input-label'>Password</div>
                                 <input
-                                    type='text'
-                                    id='code'
-                                    name='code'
+                                    type='password'
+                                    id='password'
+                                    name='password'
                                     onChange={handleChange}
-                                    value=''
+                                    value={password}
                                     required
                                 />
                             </div>
-                            <div className='button-wrapper'>
+                            <div className='signin-page_button-wrapper'>
                                 <CustomButton
                                     onClick={signIn}
                                     className='register-button'
@@ -418,10 +421,9 @@ const SignIn = ({
                                 </CustomButton>
                             </div>
                         </form>
-                        <div className='register-offer-wrapper'>
-                            If you don't have an account,
-                            <br />
-                            <Link to={'/register'}>click here</Link> to
+                        <div className='signin-page_register-offer-wrapper'>
+                            If you don't have an account,<br/>
+                            <a className='signin-page_register-link' href='/register'>click here</a> to
                             register.
                         </div>
                     </div>
