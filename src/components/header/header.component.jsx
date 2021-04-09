@@ -82,12 +82,14 @@ const Header = ({
                             </li>
                         </ul>
                     ) : (
+                        <ul>
                         <li className='main-nav__item'>
                             {/*<a href='/signin'>Login/Sign-up</a>*/}
                             <li className='main-nav__item'>
                                 <Link to='/signin'>Login/Sign-up</Link>
                             </li>
                         </li>
+                        </ul>
                     )}
                 </nav>
             </header>
