@@ -10,19 +10,9 @@ const UserRegistrationOverview = ({
     removeRegistration,
 }) => {
     const history = useHistory();
-    if(!currentUser?.isLoggedIn){
+    if (!currentUser?.isLoggedIn) {
         history.push('/');
     }
-    // const util = require('util');
-    // console.log(
-    //     '&%&%&%&%&%___registrations___&%&%&%&%&%\n' +
-    //         util.inspect(registrationInfo, { showHidden: false, depth: null })
-    // );
-    // const registrations = registrationInfo;
-
-    // if (registrations) {
-    //     registrations.forEach((r) => {});
-    // }
     const dateToDisplay = (dt) => {
         const y = dt.substring(0, 4);
         const m = parseInt(dt.substring(4, 6));
@@ -40,8 +30,8 @@ const UserRegistrationOverview = ({
                 body: JSON.stringify({
                     operation: 'deleteRegistration',
                     payload: {
-                        Key: { uid: registration.uid }
-                    }
+                        Key: { uid: registration.uid },
+                    },
                 }),
                 headers: {
                     'Content-type': 'application/json; charset=UTF-8',
@@ -102,8 +92,8 @@ const UserRegistrationOverview = ({
                 {registrations
                     ? registrations.map((reg) => (
                           <>
-                              <div className='user-reg-overview__item'>
-                                  <div className='user-reg-overview__date'>
+                              <div className='user-reg-flex__event-wrapper'>
+                                  <div className='user-reg-flex__date'>
                                       <StyledLink
                                           style={{ textDecoration: 'none' }}
                                           to={`/editregistration/${reg.eid}/${reg.uid}`}
@@ -112,7 +102,7 @@ const UserRegistrationOverview = ({
                                       </StyledLink>
                                   </div>
 
-                                  <div className='user-reg-overview__name'>
+                                  <div className='user-reg-flex__location'>
                                       {reg?.location.name}
                                       <br />
                                       {reg?.location?.city},{' '}
@@ -121,10 +111,12 @@ const UserRegistrationOverview = ({
 
                                   {reg.registrar?.firstName !==
                                   currentUser?.firstName ? (
-                                      <span>({reg.registrar?.firstName})</span>
+                                      <div className='user-reg-flex__location'>
+                                          ({reg.registrar?.firstName})
+                                      </div>
                                   ) : null}
 
-                                  <div className='user-reg-overview__cancel-button'>
+                                  <div className='user-reg-flex__cancel'>
                                       <Link
                                           onClick={() => {
                                               handleCancellation(reg);

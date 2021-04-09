@@ -6,6 +6,7 @@ import { Link, useHistory } from 'react-router-dom';
 import FormInput from '../../components/form-input/form-input.component';
 import CustomButton from '../../components/custom-button/custom-button.component';
 import Header from '../../components/header/header.component';
+import { MainFooter } from '../../components/footers/main-footer';
 import Spinner from '../../components/spinner/Spinner';
 //----- actions needed -------
 import {
@@ -331,7 +332,7 @@ const SignIn = ({
         <>
             <>
                 <Header />
-{/*
+                {/*
                 <div className='signin-page-wrapper'>
                     <div className='signin-box'>
                         <div className='signin-title-box'>
@@ -388,8 +389,9 @@ const SignIn = ({
                         </div>
                         <div className='signin-page_signin-form'>
                             <div className='signin-page_input-line'>
-                                
-                                <div className='signin-page_input-label'>Username</div>
+                                <div className='signin-page_input-label'>
+                                    Username
+                                </div>
                                 <input
                                     type='text'
                                     name='username'
@@ -400,8 +402,9 @@ const SignIn = ({
                                 />
                             </div>
                             <div className='signin-page_input-line'>
-                                
-                                <div className='signin-page_input-label'>Password</div>
+                                <div className='signin-page_input-label'>
+                                    Password
+                                </div>
                                 <input
                                     type='password'
                                     id='password'
@@ -422,12 +425,19 @@ const SignIn = ({
                             </div>
                         </div>
                         <div className='signin-page_register-offer-wrapper'>
-                            If you don't have an account,<br/>
-                            <a className='signin-page_register-link' href='/register'>click here</a> to
-                            register.
+                            If you don't have an account,
+                            <br />
+                            <a
+                                className='signin-page_register-link'
+                                href='/register'
+                            >
+                                click here
+                            </a>{' '}
+                            to register.
                         </div>
                     </div>
                 </div>
+                <MainFooter />
             </>
         </>
     );

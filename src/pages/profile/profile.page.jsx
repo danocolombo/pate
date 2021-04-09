@@ -8,6 +8,7 @@ import { withAuthenticator } from '@aws-amplify/ui-react';
 import './profile.styles.scss';
 
 import Header from '../../components/header/header.component';
+import { MainFooter } from '../../components/footers/main-footer';
 import PersonalProfile from '../../components/profile/profile.component';
 import UserRegistrationOverview from '../../components/userregistrationsoverview/userregistrationsoverview.component';
 
@@ -29,6 +30,7 @@ const UserProfile = ({ currentUser, pateSystem }) => {
                 <div className='pageheader'>YOUR REGISTRATIONS</div>
                 <UserRegistrationOverview />
             </div>
+            <MainFooter />
         </>
     );
     // }

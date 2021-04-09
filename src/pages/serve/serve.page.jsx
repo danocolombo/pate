@@ -5,6 +5,7 @@ import { compose } from 'redux';
 import { withRouter } from 'react-router';
 import './serve.styles.scss';
 import Header from '../../components/header/header.component';
+import { MainFooter } from '../../components/footers/main-footer';
 import Spinner from '../../components/spinner/Spinner';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import StateRep from '../../components/serve/stateRep.component';
@@ -130,6 +131,7 @@ const Serve = ({
                     ) : null}
                 </div>
             </div>
+            <MainFooter />
         </>
     );
 };

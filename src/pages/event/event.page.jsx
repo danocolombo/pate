@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import './event.styles.scss';
 import EventDetails from '../../components/event-details/event-component';
 import Header from '../../components/header/header.component';
+import { MainFooter } from '../../components/footers/main-footer';
 import Spinner from '../../components/spinner/Spinner';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import { loadRally } from '../../redux/pate/pate.actions';
@@ -68,7 +69,7 @@ const Events = ({
                     </Link>
                 </div>
             </div>
-            ;
+            <MainFooter />
         </>
     );
 };

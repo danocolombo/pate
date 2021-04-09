@@ -1,3 +1,4 @@
+//====================================
 .user-reg-overview__wrapper {
     // text-align: center;
     padding: 0;
@@ -13,7 +14,21 @@
     border-bottom: black solid 1px;
     padding-bottom: 10px;
 }
-
+.user-reg-flex__event-wrapper {
+    display: flex;
+    border: lightslategray solid 1px;
+}
+.user-reg-flex__date {
+    padding: 5px;
+}
+.user-reg-flex__location {
+    flex-grow: 1;
+    padding: 5px;
+}
+.user-reg-flex__cancel {
+    padding: 5px;
+}
+//========================================
 .registrationtable {
     text-align: left;
     margin-left: 20px;

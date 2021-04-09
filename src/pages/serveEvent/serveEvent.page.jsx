@@ -6,6 +6,7 @@ import { compose } from 'redux';
 import { withRouter } from 'react-router';
 import './serveEvent.styles.scss';
 import Header from '../../components/header/header.component';
+import { MainFooter } from '../../components/footers/main-footer';
 import Spinner from '../../components/spinner/Spinner';
 import RegistrationItem from '../../components/registration-serve-list-item/registrationServeListItem.component';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
@@ -80,10 +81,10 @@ const Serve = ({
         //get the reference to the current event and load to useState
         if (match?.params?.id) {
             clearEventRegistrations();
-            if(match.params.id ==="0" ){
+            if (match.params.id === '0') {
                 // this is a new event request
                 setDefaultEvent();
-            }else{
+            } else {
                 // this is an edit
                 loadEvent();
                 // loadRegistrations();
@@ -143,53 +144,53 @@ const Serve = ({
         //this is used for creating a default event to display for add
         //create empty event object
         const emptyEvent = {
-            meal:{
-                startTime:"1200",
-                mealCount:0,
-                cost:"0",
-                message:"",
-                mealsServed: 0
+            meal: {
+                startTime: '1200',
+                mealCount: 0,
+                cost: '0',
+                message: '',
+                mealsServed: 0,
             },
-            eventDate: "20210406",
-            contact:{
-                name:"",
-                phone:"",
-                email:""
+            eventDate: '20210406',
+            contact: {
+                name: '',
+                phone: '',
+                email: '',
             },
-            status: "draft",
-            message:"",
-            stateProv:"",
-            coordinator:{
-                name:"",
+            status: 'draft',
+            message: '',
+            stateProv: '',
+            coordinator: {
+                name: '',
                 id: 0,
-                phone:"",
-                email:"",
+                phone: '',
+                email: '',
             },
-            uid:"sdfijvapofiha;jlrav",
-            name:"",
-            registrations:0,
-            startTime: "13:00",
-            city: "",
-            graphic: "",
+            uid: 'sdfijvapofiha;jlrav',
+            name: '',
+            registrations: 0,
+            startTime: '13:00',
+            city: '',
+            graphic: '',
             approved: false,
-            attendees: "0",
-            endTime:"13:00",
+            attendees: '0',
+            endTime: '13:00',
             attendance: 0,
-            id: "agfwspgswrioja",
-            postalCode: "",
-            street: ""
-        }
+            id: 'agfwspgswrioja',
+            postalCode: '',
+            street: '',
+        };
 
         loadRally(emptyEvent);
         //load the useState
         // need date in format mm-dd-yyyy
         let dateToday = new Date();
         // console.log(dateToday);
-        let m = parseInt(dateToday.getUTCMonth()+1);
+        let m = parseInt(dateToday.getUTCMonth() + 1);
         let d = parseInt(dateToday.getUTCDate());
         let y = parseInt(dateToday.getFullYear());
         dateToday = y + '-' + m + '-' + d;
-        dateToday = "2021-04-06";
+        dateToday = '2021-04-06';
         setEventDate(dateToday);
         setChurchName('');
         setStreet('');
@@ -215,8 +216,7 @@ const Serve = ({
         setMealMessage('');
         setAttendeeCount(0);
         setRegistrationCount(0);
-
-    }
+    };
     const loadEvent = async () => {
         //get the event reference.
         // if the eventID is not in our currentUserRallies,
@@ -887,13 +887,16 @@ const Serve = ({
                         </div>
                     </>
                 </>
-                {(match.params.id !=="0")?(
+                {match.params.id !== '0' ? (
                     <>
                         <div className='serve-pageheader'>REGISTRATIONS</div>
                         <div className='serve-event-content-wrapper'>
                             {registrations?.eventRegistrations ? (
                                 registrations.eventRegistrations.map((rege) => (
-                                    <RegistrationItem key={rege.uid} regItem={rege} />
+                                    <RegistrationItem
+                                        key={rege.uid}
+                                        regItem={rege}
+                                    />
                                 ))
                             ) : (
                                 <div>NO</div>
@@ -908,8 +911,9 @@ const Serve = ({
                         </div>
                         */}
                     </>
-                ):null}
+                ) : null}
             </div>
+            <MainFooter />
         </>
     );
 };
