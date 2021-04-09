@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withRouter } from 'react-router';
 import Header from '../../components/header/header.component';
+import { MainFooter } from '../../components/footers/main-footer';
 import './support.styles.scss';
 const Support = () => {
     return (
@@ -24,6 +25,7 @@ const Support = () => {
                     </div>
                 </div>
             </div>
+            <MainFooter />
         </>
     );
 };

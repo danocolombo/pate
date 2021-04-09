@@ -22,6 +22,7 @@ import ServeEvent from './pages/serveEvent/serveEvent.page';
 import EditRegistration from './pages/edit-registration/edit-registration.page';
 import Alert from './components/alert/alert.component';
 import Support from './pages/support/support.page';
+import Help from './pages/help/help.page';
 //----------------------
 //AMPLIFY INTEGRATION
 //----------------------
@@ -34,7 +35,8 @@ function App() {
             <Alert />
             <Router>
                 <Route exact path='/' component={Events} />
-                <Route path='/faq' component={FAQ}/>
+                <Route path='/faq' component={FAQ} />
+                <Route path='/help' component={Help} />
                 {/*  <Route path='/shop' component={ShopPage} />
                       // <Route exact path='/checkout' component={CheckoutPage} /> */}
                 <Route exact path='/profile' component={Profile} />

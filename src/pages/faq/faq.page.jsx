@@ -1,5 +1,6 @@
 import React from 'react';
 import Header from '../../components/header/header.component';
+import { MainFooter } from '../../components/footers/main-footer';
 import './faq.styles.scss';
 const FAQ = () => {
     return (
@@ -68,6 +69,7 @@ const FAQ = () => {
                     </div>
                 </div>
             </div>
+            <MainFooter />
         </>
     );
 };
