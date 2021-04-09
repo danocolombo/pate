@@ -45,51 +45,54 @@ const Header = ({
     };
     return (
         <>
-            <header className='main-header'>
-                <div>
-                    <Link to='/' className='brand-name'>
+            <header className='header__flex-container'>
+                <div className='header__brand-box'>
+                    <Link to='/' className='header__brand-name'>
                         PATE
                     </Link>
                 </div>
-                <nav className='main-nav'>
+                <div className='header__nav-box'>
                     {currentUser?.isLoggedIn ? (
-                        <ul className='main-nav__items'>
+                        <>
                             {currentUser?.stateRep || currentUser?.stateLead ? (
-                                <li className='main-nav__item'>
+                                <div className='header__nav-item'>
                                     <Link
                                         to='/serve'
-                                        className='main-navigation-button'
+                                        className='header__nav-control-link'
                                     >
                                         SERVE
                                     </Link>
-                                </li>
+                                </div>
                             ) : null}
-                            <li className='main-nav__item'>
+                            <div className='header__nav-item'>
                                 <Link
                                     to='/profile'
-                                    className='main-navigation-button'
+                                    className='header__nav-control-link'
                                 >
                                     PROFILE
                                 </Link>
-                            </li>
-                            <li className='main-nav__item'>
+                            </div>
+                            <div className='header__nav-item'>
                                 <Link
-                                    to="#"
+                                    to='#'
                                     onClick={logoutRequest}
-                                    className='main-navigation-button'
+                                    className='header__nav-control-link'
                                 >
                                     LOGOUT
                                 </Link>
-                            </li>
-                        </ul>
+                            </div>
+                        </>
                     ) : (
-                        <ul> 
-                            <li className='main-nav__item'>
-                                <Link to='/signin'>Login/Sign-up</Link>
-                            </li>
-                        </ul>
+                        <div className='header__nav-item'>
+                            <Link
+                                className='header__nav-control-link'
+                                to='/signin'
+                            >
+                                Login/Sign-up
+                            </Link>
+                        </div>
                     )}
-                </nav>
+                </div>
             </header>
         </>
     );
