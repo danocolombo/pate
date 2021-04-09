@@ -7,8 +7,12 @@ const Support = () => {
     return (
         <>
             <Header />
-            <div>
-                <span>SUPPORT PAGE</span>
+            <div className="support-box">
+                <div className="support-flex-box__container">
+                    <div className="support-flex-box__body">
+                    Support Data Here
+                    </div>
+                </div>
             </div>
         </>
     );

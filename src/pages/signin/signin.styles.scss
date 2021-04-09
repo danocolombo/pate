@@ -11,6 +11,12 @@
     background: lightgray;
     color: black;
 }
+/* IPAD */
+@media only screen and (min-width: 501px) and (max-width: 768px) {
+    .signin-page_signin-wrapper {
+        width: 50%;
+    }   
+}
 .signin-page-wrapper {
     display: flex;
     flex-direction: column;

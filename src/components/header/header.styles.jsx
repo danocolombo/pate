@@ -7,7 +7,7 @@ const OptionContainerStyles = css`
 `;
 export const HeaderContainer = styled.div`
     height: 70px;
-    width: 100%;
+    width: 90%;
     display: flex;
     justify-content: space-between;
     margin-bottom: 25px;
