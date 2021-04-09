@@ -7,7 +7,7 @@ export const MainFooter = () => {
             <nav>
                 <ul className='main-footer_links'>
                     <li className='main-footer_link'>
-                        <a href='/'>FAQ</a>
+                        <a href='/faq'>FAQ</a>
                     </li>
                     <li className='main-footer_link'>
                         <a href='/support'>Support</a>
