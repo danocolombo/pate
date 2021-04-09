@@ -8,7 +8,7 @@ import { clearUser } from '../../redux/user/user.actions';
 import {
     clearRegistrations,
     clearTempRegistration,
-    clearEventRegistrations
+    clearEventRegistrations,
 } from '../../redux/registrations/registrations.actions';
 import { clearRally } from '../../redux/pate/pate.actions';
 import { clearStateRep } from '../../redux/stateRep/stateRep.actions';
@@ -74,6 +74,7 @@ const Header = ({
                             </li>
                             <li className='main-nav__item'>
                                 <Link
+                                    to="#"
                                     onClick={logoutRequest}
                                     className='main-navigation-button'
                                 >
@@ -82,13 +83,10 @@ const Header = ({
                             </li>
                         </ul>
                     ) : (
-                        <ul>
-                        <li className='main-nav__item'>
-                            {/*<a href='/signin'>Login/Sign-up</a>*/}
+                        <ul> 
                             <li className='main-nav__item'>
                                 <Link to='/signin'>Login/Sign-up</Link>
                             </li>
-                        </li>
                         </ul>
                     )}
                 </nav>

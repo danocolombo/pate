@@ -14,12 +14,14 @@ import {
 } from '../../redux/registrations/registrations.actions';
 import { setCurrentUser } from '../../redux/user/user.actions';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
+import { setAlert } from '../../redux/alert/alert.action';
 import './signin.styles.scss';
 
 const SignIn = ({
     onSignIn,
     setCurrentUser,
     setSpinner,
+    setAlert,
     clearSpinner,
     loadRegistrations,
     clearTempRegistration,
@@ -32,6 +34,7 @@ const SignIn = ({
     useEffect(() => {}, [pateSystem.showSpinner]);
     const signIn = async () => {
         //display spinner
+        let alertPayload = {};
         setSpinner();
         try {
             // let userDetails = {};
@@ -55,14 +58,51 @@ const SignIn = ({
                                 console.log(user);
                             })
                             .catch((e) => {
-                                console.log(e);
+                                const alertPayload = {
+                                    msg:
+                                        'Authentication failed. Please check your credentials',
+                                    alertType: 'danger',
+                                };
+                                setAlert(alertPayload);
+                                return;
                             });
                     } else {
-                        // other situations
+                        // the user is good to go....
+                        console.log(
+                            'this is where we check for currentUser.firstName'
+                        );
+                        // if (currentUser?.firstName) {
+                        //     // if we have a first name saved, we presume profile is filled in
+                        //     history.push('/');
+                        // } else {
+                        //     alertPayload = {
+                        //         msg:
+                        //             'Please complete your profile to complete registration process.',
+                        //         alertType: 'warning',
+                        //         timeout: 10000,
+                        //     };
+                        //     history.push('/profile');
+                        // }
                     }
                 })
                 .catch((e) => {
-                    console.log(e);
+                    switch (e.code) {
+                        case 'UserNotFoundException':
+                            alertPayload = {
+                                msg: e.message,
+                                alertType: 'danger',
+                            };
+                            break;
+
+                        default:
+                            alertPayload = {
+                                msg: 'Signin error: [' + e.message + ']',
+                                alertType: 'danger',
+                            };
+                            break;
+                    }
+                    setAlert(alertPayload);
+                    return;
                 });
 
             let currentUserInfo = {};
@@ -77,12 +117,39 @@ const SignIn = ({
             await getRegistrations(currentUserInfo.attributes.sub);
             //generic cleanup
             await clearTempRegistration();
-
             clearSpinner();
+            if (currentUser?.firstName) {
+                // if we have a first name saved, we presume profile is filled in
+                history.push('/');
+            } else {
+                alertPayload = {
+                    msg:
+                        'Please complete your profile to complete registration process.',
+                    alertType: 'warning',
+                    timeout: 10000,
+                };
+                history.push('/profile');
+            }
             history.push('/');
         } catch (error) {
+            switch (error) {
+                case 'No current user':
+                    alertPayload = {
+                        msg:
+                            'Authentication failed. Please check your credentials',
+                        alertType: 'danger',
+                    };
+                    break;
+
+                default:
+                    alertPayload = {
+                        msg: 'Unknown error signing in.[' + error + ']',
+                        alertType: 'danger',
+                    };
+                    break;
+            }
+            setAlert(alertPayload);
             clearSpinner();
-            console.log('Error signing in' + error);
         }
     };
     const changePassword = async () => {
@@ -113,14 +180,14 @@ const SignIn = ({
                 )
                     .then((response) => response.json())
                     .then((data) => {
-                        const util = require('util');
-                        console.log(
-                            'registrations-data:\n' +
-                                util.inspect(data.body, {
-                                    showHidden: false,
-                                    depth: null,
-                                })
-                        );
+                        // const util = require('util');
+                        // console.log(
+                        //     'registrations-data:\n' +
+                        //         util.inspect(data.body, {
+                        //             showHidden: false,
+                        //             depth: null,
+                        //         })
+                        // );
                         loadRegistrations(data.body.Items);
                     });
             } catch (error) {
@@ -156,6 +223,12 @@ const SignIn = ({
                 });
         } catch (error) {
             clearSpinner();
+            let alertPayload = {
+                msg: 'Error fetching registrations: [' + error.message + ']',
+                alertType: 'danger',
+            };
+
+            setAlert(alertPayload);
             console.log('Error fetching registrations \n' + error);
         }
 
@@ -176,7 +249,7 @@ const SignIn = ({
             userDetails.role = 'guest';
             userDetails.status = 'active';
             userDetails.phone = '';
-            userDetails.dislayName = userInfo?.username;
+            userDetails.displayName = userInfo?.username;
             userDetails.firstName = '';
             userDetails.lastName = '';
             // session values
@@ -189,7 +262,7 @@ const SignIn = ({
             userDetails.role = dbUser?.role;
             userDetails.status = dbUser?.status;
             userDetails.phone = dbUser?.phone;
-            userDetails.dislayName = dbUser.displayName;
+            userDetails.displayName = dbUser.displayName;
             userDetails.firstName = dbUser.firstName;
             userDetails.lastName = dbUser.lastName;
             userDetails.uid = userInfo?.attributes?.sub;
@@ -256,59 +329,113 @@ const SignIn = ({
         <Spinner />
     ) : (
         <>
-            <Header />
-
-            <div className='signin-page-wrapper'>
-                <div className='signin-box'>
-                    <div className='signin-title-box'>
-                        <h3>Login</h3>
-                    </div>
-                    <div className='signin-wrapper'>
-                        <div className='username-wrapper'>
-                            <FormInput
-                                name='username'
-                                className='form-component'
-                                type='username'
-                                handleChange={handleChange}
-                                value={username}
-                                label='login'
-                                required
-                            />
+            <>
+                <Header />
+{/*
+                <div className='signin-page-wrapper'>
+                    <div className='signin-box'>
+                        <div className='signin-title-box'>
+                            <h3>Login</h3>
                         </div>
-                        <div className='password-wrapper'>
-                            <FormInput
-                                name='password'
-                                className='form-component'
-                                type='password'
-                                value={password}
-                                handleChange={handleChange}
-                                label='password'
-                                required
-                            />
+                        <div className='signin-wrapper'>
+                            <div className='username-wrapper'>
+                                <FormInput
+                                    name='username'
+                                    className='form-component'
+                                    type='username'
+                                    handleChange={handleChange}
+                                    value={username}
+                                    label='login'
+                                    required
+                                />
+                            </div>
+                            <div className='password-wrapper'>
+                                <FormInput
+                                    name='password'
+                                    className='form-component'
+                                    type='password'
+                                    value={password}
+                                    handleChange={handleChange}
+                                    label='password'
+                                    required
+                                />
+                            </div>
                         </div>
-                    </div>
-                    <div className='button-wrapper'>
-                        <CustomButton
-                            onClick={signIn}
-                            className='register-button'
-                        >
-                            {' '}
-                            Sign in{' '}
-                        </CustomButton>
-                    </div>
-                    <div className='register-offer-wrapper'>
-                        If you don't have an account,
-                        <br />
-                        <Link to={'/register'}>click here</Link> to register.
+                        <div className='button-wrapper'>
+                            <CustomButton
+                                onClick={signIn}
+                                className='register-button'
+                            >
+                                {' '}
+                                Sign in{' '}
+                            </CustomButton>
+                        </div>
+                        <div className='register-offer-wrapper'>
+                            If you don't have an account,
+                            <br />
+                            <Link to={'/register'}>click here</Link> to
+                            register.
+                        </div>
                     </div>
                 </div>
-            </div>
+*/}
+            </>
+            <>
+                <div className='signin-page_signin-wrapper'>
+                    <div>
+                        <div className='signin-title-box'>
+                            <h3>Login</h3>
+                        </div>
+                        <div className='signin-page_signin-form'>
+                            <div className='signin-page_input-line'>
+                                
+                                <div className='signin-page_input-label'>Username</div>
+                                <input
+                                    type='text'
+                                    name='username'
+                                    id='username'
+                                    value={username}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                            <div className='signin-page_input-line'>
+                                
+                                <div className='signin-page_input-label'>Password</div>
+                                <input
+                                    type='password'
+                                    id='password'
+                                    name='password'
+                                    onChange={handleChange}
+                                    value={password}
+                                    required
+                                />
+                            </div>
+                            <div className='signin-page_button-wrapper'>
+                                <CustomButton
+                                    onClick={signIn}
+                                    className='register-button'
+                                >
+                                    {' '}
+                                    Sign in{' '}
+                                </CustomButton>
+                            </div>
+                        </div>
+                        <div className='signin-page_register-offer-wrapper'>
+                            If you don't have an account,<br/>
+                            <a className='signin-page_register-link' href='/register'>click here</a> to
+                            register.
+                        </div>
+                    </div>
+                </div>
+            </>
         </>
     );
 };
 const mapDispatchToProps = (dispatch) => ({
     setCurrentUser: (user) => dispatch(setCurrentUser(user)),
     setSpinner: () => dispatch(setSpinner()),
+    setAlert: (payload) => dispatch(setAlert(payload)),
     clearSpinner: () => dispatch(clearSpinner()),
     loadRegistrations: (registrations) =>
         dispatch(loadRegistrations(registrations)),
@@ -317,5 +444,6 @@ const mapDispatchToProps = (dispatch) => ({
 const mapStateToProps = (state) => ({
     pateSystem: state.pate,
     currentUser: state.user.currentUser,
+    alerts: state.alert,
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

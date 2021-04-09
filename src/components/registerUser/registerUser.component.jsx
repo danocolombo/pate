@@ -4,11 +4,13 @@ import { Auth } from 'aws-amplify';
 import { useHistory } from 'react-router-dom';
 import Spinner from '../../components/spinner/Spinner';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
+import { setAlert } from '../../redux/alert/alert.action';
 import './registerUser.styles.scss';
 const RegisterUserDetails = ({
     currentUser,
     setSpinner,
     clearSpinner,
+    setAlert,
     pateSystem,
 }) => {
     const history = useHistory();
@@ -22,8 +24,44 @@ const RegisterUserDetails = ({
 
     const handleSubmitClick = (event) => {
         event.preventDefault();
-        if (password1 !== password2) return;
+        let alertPayload = {};
+        //minimum length of login is 4 characters
+        if (userName.length < 4) {
+            alertPayload = {
+                msg: 'Username length has to be 4 characters',
+                alertType: 'danger',
+            };
+            setAlert(alertPayload);
+            return;
+        }
 
+        if (password1 !== password2) {
+            alertPayload = {
+                msg: 'Entered passwords need to match',
+                alertType: 'danger',
+            };
+            setAlert(alertPayload);
+            return;
+        }
+        // passwords need to be at least 8 characters
+        if (password1.length < 8) {
+            alertPayload = {
+                msg: 'Password minimum length: 8',
+                alertType: 'danger',
+            };
+            setAlert(alertPayload);
+            return;
+        }
+        //email needs to be acceptable format
+        let EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (!EMAIL_REGEX.test(email)) {
+            alertPayload = {
+                msg: 'Valid email address is required.',
+                alertType: 'danger',
+            };
+            setAlert(alertPayload);
+            return;
+        }
         setSpinner();
         try {
             Auth.signUp({
@@ -41,15 +79,45 @@ const RegisterUserDetails = ({
                     // if (err) {
                     //     err.forEach((err) => dispatch(setAlert(err.message, 'danger')));
                     // }
-                    console.log('Yak:' + err.code);
-                    if (err.code === 'UsernameExistsException') {
-                        // setAlertMessage(err.message);
-                        // setAlertVisible(true);
-                        console.log(err.message);
+                    switch (err.code) {
+                        case 'UsernameExistsException':
+                            alertPayload = {
+                                msg: err.message,
+                                alertType: 'danger',
+                            };
+                            console.log('ERR1: err.code');
+                            break;
+                        case 'InvalidPasswordException':
+                            alertPayload = {
+                                msg:
+                                    'Password does not meet requirements.\n[' +
+                                    err.message +
+                                    ']',
+                                alertType: 'danger',
+                                timeout: 10000,
+                            };
+                            break;
+                        default:
+                            alertPayload = {
+                                msg:
+                                    'Registration error: [' +
+                                    JSON.stringify(err) +
+                                    ']',
+                                alertType: 'danger',
+                                timeout: 10000,
+                            };
+                            console.log('ERR2: err.code');
+                            break;
                     }
-                    console.log(err);
+                    setAlert(alertPayload);
                 });
         } catch (error) {
+            alertPayload = {
+                msg: 'Registration error: [' + JSON.stringify(error) + ']',
+                alertType: 'danger',
+            };
+            console.log('error3: error.code');
+            setAlert(alertPayload);
             console.log('error:' + error);
         }
         clearSpinner();
@@ -139,12 +207,15 @@ const RegisterUserDetails = ({
 const mapDispatchToProps = (dispatch) => ({
     setSpinner: () => dispatch(setSpinner()),
     clearSpinner: () => dispatch(clearSpinner()),
+    setAlert: (payload) => dispatch(setAlert(payload)),
 });
 const mapStateToProps = (state) => ({
     pateSystem: state.pate,
+    alerts: state.alert,
 });
 export default connect(mapStateToProps, {
     setSpinner,
+    setAlert,
     clearSpinner,
     mapDispatchToProps,
 })(RegisterUserDetails);

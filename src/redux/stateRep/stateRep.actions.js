@@ -7,3 +7,7 @@ export const clearStateRep = () => ({
     type: StateRepActionTypes.CLEAR_STATE_REP,
     payload: null,
 });
+export const updateStateRepRally = (updatedRally) => ({
+    type: StateRepActionTypes.UPDATE_REP_RALLY,
+    payload: updatedRally,
+});

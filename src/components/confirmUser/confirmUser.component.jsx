@@ -2,61 +2,117 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Auth } from 'aws-amplify';
 import { useHistory } from 'react-router-dom';
-import AlertBox from '../../components/alert-box/alert-box.component';
 import Spinner from '../../components/spinner/Spinner';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
+import { setAlert } from '../../redux/alert/alert.action';
+import { setCurrentUser } from '../../redux/user/user.actions';
 import './confirmUser.styles.scss';
-
-const ConfirmUserDetails = ({ setSpinner, clearSpinner, pateSystem, id }) => {
+const ConfirmUserDetails = ({
+    setSpinner,
+    setAlert,
+    clearSpinner,
+    pateSystem,
+    id,
+}) => {
     const history = useHistory();
     // variables for the form
+    const [userName, setUserName] = useState('');
     const [code, setCode] = useState('');
-    const [alertVisible, setAlertVisible] = useState(false);
-    const [alertMessage, setAlertMessage] = useState('');
 
+    useEffect(() => {
+        if (id !== '0') {
+            setUserName(id);
+        } else {
+            setUserName('');
+        }
+    }, []);
     useEffect(() => {}, [pateSystem.showSpinner]);
 
     const handleSubmitClick = (event) => {
         event.preventDefault();
-
+        let alertPayload = {};
+        if (userName.length < 4 || code.length < 6) {
+            alertPayload = {
+                msg: 'User Name and Code are required.',
+                alertType: 'danger',
+            };
+            setAlert(alertPayload);
+            return;
+        }
         setSpinner();
         try {
             Auth.confirmSignUp(id, code)
                 .then((data) => {
+                    alertPayload = {
+                        msg: 'Your registration is verified.',
+                        alertType: 'success',
+                    };
+                    setAlert(alertPayload);
                     history.push('/signin');
                 })
                 .catch((err) => {
-                    console.log('Yak:' + err.code);
-                    let msg = null;
                     switch (err.code) {
                         case 'CodeMismatchException':
-                            setAlertMessage(err.message);
+                            alertPayload = {
+                                msg: 'Code Mismatch\n[' + err.message + ']',
+                                alertType: 'danger',
+                            };
                             break;
                         case 'UsernameExistsException':
-                            msg = 'User Already Exists!! \n' + err.message;
-                            setAlertMessage(msg);
+                            alertPayload = {
+                                msg:
+                                    'User Already Exists.\n[' +
+                                    err.message +
+                                    ']',
+                                alertType: 'danger',
+                            };
                             break;
                         case 'NotAuthorizedException':
-                            msg = 'Invalid code provided.\nPlease try again';
-                            setAlertMessage(msg);
+                            alertPayload = {
+                                msg:
+                                    'Invalid coded provided.\n[' +
+                                    err.message +
+                                    ']',
+                                alertType: 'danger',
+                            };
                             break;
                         default:
-                            setAlertMessage(err.message);
+                            alertPayload = {
+                                msg:
+                                    'User Validation Error.\n[' +
+                                    err.message +
+                                    ']',
+                                alertType: 'danger',
+                            };
                             break;
                     }
-                    setAlertVisible(true);
-
-                    // console.log(err);
+                    setAlert(alertPayload);
+                    // window.scrollTo(0, 0);
+                    clearSpinner();
+                    return;
                 });
         } catch (error) {
+            alertPayload = {
+                msg:
+                    'Unexpected User Validation Error.\n[' +
+                    error.message +
+                    ']',
+                alertType: 'danger',
+            };
             console.log('error:' + error);
+            window.scrollTo(0, 0);
+            clearSpinner();
+            return;
         }
         clearSpinner();
-        history.push('/signin');
+        // history.push('/signin');
     };
     const handleChange = (e) => {
         const { value, name } = e.target;
         switch (name) {
+            case 'userName':
+                setUserName(value);
+                break;
             case 'code':
                 setCode(value);
                 break;
@@ -70,16 +126,10 @@ const ConfirmUserDetails = ({ setSpinner, clearSpinner, pateSystem, id }) => {
     ) : (
         <>
             <div className='confirmuserwrapper'>
-                <AlertBox
-                    show={alertVisible}
-                    /*onClose={this.onChange}*/
-                    message={alertMessage}
-                    autoClose={false}
-                />
                 <div className='confirmform'>
                     <form>
                         <div className='instructions'>
-                            Check your email for a confirmation code and enter
+                            Check your email for a confirmation code & enter
                             below to confirm your registration.
                         </div>
                         <div>
@@ -88,7 +138,7 @@ const ConfirmUserDetails = ({ setSpinner, clearSpinner, pateSystem, id }) => {
                                 type='text'
                                 name='userName'
                                 id='userName'
-                                value={id}
+                                value={userName}
                                 onChange={handleChange}
                                 required
                             />
@@ -115,13 +165,16 @@ const ConfirmUserDetails = ({ setSpinner, clearSpinner, pateSystem, id }) => {
 };
 const mapDispatchToProps = (dispatch) => ({
     setSpinner: () => dispatch(setSpinner()),
+    setAlert: (payload) => dispatch(setAlert(payload)),
     clearSpinner: () => dispatch(clearSpinner()),
 });
 const mapStateToProps = (state) => ({
     pateSystem: state.pate,
+    alerts: state.alert,
 });
 export default connect(mapStateToProps, {
     setSpinner,
+    setAlert,
     clearSpinner,
     mapDispatchToProps,
 })(ConfirmUserDetails);

@@ -1,11 +1,19 @@
-.userregistrationswrapper {
-    text-align: center;
-    padding-top: 0px;
+.user-reg-overview__wrapper {
+    // text-align: center;
+    padding: 0;
+    margin: 0;
     width: 80%;
     height: auto;
-    // background: #557a95;
+    background: #b1a296;
     color: white;
+    border-bottom-right-radius: 10px;
+    border-left: black solid 1px;
+    border-bottom-left-radius: 10px;
+    border-right: black solid 1px;
+    border-bottom: black solid 1px;
+    padding-bottom: 10px;
 }
+
 .registrationtable {
     text-align: left;
     margin-left: 20px;
@@ -22,4 +30,27 @@
 }
 .eventlocation {
     padding-left: 10px;
+}
+user-reg-overview__item {
+    padding: 10px 10px;
+    position: relative;
+}
+.user-reg-overview__date {
+    display: inline-block;
+    margin: 0 10px;
+    padding-top: 5px;
+    padding-bottom: 2px;
+}
+.user-reg-overview__name {
+    display: inline-block;
+    margin: 0 10px;
+}
+.user-reg-overview__city-state {
+    display: inline-block;
+    margin: 0 10px;
+}
+.user-reg-overview__cancel-button {
+    display: inline-block;
+
+    cursor: pointer;
 }

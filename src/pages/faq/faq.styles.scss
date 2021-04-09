@@ -1,0 +1,33 @@
+.faq-box {
+    margin-left: 10vw;
+    margin-top: 15px;
+    border: black solid 1px;
+    border-radius: 5px;
+    width: 80vw;
+    background-color: lightgray;
+}
+.faq-flex-box__container {
+    display: flex;
+    padding: 10px;
+}
+.faq-flex-box_body {
+}
+.faq-title {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 1.3em;
+    font-weight: 800;
+}
+.faq-definition__list {
+}
+.faq-definition__term {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    font-style: italic;
+    padding-top: 5px;
+}
+.faq-definition__definition {
+}
+.faq-quote {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-style: italic;
+}

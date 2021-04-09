@@ -27,7 +27,10 @@ const registrationsReducer = (state = INITIAL_STATE, action) => {
         case RegistrationsActionTypes.ADD_REGISTRATION:
             return {
                 ...state,
-                confirmed: addItemToRegistrations(state.confirmed, action.payload),
+                confirmed: addItemToRegistrations(
+                    state.confirmed,
+                    action.payload
+                ),
             };
         case RegistrationsActionTypes.REMOVE_REGISTRATION:
             return {
@@ -48,7 +51,7 @@ const registrationsReducer = (state = INITIAL_STATE, action) => {
                 tempRegistration: null,
             };
         case RegistrationsActionTypes.LOAD_EVENT_REGISTRATIONS:
-            console.log('in....');    
+            console.log('in....');
             return {
                 ...state,
                 eventRegistrations: action.payload,
@@ -61,7 +64,10 @@ const registrationsReducer = (state = INITIAL_STATE, action) => {
         case RegistrationsActionTypes.ADD_EVENT_REGISTRATION:
             return {
                 ...state,
-                eventRegistrations: addItemToRegistrations(state.eventRegistrations, action.payload),
+                eventRegistrations: addItemToRegistrations(
+                    state.eventRegistrations,
+                    action.payload
+                ),
             };
         case RegistrationsActionTypes.REMOVE_EVENT_REGISTRATION:
             return {

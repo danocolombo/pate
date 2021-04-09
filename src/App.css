@@ -46,3 +46,34 @@
         transform: rotate(360deg);
     }
 }
+.alert {
+    padding: 0.8rem;
+    margin: 1rem 0;
+    opacity: 0.9;
+    background: var(--light-color);
+    color: #333;
+}
+.alert-primary {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+.alert-light {
+    background-color: var(--light-color);
+    color: #333;
+}
+.alert-dark {
+    background-color: var(--dark-color);
+    color: #fff;
+}
+.alert-danger {
+    background: red;
+    color: #fff;
+}
+.alert-success {
+    background: green;
+    color: #fff;
+}
+.alert-warning {
+    background: yellow;
+    color: black;
+}

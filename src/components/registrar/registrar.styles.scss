@@ -1,0 +1,33 @@
+.edit-registrar_phone-input {
+    display: inline-block;
+}
+.react-tel-input {
+    display: inline-block;
+    margin-left:15%;
+}
+.special-label {
+    display: inline-block;
+    padding-right: 10px;
+}
+.registrar-component_button-wrapper {
+    
+    margin-top: 10px;
+    margin-left: 10%;
+    margin-bottom: 15px;
+}
+.registrar-component_button-register {
+    padding: 2px 5px;
+    margin: 5px 5px;
+    background-color: yellow;
+}
+.registrar-component_button-cancel {
+    padding: 2px 5px;
+    margin: 5px 5px;
+    background-color: #ccc
+}
+.registrar-component_button-delete {
+    padding: 2px 5px;
+    margin: 5px 5px;
+    background-color: red;
+    color: white;
+}

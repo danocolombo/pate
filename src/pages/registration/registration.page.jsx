@@ -7,6 +7,7 @@ import { withRouter } from 'react-router';
 import './registration.styles.scss';
 import Header from '../../components/header/header.component';
 import Spinner from '../../components/spinner/Spinner';
+import PhoneInput from 'react-phone-input-2';
 import {
     addRegistration,
     loadTempRegistration,
@@ -14,6 +15,8 @@ import {
 } from '../../redux/registrations/registrations.actions';
 import { loadRally } from '../../redux/pate/pate.actions';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
+import InputError from '../../components/modals/registration/input-error.component';
+import { setAlert } from '../../redux/alert/alert.action';
 const EventRegistration = ({
     setSpinner,
     clearSpinner,
@@ -22,12 +25,14 @@ const EventRegistration = ({
     currentUser,
     registrations,
     addRegistration,
+    setAlert,
     loadTempRegistration,
     clearTempRegistration,
     loadRally,
 }) => {
     // const [plan, setPlan] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
+    const [inputModalVisible, setInputModalVisible] = useState(false);
     const [attendeeCount, setAttendeeCount] = useState(1);
     const [mealCount, setMealCount] = useState(0);
     const [firstName, setFirstName] = useState(currentUser?.firstName);
@@ -323,47 +328,47 @@ const EventRegistration = ({
         //-----------------------------------------------------
         let fieldMessage = {};
         let okayToProceed = true;
-        if (firstName.length < 2) {
+        if (firstName?.length < 2) {
             okayToProceed = false;
             fieldMessage.First_Name = 'is required';
         }
-        if (lastName.length < 2) {
+        if (lastName?.length < 2) {
             okayToProceed = false;
             fieldMessage.Last_Name = 'is required';
         }
-        if (email.length < 10) {
+        if (email?.length < 10) {
             okayToProceed = false;
             fieldMessage.Email = 'is required';
         }
-        if (phone.length < 10) {
+        if (phone?.length < 10) {
             okayToProceed = false;
             fieldMessage.Phone = 'is required';
         }
-        if (homeStreet.length < 5) {
+        if (homeStreet?.length < 5) {
             okayToProceed = false;
             fieldMessage.Home_Street = 'is required';
         }
-        if (homeCity.length < 2) {
+        if (homeCity?.length < 2) {
             okayToProceed = false;
             fieldMessage.City = 'is required';
         }
-        if (homeStateProv.length < 2) {
+        if (homeStateProv?.length < 2) {
             okayToProceed = false;
             fieldMessage.Home_State = 'is required';
         }
-        if (homePostalCode.length < 5) {
+        if (homePostalCode?.length < 5) {
             okayToProceed = false;
             fieldMessage.Postal_Code = 'is required';
         }
-        if (churchName.length < 5) {
+        if (churchName?.length < 5) {
             okayToProceed = false;
             fieldMessage.Church_Name = 'is required';
         }
-        if (churchCity.length < 3) {
+        if (churchCity?.length < 3) {
             okayToProceed = false;
             fieldMessage.Church_City = 'is required';
         }
-        if (churchStateProv.length < 2) {
+        if (churchStateProv?.length < 2) {
             okayToProceed = false;
             fieldMessage.Church_State = 'is required';
         }
@@ -377,9 +382,23 @@ const EventRegistration = ({
         }
 
         if (!okayToProceed) {
-            alert(
-                'Please correct your request.\n' + JSON.stringify(fieldMessage)
-            );
+            // alert(
+            //     'Please correct your request.\n' + JSON.stringify(fieldMessage)
+            // );
+            const alertPayload = {
+                msg: 'ALL FIELDS ARE REQUIRED',
+                alertType: 'danger',
+            };
+            setAlert(alertPayload);
+            window.scrollTo(0, 0);
+            // setInputModalVisible(true);
+            <InputError
+                open={inputModalVisible}
+                onClose={() => setInputModalVisible(false)}
+            >
+                <div>Please correct your request.</div>
+                <div>{JSON.stringify(fieldMessage)}</div>
+            </InputError>;
             return;
         }
 
@@ -421,8 +440,8 @@ const EventRegistration = ({
                     postalCode: homePostalCode,
                 },
             },
-            attendeeCount: attendeeCount,
-            mealCount: mealCount,
+            attendeeCount: parseInt(attendeeCount, 10),
+            mealCount: parseInt(mealCount, 10),
         };
 
         // post the registration to API and return to /
@@ -495,12 +514,10 @@ const EventRegistration = ({
         // //=====================================
         // // add the registration to redux
         // //=====================================
-        // // if (registrarId !== '0') {
-        // //     await addRegistration(regData);
-        // // }
-        // if (currentUser?.isLoggedIn) {
-        //     await addRegistration(theEvent.details);
-        // }
+        if (registrarId !== '0') {
+            await addRegistration(regData);
+        }
+
         history.push('/');
     };
     const populateUserInfo = () => {
@@ -652,16 +669,22 @@ const EventRegistration = ({
                                                 />
                                             </div>
                                             <div>
-                                                <label htmlFor='phone'>
-                                                    Telephone
-                                                </label>
-                                                <input
-                                                    type='text'
-                                                    id='phone'
-                                                    name='phone'
-                                                    onChange={handleChange}
+                                                <PhoneInput
+                                                    onlyCountries={['us']}
+                                                    country='us'
+                                                    placeholder='(702) 123-4567'
+                                                    disableCountryCode
+                                                    disableDropdown
                                                     value={phone}
-                                                    required
+                                                    onChange={(phone) =>
+                                                        setPhone(phone)
+                                                    }
+                                                    inputProps={{
+                                                        name: 'phone',
+                                                        required: true,
+                                                        placeholder:
+                                                            '(706) 396-1234',
+                                                    }}
                                                 />
                                             </div>
                                         </div>
@@ -830,6 +853,7 @@ const mapDispatchToProps = (dispatch) => ({
     loadRally: (rally) => dispatch(loadRally(rally)),
     loadTempRegistration: (reg) => dispatch(loadTempRegistration(reg)),
     clearTempRegistration: () => dispatch(clearTempRegistration()),
+    setAlert: (payload) => dispatch(setAlert(payload)),
 });
 const mapStateToProps = (state) => ({
     pateSystem: state.pate,

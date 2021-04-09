@@ -1,0 +1,26 @@
+.main-footer {
+    background: #557a95;
+    color: white;
+    padding: 16px;
+    margin-top: 32px;
+    border-top: black double 1px;
+    border-bottom: black double 1px;
+}
+.main-footer_links {
+    list-style: none;  
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+.main-footer_link {
+    display: inline-block;
+    margin: 0px 16px;
+}
+.main-footer_link a{
+    color: white;
+    text-decoration: none;
+}
+.main-footer_link a:hover,
+.main-footer_link a:active {
+    color: #ccc;
+}

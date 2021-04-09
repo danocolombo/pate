@@ -1,24 +1,28 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import StyledLink from '../../components/custom-link/custom-link-white.component';
 import './userregistrationsoverview.styles.scss';
 import { removeRegistration } from '../../redux/registrations/registrations.actions';
 const UserRegistrationOverview = ({
     currentUser,
-    registrationInfo,
+    registrations,
     removeRegistration,
 }) => {
+    const history = useHistory();
+    if(!currentUser?.isLoggedIn){
+        history.push('/');
+    }
     // const util = require('util');
     // console.log(
     //     '&%&%&%&%&%___registrations___&%&%&%&%&%\n' +
     //         util.inspect(registrationInfo, { showHidden: false, depth: null })
     // );
-    const registrations = registrationInfo;
+    // const registrations = registrationInfo;
 
-    if (registrations) {
-        registrations.forEach((r) => {});
-    }
+    // if (registrations) {
+    //     registrations.forEach((r) => {});
+    // }
     const dateToDisplay = (dt) => {
         const y = dt.substring(0, 4);
         const m = parseInt(dt.substring(4, 6));
@@ -27,7 +31,7 @@ const UserRegistrationOverview = ({
         let smDate = m.toString() + '/' + d.toString();
         return smDate;
     };
-    const handleCancellation = async (id) => {
+    const handleCancellation = async (registration) => {
         //delete from database
         await fetch(
             'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/registrations',
@@ -36,8 +40,8 @@ const UserRegistrationOverview = ({
                 body: JSON.stringify({
                     operation: 'deleteRegistration',
                     payload: {
-                        Key: { uid: id },
-                    },
+                        Key: { uid: registration.uid }
+                    }
                 }),
                 headers: {
                     'Content-type': 'application/json; charset=UTF-8',
@@ -55,39 +59,84 @@ const UserRegistrationOverview = ({
                         })
                 );
             });
-        await removeRegistration(id);
+        //-------------------------
+        // reduce event numbers.
+        //-------------------------
+        let eventUpdate = {
+            uid: registration.eid,
+            adjustments: {
+                registrationCount: registration.attendeeCount * -1,
+            },
+        };
+        const mCount = parseInt(registration.mealCount, 10) * -1;
+        if (mCount != 0) {
+            eventUpdate.adjustments.mealCount = mCount;
+        }
+        await fetch(
+            'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/events',
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    operation: 'maintainNumbers',
+                    payload: eventUpdate,
+                }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            }
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                console.log('maintainEventNumbers successful');
+            });
+
+        //remove the redux reference to the event
+        await removeRegistration(registration.uid);
+        //??????
+        // may need to reload stateRep & stateLead redux
+        //??????
     };
     return (
         <>
-            <div className='userregistrationswrapper'>
-                <div className='tablewrapper'>
-                    { registrations ? (
-                    <table className='registrationtable'>
-                        {registrations.map((r) => (
-                            <tr>
-                                <td className='eventdate'>
-                                    <StyledLink
-                                        style={{ textDecoration: 'none' }}
-                                        to={`/registration/REG${r.eid}`}
-                                    >
-                                        {dateToDisplay(r.eventDate)}
-                                    </StyledLink>
-                                </td>
-                                <td className='eventname'>{r?.locationName}</td>
-                                <td className='eventlocation'>{r?.locationCity}</td>
-                                <td className='cancelButton'>
-                                    <Link
-                                        onClick={() => {
-                                            handleCancellation(r.uid);
-                                        }}
-                                    >
-                                        X
-                                    </Link>
-                                </td>
-                            </tr>
-                        ))}
-                    </table>):null};
-                </div>
+            <div className='user-reg-overview__wrapper'>
+                {registrations
+                    ? registrations.map((reg) => (
+                          <>
+                              <div className='user-reg-overview__item'>
+                                  <div className='user-reg-overview__date'>
+                                      <StyledLink
+                                          style={{ textDecoration: 'none' }}
+                                          to={`/editregistration/${reg.eid}/${reg.uid}`}
+                                      >
+                                          {dateToDisplay(reg.eventDate)}
+                                      </StyledLink>
+                                  </div>
+
+                                  <div className='user-reg-overview__name'>
+                                      {reg?.location.name}
+                                      <br />
+                                      {reg?.location?.city},{' '}
+                                      {reg?.location?.stateProv}
+                                  </div>
+
+                                  {reg.registrar?.firstName !==
+                                  currentUser?.firstName ? (
+                                      <span>({reg.registrar?.firstName})</span>
+                                  ) : null}
+
+                                  <div className='user-reg-overview__cancel-button'>
+                                      <Link
+                                          onClick={() => {
+                                              handleCancellation(reg);
+                                          }}
+                                      >
+                                          X
+                                      </Link>
+                                  </div>
+                              </div>
+                          </>
+                      ))
+                    : null}
             </div>
         </>
     );
@@ -99,7 +148,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 const mapStateToProps = (state) => ({
     currentUser: state.user.currentUser,
-    registrationInfo: state.registrations.confirmed,
+    registrations: state.registrations.confirmed,
 });
 export default connect(
     mapStateToProps,

@@ -9,6 +9,7 @@ import {
 import './events.styles.scss';
 import EventListing from '../../components/event-listing/event-listing.component';
 import Header from '../../components/header/header.component';
+import {MainFooter} from '../../components/footers/main-footer';
 import Spinner from '../../components/spinner/Spinner';
 class Events extends React.Component {
     constructor() {
@@ -48,6 +49,7 @@ class Events extends React.Component {
                         ))}
                     </div>
                 </div>
+                <MainFooter />
             </>
         );
     }

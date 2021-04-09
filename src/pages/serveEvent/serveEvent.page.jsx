@@ -14,6 +14,7 @@ import {
     loadEventRegistrations,
     clearEventRegistrations,
 } from '../../redux/registrations/registrations.actions';
+import { updateStateRepRally } from '../../redux/stateRep/stateRep.actions';
 // import { getEventRegistrations } from './server-event.actions';
 const Serve = ({
     setSpinner,
@@ -27,6 +28,7 @@ const Serve = ({
     loadRally,
     loadEventRegistrations,
     clearEventRegistrations,
+    updateStateRepRally,
     pate,
 }) => {
     let eventID = match?.params?.id;
@@ -71,13 +73,22 @@ const Serve = ({
 
     const util = require('util');
     useEffect(() => {
+        //++++++++++++++++++++++++++++++++++++++++
+        // useEffect on load
+        //++++++++++++++++++++++++++++++++++++++++
         if (!currentUser.isLoggedIn) history.push('/');
         //get the reference to the current event and load to useState
         if (match?.params?.id) {
             clearEventRegistrations();
-            loadEvent();
-            // loadRegistrations();
-            getEventRegistrations(eventID);
+            if(match.params.id ==="0" ){
+                // this is a new event request
+                setDefaultEvent();
+            }else{
+                // this is an edit
+                loadEvent();
+                // loadRegistrations();
+                getEventRegistrations(eventID);
+            }
         } else {
             // clearEventRegistrations();
         }
@@ -128,7 +139,84 @@ const Serve = ({
             console.error(err);
         }
     };
+    const setDefaultEvent = async () => {
+        //this is used for creating a default event to display for add
+        //create empty event object
+        const emptyEvent = {
+            meal:{
+                startTime:"1200",
+                mealCount:0,
+                cost:"0",
+                message:"",
+                mealsServed: 0
+            },
+            eventDate: "20210406",
+            contact:{
+                name:"",
+                phone:"",
+                email:""
+            },
+            status: "draft",
+            message:"",
+            stateProv:"",
+            coordinator:{
+                name:"",
+                id: 0,
+                phone:"",
+                email:"",
+            },
+            uid:"sdfijvapofiha;jlrav",
+            name:"",
+            registrations:0,
+            startTime: "13:00",
+            city: "",
+            graphic: "",
+            approved: false,
+            attendees: "0",
+            endTime:"13:00",
+            attendance: 0,
+            id: "agfwspgswrioja",
+            postalCode: "",
+            street: ""
+        }
 
+        loadRally(emptyEvent);
+        //load the useState
+        // need date in format mm-dd-yyyy
+        let dateToday = new Date();
+        // console.log(dateToday);
+        let m = parseInt(dateToday.getUTCMonth()+1);
+        let d = parseInt(dateToday.getUTCDate());
+        let y = parseInt(dateToday.getFullYear());
+        dateToday = y + '-' + m + '-' + d;
+        dateToday = "2021-04-06";
+        setEventDate(dateToday);
+        setChurchName('');
+        setStreet('');
+        setCity('');
+        setStateProv('');
+        setPostalCode('');
+        setEventStart('');
+        setEventEnd('');
+        setGraphic('');
+        setApproved('false');
+        setContactName('');
+        setContactEmail('');
+        setContactPhone('');
+        setEventStatus('draft');
+        setEventMessage('');
+        setRepName('');
+        setRepEmail('');
+        setRepPhone('');
+        setMealTime('');
+        setMealCost('');
+        setMealCount(0);
+        setMealsServed(0);
+        setMealMessage('');
+        setAttendeeCount(0);
+        setRegistrationCount(0);
+
+    }
     const loadEvent = async () => {
         //get the event reference.
         // if the eventID is not in our currentUserRallies,
@@ -145,7 +233,15 @@ const Serve = ({
             rallies.forEach((rallyEvent) => {
                 if (rallyEvent.uid === eventID) {
                     //-----------------
-                    // seave the event to redux
+                    // convert the eventDate from number to date to display
+                    let ddbDate = rallyEvent.eventDate;
+                    const y = ddbDate.substring(0, 4);
+                    const m = ddbDate.substring(4, 6);
+                    const d = ddbDate.substring(6, 8);
+                    let smDate =
+                        y.toString() + '-' + m.toString() + '-' + d.toString();
+                    rallyEvent.eventDate = smDate;
+                    // save the event to redux
                     loadRally(rallyEvent);
                     //load the useState
                     setEventDate(rallyEvent?.eventDate);
@@ -180,6 +276,14 @@ const Serve = ({
             leadRallies.forEach((rallyEvent) => {
                 if (rallyEvent.uid === eventID) {
                     //-----------------
+                    // convert the eventDate from number to date to display
+                    let ddbDate = rallyEvent.eventDate;
+                    const y = ddbDate.substring(0, 4);
+                    const m = ddbDate.substring(4, 6);
+                    const d = ddbDate.substring(6, 8);
+                    let smDate =
+                        y.toString() + '-' + m.toString() + '-' + d.toString();
+                    rallyEvent.eventDate = smDate;
                     // seave the event to redux
                     loadRally(rallyEvent);
                     //load the useState
@@ -212,53 +316,53 @@ const Serve = ({
             });
         }
     };
-    const loadRegistrations = async () => {
-        //---------------------------------------------------
-        //this function gets the registratoins for an event
-        //and loads the instances into redux
-        //---------------------------------------------------
-        // {
-        //     "operation": "getRegistrationsForEvent",
-        //     "payload": {
-        //       "eid": "65ff55fb33fe4c0447b086188f2e9b1f"
-        //     }
-        // }
-        async function getEventRegistrations() {
-            try {
-                fetch(
-                    'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/registrations',
-                    {
-                        method: 'POST',
-                        body: JSON.stringify({
-                            operation: 'getRegistrationsForEvent',
-                            payload: {
-                                eid: match?.params?.id,
-                            },
-                        }),
-                        headers: {
-                            'Content-type': 'application/json; charset=UTF-8',
-                        },
-                    }
-                )
-                    .then((response) => response.json())
-                    .then((data) => {
-                        const util = require('util');
-                        console.log(
-                            'registrations-data:\n' +
-                                util.inspect(data.body, {
-                                    showHidden: false,
-                                    depth: null,
-                                })
-                        );
-                        loadEventRegistrations(data?.body?.Items);
-                    });
-            } catch (error) {
-                clearSpinner();
-                console.log('Error fetching registrations \n' + error);
-            }
-        }
-        await getEventRegistrations();
-    };
+    // const loadRegistrations = async () => {
+    //     //---------------------------------------------------
+    //     //this function gets the registratoins for an event
+    //     //and loads the instances into redux
+    //     //---------------------------------------------------
+    //     // {
+    //     //     "operation": "getRegistrationsForEvent",
+    //     //     "payload": {
+    //     //       "eid": "65ff55fb33fe4c0447b086188f2e9b1f"
+    //     //     }
+    //     // }
+    //     async function getEventRegistrations() {
+    //         try {
+    //             fetch(
+    //                 'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/registrations',
+    //                 {
+    //                     method: 'POST',
+    //                     body: JSON.stringify({
+    //                         operation: 'getRegistrationsForEvent',
+    //                         payload: {
+    //                             eid: match?.params?.id,
+    //                         },
+    //                     }),
+    //                     headers: {
+    //                         'Content-type': 'application/json; charset=UTF-8',
+    //                     },
+    //                 }
+    //             )
+    //                 .then((response) => response.json())
+    //                 .then((data) => {
+    //                     const util = require('util');
+    //                     console.log(
+    //                         'registrations-data:\n' +
+    //                             util.inspect(data.body, {
+    //                                 showHidden: false,
+    //                                 depth: null,
+    //                             })
+    //                     );
+    //                     loadEventRegistrations(data?.body?.Items);
+    //                 });
+    //         } catch (error) {
+    //             clearSpinner();
+    //             console.log('Error fetching registrations \n' + error);
+    //         }
+    //     }
+    //     await getEventRegistrations();
+    // };
     const handleSubmitClick = (event) => {
         event.preventDefault();
         console.log('SAVE-SAVE-SAVE');
@@ -274,7 +378,7 @@ const Serve = ({
         newRally.contact.name = contactName;
         newRally.contact.phone = contactPhone;
         newRally.contact.email = contactEmail;
-        newRally.eventDate = eventDate;
+        newRally.eventDate = eventDate.replace(/-/g, '');
         newRally.startTime = eventStart;
         newRally.endTime = eventEnd;
         newRally.message = eventMessage;
@@ -290,6 +394,7 @@ const Serve = ({
 
         //now update redux for future use.
         loadRally(newRally);
+        //reload stateRep and stateLead
         //now save the newRally data to database
         async function updateDb() {
             await fetch(
@@ -321,6 +426,8 @@ const Serve = ({
         }
         //next call is to async the above update
         updateDb();
+        //now update the stateRep.rally
+        updateStateRepRally(newRally);
         history.push('/serve');
     };
     const handleChange = (e) => {
@@ -340,6 +447,12 @@ const Serve = ({
                 break;
             case 'postalCode':
                 setPostalCode(value);
+                break;
+            case 'rallyDate':
+                console.log('rallyDate:' + value);
+                setEventDate(value);
+                console.log('eventDate: ' + eventDate);
+                console.log('make it?');
                 break;
             case 'eventDate':
                 setEventDate(value);
@@ -524,7 +637,18 @@ const Serve = ({
                                         Logistics
                                     </div>
                                     <div>
-                                        <label htmlFor='eventDate'>Date</label>
+                                        <label htmlFor='eventDate'>
+                                            Date (yyyy-mm-dd)
+                                        </label>
+                                        <input
+                                            type='date'
+                                            id='rallyDate'
+                                            name='rallyDate'
+                                            onChange={handleChange}
+                                            value={eventDate}
+                                            required
+                                        />
+                                        {/*}
                                         <input
                                             type='text'
                                             id='eventDate'
@@ -532,7 +656,7 @@ const Serve = ({
                                             onChange={handleChange}
                                             value={eventDate}
                                             required
-                                        />
+                                        /> */}
                                     </div>
                                     <div>
                                         <label htmlFor='eventStart'>
@@ -763,22 +887,28 @@ const Serve = ({
                         </div>
                     </>
                 </>
-                <div className='serve-pageheader'>REGISTRATIONS</div>
-                <div className='serve-event-content-wrapper'>
-                    {registrations?.eventRegistrations ? (
-                        registrations.eventRegistrations.map((rege) => (
-                            <RegistrationItem key={rege.uid} regItem={rege} />
-                        ))
-                    ) : (
-                        <div>NO</div>
-                    )}
-                </div>
-                <div className='serve-event__delete-box'>
-                    <hr className='serve-event__delete-box__horizontal-line' />
-                    <button className='serve-event__delete-button' onClick=''>
-                        DELETE EVENT
-                    </button>
-                </div>
+                {(match.params.id !=="0")?(
+                    <>
+                        <div className='serve-pageheader'>REGISTRATIONS</div>
+                        <div className='serve-event-content-wrapper'>
+                            {registrations?.eventRegistrations ? (
+                                registrations.eventRegistrations.map((rege) => (
+                                    <RegistrationItem key={rege.uid} regItem={rege} />
+                                ))
+                            ) : (
+                                <div>NO</div>
+                            )}
+                        </div>
+                        {/*
+                        <div className='serve-event__delete-box'>
+                            <hr className='serve-event__delete-box__horizontal-line' />
+                            <button className='serve-event__delete-button' onClick=''>
+                                DELETE EVENT
+                            </button>
+                        </div>
+                        */}
+                    </>
+                ):null}
             </div>
         </>
     );
@@ -791,6 +921,7 @@ const mapDispatchToProps = (dispatch) => ({
     loadEventRegistrations: (registrations) =>
         dispatch(loadEventRegistrations(registrations)),
     clearEventRegistrations: () => dispatch(clearEventRegistrations()),
+    updateStateRepRally: (newRally) => dispatch(updateStateRepRally(newRally)),
 });
 // Serve.propTypes = {
 //     getEventRegistrations: PropTypes.func.isRequired,

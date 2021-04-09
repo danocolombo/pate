@@ -7,6 +7,7 @@ import registrationsReducer from './registrations/registrations.reducer';
 import pateReducer from './pate/pate.reducer';
 import stateRepReducer from './stateRep/stateRep.reducer';
 import stateLeadReducer from './stateLead/stateLead.reducer';
+import alertReducer from './alert/alert.reducer';
 // const persistConfig = {
 //   key: 'root',
 //   storage,
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
     pate: pateReducer,
     stateRep: stateRepReducer,
     stateLead: stateLeadReducer,
+    alert: alertReducer,
 });
 
 export default rootReducer;
