@@ -87,7 +87,6 @@ const Header = ({
                             <li className='main-nav__item'>
                                 <Link to='/signin'>Login/Sign-up</Link>
                             </li>
-                    
                         </ul>
                     )}
                 </nav>
