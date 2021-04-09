@@ -189,7 +189,7 @@ const SignIn = ({
                         //             depth: null,
                         //         })
                         // );
-                        loadRegistrations(data.body.Items);
+                        loadRegistrations(data.body);
                     });
             } catch (error) {
                 clearSpinner();
