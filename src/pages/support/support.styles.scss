@@ -1,11 +1,14 @@
-.support-box{
-    margin-left: 20px;
+.support-box {
+    margin-left: 10vw;
+    margin-top: 15px;
     border: black solid 1px;
-    border-radius: 2px;
+    border-radius: 5px;
+    width: 80vw;
+    background-color: lightgray;
 }
-.support-flex-box__container{
-    display:flex
+.support-flex-box__container {
+    display: flex;
+    padding: 10px;
 }
-.support-flex-box_body{
-
+.support-flex-box_body {
 }
