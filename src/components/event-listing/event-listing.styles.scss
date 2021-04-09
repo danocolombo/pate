@@ -3,15 +3,15 @@
     // padding: 1rem;
     // margin: 0.5rem 0;
     padding-top: 0px;
-    width: 80%;
+    width: 80vw;
     // align-items: center;
     background-color: url('https://pate-images.s3.amazonaws.com/background.jpg');
     // background: #557a95;
     color: white;
 }
-@media only screen and (max-width:376px) {
+@media only screen and (max-width: 376px) {
     .event-box {
-        width:100%;
+        width: 80vw;
     }
 }
 .event-listing__date-box {
