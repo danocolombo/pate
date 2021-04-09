@@ -180,14 +180,14 @@ const SignIn = ({
                 )
                     .then((response) => response.json())
                     .then((data) => {
-                        const util = require('util');
-                        console.log(
-                            'registrations-data:\n' +
-                                util.inspect(data.body, {
-                                    showHidden: false,
-                                    depth: null,
-                                })
-                        );
+                        // const util = require('util');
+                        // console.log(
+                        //     'registrations-data:\n' +
+                        //         util.inspect(data.body, {
+                        //             showHidden: false,
+                        //             depth: null,
+                        //         })
+                        // );
                         loadRegistrations(data.body.Items);
                     });
             } catch (error) {
@@ -386,7 +386,7 @@ const SignIn = ({
                         <div className='signin-title-box'>
                             <h3>Login</h3>
                         </div>
-                        <form className='signin-page_signin-form'>
+                        <div className='signin-page_signin-form'>
                             <div className='signin-page_input-line'>
                                 
                                 <div className='signin-page_input-label'>Username</div>
@@ -420,7 +420,7 @@ const SignIn = ({
                                     Sign in{' '}
                                 </CustomButton>
                             </div>
-                        </form>
+                        </div>
                         <div className='signin-page_register-offer-wrapper'>
                             If you don't have an account,<br/>
                             <a className='signin-page_register-link' href='/register'>click here</a> to

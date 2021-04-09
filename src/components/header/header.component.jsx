@@ -74,6 +74,7 @@ const Header = ({
                             </li>
                             <li className='main-nav__item'>
                                 <Link
+                                    to="#"
                                     onClick={logoutRequest}
                                     className='main-navigation-button'
                                 >
@@ -82,12 +83,12 @@ const Header = ({
                             </li>
                         </ul>
                     ) : (
-                        <li className='main-nav__item'>
-                            {/*<a href='/signin'>Login/Sign-up</a>*/}
+                        <ul> 
                             <li className='main-nav__item'>
                                 <Link to='/signin'>Login/Sign-up</Link>
                             </li>
-                        </li>
+                    
+                        </ul>
                     )}
                 </nav>
             </header>
