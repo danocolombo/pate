@@ -1,12 +1,15 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { connect } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import StyledLink from '../../components/custom-link/custom-link-white.component';
-import './userregistrationsoverview.styles.scss';
+import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import { removeRegistration } from '../../redux/registrations/registrations.actions';
+import './userregistrationsoverview.styles.scss';
 const UserRegistrationOverview = ({
     currentUser,
     registrations,
+    setSpinner,
+    clearSpinner,
     removeRegistration,
 }) => {
     const history = useHistory();
@@ -135,6 +138,8 @@ const UserRegistrationOverview = ({
 };
 
 const mapDispatchToProps = (dispatch) => ({
+    setSpinner: () => dispatch(setSpinner()),
+    clearSpinner: () => dispatch(clearSpinner()),
     removeRegistration: (registration) =>
         dispatch(removeRegistration(registration)),
 });

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { useHistory } from 'react-router-dom';
 import { withAuthenticator } from '@aws-amplify/ui-react';
-
+import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import './profile.styles.scss';
 
 import Header from '../../components/header/header.component';
@@ -19,6 +19,7 @@ const UserProfile = ({ currentUser, pateSystem }) => {
             history.push('/');
         }
     }, []);
+    
     // render() {
     return (
         <>
