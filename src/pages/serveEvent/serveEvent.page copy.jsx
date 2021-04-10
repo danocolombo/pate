@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { compose } from 'redux';
 import { withRouter } from 'react-router';
-
+import './serveEvent.styles.scss';
 import Header from '../../components/header/header.component';
 import { MainFooter } from '../../components/footers/main-footer';
 import Spinner from '../../components/spinner/Spinner';
@@ -16,7 +16,6 @@ import {
     clearEventRegistrations,
 } from '../../redux/registrations/registrations.actions';
 import { updateStateRepRally } from '../../redux/stateRep/stateRep.actions';
-import './serveEvent.styles.scss';
 // import { getEventRegistrations } from './server-event.actions';
 const Serve = ({
     setSpinner,
@@ -524,326 +523,374 @@ const Serve = ({
     ) : (
         <>
             <Header />
-            <div className='registration__box'>
-                <div className='registration__header'>EVENT</div>
-                <div className="registration__detail-box">
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Church:</div>
-                        <div className="registration__data-input"><input
-                            type='text'
-                            name='churchName'
-                            id='churchName'
-                            value={churchName}
-                            onChange={handleChange}
-                            required
-                            />
+            <div className='servepagewrapper'>
+                <div className='serve-pageheader'>EVENT</div>
+                <>
+                    <>
+                        <div className='serve-event-content-wrapper'>
+                            <div className='registerform'>
+                                <form>
+                                    <div>
+                                        <label htmlFor='churchName'>
+                                            Church
+                                        </label>
+                                        <input
+                                            type='text'
+                                            name='churchName'
+                                            id='churchName'
+                                            value={churchName}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor='street'>Street</label>
+                                        <input
+                                            type='text'
+                                            id='street'
+                                            name='street'
+                                            onChange={handleChange}
+                                            value={street}
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor='city'>City</label>
+                                        <input
+                                            type='text'
+                                            id='city'
+                                            name='city'
+                                            onChange={handleChange}
+                                            value={city}
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor='stateProv'>State</label>
+                                        <input
+                                            type='text'
+                                            id='stateProv'
+                                            name='stateProv'
+                                            onChange={handleChange}
+                                            value={stateProv}
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor='postalCode'>
+                                            Postal Code
+                                        </label>
+                                        <input
+                                            type='text'
+                                            id='postalCode'
+                                            name='postalCode'
+                                            onChange={handleChange}
+                                            value={postalCode}
+                                            required
+                                        />
+                                    </div>
+                                    {/** church contact info */}
+                                    <div className='registration__section-header'>
+                                        Church Contact
+                                    </div>
+                                    <div>
+                                        <label htmlFor='contactName'>
+                                            Name
+                                        </label>
+                                        <input
+                                            type='text'
+                                            id='contactName'
+                                            name='contactName'
+                                            onChange={handleChange}
+                                            value={contactName}
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor='contactPhone'>
+                                            Phone
+                                        </label>
+                                        <input
+                                            type='text'
+                                            id='contactPhone'
+                                            name='contactPhone'
+                                            onChange={handleChange}
+                                            value={contactPhone}
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor='contactEmail'>
+                                            Email
+                                        </label>
+                                        <input
+                                            type='text'
+                                            id='contactEmail'
+                                            name='contactEmail'
+                                            onChange={handleChange}
+                                            value={contactEmail}
+                                            required
+                                        />
+                                    </div>
+                                    {/** logisitics info */}
+                                    <div className='registration__section-header'>
+                                        Logistics
+                                    </div>
+                                    <div>
+                                        <label htmlFor='eventDate'>
+                                            Date (yyyy-mm-dd)
+                                        </label>
+                                        <input
+                                            type='date'
+                                            id='rallyDate'
+                                            name='rallyDate'
+                                            onChange={handleChange}
+                                            value={eventDate}
+                                            required
+                                        />
+                                        {/*}
+                                        <input
+                                            type='text'
+                                            id='eventDate'
+                                            name='eventDate'
+                                            onChange={handleChange}
+                                            value={eventDate}
+                                            required
+                                        /> */}
+                                    </div>
+                                    <div>
+                                        <label htmlFor='eventStart'>
+                                            Start Time
+                                        </label>
+                                        <input
+                                            type='text'
+                                            id='eventStart'
+                                            name='eventStart'
+                                            onChange={handleChange}
+                                            value={eventStart}
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor='eventEnd'>
+                                            End Time
+                                        </label>
+                                        <input
+                                            type='text'
+                                            id='eventEnd'
+                                            name='eventEnd'
+                                            onChange={handleChange}
+                                            value={eventEnd}
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor='eventMessage'>
+                                            Message
+                                        </label>
+                                        <input
+                                            type='memo'
+                                            id='eventMessage'
+                                            name='eventMessage'
+                                            onChange={handleChange}
+                                            value={eventMessage}
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor='isApproved'>
+                                            Approved
+                                        </label>
+                                        {currentUser?.stateLead ? (
+                                            //this is LEAD
+                                            isApproved ? (
+                                                <input
+                                                    type='checkbox'
+                                                    id='isApproved'
+                                                    name='isApproved'
+                                                    checked
+                                                    onClick={handleChange}
+                                                    value='true'
+                                                />
+                                            ) : (
+                                                <input
+                                                    type='checkbox'
+                                                    id='isApproved'
+                                                    name='isApproved'
+                                                    value='true'
+                                                    onClick={handleChange}
+                                                />
+                                            )
+                                        ) : //this is REP
+                                        isApproved ? (
+                                            <input
+                                                type='checkbox'
+                                                id='isApproved'
+                                                name='isApproved'
+                                                checked
+                                                value='true'
+                                                readOnly='true'
+                                            />
+                                        ) : (
+                                            <input
+                                                type='checkbox'
+                                                id='isApproved'
+                                                name='isApproved'
+                                                value='true'
+                                            />
+                                        )}
+                                    </div>
+                                    <div>
+                                        <label
+                                            htmlFor='eventStatus'
+                                            className='sr-event-status-label'
+                                        >
+                                            Status
+                                            <span className='sr-event-status-tooltip'>
+                                                Contact your lead for changes
+                                            </span>
+                                        </label>
+
+                                        <select
+                                            type='text'
+                                            id='eventStatus'
+                                            name='eventStatus'
+                                            value={eventStatus}
+                                            onChange={handleChange}
+                                        >
+                                            <option value='draft'>
+                                                {STATUS_VALUE[0]}
+                                            </option>
+                                            <option value='pending'>
+                                                {STATUS_VALUE[1]}
+                                            </option>
+                                            <option value='rejected'>
+                                                {STATUS_VALUE[2]}
+                                            </option>
+                                            <option value='available'>
+                                                {STATUS_VALUE[3]}
+                                            </option>
+                                            <option value='offered'>
+                                                {STATUS_VALUE[4]}
+                                            </option>
+                                            <option value='archived'>
+                                                {STATUS_VALUE[5]}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    {/** meal info */}
+                                    <div className='meal-header'>
+                                        Meal Details
+                                    </div>
+                                    <div>
+                                        <label htmlFor='mealTime'>
+                                            Start Time
+                                        </label>
+                                        <input
+                                            type='text'
+                                            id='mealTime'
+                                            name='mealTime'
+                                            onChange={handleChange}
+                                            value={mealTime}
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor='mealCost'>Cost</label>
+                                        <input
+                                            type='text'
+                                            id='mealCost'
+                                            name='mealCost'
+                                            onChange={handleChange}
+                                            value={mealCost}
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor='mealCount'>
+                                            Planned
+                                        </label>
+                                        <input
+                                            type='number'
+                                            id='mealCount'
+                                            name='mealCount'
+                                            onChange={handleChange}
+                                            value={mealCount}
+                                            readOnly
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor='mealsServed'>
+                                            Served
+                                        </label>
+                                        <input
+                                            type='number'
+                                            id='mealsServed'
+                                            name='mealsServed'
+                                            onChange={handleChange}
+                                            value={mealsServed}
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor='mealMessage'>
+                                            Message
+                                        </label>
+                                        <input
+                                            type='memo'
+                                            id='mealMessage'
+                                            name='mealMessage'
+                                            onChange={handleChange}
+                                            value={mealMessage}
+                                            required
+                                        />
+                                    </div>
+                                    {/** logisitics info */}
+                                    <div className='tally-header'>
+                                        Tally Information
+                                    </div>
+                                    <div>
+                                        <label htmlFor='registrations'>
+                                            Registrations
+                                        </label>
+                                        <input
+                                            type='number'
+                                            id='registrations'
+                                            name='registrations'
+                                            onChange={handleChange}
+                                            value={registrationCount}
+                                            required
+                                            readOnly
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor='attendees'>
+                                            Attendees
+                                        </label>
+                                        <input
+                                            type='number'
+                                            id='attendees'
+                                            name='attendees'
+                                            onChange={handleChange}
+                                            value={attendeeCount}
+                                            required
+                                        />
+                                    </div>
+                                    <div className='submitButton'>
+                                        <button onClick={handleSubmitClick}>
+                                            SUBMIT
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
-                    </div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Street:</div>
-                        <div className="registration__data-input"><input
-                            type='text'
-                            id='street'
-                            name='street'
-                            onChange={handleChange}
-                            value={street}
-                            required
-                            />
-                        </div>
-                    </div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">City:</div>
-                        <div className="registration__data-input"><input
-                            type='text'
-                            id='city'
-                            name='city'
-                            onChange={handleChange}
-                            value={city}
-                            required
-                            />
-                        </div>
-                    </div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">State:</div>
-                        <div className="registration__data-input"><input
-                            type='text'
-                            id='stateProv'
-                            name='stateProv'
-                            onChange={handleChange}
-                            value={stateProv}
-                            required
-                            />
-                        </div>
-                    </div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Postal Code:</div>
-                        <div className="registration__data-input"><input
-                            type='text'
-                            id='postalCode'
-                            name='postalCode'
-                            onChange={handleChange}
-                            value={postalCode}
-                            required
-                            />
-                        </div>
-                    </div>
-                    <div className="registration__section-header">Church Contact</div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Name:</div>
-                        <div className="registration__data-input"><input
-                            type='text'
-                            id='contactName'
-                            name='contactName'
-                            onChange={handleChange}
-                            value={contactName}
-                            required
-                            />
-                        </div>
-                    </div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Phone:</div>
-                        <div className="registration__data-input"><input
-                                type='text'
-                                id='contactPhone'
-                                name='contactPhone'
-                                onChange={handleChange}
-                                value={contactPhone}
-                                required
-                            />
-                        </div>
-                    </div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Email:</div>
-                        <div className="registration__data-input"><input
-                            type='text'
-                            id='contactEmail'
-                            name='contactEmail'
-                            onChange={handleChange}
-                            value={contactEmail}
-                            required
-                        />
-                        </div>
-                    </div>
-                    <div className="registration__section-header">Logistics</div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Date:</div>
-                        <div className="registration__data-input"><input
-                                type='date'
-                                id='rallyDate'
-                                name='rallyDate'
-                                onChange={handleChange}
-                                value={eventDate}
-                                required
-                            />
-                        </div>
-                    </div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Start Time:</div>
-                        <div className="registration__data-input"><input
-                                type='text'
-                                id='eventStart'
-                                name='eventStart'
-                                onChange={handleChange}
-                                value={eventStart}
-                                required
-                            />
-                        </div>
-                    </div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">End Time:</div>
-                        <div className="registration__data-input"><input
-                                type='text'
-                                id='eventEnd'
-                                name='eventEnd'
-                                onChange={handleChange}
-                                value={eventEnd}
-                                required
-                            />
-                        </div>
-                    </div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Message:</div>
-                        <div className="registration__data-input"><input
-                                type='memo'
-                                id='eventMessage'
-                                name='eventMessage'
-                                onChange={handleChange}
-                                value={eventMessage}
-                                required
-                            />
-                        </div>
-                    </div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Approved:</div>
-                        <div className="registration__data-input">
-                            {currentUser?.stateLead ? (
-                                //this is LEAD
-                                isApproved ? (
-                                    <input
-                                        type='checkbox'
-                                        id='isApproved'
-                                        name='isApproved'
-                                        checked
-                                        onClick={handleChange}
-                                        value='true'
-                                    />
-                                ) : (
-                                    <input
-                                        type='checkbox'
-                                        id='isApproved'
-                                        name='isApproved'
-                                        value='true'
-                                        onClick={handleChange}
-                                    />
-                                )
-                            ) : //this is REP
-                            isApproved ? (
-                                <input
-                                    type='checkbox'
-                                    id='isApproved'
-                                    name='isApproved'
-                                    checked
-                                    value='true'
-                                    readOnly='true'
-                                />
-                            ) : (
-                                <input
-                                    type='checkbox'
-                                    id='isApproved'
-                                    name='isApproved'
-                                    value='true'
-                                />
-                            )}
-                        </div>
-                    </div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Status:</div>
-                        <div className="registration__data-input">
-                            <select
-                            type='text'
-                            id='eventStatus'
-                            name='eventStatus'
-                            value={eventStatus}
-                            onChange={handleChange}
-                            >
-                                <option value='draft'>
-                                    {STATUS_VALUE[0]}
-                                </option>
-                                <option value='pending'>
-                                    {STATUS_VALUE[1]}
-                                </option>
-                                <option value='rejected'>
-                                    {STATUS_VALUE[2]}
-                                </option>
-                                <option value='available'>
-                                    {STATUS_VALUE[3]}
-                                </option>
-                                <option value='offered'>
-                                    {STATUS_VALUE[4]}
-                                </option>
-                                <option value='archived'>
-                                    {STATUS_VALUE[5]}
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-                    <div className="registration__section-header">Meal Details</div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Start Time:</div>
-                        <div className="registration__data-input"><input
-                                type='text'
-                                id='mealTime'
-                                name='mealTime'
-                                onChange={handleChange}
-                                value={mealTime}
-                                required
-                            />
-                        </div>
-                    </div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Cost:</div>
-                        <div className="registration__data-input"><input
-                                type='text'
-                                id='mealCost'
-                                name='mealCost'
-                                onChange={handleChange}
-                                value={mealCost}
-                                required
-                            />
-                        </div>
-                    </div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Planned:</div>
-                        <div className="registration__data-input"><input
-                                type='number'
-                                id='mealCount'
-                                name='mealCount'
-                                onChange={handleChange}
-                                value={mealCount}
-                                readOnly
-                                required
-                            />
-                        </div>
-                    </div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Served:</div>
-                        <div className="registration__data-input"><input
-                                type='number'
-                                id='mealsServed'
-                                name='mealsServed'
-                                onChange={handleChange}
-                                value={mealsServed}
-                                required
-                            />
-                        </div>
-                    </div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Meal Message:</div>
-                        <div className="registration__data-input"><input
-                                type='memo'
-                                id='mealMessage'
-                                name='mealMessage'
-                                onChange={handleChange}
-                                value={mealMessage}
-                                required
-                            />
-                        </div>
-                    </div>
-                    <div className="registration__section-header">Tally Information</div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Registrations:</div>
-                        <div className="registration__data-input"><input
-                                type='number'
-                                id='registrations'
-                                name='registrations'
-                                onChange={handleChange}
-                                value={registrationCount}
-                                required
-                                readOnly
-                            />
-                        </div>
-                    </div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Attendees:</div>
-                        <div className="registration__data-input"><input
-                                type='number'
-                                id='attendees'
-                                name='attendees'
-                                onChange={handleChange}
-                                value={attendeeCount}
-                                required
-                            />
-                        </div>
-                    </div>
-                </div>
-                <div className='registration__button-wrapper'>
-                    <button className='registration__button-update' onClick={handleSubmitClick}>Update</button>
-                </div>
-                <div className='registration__registration-list-box'>
+                    </>
+                </>
                 {match.params.id !== '0' ? (
                     <>
-                        <div className='registration__registration-list-header'>REGISTRATIONS</div>
-                        <div className='registration__registration-data-row'>
+                        <div className='serve-pageheader'>REGISTRATIONS</div>
+                        <div className='serve-event-content-wrapper'>
                             {registrations?.eventRegistrations ? (
                                 registrations.eventRegistrations.map((rege) => (
                                     <RegistrationItem
@@ -865,7 +912,6 @@ const Serve = ({
                         */}
                     </>
                 ) : null}
-                </div>
             </div>
             <MainFooter />
         </>

@@ -1,0 +1,18 @@
+.registration-list-item__data-wrapper{
+    display: flex;
+    flex-direction: row;
+    // align-items: center;
+    // text-align: center;
+}
+.registration-list-item__registrar{
+    color: black;
+    text-align: left;
+    padding-left:15px;
+}
+.registration-list-item__numbers{
+    color: black;
+    text-align: right;
+    padding-right: 15px;
+    flex-grow: 1;
+    
+}
