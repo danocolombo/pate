@@ -1,3 +1,61 @@
+.event-details__wrapper{
+    display: flex;
+    flex-direction: column;
+    width: 80vw;
+    margin-top: 10px;
+    border: black solid 1px;
+    border-radius: 5px;
+    background-color: #557a95;;
+}
+.event-details__graphic-wrapper{
+    width: 70vw;
+    padding-top:10px;
+    text-align: center;
+}
+.event-details__graphic-image{
+    max-width: 70vw;
+    text-align: center;
+    padding-left: 5vw;
+}
+.event-details__church-name{
+    font-size: 1.3em;
+    color:white;
+    padding-left: 5vw
+}
+.event-details__church-street{
+    color:white;
+    // padding-left: 10vh;
+    padding-left: 5vw;
+}
+.event-details__city-state-postal{
+    color: white;
+    padding-left: 5vw;
+}
+.event-details__event-date{
+    color:white;
+    padding:10px 0 0 0;
+    width:80vw;
+    text-align: center;
+    // border: black solid 1px;
+    font-weight: bold;
+    font-size: 1.3em;
+}
+.event-details__event-time{
+    color:white;
+    flex-grow: 1;
+    width:70vw;
+    text-align: center;
+}
+
+.event-details__event-message{
+    max-width:80vw;
+    text-align: center;
+    color:white;
+    padding: 10px 20px;
+
+}
+
+//=====================
 .eventdetailswrapper {
     text-align: center;
     // padding: 1rem;
