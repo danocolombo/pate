@@ -7,6 +7,7 @@ import { withRouter } from 'react-router';
 import './register.styles.scss';
 
 import Header from '../../components/header/header.component';
+import { MainFooter } from '../../components/footers/main-footer';
 import RegisterUserDetails from '../../components/registerUser/registerUser.component';
 
 const RegisterUser = ({ pateSystem }) => {
@@ -16,14 +17,15 @@ const RegisterUser = ({ pateSystem }) => {
         <>
             <Header />
 
-            <div className='pagewrapper'>
-                <div className='pageheader'>CREATE AN ACCOUNT</div>
+            <div className='register-user-page__wrapper'>
+                <div className='register-user-page__page-header'>CREATE AN ACCOUNT</div>
                 <RegisterUserDetails />
-                <div className='register-user_offer-confirm-link'>
+                <div className='register-user-page__offer-confirm-link'>
                     Have you registered and need to confirm your account?
-                </div>
-                <Link to='/confirmUser/0'>Click here</Link>'
+                
+                <Link className='register-user-page__confirmation-link' to='/confirmUser/0'> Click here</Link></div>
             </div>
+            <MainFooter/>
         </>
     );
     // }

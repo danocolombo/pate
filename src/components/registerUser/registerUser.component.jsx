@@ -146,60 +146,73 @@ const RegisterUserDetails = ({
         <Spinner />
     ) : (
         <>
-            <div className='registeruserwrapper'>
-                <div className='registerform'>
-                    <form>
-                        <div>
-                            <label htmlFor='userName'>Username</label>
-                            <input
-                                type='text'
-                                name='userName'
-                                id='userName'
-                                value={userName}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor='password1'>Password</label>
-                            <input
-                                type='password'
-                                id='password1'
-                                name='password1'
-                                onChange={handleChange}
-                                value={password1}
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor='password2'>Password</label>
-                            <input
-                                type='password'
-                                id='password2'
-                                name='password2'
-                                onChange={handleChange}
-                                value={password2}
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor='email'>E-mail</label>
-                            <input
-                                type='text'
-                                id='email'
-                                name='email'
-                                onChange={handleChange}
-                                value={email}
-                                required
-                            />
-                        </div>
-                        <div className='registerButton'>
-                            <button onClick={handleSubmitClick}>
-                                REGISTER
-                            </button>
-                        </div>
-                    </form>
+            <div className='register-user-component__wrapper'>
+                <div className='register-user-component__input-line'> 
+                    <div className='register-user-component__input-label'>
+                        Username
+                    </div>
+                    <div className='register-user-component__input-control'>
+                        <input
+                            type='text'
+                            name='userName'
+                            id='userName'
+                            value={userName}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
                 </div>
+                <div className='register-user-component__input-line'> 
+                    <div className='register-user-component__input-label'>
+                        Password
+                    </div>
+                    <div className='register-user-component__input-control'>
+                        <input
+                            type='password'
+                            id='password1'
+                            name='password1'
+                            onChange={handleChange}
+                            value={password1}
+                            required
+                        />
+                    </div>
+                </div>
+                <div className='register-user-component__input-line'> 
+                    <div className='register-user-component__input-label'>
+                        Password
+                    </div>
+                    <div className='register-user-component__input-control'>
+                        <input
+                            type='password'
+                            id='password2'
+                            name='password2'
+                            onChange={handleChange}
+                            value={password2}
+                            required
+                        />
+                    </div>
+                </div>
+                <div className='register-user-component__input-line'> 
+                    <div className='register-user-component__input-label'>
+                        Email
+                    </div>
+                    <div className='register-user-component__input-control'>
+                        <input
+                            type='text'
+                            id='email'
+                            name='email'
+                            onChange={handleChange}
+                            value={email}
+                            required
+                        />
+                    </div>
+                </div>
+                <div className='register-user-component__button-wrapper'>
+                    <button className='register-user-component__register-button' onClick={handleSubmitClick}>
+                        REGISTER
+                    </button>
+                </div>
+                   
             </div>
         </>
     );

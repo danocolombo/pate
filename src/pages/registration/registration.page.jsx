@@ -6,6 +6,7 @@ import { withRouter } from 'react-router';
 // import { withAuthenticator } from '@aws-amplify/ui-react';
 import './registration.styles.scss';
 import Header from '../../components/header/header.component';
+import { MainFooter } from '../../components/footers/main-footer';
 import Spinner from '../../components/spinner/Spinner';
 import PhoneInput from 'react-phone-input-2';
 import {
@@ -837,6 +838,7 @@ const EventRegistration = ({
                         </button>
                     </div>                   
             </div>
+            <MainFooter/>
         </>
     );
 };
