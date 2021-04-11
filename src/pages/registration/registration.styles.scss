@@ -1,3 +1,140 @@
+.registration-page__wrapper{
+    display: flex;
+    margin-left:10vw;
+    margin-top:10px;
+    align-items: center;
+    flex-direction: column;
+    width: 80vw;
+    text-align: center;
+    border-left: black solid 1px;
+    border-right: black solid 1px;
+    border-bottom: black solid 1px;
+}
+.registration-page__header{
+    font-size: 1.5em;
+    font-weight: bold;
+    background-color: #379683;
+    width:80vw;
+    color:white;
+    border: black solid 1px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.registration-page__image-wrapper{
+    padding-top:5px;
+    max-width: 80vw;
+}
+.registration-page__image-file{
+    max-width: 80vw;
+}
+.registration-page__church-name{
+    font-size: 1.3em;
+    color:white;
+    padding-left: 5vw
+}
+.registration-page__church-street{
+    color: white;
+}
+.registration-page__church-city-state-postal{
+    color: white;
+}
+.registration-page__date{
+    color:white;
+    padding:10px 0 0 0;
+    width:80vw;
+    text-align: center;
+    // border: black solid 1px;
+    font-weight: bold;
+    font-size: 1.3em;
+}
+.registration-page__time{
+    color:white;
+    flex-grow: 1;
+    width:70vw;
+    text-align: center;
+}
+.registration-page__message{
+    color: white;
+    padding: 3px;
+}
+.registration-page__divider{
+    
+    width: 2px;
+}
+.registration-page__instructions{
+    color: white;
+    padding: 0px 15px;
+}
+.registration-page__login-button{
+    background-color: white;
+    padding: 1px;
+}
+.registration-page__signup-button{
+    background-color: black;
+    color: white;
+    padding: 1px;
+}
+.registration-page__section-header{
+    width:80vw;
+    font-weight: bold;
+    font-size: 1.1em;
+    color: white;
+    padding: 10px 0 0 0;
+}
+.registration-page__input-line{
+    display: flex;
+    flex-direction: row;
+    width: 80vw;
+}
+.registration-page__input-label{
+    flex-grow: 1;
+    color: white;
+    width:35vw;
+    text-align: right;
+    padding:5px 3px;
+}
+.registration-page__input-control{
+    flex-grow: 1;
+    width:45vw;
+    text-align: left;
+    padding:5px;
+}
+.registration-page__phone-input{
+    text-align: left;
+    color: white;
+    margin-bottom: 5px;
+}
+.registration-page__button-wrapper{
+    width:80vw;
+}
+.registration-page__meal-box{
+    width:60vw;
+    border: black solid 2px;
+    display: flex;
+}
+.registration-page__meal-message{
+    color: white;
+    padding:10px;
+}
+.registration-page__meal-input-line{
+    width: 60vw;
+}
+.registration-page__meal-input-label{
+    color:white;
+}
+.registration-page__meal-count{
+    padding-right:5px;  
+}
+.registration-page__button-wrapper{
+    padding-left:10vw;
+}
+.registration-page__register-button{
+    background-color: yellow;
+    color: black;
+    padding: 1px 5px;
+}
+//==========================
+//==========================
 .registrationpagewrapper {
     display: flex;
     flex-direction: column;
