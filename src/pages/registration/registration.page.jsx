@@ -815,7 +815,7 @@ const EventRegistration = ({
                         <div className='registration-page__meal-input-label'>
                             Meal Guests
                         </div>
-                        <div className=''>
+                        <div className='registration-page__meal-count'>
                             <input
                                 type='number'
                                 className='meal-count-component'
