@@ -333,7 +333,7 @@ const SignIn = ({
             <Header />
             <div className='signin-page__signin-wrapper'>   
                 <div className='signin-page__title-box'>
-                    Login
+                    LOGIN
                 </div>
                 <div className='signin-page__signin-box'>
                     <div className='signin-page__input-line'>
@@ -377,8 +377,8 @@ const SignIn = ({
                     </div>
                 </div>
                 <div className='signin-page__offer-box'>
-                    Don't have an account? Click here to 
-                    <Link to="/register"> REGISTER</Link>
+                    Don't have an account?  
+                    <Link className='signin-page__register-link' to="/register"> REGISTER</Link>
                 </div>
             </div>
             <MainFooter />

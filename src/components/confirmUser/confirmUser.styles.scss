@@ -1,14 +1,49 @@
-.confirmuserwrapper {
-    text-align: center;
-    // padding: 1rem;
-    // margin: 0.5rem 0;
-    padding-top: 10px;
-    width: 80%;
-    height: auto;
-    // align-items: center;
-    background: lightgray;
-    color: black;
+.confirm-user-component__wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: lightgray;
+    border-left: black solid 1px;
+    border-bottom: black solid 1px;
+    border-right: black solid 1px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    width: 80vw;
+    padding-top:10px;
 }
+.confirm-user-component__instructions{
+    padding:0px 10px;
+    padding-bottom: 10px;
+}
+.confirm-user-component__input-line{
+    display: flex;
+    flex-direction: row;
+    width: 80vw;
+    padding-bottom: 5px;
+}
+.confirm-user-component__input-label{
+    flex-grow: 1;
+    color: black;
+    width:30vw;
+    text-align: right;
+    padding-right: 5px;
+}
+.confirm-user-component__input-control{
+    flex-grow: 1;
+    width:50vw;
+    text-align: left;
+}
+.confirm-user-component__button-wrapper{
+    padding-bottom:5px;
+}
+.confirm-user-component__confirm-button{
+    background-color: yellow;
+    padding:2px 5px;
+    margin: 5px 0;
+    border-radius: 5px;
+}
+
+//==========================
 .confirmform {
     text-align: right;
     padding-right: 10%;

@@ -15,20 +15,22 @@
     display: flex;
     flex-direction: row;
     width: 80vw;
+    padding-bottom: 5px;
 }
 .register-user-component__input-label{
     flex-grow: 1;
     color: black;
     width:30vw;
     text-align: right;
-    padding:5px 3px;
+    padding-right: 5px;
+    // padding:5px 3px;
 }
 
 .register-user-component__input-control{
     flex-grow: 1;
     width:50vw;
     text-align: left;
-    padding:5px;
+    // padding:5px;
     
 }
 .register-user-component__button-wrapper{
