@@ -1,58 +1,58 @@
-.event-details__wrapper{
+.event-details__wrapper {
     display: flex;
     flex-direction: column;
     width: 80vw;
     margin-top: 10px;
     border: black solid 1px;
     border-radius: 5px;
-    background-color: #557a95;;
+    background-color: lightgray;
+    color: black;
 }
-.event-details__graphic-wrapper{
+.event-details__graphic-wrapper {
     width: 80vw;
-    padding-top:10px;
+    padding-top: 10px;
     text-align: center;
 }
-.event-details__graphic-image{
+.event-details__graphic-image {
     max-width: 80vw;
     text-align: center;
     // padding-left: 5vw;
 }
-.event-details__church-name{
-    font-size: 1.3em;
-    color:white;
-    padding-left: 5vw
+.event-details__church-info {
+    background-color: lightgray;
+    color: black;
 }
-.event-details__church-street{
-    color:white;
+.event-details__church-name {
+    font-size: 1.3em;
+    padding-left: 5vw;
+}
+.event-details__church-street {
     // padding-left: 10vh;
     padding-left: 5vw;
 }
-.event-details__city-state-postal{
-    color: white;
+.event-details__city-state-postal {
     padding-left: 5vw;
 }
-.event-details__event-date{
-    color:white;
-    padding:10px 0 0 0;
-    width:80vw;
+.event-details__event-date {
+    padding: 10px 0 0 0;
+    width: 80vw;
     text-align: center;
     // border: black solid 1px;
     font-weight: bold;
     font-size: 1.3em;
 }
-.event-details__event-time{
-    color:white;
+.event-details__event-time {
+    // color: white;
     flex-grow: 1;
-    width:70vw;
+    width: 70vw;
     text-align: center;
 }
 
-.event-details__event-message{
-    max-width:80vw;
+.event-details__event-message {
+    max-width: 80vw;
     text-align: center;
-    color:white;
+    // color: white;
     padding: 10px 20px;
-
 }
 
 //=====================

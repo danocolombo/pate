@@ -9,7 +9,7 @@ import {
 import './events.styles.scss';
 import EventListing from '../../components/event-listing/event-listing.component';
 import Header from '../../components/header/header.component';
-import {MainFooter} from '../../components/footers/main-footer';
+import { MainFooter } from '../../components/footers/main-footer';
 import Spinner from '../../components/spinner/Spinner';
 class Events extends React.Component {
     constructor() {
@@ -41,9 +41,11 @@ class Events extends React.Component {
         ) : (
             <>
                 <Header />
-                <div className='events-wrapper'>
-                    <div>
-                        <h2>Upcoming P8 Rallies</h2>
+                <div className='events-page__wrapper'>
+                    <div className='events-page__title-box'>
+                        Upcoming P8 Rallies
+                    </div>
+                    <div className='events-page__events-box'>
                         {this.state.plans.map((plan) => (
                             <EventListing event={plan} key={plan.uid} />
                         ))}

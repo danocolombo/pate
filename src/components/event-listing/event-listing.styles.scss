@@ -1,3 +1,65 @@
+.event-listing-component__event-box {
+    display: flex;
+    flex-direction: column;
+    width: 75vw;
+    margin-left: 2.5vw;
+    margin: 5px 2.5vw;
+    background-color: #379683;
+}
+.event-listing-component__date-box {
+    background-color: #557a95;
+    color: white;
+    font-weight: bold;
+    padding: 3px 0px;
+
+    text-align: center;
+    border-top: black solid 1px;
+    border-left: black solid 1px;
+    border-right: black solid 1px;
+    border-bottom: black double 1px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.event-listing-component__address-box {
+    background-color: lightgray;
+    color: black;
+    border-top: black solid 1px;
+    border-left: black solid 1px;
+    border-right: black solid 1px;
+    border-bottom: black double 1px;
+}
+.event-listing-component__church-name {
+    font-weight: bold;
+    font-size: 1.1em;
+    text-align: center;
+}
+.event-listing-component__street {
+    text-align: center;
+}
+.event-listing-component__city-state {
+    text-align: center;
+}
+.event-listing-component__postal-code {
+    text-align: center;
+}
+.event-listing-component__view-details-box {
+    background-color: #379683;
+    text-align: center;
+    padding: 3px 0px;
+    border-top: black solid 1px;
+    border-left: black solid 1px;
+    border-right: black solid 1px;
+    border-bottom: black double 1px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+.event-listing-component__view-details-text {
+    text-decoration: none;
+    color: yellow;
+}
+
+// OLD STUFF
+
 .event-box {
     text-align: center;
     // padding: 1rem;
