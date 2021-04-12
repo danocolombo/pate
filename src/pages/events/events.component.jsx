@@ -46,9 +46,11 @@ class Events extends React.Component {
                         Upcoming P8 Rallies
                     </div>
                     <div className='events-page__events-box'>
-                        {this.state.plans.map((plan) => (
-                            <EventListing event={plan} key={plan.uid} />
-                        ))}
+                        {this.state.plans.map((plan) =>
+                            plan.approved ? (
+                                <EventListing event={plan} key={plan.uid} />
+                            ) : null
+                        )}
                     </div>
                 </div>
                 <MainFooter />

@@ -1,70 +1,68 @@
-.registration__box{
+.registration__box {
     display: flex;
-    margin-left:10vw;
+    margin-left: 10vw;
     align-items: center;
     flex-direction: column;
     width: 80vw;
     text-align: center;
-    
 }
-.registration__header{
+.registration__header {
     font-size: 2em;
     font-weight: bold;
     background-color: #379683;
-    width:80vw;
-    margin-top:10px;
-    color:white;
+    width: 80vw;
+    margin-top: 10px;
+    color: white;
     border: black solid 1px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 }
-.registration__section-header{
+.registration__section-header {
     font-size: 1.3em;
     font-weight: bold;
     padding-top: 5px;
     color: white;
 }
-.registration__detail-box{
+.registration__detail-box {
     display: flex;
     background-color: #557a95;
     flex-direction: column;
     border-left: black solid 1px;
     border-right: black solid 1px;
 }
-.registration__data-row{
+.registration__data-row {
     display: flex;
     flex-direction: row;
     width: 80vw;
 }
-.registration__data-label{
+.registration__data-label {
     // border: red solid 1px;
     flex-grow: 1;
     color: white;
-    width:30vw;
+    width: 30vw;
     text-align: right;
-    padding:5px 3px;
-    
+    padding: 5px 3px;
 }
-.registration__data-input{
+.registration__data-input {
     // border: blue solid 1px;
     flex-grow: 1;
-    width:50vw;
+    width: 50vw;
     text-align: left;
-    padding:5px;
+    padding: 5px;
 }
-.registration__button-wrapper{
-    padding-top: 5px; 
+.registration__button-wrapper {
+    padding-top: 5px;
     padding-bottom: 10px;
     background-color: #557a95;
     border-left: black solid 1px;
     border-right: black solid 1px;
-    width:80vw;
+    width: 80vw;
 }
-.registration__button-update{
-    padding:2px 10px;
+.registration__button-update {
+    padding: 2px 10px;
     background-color: yellow;
 }
-.registration__registration-list-box{
+.registration__registration-list-box {
     width: 80vw;
     background-color: #557a95;
     border-left: black solid 1px;
@@ -75,9 +73,9 @@
     align-items: center;
     padding-bottom: 10px;
 }
-.registration__registration-list-header{
+.registration__registration-list-header {
     width: 70vw;
-    margin-left:5vw;
+    margin-left: 5vw;
     background: #379683;
     text-align: center;
     font-weight: bold;
@@ -89,7 +87,7 @@
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 }
-.registration__registration-data-row{
+.registration__registration-data-row {
     width: 70vw;
     margin-left: 5vw;
     background: lightgray;
@@ -103,6 +101,18 @@
     border-bottom-right-radius: 5px;
 }
 
+.serve-event-page__approval-true {
+    font-weight: bold;
+    color: white;
+    background-color: green;
+    padding: 1px;
+}
+.serve-event-page__approval-false {
+    font-weight: bold;
+    color: white;
+    background-color: red;
+    padding: 1px;
+}
 //==================================
 .serve-event-content-wrapper {
     text-align: center;

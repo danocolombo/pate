@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
@@ -35,6 +35,7 @@ const Serve = ({
 }) => {
     let eventID = match?.params?.id;
     console.log('serveEvent: ' + eventID);
+    const refApprovalCheckbox = useRef(null);
     // const [plan, setPlan] = useState([]);
     const [churchName, setChurchName] = useState('');
     const [street, setStreet] = useState('');
@@ -366,7 +367,7 @@ const Serve = ({
     // };
     const handleSubmitClick = (event) => {
         event.preventDefault();
-        console.log('SAVE-SAVE-SAVE');
+
         //get rally object to update
         let newRally = pateSystem?.rally;
         //now update with form values
@@ -432,7 +433,17 @@ const Serve = ({
         history.push('/serve');
     };
     const handleChange = (e) => {
-        const { value, name } = e.target;
+        // let value = null;
+        // let name = null;
+        // if (e?.target?.name === 'checkbox') {
+        //     console.log('checkbox - ignore');
+        //     name = 'ignore';
+        //     value = null;
+        // } else {
+        //     value = e.target.value;
+        //     name = e.target.name;
+        // }
+        let { value, name } = e.target;
         switch (name) {
             case 'churchName':
                 setChurchName(value);
@@ -468,7 +479,9 @@ const Serve = ({
                 setGraphic(value);
                 break;
             case 'isApproved':
-                setApproved(!isApproved);
+                if (currentUser?.stateLead === stateProv) {
+                    setApproved(!isApproved);
+                }
                 break;
             case 'eventStatus':
                 setEventStatus(value);
@@ -526,83 +539,94 @@ const Serve = ({
             <Header />
             <div className='registration__box'>
                 <div className='registration__header'>EVENT</div>
-                <div className="registration__detail-box">
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Church:</div>
-                        <div className="registration__data-input"><input
-                            type='text'
-                            name='churchName'
-                            id='churchName'
-                            value={churchName}
-                            onChange={handleChange}
-                            required
+                <div className='registration__detail-box'>
+                    <div className='registration__data-row'>
+                        <div className='registration__data-label'>Church:</div>
+                        <div className='registration__data-input'>
+                            <input
+                                type='text'
+                                name='churchName'
+                                id='churchName'
+                                value={churchName}
+                                onChange={handleChange}
+                                required
                             />
                         </div>
                     </div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Street:</div>
-                        <div className="registration__data-input"><input
-                            type='text'
-                            id='street'
-                            name='street'
-                            onChange={handleChange}
-                            value={street}
-                            required
+                    <div className='registration__data-row'>
+                        <div className='registration__data-label'>Street:</div>
+                        <div className='registration__data-input'>
+                            <input
+                                type='text'
+                                id='street'
+                                name='street'
+                                onChange={handleChange}
+                                value={street}
+                                required
                             />
                         </div>
                     </div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">City:</div>
-                        <div className="registration__data-input"><input
-                            type='text'
-                            id='city'
-                            name='city'
-                            onChange={handleChange}
-                            value={city}
-                            required
+                    <div className='registration__data-row'>
+                        <div className='registration__data-label'>City:</div>
+                        <div className='registration__data-input'>
+                            <input
+                                type='text'
+                                id='city'
+                                name='city'
+                                onChange={handleChange}
+                                value={city}
+                                required
                             />
                         </div>
                     </div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">State:</div>
-                        <div className="registration__data-input"><input
-                            type='text'
-                            id='stateProv'
-                            name='stateProv'
-                            onChange={handleChange}
-                            value={stateProv}
-                            required
+                    <div className='registration__data-row'>
+                        <div className='registration__data-label'>State:</div>
+                        <div className='registration__data-input'>
+                            <input
+                                type='text'
+                                id='stateProv'
+                                name='stateProv'
+                                onChange={handleChange}
+                                value={stateProv}
+                                required
                             />
                         </div>
                     </div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Postal Code:</div>
-                        <div className="registration__data-input"><input
-                            type='text'
-                            id='postalCode'
-                            name='postalCode'
-                            onChange={handleChange}
-                            value={postalCode}
-                            required
+                    <div className='registration__data-row'>
+                        <div className='registration__data-label'>
+                            Postal Code:
+                        </div>
+                        <div className='registration__data-input'>
+                            <input
+                                type='text'
+                                id='postalCode'
+                                name='postalCode'
+                                onChange={handleChange}
+                                value={postalCode}
+                                required
                             />
                         </div>
                     </div>
-                    <div className="registration__section-header">Church Contact</div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Name:</div>
-                        <div className="registration__data-input"><input
-                            type='text'
-                            id='contactName'
-                            name='contactName'
-                            onChange={handleChange}
-                            value={contactName}
-                            required
+                    <div className='registration__section-header'>
+                        Church Contact
+                    </div>
+                    <div className='registration__data-row'>
+                        <div className='registration__data-label'>Name:</div>
+                        <div className='registration__data-input'>
+                            <input
+                                type='text'
+                                id='contactName'
+                                name='contactName'
+                                onChange={handleChange}
+                                value={contactName}
+                                required
                             />
                         </div>
                     </div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Phone:</div>
-                        <div className="registration__data-input"><input
+                    <div className='registration__data-row'>
+                        <div className='registration__data-label'>Phone:</div>
+                        <div className='registration__data-input'>
+                            <input
                                 type='text'
                                 id='contactPhone'
                                 name='contactPhone'
@@ -612,22 +636,26 @@ const Serve = ({
                             />
                         </div>
                     </div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Email:</div>
-                        <div className="registration__data-input"><input
-                            type='text'
-                            id='contactEmail'
-                            name='contactEmail'
-                            onChange={handleChange}
-                            value={contactEmail}
-                            required
-                        />
+                    <div className='registration__data-row'>
+                        <div className='registration__data-label'>Email:</div>
+                        <div className='registration__data-input'>
+                            <input
+                                type='text'
+                                id='contactEmail'
+                                name='contactEmail'
+                                onChange={handleChange}
+                                value={contactEmail}
+                                required
+                            />
                         </div>
                     </div>
-                    <div className="registration__section-header">Logistics</div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Date:</div>
-                        <div className="registration__data-input"><input
+                    <div className='registration__section-header'>
+                        Logistics
+                    </div>
+                    <div className='registration__data-row'>
+                        <div className='registration__data-label'>Date:</div>
+                        <div className='registration__data-input'>
+                            <input
                                 type='date'
                                 id='rallyDate'
                                 name='rallyDate'
@@ -637,9 +665,12 @@ const Serve = ({
                             />
                         </div>
                     </div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Start Time:</div>
-                        <div className="registration__data-input"><input
+                    <div className='registration__data-row'>
+                        <div className='registration__data-label'>
+                            Start Time:
+                        </div>
+                        <div className='registration__data-input'>
+                            <input
                                 type='text'
                                 id='eventStart'
                                 name='eventStart'
@@ -649,9 +680,12 @@ const Serve = ({
                             />
                         </div>
                     </div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">End Time:</div>
-                        <div className="registration__data-input"><input
+                    <div className='registration__data-row'>
+                        <div className='registration__data-label'>
+                            End Time:
+                        </div>
+                        <div className='registration__data-input'>
+                            <input
                                 type='text'
                                 id='eventEnd'
                                 name='eventEnd'
@@ -661,9 +695,10 @@ const Serve = ({
                             />
                         </div>
                     </div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Message:</div>
-                        <div className="registration__data-input"><input
+                    <div className='registration__data-row'>
+                        <div className='registration__data-label'>Message:</div>
+                        <div className='registration__data-input'>
+                            <input
                                 type='memo'
                                 id='eventMessage'
                                 name='eventMessage'
@@ -673,9 +708,11 @@ const Serve = ({
                             />
                         </div>
                     </div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Approved:</div>
-                        <div className="registration__data-input">
+                    <div className='registration__data-row'>
+                        <div className='registration__data-label'>
+                            Approved:
+                        </div>
+                        <div className='registration__data-input'>
                             {currentUser?.stateLead ? (
                                 //this is LEAD
                                 isApproved ? (
@@ -685,7 +722,9 @@ const Serve = ({
                                         name='isApproved'
                                         checked
                                         onClick={handleChange}
+                                        onChange={() => handleChange}
                                         value='true'
+                                        ref={refApprovalCheckbox}
                                     />
                                 ) : (
                                     <input
@@ -694,41 +733,33 @@ const Serve = ({
                                         name='isApproved'
                                         value='true'
                                         onClick={handleChange}
+                                        onChange={() => handleChange}
+                                        ref={refApprovalCheckbox}
                                     />
                                 )
                             ) : //this is REP
                             isApproved ? (
-                                <input
-                                    type='checkbox'
-                                    id='isApproved'
-                                    name='isApproved'
-                                    checked
-                                    value='true'
-                                    readOnly='true'
-                                />
+                                <span className='serve-event-page__approval-true'>
+                                    TRUE
+                                </span>
                             ) : (
-                                <input
-                                    type='checkbox'
-                                    id='isApproved'
-                                    name='isApproved'
-                                    value='true'
-                                />
+                                <span className='serve-event-page__approval-false'>
+                                    FALSE
+                                </span>
                             )}
                         </div>
                     </div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Status:</div>
-                        <div className="registration__data-input">
+                    <div className='registration__data-row'>
+                        <div className='registration__data-label'>Status:</div>
+                        <div className='registration__data-input'>
                             <select
-                            type='text'
-                            id='eventStatus'
-                            name='eventStatus'
-                            value={eventStatus}
-                            onChange={handleChange}
+                                type='text'
+                                id='eventStatus'
+                                name='eventStatus'
+                                value={eventStatus}
+                                onChange={handleChange}
                             >
-                                <option value='draft'>
-                                    {STATUS_VALUE[0]}
-                                </option>
+                                <option value='draft'>{STATUS_VALUE[0]}</option>
                                 <option value='pending'>
                                     {STATUS_VALUE[1]}
                                 </option>
@@ -747,10 +778,15 @@ const Serve = ({
                             </select>
                         </div>
                     </div>
-                    <div className="registration__section-header">Meal Details</div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Start Time:</div>
-                        <div className="registration__data-input"><input
+                    <div className='registration__section-header'>
+                        Meal Details
+                    </div>
+                    <div className='registration__data-row'>
+                        <div className='registration__data-label'>
+                            Start Time:
+                        </div>
+                        <div className='registration__data-input'>
+                            <input
                                 type='text'
                                 id='mealTime'
                                 name='mealTime'
@@ -760,9 +796,10 @@ const Serve = ({
                             />
                         </div>
                     </div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Cost:</div>
-                        <div className="registration__data-input"><input
+                    <div className='registration__data-row'>
+                        <div className='registration__data-label'>Cost:</div>
+                        <div className='registration__data-input'>
+                            <input
                                 type='text'
                                 id='mealCost'
                                 name='mealCost'
@@ -772,9 +809,10 @@ const Serve = ({
                             />
                         </div>
                     </div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Planned:</div>
-                        <div className="registration__data-input"><input
+                    <div className='registration__data-row'>
+                        <div className='registration__data-label'>Planned:</div>
+                        <div className='registration__data-input'>
+                            <input
                                 type='number'
                                 id='mealCount'
                                 name='mealCount'
@@ -785,9 +823,10 @@ const Serve = ({
                             />
                         </div>
                     </div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Served:</div>
-                        <div className="registration__data-input"><input
+                    <div className='registration__data-row'>
+                        <div className='registration__data-label'>Served:</div>
+                        <div className='registration__data-input'>
+                            <input
                                 type='number'
                                 id='mealsServed'
                                 name='mealsServed'
@@ -797,9 +836,12 @@ const Serve = ({
                             />
                         </div>
                     </div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Meal Message:</div>
-                        <div className="registration__data-input"><input
+                    <div className='registration__data-row'>
+                        <div className='registration__data-label'>
+                            Meal Message:
+                        </div>
+                        <div className='registration__data-input'>
+                            <input
                                 type='memo'
                                 id='mealMessage'
                                 name='mealMessage'
@@ -809,10 +851,15 @@ const Serve = ({
                             />
                         </div>
                     </div>
-                    <div className="registration__section-header">Tally Information</div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Registrations:</div>
-                        <div className="registration__data-input"><input
+                    <div className='registration__section-header'>
+                        Tally Information
+                    </div>
+                    <div className='registration__data-row'>
+                        <div className='registration__data-label'>
+                            Registrations:
+                        </div>
+                        <div className='registration__data-input'>
+                            <input
                                 type='number'
                                 id='registrations'
                                 name='registrations'
@@ -823,9 +870,12 @@ const Serve = ({
                             />
                         </div>
                     </div>
-                    <div className="registration__data-row">
-                        <div className="registration__data-label">Attendees:</div>
-                        <div className="registration__data-input"><input
+                    <div className='registration__data-row'>
+                        <div className='registration__data-label'>
+                            Attendees:
+                        </div>
+                        <div className='registration__data-input'>
+                            <input
                                 type='number'
                                 id='attendees'
                                 name='attendees'
@@ -837,25 +887,34 @@ const Serve = ({
                     </div>
                 </div>
                 <div className='registration__button-wrapper'>
-                    <button className='registration__button-update' onClick={handleSubmitClick}>Update</button>
+                    <button
+                        className='registration__button-update'
+                        onClick={handleSubmitClick}
+                    >
+                        Update
+                    </button>
                 </div>
                 <div className='registration__registration-list-box'>
-                {match.params.id !== '0' ? (
-                    <>
-                        <div className='registration__registration-list-header'>REGISTRATIONS</div>
-                        <div className='registration__registration-data-row'>
-                            {registrations?.eventRegistrations ? (
-                                registrations.eventRegistrations.map((rege) => (
-                                    <RegistrationItem
-                                        key={rege.uid}
-                                        regItem={rege}
-                                    />
-                                ))
-                            ) : (
-                                <div>NO</div>
-                            )}
-                        </div>
-                        {/*
+                    {match.params.id !== '0' ? (
+                        <>
+                            <div className='registration__registration-list-header'>
+                                REGISTRATIONS
+                            </div>
+                            <div className='registration__registration-data-row'>
+                                {registrations?.eventRegistrations ? (
+                                    registrations.eventRegistrations.map(
+                                        (rege) => (
+                                            <RegistrationItem
+                                                key={rege.uid}
+                                                regItem={rege}
+                                            />
+                                        )
+                                    )
+                                ) : (
+                                    <div>NO</div>
+                                )}
+                            </div>
+                            {/*
                         <div className='serve-event__delete-box'>
                             <hr className='serve-event__delete-box__horizontal-line' />
                             <button className='serve-event__delete-button' onClick=''>
@@ -863,8 +922,8 @@ const Serve = ({
                             </button>
                         </div>
                         */}
-                    </>
-                ) : null}
+                        </>
+                    ) : null}
                 </div>
             </div>
             <MainFooter />
