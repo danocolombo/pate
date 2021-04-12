@@ -10,7 +10,7 @@ import './App.css';
 
 import Events from './pages/events/events.component';
 import Profile from './pages/profile/profile.page';
-import SignIn from './pages/signin/signin.component';
+import SignIn from './pages/signin/signin.page';
 import Register from './pages/registerUser/registerUser.page';
 import ConfirmUser from './pages/registerUser/confirmUser.page';
 import PrivatePage from './pages/privatePage/privatePage';
