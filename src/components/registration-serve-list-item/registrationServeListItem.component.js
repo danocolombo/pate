@@ -4,20 +4,17 @@ import './registrationServeListItem.styles.scss';
 const RegistrationItem = ({ regItem, eventID }) => {
     return (
         <>
-            
-                <Link to={`/editregistration/${regItem.eid}/${regItem.uid}`}>
+            <Link to={`/editregistration/${regItem.eid}/${regItem.uid}`}>
                 <div className='registration-list-item__data-wrapper'>
                     <div className='registration-list-item__registrar'>
                         {regItem.registrar.firstName}{' '}
                         {regItem.registrar.lastName}
                     </div>
                     <div className='registration-list-item__numbers'>
-                        {regItem.attendeeCount}
-                        {regItem?.mealCount ? <>/{regItem.mealCount}</> : null}
+                        {regItem.attendeeCount} /{regItem?.mealCount}
                     </div>
-                    </div>
-                </Link>
-            
+                </div>
+            </Link>
         </>
     );
 };
