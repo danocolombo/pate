@@ -193,7 +193,7 @@ const Registrar = ({
                 }
             ********************/
             let numUpdate = {
-                uid: regPayload.eid,
+                uid: regPayload?.eid,
                 adjustments: numberAdjustments,
             };
             const util = require('util');
@@ -535,7 +535,7 @@ const Registrar = ({
                                         {currentUser?.stateLead ===
                                             pateSystem?.registration?.location
                                                 ?.stateProv ||
-                                        currentUser.uid ===
+                                        currentUser?.uid ===
                                             pateSystem?.rally?.coordinator
                                                 ?.id ? (
                                             <button className='registrar-component_button-delete'>

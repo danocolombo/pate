@@ -19,9 +19,11 @@ const StateLead = ({ currentUser, rallies }) => {
                 These are the events within your state that you can view and
                 manage, support and change.
             </div>
+            <div className='state-lead-component__list-wrapper'>
             {rallies
-                ? rallies.map((rally) => <StateRallyList rally={rally} />)
+                ? rallies.map((rally) => <StateRallyList key={rally.uid} rally={rally} />)
                 : null}
+            </div>
         </>
     );
 };

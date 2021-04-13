@@ -14,7 +14,38 @@
 .stateleadintro {
     padding: 0 15px 20px 15px;
 }
-
+.state-lead-component__list-wrapper{
+    background-color: lightgray;
+    border: black solid 1px;
+    border-radius: 5px;
+    margin-left:1px;
+    margin-right:1px;
+}
+.state-lead-item-component__line-item{
+    display: flex;
+    flex-direction: row;
+    padding: 5px 0px 5px 2vw;
+    
+}
+.state-lead-item-component__date-link{
+    text-decoration: none;
+    color: black;
+    
+}
+.state-lead-item-component__date{
+    color: black;
+    min-width: 45px;
+    text-align: center;
+}
+.state-lead-item-component__church-name{
+    color: black;
+}
+.state-lead-item-component__rep-name{
+    color: blue;
+    font-size: .8em;
+    padding-top: 2px;
+    padding-left: 1px;
+}
 .sr-rally-list-item {
     margin: 0 20px 10px 20px;
 }

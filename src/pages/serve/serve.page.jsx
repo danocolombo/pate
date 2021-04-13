@@ -91,14 +91,14 @@ const Serve = ({
         )
             .then((response) => response.json())
             .then((data) => {
-                const util = require('util');
-                console.log(
-                    'dataBackFromDDB:  \n' +
-                        util.inspect(data, {
-                            showHidden: false,
-                            depth: null,
-                        })
-                );
+                // const util = require('util');
+                // console.log(
+                //     'dataBackFromDDB:  \n' +
+                //         util.inspect(data, {
+                //             showHidden: false,
+                //             depth: null,
+                //         })
+                // );
 
                 stateData = data.body.Items;
             });
