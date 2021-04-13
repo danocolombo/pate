@@ -9,8 +9,11 @@ import {
 import './events.styles.scss';
 import EventListing from '../../components/event-listing/event-listing.component';
 import Header from '../../components/header/header.component';
+import EventsMarquee from '../../components/events-marquee/events-marquee.component';
+// import EventsMarquee2 from '../../components/events-marquee/events-marquee2.component';
 import { MainFooter } from '../../components/footers/main-footer';
 import Spinner from '../../components/spinner/Spinner';
+import EventMarquee2 from '../../components/events-marquee/event-marquee2.component';
 class Events extends React.Component {
     constructor() {
         super();
@@ -41,16 +44,21 @@ class Events extends React.Component {
         ) : (
             <>
                 <Header />
-                <div className='events-page__wrapper'>
-                    <div className='events-page__title-box'>
-                        Upcoming P8 Rallies
-                    </div>
-                    <div className='events-page__events-box'>
-                        {this.state.plans.map((plan) =>
-                            plan.approved ? (
-                                <EventListing event={plan} key={plan.uid} />
-                            ) : null
-                        )}
+                <div className='events-marquee-compoment__events-wrapper'>
+                    <div className='events-marquee-component__events-box'>
+                        <div className='events-marquee-component__page-title'>
+                            Upcoming P8 Rallies
+                        </div>
+                        <div className='events-page__events-box2'>
+                            {this.state.plans.map((plan) =>
+                                plan.approved ? (
+                                    <EventMarquee2
+                                        event={plan}
+                                        key={plan.uid}
+                                    />
+                                ) : null
+                            )}
+                        </div>
                     </div>
                 </div>
                 <MainFooter />
