@@ -51,11 +51,12 @@ const EventDetails = ({ theEvent }) => {
         <>
             <div className='event-details__wrapper'>
                 <div className='event-details__graphic-wrapper'>
+                    {displayThis?.graphic !== 'tbd'?(
                     <img
                         className='event-details__graphic-image'
                         src={displayThis?.graphic}
                         alt='CR P8 Rally'
-                    ></img>
+                    ></img>):null}
                 </div>
                 <div className='event-details__church-info'>
                     <div className='event-details__church-name'>{displayThis?.name}</div>
