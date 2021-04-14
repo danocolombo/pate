@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Spinner from '../../components/spinner/Spinner';
+import PhoneInput from 'react-phone-input-2';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import { updateCurrentUser } from '../../redux/user/user.actions';
 import './profile2.styles.scss';
@@ -271,10 +272,23 @@ const Profile2 = ({
                                 required
                             />
                         </div>
-                        <div className='profile-component__data-row'>
-                            <div className='profile-component__data-label'>
-                                Telephone
-                            </div>
+                        <div className='profile-component__data-row-phone'>
+                            <PhoneInput
+                                onlyCountries={['us']}
+                                country='us'
+                                disableCountryCode
+                                disableDropdown
+                                value={phone}
+                                onChange={(phone) => setPhone(phone)}
+                                inputProps={{
+                                    padding: 0,
+                                    name: 'Cell',
+                                    margin: 0,
+                                    required: true,
+                                    placeholder: '(xxx) xxx-xxxx',
+                                }}
+                            />
+                            {/*
                             <input
                                 className='profile-component__date-control'
                                 type='text'
@@ -284,6 +298,7 @@ const Profile2 = ({
                                 value={phone}
                                 required
                             />
+                            */}
                         </div>
                         <div className='profilehomesection'>Home Address</div>
                         <div className='profile-component__data-row'>

@@ -24,6 +24,11 @@
     flex-direction: column;
     margin: 5px 10px;
 }
+.profile-component__data-row-phone {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 18px;
+}
 .profile-component__data-row {
     display: flex;
     justify-content: flex-end;
@@ -52,16 +57,25 @@
     .profile-component__events-box {
         width: 320px;
     }
+    .profile-component__data-row-phone {
+        padding-right: 52px;
+    }
 }
 //IPAD Series
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
     .profile-component__events-box {
         width: 400px;
     }
+    .profile-component__data-row-phone {
+        padding-right: 103px;
+    }
 }
 //Iphone Series
 @media only screen and (min-width: 1024px) {
     .profile-component__events-box {
         width: 500px;
+    }
+    .profile-component__data-row-phone {
+        padding-right: 173px;
     }
 }
