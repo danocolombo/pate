@@ -7,7 +7,7 @@ const EventInfo = ({ eventInfo }) => {
             <>
                 <div className='registrationdetailswrapper'>
                     <div className='event_graphics'>
-                        {eventInfo?.graphic !== 'tbd' ? (
+                        {eventInfo?.graphic && eventInfo?.graphic !== 'tbd' ? (
                             <img
                                 className='eventimage'
                                 src={eventInfo?.graphic}

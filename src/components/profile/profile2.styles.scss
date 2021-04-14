@@ -7,7 +7,9 @@
 .profile-component__events-box {
     background-color: lightgray;
     width: 280px;
-    margin-top: 5px;
+    margin: 5px 0 10px 0;
+    border: black solid 1px;
+    border-radius: 5px;
 }
 .profile-component__page-title {
     background-color: #379683;
@@ -33,4 +35,33 @@
 }
 .profile-component__date-control {
     flex: 2;
+}
+.profile-component__button-wrapper {
+    flex-grow: 1;
+    text-align: center;
+    padding: 10px 0 5px 0;
+}
+.profile-component__update-button {
+    background-color: yellow;
+    padding: 3px 5px;
+    border-radius: 5px;
+}
+// MEDIA ALTERATIONS ** MEDIA ALTERATIONS ** MEDIA ALTERATIONS **
+//Iphone Series
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+    .profile-component__events-box {
+        width: 320px;
+    }
+}
+//IPAD Series
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+    .profile-component__events-box {
+        width: 400px;
+    }
+}
+//Iphone Series
+@media only screen and (min-width: 1024px) {
+    .profile-component__events-box {
+        width: 500px;
+    }
 }
