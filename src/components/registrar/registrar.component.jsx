@@ -8,6 +8,7 @@ import { setAlert } from '../../redux/alert/alert.action';
 import {
     loadTempRegistration,
     clearTempRegistration,
+    removeRegistration,
 } from '../../redux/registrations/registrations.actions';
 import PhoneInput from 'react-phone-input-2';
 import './registrar.styles.scss';
@@ -56,6 +57,87 @@ const Registrar = ({
         purgeTempReg();
         history.push('/profile');
     };
+    const handleDelete = async (e) => {
+        e.preventDefault();
+        //delete from database
+        await fetch(
+            'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/registrations',
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    operation: 'deleteRegistration',
+                    payload: {
+                        Key: { uid: regData.uid },
+                    },
+                }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            }
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                if(data.statusCode === 200){console.log('Registration (' + regData.uid + ') deleted');}
+                // const util = require('util');
+                // console.log(
+                    // 'db data returned: \n' +
+                    //     util.inspect(data, {
+                    //         showHidden: false,
+                    //         depth: null,
+                    //     })
+                // );
+            });
+        //-------------------------
+        // reduce event numbers.
+        //-------------------------
+        let eventUpdate = {
+            uid: regData?.uid,
+            adjustments: {
+                registrationCount: parseInt(regData?.attendeeCount, 10) * -1,
+            },
+        };
+        const mCount = parseInt(regData.mealCount, 10) * -1;
+        if (mCount !== 0) {
+            eventUpdate.adjustments.mealCount = mCount;
+        }
+        const DEBUG = true;
+        if (DEBUG){
+            const util = require('util');
+                console.log(
+                    'eventUpdate: \n' +
+                        util.inspect(eventUpdate, {
+                            showHidden: false,
+                            depth: null,
+                        })
+                );
+        }
+        await fetch(
+            'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/events',
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    operation: 'maintainNumbers',
+                    payload: eventUpdate,
+                }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            }
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                console.log('maintainEventNumbers successful');
+            });
+
+        //remove the redux reference to the event
+        removeRegistration(regData.uid);
+        //??????
+        // may need to reload stateRep & stateLead redux
+        //??????
+        alert('Regisistration Deleted');
+        history.push('/');
+
+    }
     const handleRegistrationUpdateRequest = async (e) => {
         e.preventDefault();
         let oldAttendanceCount = 0;
@@ -240,14 +322,14 @@ const Registrar = ({
         )
             .then((response) => response.json())
             .then((data) => {
-                const util = require('util');
-                console.log(
-                    'db data returned: \n' +
-                        util.inspect(data, {
-                            showHidden: false,
-                            depth: null,
-                        })
-                );
+                // const util = require('util');
+                // console.log(
+                //     'db data returned: \n' +
+                //         util.inspect(data, {
+                //             showHidden: false,
+                //             depth: null,
+                //         })
+                // );
                 // if (registrarId !== '0') {
                 //     addRegistration(regData);
                 // }
@@ -538,7 +620,7 @@ const Registrar = ({
                                         currentUser?.uid ===
                                             pateSystem?.rally?.coordinator
                                                 ?.id ? (
-                                            <button className='registrar-component_button-delete'>
+                                            <button className='registrar-component_button-delete' onClick={handleDelete}>
                                                 Delete
                                             </button>
                                         ) : null}
@@ -560,6 +642,7 @@ const mapDispatchToProps = (dispatch) => ({
     clearSpinner: () => dispatch(clearSpinner()),
     loadTempRegistration: (reg) => dispatch(loadTempRegistration(reg)),
     clearTempRegistration: () => dispatch(clearTempRegistration()),
+    removeRegistration: (reg) => dispatch(removeRegistration(reg))
 });
 const mapStateToProps = (state) => ({
     pateSystem: state.pate,

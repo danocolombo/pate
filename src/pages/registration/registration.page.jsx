@@ -467,14 +467,14 @@ const EventRegistration = ({
             )
                 .then((response) => response.json())
                 .then((data) => {
-                    const util = require('util');
-                    console.log(
-                        'db data returned: \n' +
-                            util.inspect(data, {
-                                showHidden: false,
-                                depth: null,
-                            })
-                    );
+                    // const util = require('util');
+                    // console.log(
+                    //     'db data returned: \n' +
+                    //         util.inspect(data, {
+                    //             showHidden: false,
+                    //             depth: null,
+                    //         })
+                    // );
                     // if (registrarId !== '0') {
                     //     addRegistration(regData);
                     // }
@@ -519,7 +519,13 @@ const EventRegistration = ({
         if (registrarId !== '0') {
             await addRegistration(regData);
         }
-
+        const alertPayload = {
+            msg: 'REGISTRATION SUCCESS - REVIEW IN PROFILE',
+            alertType: 'success',
+            timeout: 15,
+        };
+        setAlert(alertPayload);
+        alert('REGISTRATION SUCCESSFUL - SEE PROFILE');
         history.push('/');
     };
     const populateUserInfo = () => {
@@ -543,11 +549,12 @@ const EventRegistration = ({
             <div className='registration-page__wrapper'>
                 <div className='registration-page__header'>REGISTRATION</div>
                 <div className='registration-page__image-wrapper'>
-                    <img
+                    {pateSystem?.rally?.graphic !== 'tbd'?(
+                        <img
                         className='registration-page__image-file'
                         src={pateSystem?.rally?.graphic}
                         alt='CR P8 Rally'
-                    ></img>
+                    ></img>):null}
                 </div>                   
                 <div className='registration-page__church-name'>
                     {pateSystem?.rally?.name}
@@ -673,7 +680,7 @@ const EventRegistration = ({
                                 margin: 0,
                                 required: true,
                                 placeholder:
-                                    '(706) 396-1234',
+                                    '(xxx) xxx-xxxx',
                             }}
                         />
                 </div>        

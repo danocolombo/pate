@@ -43,14 +43,14 @@ const UserRegistrationOverview = ({
         )
             .then((response) => response.json())
             .then((data) => {
-                const util = require('util');
-                console.log(
-                    'db data returned: \n' +
-                        util.inspect(data, {
-                            showHidden: false,
-                            depth: null,
-                        })
-                );
+                // const util = require('util');
+                // console.log(
+                //     'db data returned: \n' +
+                //         util.inspect(data, {
+                //             showHidden: false,
+                //             depth: null,
+                //         })
+                // );
             });
         //-------------------------
         // reduce event numbers.
@@ -62,7 +62,7 @@ const UserRegistrationOverview = ({
             },
         };
         const mCount = parseInt(registration.mealCount, 10) * -1;
-        if (mCount != 0) {
+        if (mCount !== 0) {
             eventUpdate.adjustments.mealCount = mCount;
         }
         await fetch(
