@@ -7,11 +7,13 @@ const EventInfo = ({ eventInfo }) => {
             <>
                 <div className='registrationdetailswrapper'>
                     <div className='event_graphics'>
-                        <img
-                            className='eventimage'
-                            src={eventInfo?.graphic}
-                            alt='CR P8 Rally'
-                        ></img>
+                        {eventInfo?.graphic !== 'tbd' ? (
+                            <img
+                                className='eventimage'
+                                src={eventInfo?.graphic}
+                                alt='CR P8 Rally'
+                            ></img>
+                        ) : null}
                     </div>
 
                     <div className='eventbox' id='eventbox-location'>
@@ -20,8 +22,7 @@ const EventInfo = ({ eventInfo }) => {
                         </div>
                         <div>{eventInfo?.street}</div>
                         <div>
-                            {eventInfo?.city},
-                            {eventInfo?.stateProv}&nbsp;
+                            {eventInfo?.city},{eventInfo?.stateProv}&nbsp;
                             {eventInfo?.postalCode}
                         </div>
                     </div>

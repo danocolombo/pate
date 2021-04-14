@@ -749,6 +749,7 @@ const Serve = ({
                             )}
                         </div>
                     </div>
+                    {/*
                     <div className='registration__data-row'>
                         <div className='registration__data-label'>Status:</div>
                         <div className='registration__data-input'>
@@ -778,6 +779,7 @@ const Serve = ({
                             </select>
                         </div>
                     </div>
+                    */}
                     <div className='registration__section-header'>
                         Meal Details
                     </div>

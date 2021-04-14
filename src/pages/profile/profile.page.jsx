@@ -25,7 +25,7 @@ const UserProfile = ({ currentUser, pateSystem }) => {
     return (
         <>
             <Header />
-            <EventsMarquee />
+            {/*<EventsMarquee />*/}
             <div className='profilepagewrapper'>
                 <div className='pageheader'>PERSONAL PROFILE</div>
                 <PersonalProfile />
