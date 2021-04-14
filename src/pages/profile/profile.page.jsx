@@ -9,6 +9,7 @@ import './profile.styles.scss';
 
 import Header from '../../components/header/header.component';
 import { MainFooter } from '../../components/footers/main-footer';
+import EventsMarquee from '../../components/profile/profile.component2';
 import PersonalProfile from '../../components/profile/profile.component';
 import UserRegistrationOverview from '../../components/userregistrationsoverview/userregistrationsoverview.component';
 
@@ -19,12 +20,12 @@ const UserProfile = ({ currentUser, pateSystem }) => {
             history.push('/');
         }
     }, []);
-    
+
     // render() {
     return (
         <>
             <Header />
-
+            <EventsMarquee />
             <div className='profilepagewrapper'>
                 <div className='pageheader'>PERSONAL PROFILE</div>
                 <PersonalProfile />
