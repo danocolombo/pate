@@ -9,7 +9,8 @@ import Header from '../../components/header/header.component';
 import { MainFooter } from '../../components/footers/main-footer';
 import Spinner from '../../components/spinner/Spinner';
 import PhoneInput from 'react-phone-input-2';
-import Modal from '../../components/modals/modal';
+import Modal from '../../components/modals/wrapper.modal';
+import InputErrors from '../../components/modals/registration/registation-input-error.modal';
 import SuccessModal from '../../components/modals/registration/registration-success.modal';
 import SuccessMessage from '../../components/modals/registration/registration-success-msg.component';
 import {
@@ -825,12 +826,10 @@ const EventRegistration = ({
                 </div>
             </div>
             <MainFooter />
-            <Modal
-                isOpened={modalIsVisible}
-                onClose={() => setModalIsVisible(false)}
-            >
+            <Modal isOpened={modalIsVisible}>
                 <div>
-                    <div>{modalMessage}</div>
+                    <InputErrors onClose={() => setModalIsVisible(false)} />
+                    {/*<div>{modalMessage}</div>*/}
                 </div>
             </Modal>
             <SuccessModal isOpened={showRegistrationSuccess}>
