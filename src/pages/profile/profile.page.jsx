@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
@@ -6,6 +6,8 @@ import { useHistory } from 'react-router-dom';
 import { withAuthenticator } from '@aws-amplify/ui-react';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import './profile.styles.scss';
+import ModalWrapper from '../../components/modals/wrapper.modal';
+import ProfileNotification from '../../components/modals/signin/signin-profile-request.component';
 
 import Header from '../../components/header/header.component';
 import { MainFooter } from '../../components/footers/main-footer';
@@ -21,9 +23,18 @@ const UserProfile = ({
     clearSpinner,
 }) => {
     const history = useHistory();
+    const [
+        isCompleteProfileModalVisible,
+        setIsCompleteProfileModalVisible,
+    ] = useState(false);
     useEffect(() => {
         if (!currentUser.isLoggedIn) {
             history.push('/');
+        }
+        if (!currentUser?.residence?.city) {
+            setIsCompleteProfileModalVisible(true);
+        } else {
+            setIsCompleteProfileModalVisible(false);
         }
         getRegistrations();
     }, []);
@@ -61,6 +72,9 @@ const UserProfile = ({
         }
         await getUserReg();
     };
+    const dismissProfileReminderModal = () => {
+        setIsCompleteProfileModalVisible(false);
+    };
     // render() {
     return (
         <>
@@ -75,6 +89,11 @@ const UserProfile = ({
                 <UserRegistrationOverview />
             </div>
             <MainFooter />
+            <ModalWrapper isOpened={isCompleteProfileModalVisible}>
+                <ProfileNotification
+                    onClose={() => dismissProfileReminderModal()}
+                />
+            </ModalWrapper>
         </>
     );
     // }

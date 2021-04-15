@@ -8,6 +8,8 @@ import CustomButton from '../../components/custom-button/custom-button.component
 import Header from '../../components/header/header.component';
 import { MainFooter } from '../../components/footers/main-footer';
 import Spinner from '../../components/spinner/Spinner';
+import ModalWrapper from '../../components/modals/wrapper.modal';
+import ProfileNotification from '../../components/modals/signin/signin-profile-request.component';
 //----- actions needed -------
 import {
     loadRegistrations,
@@ -29,6 +31,7 @@ const SignIn = ({
     pateSystem,
     currentUser,
 }) => {
+    const [showRerouteModal, setShowRerouteModal] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const history = useHistory();
@@ -69,21 +72,6 @@ const SignIn = ({
                             });
                     } else {
                         // the user is good to go....
-                        console.log(
-                            'this is where we check for currentUser.firstName'
-                        );
-                        // if (currentUser?.firstName) {
-                        //     // if we have a first name saved, we presume profile is filled in
-                        //     history.push('/');
-                        // } else {
-                        //     alertPayload = {
-                        //         msg:
-                        //             'Please complete your profile to complete registration process.',
-                        //         alertType: 'warning',
-                        //         timeout: 10000,
-                        //     };
-                        //     history.push('/profile');
-                        // }
                     }
                 })
                 .catch((e) => {
@@ -114,24 +102,21 @@ const SignIn = ({
             await Auth.currentSession().then((data) => {
                 currentSession = data;
             });
-            await saveUser(currentUserInfo, currentSession);
+            // we will get true if user is registered or false if not
+
+            const userIsRegistered = await saveUser(
+                currentUserInfo,
+                currentSession
+            );
             await getRegistrations(currentUserInfo.attributes.sub);
             //generic cleanup
             await clearTempRegistration();
+            //let user know if they need to complete registration
+            console.log('REGISTERED: ' + userIsRegistered);
+            !userIsRegistered ? console.log('NOPE') : console.log('YEP');
+
             clearSpinner();
-            if (currentUser?.firstName) {
-                // if we have a first name saved, we presume profile is filled in
-                history.push('/');
-            } else {
-                alertPayload = {
-                    msg:
-                        'Please complete your profile to complete registration process.',
-                    alertType: 'warning',
-                    timeout: 10000,
-                };
-                history.push('/profile');
-            }
-            history.push('/');
+            userIsRegistered ? history.push('/') : history.push('/profile');
         } catch (error) {
             switch (error) {
                 case 'No current user':
@@ -152,6 +137,10 @@ const SignIn = ({
             setAlert(alertPayload);
             clearSpinner();
         }
+    };
+    const rerouteUserToProfile = () => {
+        setShowRerouteModal(false);
+        history.push('/profile');
     };
     const changePassword = async () => {
         Auth.currentAuthenticatedUser()
@@ -312,6 +301,13 @@ const SignIn = ({
             userDetails.church = church;
         }
         await setCurrentUser(userDetails);
+        //will return true if the user is registered, false if not
+        //========================================
+        if (dbUser?.firstName && dbUser?.lastName && dbUser?.residence?.city) {
+            return true;
+        } else {
+            return false;
+        }
     };
     const handleChange = (e) => {
         const { value, name } = e.target;
@@ -331,15 +327,11 @@ const SignIn = ({
     ) : (
         <>
             <Header />
-            <div className='signin-page__signin-wrapper'>   
-                <div className='signin-page__title-box'>
-                    LOGIN
-                </div>
+            <div className='signin-page__signin-wrapper'>
+                <div className='signin-page__title-box'>LOGIN</div>
                 <div className='signin-page__signin-box'>
                     <div className='signin-page__input-line'>
-                        <div className='signin-page__input-label'>
-                            Username
-                        </div>
+                        <div className='signin-page__input-label'>Username</div>
                         <div className='signin-page__input-control'>
                             <input
                                 type='text'
@@ -352,9 +344,7 @@ const SignIn = ({
                         </div>
                     </div>
                     <div className='signin-page__input-line'>
-                        <div className='signin-page__input-label'>
-                            Password
-                        </div>
+                        <div className='signin-page__input-label'>Password</div>
                         <div className='signin-page__input-control'>
                             <input
                                 type='password'
@@ -377,12 +367,17 @@ const SignIn = ({
                     </div>
                 </div>
                 <div className='signin-page__offer-box'>
-                    Don't have an account?  
-                    <Link className='signin-page__register-link' to="/register"> REGISTER</Link>
+                    Don't have an account?
+                    <Link className='signin-page__register-link' to='/register'>
+                        {' '}
+                        REGISTER
+                    </Link>
                 </div>
             </div>
             <MainFooter />
-            
+            <ModalWrapper isOpened={showRerouteModal}>
+                <ProfileNotification onClose={() => rerouteUserToProfile()} />
+            </ModalWrapper>
         </>
     );
 };
