@@ -10,6 +10,8 @@ import { MainFooter } from '../../components/footers/main-footer';
 import Spinner from '../../components/spinner/Spinner';
 import PhoneInput from 'react-phone-input-2';
 import Modal from '../../components/modals/modal';
+import SuccessModal from '../../components/modals/registration/registration-success.modal';
+import SuccessMessage from '../../components/modals/registration/registration-success-msg.component';
 import {
     addRegistration,
     loadTempRegistration,
@@ -17,7 +19,6 @@ import {
 } from '../../redux/registrations/registrations.actions';
 import { loadRally } from '../../redux/pate/pate.actions';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
-import InputError from '../../components/modals/registration/input-error.component';
 import { setAlert } from '../../redux/alert/alert.action';
 
 const EventRegistration = ({
@@ -35,6 +36,9 @@ const EventRegistration = ({
 }) => {
     const [modalIsVisible, setModalIsVisible] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
+    const [showRegistrationSuccess, setShowRegistrationSuccess] = useState(
+        false
+    );
     // const [plan, setPlan] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
     const [inputModalVisible, setInputModalVisible] = useState(false);
@@ -269,6 +273,10 @@ const EventRegistration = ({
         purgeTempReg();
         history.push('/profile');
     };
+    const successAcknowledged = () => {
+        setShowRegistrationSuccess(false);
+        history.push('/');
+    };
     const handleChange = (e) => {
         const { value, name } = e.target;
         switch (name) {
@@ -325,7 +333,7 @@ const EventRegistration = ({
     };
     const handleRegisterRequest = async (e) => {
         e.preventDefault();
-
+        setSpinner();
         // this function pulls the data together and creates
         // an object to update database.
         //-----------------------------------------------------
@@ -390,6 +398,7 @@ const EventRegistration = ({
             // alert(
             //     'Please correct your request.\n' + JSON.stringify(fieldMessage)
             // );
+            clearSpinner();
             setModalMessage('All the fields are required');
             setModalIsVisible(true);
             const alertPayload = {
@@ -398,14 +407,7 @@ const EventRegistration = ({
             };
             setAlert(alertPayload);
             window.scrollTo(0, 0);
-            // setInputModalVisible(true);
-            <InputError
-                open={inputModalVisible}
-                onClose={() => setInputModalVisible(false)}
-            >
-                <div>Please correct your request.</div>
-                <div>{JSON.stringify(fieldMessage)}</div>
-            </InputError>;
+
             return;
         }
 
@@ -524,14 +526,16 @@ const EventRegistration = ({
         if (registrarId !== '0') {
             await addRegistration(regData);
         }
-        const alertPayload = {
-            msg: 'REGISTRATION SUCCESS - REVIEW IN PROFILE',
-            alertType: 'success',
-            timeout: 15,
-        };
-        setAlert(alertPayload);
-        alert('REGISTRATION SUCCESSFUL - SEE PROFILE');
-        history.push('/');
+        // const alertPayload = {
+        //     msg: 'REGISTRATION SUCCESS - REVIEW IN PROFILE',
+        //     alertType: 'success',
+        //     timeout: 15,
+        // };
+        // setAlert(alertPayload);
+        // alert('REGISTRATION SUCCESSFUL - SEE PROFILE');
+        // history.push('/');
+        clearSpinner();
+        setShowRegistrationSuccess(true);
     };
     const populateUserInfo = () => {
         setFirstName(currentUser?.firstName);
@@ -554,20 +558,23 @@ const EventRegistration = ({
             <div className='registration-page__wrapper'>
                 <div className='registration-page__header'>REGISTRATION</div>
                 <div className='registration-page__image-wrapper'>
-                    {pateSystem?.rally?.graphic !== 'tbd'?(
+                    {pateSystem?.rally?.graphic !== 'tbd' ? (
                         <img
-                        className='registration-page__image-file'
-                        src={pateSystem?.rally?.graphic}
-                        alt='CR P8 Rally'
-                    ></img>):null}
-                </div>                   
+                            className='registration-page__image-file'
+                            src={pateSystem?.rally?.graphic}
+                            alt='CR P8 Rally'
+                        ></img>
+                    ) : null}
+                </div>
                 <div className='registration-page__church-name'>
                     {pateSystem?.rally?.name}
                 </div>
-                <div className='registration-page__church-street'>{theEvent?.street}</div>
+                <div className='registration-page__church-street'>
+                    {theEvent?.street}
+                </div>
                 <div className='registration-page__church-city-state-postal'>
-                    {pateSystem?.rally?.city},
-                    {pateSystem?.rally?.stateProv}&nbsp;
+                    {pateSystem?.rally?.city},{pateSystem?.rally?.stateProv}
+                    &nbsp;
                     {pateSystem?.rally?.postalCode}
                 </div>
                 <div className='registration-page__date'>{displayDate()}</div>
@@ -575,22 +582,14 @@ const EventRegistration = ({
                 <div className='registration-page__message'>
                     <div>{pateSystem?.rally?.message}</div>
                 </div>
-                <hr className='registration-page__divider' />                         
+                <hr className='registration-page__divider' />
                 <div className='registration-page__instructions'>
                     {currentUser?.isLoggedIn ? (
                         <>
                             <div>
                                 Click{' '}
-                                <span
-                                    
-                                    onClick={
-                                        populateUserInfo
-                                    }
-                                >
-                                    here
-                                </span>{' '}
-                                to populate with your
-                                information.
+                                <span onClick={populateUserInfo}>here</span> to
+                                populate with your information.
                             </div>
                         </>
                     ) : (
@@ -599,31 +598,27 @@ const EventRegistration = ({
                                 You can{' '}
                                 <button
                                     className='registration-page__login-button'
-                                    onClick={
-                                        handleLoginClick
-                                    }
+                                    onClick={handleLoginClick}
                                 >
                                     LOGIN
                                 </button>{' '}
                                 or{' '}
                                 <button
                                     className='registration-page__signup-button'
-                                    onClick={
-                                        handleRegisterClick
-                                    }
+                                    onClick={handleRegisterClick}
                                 >
                                     SIGN-UP
                                 </button>{' '}
-                                for an account to save your
-                                profile for future use.
+                                for an account to save your profile for future
+                                use.
                             </div>
                         </>
                     )}
-                </div>             
+                </div>
                 <div className='registration-page__section-header'>
                     Contact Information
                 </div>
-                <div className='registration-page__input-line'>  
+                <div className='registration-page__input-line'>
                     <div className='registration-page__input-label'>
                         First Name
                     </div>
@@ -636,9 +631,9 @@ const EventRegistration = ({
                             onChange={handleChange}
                             required
                         />
-                    </div>        
+                    </div>
                 </div>
-                <div className='registration-page__input-line'>  
+                <div className='registration-page__input-line'>
                     <div className='registration-page__input-label'>
                         Last Name
                     </div>
@@ -651,12 +646,10 @@ const EventRegistration = ({
                             value={lastName}
                             required
                         />
-                    </div>        
-                </div>
-                <div className='registration-page__input-line'>  
-                    <div className='registration-page__input-label'>
-                        E-mail
                     </div>
+                </div>
+                <div className='registration-page__input-line'>
+                    <div className='registration-page__input-label'>E-mail</div>
                     <div className='registration-page__input-control'>
                         <input
                             type='text'
@@ -666,37 +659,30 @@ const EventRegistration = ({
                             value={email}
                             required
                         />
-                    </div>        
-                </div>
-                  
-                <div className='registration-page__phone-input'>
-                        <PhoneInput
-                            onlyCountries={['us']}
-                            country='us'
-                            disableCountryCode
-                            disableDropdown
-                            value={phone}
-                            onChange={(phone) =>
-                                setPhone(phone)
-                            }
-                            inputProps={{
-                                padding:0,
-                                name:'Cell',
-                                margin: 0,
-                                required: true,
-                                placeholder:
-                                    '(xxx) xxx-xxxx',
-                            }}
-                        />
-                </div>        
-            
-                <div className='registration-page__section-header'>
-                    Address
-                </div>
-                <div className='registration-page__input-line'>  
-                    <div className='registration-page__input-label'>
-                        Street
                     </div>
+                </div>
+
+                <div className='registration-page__phone-input'>
+                    <PhoneInput
+                        onlyCountries={['us']}
+                        country='us'
+                        disableCountryCode
+                        disableDropdown
+                        value={phone}
+                        onChange={(phone) => setPhone(phone)}
+                        inputProps={{
+                            padding: 0,
+                            name: 'Cell',
+                            margin: 0,
+                            required: true,
+                            placeholder: '(xxx) xxx-xxxx',
+                        }}
+                    />
+                </div>
+
+                <div className='registration-page__section-header'>Address</div>
+                <div className='registration-page__input-line'>
+                    <div className='registration-page__input-label'>Street</div>
                     <div className='registration-page__input-control'>
                         <input
                             type='text'
@@ -706,12 +692,10 @@ const EventRegistration = ({
                             value={homeStreet}
                             required
                         />
-                    </div>        
-                </div>
-                <div className='registration-page__input-line'>  
-                    <div className='registration-page__input-label'>
-                        City
                     </div>
+                </div>
+                <div className='registration-page__input-line'>
+                    <div className='registration-page__input-label'>City</div>
                     <div className='registration-page__input-control'>
                         <input
                             type='text'
@@ -721,12 +705,10 @@ const EventRegistration = ({
                             value={homeCity}
                             required
                         />
-                    </div>        
-                </div>
-                <div className='registration-page__input-line'>  
-                    <div className='registration-page__input-label'>
-                        State
                     </div>
+                </div>
+                <div className='registration-page__input-line'>
+                    <div className='registration-page__input-label'>State</div>
                     <div className='registration-page__input-control'>
                         <input
                             type='text'
@@ -736,9 +718,9 @@ const EventRegistration = ({
                             value={homeStateProv}
                             required
                         />
-                    </div>        
+                    </div>
                 </div>
-                <div className='registration-page__input-line'>  
+                <div className='registration-page__input-line'>
                     <div className='registration-page__input-label'>
                         Postal Code
                     </div>
@@ -751,15 +733,13 @@ const EventRegistration = ({
                             value={homePostalCode}
                             required
                         />
-                    </div>        
+                    </div>
                 </div>
                 <div className='registration-page__section-header'>
                     Your Church/CR Information
-                </div>   
-                <div className='registration-page__input-line'>  
-                    <div className='registration-page__input-label'>
-                        Name
-                    </div>
+                </div>
+                <div className='registration-page__input-line'>
+                    <div className='registration-page__input-label'>Name</div>
                     <div className='registration-page__input-control'>
                         <input
                             type='text'
@@ -768,13 +748,11 @@ const EventRegistration = ({
                             onChange={handleChange}
                             value={churchName}
                             required
-                        />   
-                    </div>        
-                </div>       
-                <div className='registration-page__input-line'>  
-                    <div className='registration-page__input-label'>
-                        City
+                        />
                     </div>
+                </div>
+                <div className='registration-page__input-line'>
+                    <div className='registration-page__input-label'>City</div>
                     <div className='registration-page__input-control'>
                         <input
                             type='text'
@@ -784,12 +762,10 @@ const EventRegistration = ({
                             value={churchCity}
                             required
                         />
-                    </div>        
-                </div>     
-                <div className='registration-page__input-line'>  
-                    <div className='registration-page__input-label'>
-                        State
                     </div>
+                </div>
+                <div className='registration-page__input-line'>
+                    <div className='registration-page__input-label'>State</div>
                     <div className='registration-page__input-control'>
                         <input
                             type='text'
@@ -799,9 +775,9 @@ const EventRegistration = ({
                             value={churchStateProv}
                             required
                         />
-                    </div>        
-                </div>           
-                <div className='registration-page__input-line'>  
+                    </div>
+                </div>
+                <div className='registration-page__input-line'>
                     <div className='registration-page__input-label'>
                         Attendees
                     </div>
@@ -814,15 +790,13 @@ const EventRegistration = ({
                             onChange={handleChange}
                             value={attendeeCount}
                             required
-                        />    
-                    </div>        
-                </div>          
+                        />
+                    </div>
+                </div>
                 <div className='registration-page__meal-box'>
                     <p className='registration-page__meal-message'>
-                        This particular event offers a
-                        "free" lunch at 12 noon, please
-                        indicate how many will attend the
-                        lunch.
+                        This particular event offers a "free" lunch at 12 noon,
+                        please indicate how many will attend the lunch.
                     </p>
                     <div className='registration-page__meal-input-line'>
                         <div className='registration-page__meal-input-label'>
@@ -840,22 +814,28 @@ const EventRegistration = ({
                             />
                         </div>
                     </div>
-                </div>   
+                </div>
                 <div className='registration-page__button-wrapper'>
-                        <button
-                            className='registration-page__register-button'
-                            onClick={handleRegisterRequest}
-                        >
-                            Register
-                        </button>
-                    </div>                   
+                    <button
+                        className='registration-page__register-button'
+                        onClick={handleRegisterRequest}
+                    >
+                        Register
+                    </button>
+                </div>
             </div>
-            <MainFooter/>
-            <Modal isOpened={modalIsVisible} onClose={() => setModalIsVisible(false)}>
+            <MainFooter />
+            <Modal
+                isOpened={modalIsVisible}
+                onClose={() => setModalIsVisible(false)}
+            >
                 <div>
                     <div>{modalMessage}</div>
                 </div>
             </Modal>
+            <SuccessModal isOpened={showRegistrationSuccess}>
+                <SuccessMessage onClose={() => successAcknowledged()} />
+            </SuccessModal>
         </>
     );
 };

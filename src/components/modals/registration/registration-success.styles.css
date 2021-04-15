@@ -12,11 +12,11 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 55vw;
-    height: 30vw;
+    width: 50vw;
+    /* height: 30vw; */
     z-index: 3;
     /* background-color: #fff; */
-    padding: 10px;
+    /* padding: 10px; */
     /* border: black solid 1px; */
 }
 .close-button {
