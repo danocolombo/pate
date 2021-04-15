@@ -9,6 +9,7 @@ import Header from '../../components/header/header.component';
 import { MainFooter } from '../../components/footers/main-footer';
 import Spinner from '../../components/spinner/Spinner';
 import PhoneInput from 'react-phone-input-2';
+import Modal from '../../components/modals/modal';
 import {
     addRegistration,
     loadTempRegistration,
@@ -32,6 +33,8 @@ const EventRegistration = ({
     clearTempRegistration,
     loadRally,
 }) => {
+    const [modalIsVisible, setModalIsVisible] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
     // const [plan, setPlan] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
     const [inputModalVisible, setInputModalVisible] = useState(false);
@@ -387,6 +390,8 @@ const EventRegistration = ({
             // alert(
             //     'Please correct your request.\n' + JSON.stringify(fieldMessage)
             // );
+            setModalMessage('All the fields are required');
+            setModalIsVisible(true);
             const alertPayload = {
                 msg: 'ALL FIELDS ARE REQUIRED',
                 alertType: 'danger',
@@ -846,6 +851,11 @@ const EventRegistration = ({
                     </div>                   
             </div>
             <MainFooter/>
+            <Modal isOpened={modalIsVisible} onClose={() => setModalIsVisible(false)}>
+                <div>
+                    <div>{modalMessage}</div>
+                </div>
+            </Modal>
         </>
     );
 };
