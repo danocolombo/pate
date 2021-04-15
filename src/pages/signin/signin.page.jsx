@@ -8,8 +8,6 @@ import CustomButton from '../../components/custom-button/custom-button.component
 import Header from '../../components/header/header.component';
 import { MainFooter } from '../../components/footers/main-footer';
 import Spinner from '../../components/spinner/Spinner';
-import ModalWrapper from '../../components/modals/wrapper.modal';
-import ProfileNotification from '../../components/modals/signin/signin-profile-request.component';
 //----- actions needed -------
 import {
     loadRegistrations,
@@ -31,7 +29,6 @@ const SignIn = ({
     pateSystem,
     currentUser,
 }) => {
-    const [showRerouteModal, setShowRerouteModal] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const history = useHistory();
@@ -138,10 +135,7 @@ const SignIn = ({
             clearSpinner();
         }
     };
-    const rerouteUserToProfile = () => {
-        setShowRerouteModal(false);
-        history.push('/profile');
-    };
+
     const changePassword = async () => {
         Auth.currentAuthenticatedUser()
             .then((user) => {
@@ -375,9 +369,6 @@ const SignIn = ({
                 </div>
             </div>
             <MainFooter />
-            <ModalWrapper isOpened={showRerouteModal}>
-                <ProfileNotification onClose={() => rerouteUserToProfile()} />
-            </ModalWrapper>
         </>
     );
 };

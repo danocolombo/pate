@@ -7,7 +7,7 @@ import { withAuthenticator } from '@aws-amplify/ui-react';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import './profile.styles.scss';
 import ModalWrapper from '../../components/modals/wrapper.modal';
-import ProfileNotification from '../../components/modals/signin/signin-profile-request.component';
+import ProfileNotification from '../../components/modals/profile-reminder/profile-reminder.component';
 
 import Header from '../../components/header/header.component';
 import { MainFooter } from '../../components/footers/main-footer';
