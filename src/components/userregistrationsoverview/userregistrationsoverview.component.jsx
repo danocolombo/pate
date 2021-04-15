@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import StyledLink from '../../components/custom-link/custom-link-white.component';
@@ -92,6 +92,9 @@ const UserRegistrationOverview = ({
     return (
         <>
             <div className='user-reg-overview__wrapper'>
+                <div className='user-reg-overview__section-header'>
+                    YOUR REGISTRATIONS
+                </div>
                 {registrations
                     ? registrations.map((reg) => (
                           <>

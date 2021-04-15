@@ -3,20 +3,24 @@
     // text-align: center;
     padding: 0;
     margin: 0;
-    width: 80%;
+    width: 280px;
     height: auto;
     background: #b1a296;
     color: white;
-    border-bottom-right-radius: 10px;
-    border-left: black solid 1px;
-    border-bottom-left-radius: 10px;
-    border-right: black solid 1px;
-    border-bottom: black solid 1px;
-    padding-bottom: 10px;
+    border-radius: 5px;
+    border: black solid 1px;
+}
+.user-reg-overview__section-header {
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px 0px;
+    background-color: #379683;
 }
 .user-reg-flex__event-wrapper {
     display: flex;
-    border: lightslategray solid 1px;
+    align-items: center;
+    // border: lightslategray solid 1px;
 }
 .user-reg-flex__date {
     padding: 5px;
@@ -28,44 +32,64 @@
 .user-reg-flex__cancel {
     padding: 5px;
 }
-//========================================
-.registrationtable {
-    text-align: left;
-    margin-left: 20px;
-    font-size: 0.8em;
-    width: 100%;
-    color: white;
+// MEDIA ALTERATIONS ** MEDIA ALTERATIONS ** MEDIA ALTERATIONS **
+//Iphone Series
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+    .user-reg-overview__wrapper {
+        width: 320px;
+    }
 }
-.eventdate {
-    vertical-align: bottom;
+//IPAD Series
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+    .user-reg-overview__wrapper {
+        width: 400px;
+    }
 }
-.eventname {
-    padding-left: 10px;
-    color: white;
+//Iphone Series
+@media only screen and (min-width: 1024px) {
+    .user-reg-overview__wrapper {
+        width: 500px;
+    }
 }
-.eventlocation {
-    padding-left: 10px;
-}
-user-reg-overview__item {
-    padding: 10px 10px;
-    position: relative;
-}
-.user-reg-overview__date {
-    display: inline-block;
-    margin: 0 10px;
-    padding-top: 5px;
-    padding-bottom: 2px;
-}
-.user-reg-overview__name {
-    display: inline-block;
-    margin: 0 10px;
-}
-.user-reg-overview__city-state {
-    display: inline-block;
-    margin: 0 10px;
-}
-.user-reg-overview__cancel-button {
-    display: inline-block;
 
-    cursor: pointer;
-}
+// //========================================
+// .registrationtable {
+//     text-align: left;
+//     margin-left: 20px;
+//     font-size: 0.8em;
+//     width: 100%;
+//     color: white;
+// }
+// .eventdate {
+//     vertical-align: bottom;
+// }
+// .eventname {
+//     padding-left: 10px;
+//     color: white;
+// }
+// .eventlocation {
+//     padding-left: 10px;
+// }
+// user-reg-overview__item {
+//     padding: 10px 10px;
+//     position: relative;
+// }
+// .user-reg-overview__date {
+//     display: inline-block;
+//     margin: 0 10px;
+//     padding-top: 5px;
+//     padding-bottom: 2px;
+// }
+// .user-reg-overview__name {
+//     display: inline-block;
+//     margin: 0 10px;
+// }
+// .user-reg-overview__city-state {
+//     display: inline-block;
+//     margin: 0 10px;
+// }
+// .user-reg-overview__cancel-button {
+//     display: inline-block;
+
+//     cursor: pointer;
+// }

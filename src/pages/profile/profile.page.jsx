@@ -70,7 +70,8 @@ const UserProfile = ({
                 {/*<div className='pageheader'>PERSONAL PROFILE</div>*/}
                 <Profile2 />
                 {/*<PersonalProfile />*/}
-                <div className='pageheader'>YOUR REGISTRATIONS</div>
+                {/*<div className='profile-page__'>YOUR REGISTRATIONS</div>*/}
+
                 <UserRegistrationOverview />
             </div>
             <MainFooter />
