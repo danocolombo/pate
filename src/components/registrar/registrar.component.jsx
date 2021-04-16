@@ -12,6 +12,7 @@ import {
 } from '../../redux/registrations/registrations.actions';
 import PhoneInput from 'react-phone-input-2';
 import './registrar.styles.scss';
+import { SSL_OP_NETSCAPE_DEMO_CIPHER_CHANGE_BUG } from 'constants';
 const Registrar = ({
     regData,
     currentUser,
@@ -59,7 +60,8 @@ const Registrar = ({
     };
     const handleDelete = async (e) => {
         e.preventDefault();
-        //delete from database
+        setSpinner();
+
         await fetch(
             'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/registrations',
             {
@@ -77,39 +79,27 @@ const Registrar = ({
         )
             .then((response) => response.json())
             .then((data) => {
-                if(data.statusCode === 200){console.log('Registration (' + regData.uid + ') deleted');}
                 // const util = require('util');
                 // console.log(
-                    // 'db data returned: \n' +
-                    //     util.inspect(data, {
-                    //         showHidden: false,
-                    //         depth: null,
-                    //     })
+                //     'db data returned: \n' +
+                //         util.inspect(data, {
+                //             showHidden: false,
+                //             depth: null,
+                //         })
                 // );
             });
         //-------------------------
         // reduce event numbers.
         //-------------------------
         let eventUpdate = {
-            uid: regData?.uid,
+            uid: regData.eid,
             adjustments: {
-                registrationCount: parseInt(regData?.attendeeCount, 10) * -1,
+                registrationCount: regData.attendeeCount * -1,
             },
         };
         const mCount = parseInt(regData.mealCount, 10) * -1;
         if (mCount !== 0) {
             eventUpdate.adjustments.mealCount = mCount;
-        }
-        const DEBUG = true;
-        if (DEBUG){
-            const util = require('util');
-                console.log(
-                    'eventUpdate: \n' +
-                        util.inspect(eventUpdate, {
-                            showHidden: false,
-                            depth: null,
-                        })
-                );
         }
         await fetch(
             'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/events',
@@ -130,14 +120,14 @@ const Registrar = ({
             });
 
         //remove the redux reference to the event
-        removeRegistration(regData.uid);
+        await removeRegistration(regData.uid);
         //??????
         // may need to reload stateRep & stateLead redux
         //??????
-        alert('Regisistration Deleted');
+        clearSpinner();
+        alert('REGISTRATION CANCELLED');
         history.push('/');
-
-    }
+    };
     const handleRegistrationUpdateRequest = async (e) => {
         e.preventDefault();
         let oldAttendanceCount = 0;
@@ -519,7 +509,9 @@ const Registrar = ({
                                         <div className='register-church-label'>
                                             Your CR Information
                                         </div>
-                                        <label htmlFor='churchName'>Church</label>
+                                        <label htmlFor='churchName'>
+                                            Church
+                                        </label>
                                         <input
                                             type='text'
                                             id='churchName'
@@ -570,6 +562,9 @@ const Registrar = ({
                                             name='attendeeCount'
                                             onChange={handleChange}
                                             value={attendeeCount}
+                                            min='0'
+                                            step='1'
+                                            max='10'
                                             required
                                         />
                                         {/*<NumericInput min='0' max='10' value={attendeeCount} size='2'/>*/}
@@ -596,6 +591,9 @@ const Registrar = ({
                                             name='mealCount'
                                             onChange={handleChange}
                                             value={mealCount}
+                                            min='0'
+                                            step='1'
+                                            max='10'
                                             required
                                         />
                                     </div>
@@ -620,7 +618,10 @@ const Registrar = ({
                                         currentUser?.uid ===
                                             pateSystem?.rally?.coordinator
                                                 ?.id ? (
-                                            <button className='registrar-component_button-delete' onClick={handleDelete}>
+                                            <button
+                                                className='registrar-component_button-delete'
+                                                onClick={handleDelete}
+                                            >
                                                 Delete
                                             </button>
                                         ) : null}
@@ -642,7 +643,7 @@ const mapDispatchToProps = (dispatch) => ({
     clearSpinner: () => dispatch(clearSpinner()),
     loadTempRegistration: (reg) => dispatch(loadTempRegistration(reg)),
     clearTempRegistration: () => dispatch(clearTempRegistration()),
-    removeRegistration: (reg) => dispatch(removeRegistration(reg))
+    removeRegistration: (reg) => dispatch(removeRegistration(reg)),
 });
 const mapStateToProps = (state) => ({
     pateSystem: state.pate,

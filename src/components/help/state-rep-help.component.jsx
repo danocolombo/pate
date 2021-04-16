@@ -22,6 +22,16 @@ export const StateRepHelp = () => {
                                 registration.
                             </dd>
                             <dt className='help-definition__term'>
+                                My event is not showing up for people to
+                                register, what is wrong?
+                            </dt>
+                            <dd className='help-definition__definition'>
+                                Your event has not been approved by your CR
+                                state lead, or the event is in the past. To see
+                                all your events and their status, you can go to
+                                your SERVE page.
+                            </dd>
+                            <dt className='help-definition__term'>
                                 My event is not Approved. How do I get it
                                 approved?
                             </dt>
@@ -43,6 +53,12 @@ export const StateRepHelp = () => {
                                 "Registations". If your event is offering a
                                 meal, the registered guests for the meal are in
                                 the Meals Detail section, labeled "Planned".
+                                NOTE: for the most accurate number you might
+                                need to go to another page other than SERVE and
+                                come back, because it is possible that others
+                                could be registering or cancelling while you are
+                                on the SERVE page. Meaning, the numbers do not
+                                refresh as registration numbers change.
                             </dd>
                             <dt className='help-definition__term'>
                                 Why can't I change the meals served or attendee
@@ -79,7 +95,13 @@ export const StateRepHelp = () => {
                             </dt>
                             <dd className='help-definition__definition'>
                                 Yes, go to the SERVE page, select the event and
-                                edit the registrar.
+                                edit the registrar. NOTE: this will not link a
+                                current registration to a registered user. If an
+                                existing registration is being transfered to a
+                                registererd user, that is not currently
+                                supported. You will need to delete the
+                                registration and enter a new one for the
+                                registered user.
                             </dd>
                             <dt className='help-definition__term'>
                                 Can anyone else modify my event?

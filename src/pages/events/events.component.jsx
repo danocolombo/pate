@@ -51,7 +51,7 @@ class Events extends React.Component {
                         </div>
                         <div className='events-page__events-box2'>
                             {this.state.plans.map((plan) =>
-                                plan.approved ? (
+                                plan.approved || !plan.approved ? (
                                     <EventMarquee2
                                         event={plan}
                                         key={plan.uid}

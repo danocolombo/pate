@@ -4,6 +4,7 @@ import { Link, useHistory } from 'react-router-dom';
 import StyledLink from '../../components/custom-link/custom-link-white.component';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import { removeRegistration } from '../../redux/registrations/registrations.actions';
+
 import './userregistrationsoverview.styles.scss';
 const UserRegistrationOverview = ({
     currentUser,
@@ -26,6 +27,8 @@ const UserRegistrationOverview = ({
     };
     const handleCancellation = async (registration) => {
         //delete from database
+        setSpinner();
+
         await fetch(
             'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/registrations',
             {
@@ -88,6 +91,7 @@ const UserRegistrationOverview = ({
         //??????
         // may need to reload stateRep & stateLead redux
         //??????
+        clearSpinner();
     };
     return (
         <>
