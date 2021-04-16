@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center
+    align-items: center;
     // display: flex;
     // // margin-left: 10vw;
     // margin-top: 10px;
@@ -17,7 +17,7 @@
     // border-right: black solid 1px;
     // border-bottom: black solid 1px;
 }
-.registration-page__form-box{
+.registration-page__form-box {
     background-color: lightgray;
     width: 280px;
     margin: 5px 0 10px 0;
@@ -40,14 +40,12 @@
     padding-top: 5px;
     // max-width: 100%;
 }
-.registration-page__image-file {
-    // max-width: 100%;
-}
+
 .registration-page__church-name {
     font-size: 1.3em;
     text-align: center;
     color: black;
-    // padding-left: 5vw;
+    padding-top: 10px;
 }
 .registration-page__church-street {
     color: black;
@@ -75,7 +73,7 @@
 .registration-page__message {
     // color: white;
     text-align: center;
-    padding: 3px;
+    padding: 5px 15px;
 }
 .registration-page__divider {
     height: 1px;
@@ -84,6 +82,7 @@
 .registration-page__instructions {
     color: black;
     padding: 10px 15px 0 15px;
+    text-align: center;
 }
 .registration-page__login-button {
     background-color: white;
@@ -102,18 +101,23 @@
     text-align: center;
     padding: 10px 0 0 0;
 }
-.registration-page__data-input-box{
+.registration-page__data-input-box {
     display: flex;
     flex-direction: column;
     margin: 5px 10px;
 }
 .registration-page__input-line {
     display: flex;
-    padding-right:15px;
+    padding-right: 15px;
+}
+.profile-component__phone-input-line {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 14px;
 }
 .registration-page__attendee-input-line {
     display: flex;
-    padding-right:60px;
+    padding-right: 60px;
 }
 .registration-page__input-label {
     flex-grow: 1;
@@ -125,7 +129,7 @@
     // flex-grow: 2;
     // width: 50vw;
     // text-align: left;
-    // padding: 5px;
+    padding-right: 0px;
 }
 .registration-page__phone-input {
     text-align: left;
@@ -166,7 +170,7 @@
 }
 .registration-page__button-wrapper {
     padding-bottom: 15px;
-    text-align:center;
+    text-align: center;
 }
 .registration-page__register-button {
     background-color: yellow;
@@ -174,6 +178,53 @@
     padding: 1px 5px;
     border-radius: 5px;
 }
+// MEDIA ALTERATIONS ** MEDIA ALTERATIONS ** MEDIA ALTERATIONS **
+//Iphone Series
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+    .registration-page__form-box {
+        width: 320px;
+    }
+    .registration-page__input-control {
+        padding-right: 25px;
+    }
+    .profile-component__phone-input-line {
+        padding-right: 40px;
+    }
+    .registration-page__attendee-input-line {
+        padding-right: 60px;
+    }
+}
+//IPAD Series
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+    .registration-page__form-box {
+        width: 400px;
+    }
+    .registration-page__input-control {
+        padding-right: 75px;
+    }
+    .profile-component__phone-input-line {
+        padding-right: 90px;
+    }
+    .registration-page__attendee-input-line {
+        padding-right: 45px;
+    }
+}
+//desktop
+@media only screen and (min-width: 1024px) {
+    .registration-page__form-box {
+        width: 500px;
+    }
+    .registration-page__input-control {
+        padding-right: 75px;
+    }
+    .profile-component__phone-input-line {
+        padding-right: 90px;
+    }
+    .registration-page__attendee-input-line {
+        padding-right: 95px;
+    }
+}
+
 //==========================
 //==========================
 .registrationpagewrapper {
