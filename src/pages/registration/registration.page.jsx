@@ -13,6 +13,7 @@ import Modal from '../../components/modals/wrapper.modal';
 import InputErrors from '../../components/modals/registration/registation-input-error.modal';
 import SuccessModal from '../../components/modals/registration/registration-success.modal';
 import SuccessMessage from '../../components/modals/registration/registration-success-msg.component';
+
 import {
     addRegistration,
     loadTempRegistration,
@@ -557,6 +558,7 @@ const EventRegistration = ({
         <>
             <Header />
             <div className='registration-page__wrapper'>
+                <div className='registration-page__form-box'>
                 <div className='registration-page__header'>REGISTRATION</div>
                 <div className='registration-page__image-wrapper'>
                     {pateSystem?.rally?.graphic !== 'tbd' ? (
@@ -616,9 +618,11 @@ const EventRegistration = ({
                         </>
                     )}
                 </div>
+                
                 <div className='registration-page__section-header'>
                     Contact Information
                 </div>
+                <div className='registration-page__data-input-box'>
                 <div className='registration-page__input-line'>
                     <div className='registration-page__input-label'>
                         First Name
@@ -680,8 +684,9 @@ const EventRegistration = ({
                         }}
                     />
                 </div>
-
+                </div>
                 <div className='registration-page__section-header'>Address</div>
+                <div className='registration-page__data-input-box'>
                 <div className='registration-page__input-line'>
                     <div className='registration-page__input-label'>Street</div>
                     <div className='registration-page__input-control'>
@@ -736,9 +741,11 @@ const EventRegistration = ({
                         />
                     </div>
                 </div>
+                </div>
                 <div className='registration-page__section-header'>
                     Your Church/CR Information
                 </div>
+                <div className='registration-page__data-input-box'>
                 <div className='registration-page__input-line'>
                     <div className='registration-page__input-label'>Name</div>
                     <div className='registration-page__input-control'>
@@ -778,8 +785,15 @@ const EventRegistration = ({
                         />
                     </div>
                 </div>
-                <div className='registration-page__input-line'>
-                    <div className='registration-page__input-label'>
+                
+                
+                </div>
+                <div className='registration-page__section-header'>
+                    Attendance
+                </div>
+                <div className='registration-page__data-input-box'>
+                <div className='registration-page__attendee-input-line'>
+                <div className='registration-page__input-label'>
                         Attendees
                     </div>
                     <div className='registration-page__input-control'>
@@ -793,6 +807,7 @@ const EventRegistration = ({
                             required
                         />
                     </div>
+                </div>
                 </div>
                 <div className='registration-page__meal-box'>
                     <p className='registration-page__meal-message'>
@@ -824,6 +839,7 @@ const EventRegistration = ({
                         Register
                     </button>
                 </div>
+            </div>
             </div>
             <MainFooter />
             <Modal isOpened={modalIsVisible}>

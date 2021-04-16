@@ -1,49 +1,66 @@
 .registration-page__wrapper {
     display: flex;
-    margin-left: 10vw;
-    margin-top: 10px;
-    align-items: center;
     flex-direction: column;
-    width: 80vw;
+    justify-content: center;
+    align-items: center
+    // display: flex;
+    // // margin-left: 10vw;
+    // margin-top: 10px;
+    // justify-content: center;
+    // align-items: center;
+    // flex-direction: column;
+    // width: 280px;
+    // background-color: lightgray;
+    // color: black;
+    // text-align: center;
+    // border-left: black solid 1px;
+    // border-right: black solid 1px;
+    // border-bottom: black solid 1px;
+}
+.registration-page__form-box{
     background-color: lightgray;
-    color: black;
-    text-align: center;
-    border-left: black solid 1px;
-    border-right: black solid 1px;
-    border-bottom: black solid 1px;
+    width: 280px;
+    margin: 5px 0 10px 0;
+    border: black solid 1px;
+    border-radius: 5px;
 }
 .registration-page__header {
-    font-size: 1.5em;
+    font-size: 1.2em;
+    padding: 5px 0;
     font-weight: bold;
     background-color: #379683;
-    width: 80vw;
+    text-align: center;
+    // width: 100%;
     color: white;
-    border: black solid 1px;
+    // border: black solid 1px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 }
 .registration-page__image-wrapper {
     padding-top: 5px;
-    max-width: 80vw;
+    // max-width: 100%;
 }
 .registration-page__image-file {
-    max-width: 80vw;
+    // max-width: 100%;
 }
 .registration-page__church-name {
     font-size: 1.3em;
+    text-align: center;
     color: black;
-    padding-left: 5vw;
+    // padding-left: 5vw;
 }
 .registration-page__church-street {
     color: black;
+    text-align: center;
 }
 .registration-page__church-city-state-postal {
     color: black;
+    text-align: center;
 }
 .registration-page__date {
     color: black;
     padding: 10px 0 0 0;
-    width: 80vw;
+    // width: 100%;
     text-align: center;
     // border: black solid 1px;
     font-weight: bold;
@@ -52,16 +69,17 @@
 .registration-page__time {
     color: black;
     flex-grow: 1;
-    width: 70vw;
+    // width: 100%;
     text-align: center;
 }
 .registration-page__message {
     // color: white;
+    text-align: center;
     padding: 3px;
 }
 .registration-page__divider {
     height: 1px;
-    width: 90%;
+    // width: 90%;
 }
 .registration-page__instructions {
     color: black;
@@ -77,29 +95,37 @@
     padding: 1px 2px;
 }
 .registration-page__section-header {
-    width: 80vw;
+    // width: 100%;
     font-weight: bold;
     font-size: 1.1em;
     color: black;
+    text-align: center;
     padding: 10px 0 0 0;
+}
+.registration-page__data-input-box{
+    display: flex;
+    flex-direction: column;
+    margin: 5px 10px;
 }
 .registration-page__input-line {
     display: flex;
-    flex-direction: row;
-    width: 80vw;
+    padding-right:15px;
+}
+.registration-page__attendee-input-line {
+    display: flex;
+    padding-right:60px;
 }
 .registration-page__input-label {
     flex-grow: 1;
     color: black;
-    width: 30vw;
     text-align: right;
-    padding: 5px 3px;
+    padding-right: 3px;
 }
 .registration-page__input-control {
-    flex-grow: 1;
-    width: 50vw;
-    text-align: left;
-    padding: 5px;
+    // flex-grow: 2;
+    // width: 50vw;
+    // text-align: left;
+    // padding: 5px;
 }
 .registration-page__phone-input {
     text-align: left;
@@ -107,21 +133,21 @@
     margin-bottom: 5px;
 }
 .registration-page__button-wrapper {
-    width: 80vw;
+    // width: 100%;
 }
 .registration-page__meal-box {
-    width: 60vw;
+    // width: 100%;
     border: black solid 2px;
     display: flex;
     flex-direction: column;
-    margin-top: 10px;
+    margin: 15px 10px;
 }
 .registration-page__meal-message {
     color: black;
     padding: 10px;
 }
 .registration-page__meal-input-line {
-    width: 60vw;
+    // width: 100%;
     display: flex;
     flex-direction: row;
 }
@@ -139,7 +165,8 @@
     text-align: left;
 }
 .registration-page__button-wrapper {
-    padding: 10px;
+    padding-bottom: 15px;
+    text-align:center;
 }
 .registration-page__register-button {
     background-color: yellow;
