@@ -597,11 +597,12 @@ const EventRegistration = ({
                     <div className='registration-page__instructions'>
                         {currentUser?.isLoggedIn ? (
                             <>
-                                <div>
-                                    Click{' '}
-                                    <span onClick={populateUserInfo}>here</span>{' '}
-                                    to populate with your information.
-                                </div>
+                                <button
+                                    className='registration-page__login-button'
+                                    onClick={populateUserInfo}
+                                >
+                                    Click to Populate w/ Your Profile Data
+                                </button>
                             </>
                         ) : (
                             <>
