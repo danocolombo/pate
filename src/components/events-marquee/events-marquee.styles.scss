@@ -11,6 +11,10 @@
     // border: black solid 1px;
     // border-radius: 5px;
     background-color: lightgray;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
     width: 280px;
     margin-top: 5px;
 }
@@ -21,6 +25,8 @@
     font-weight: bold;
     flex-grow: 1;
     text-align: center;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
 }
 .events-marquee-component__event-box {
     display: flex;
