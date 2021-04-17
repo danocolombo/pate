@@ -10,7 +10,7 @@
 .events-marquee-component__events-box {
     // border: black solid 1px;
     // border-radius: 5px;
-    background-color: lightgray;
+    background-color: white;
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
     border-top-left-radius: 5px;
@@ -31,6 +31,7 @@
 .events-marquee-component__event-box {
     display: flex;
     flex-direction: column;
+    background-color: lightgray;
     margin: 5px 10px;
 }
 .events-marquee-component__event-date {

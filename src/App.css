@@ -46,6 +46,11 @@
         transform: rotate(360deg);
     }
 }
+.landing {
+    position: relative;
+    background: url('./assets/background.jpg') no-repeat center center/cover;
+    height: 100vh;
+}
 .alert {
     padding: 0.8rem;
     margin: 1rem 0;

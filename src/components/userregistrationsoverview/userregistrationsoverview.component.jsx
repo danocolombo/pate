@@ -105,7 +105,7 @@ const UserRegistrationOverview = ({
                               <div className='user-reg-flex__event-wrapper'>
                                   <div className='user-reg-flex__date'>
                                       <StyledLink
-                                          style={{ textDecoration: 'none' }}
+                                          style={{ textDecoration: 'none', color: 'blue' }}
                                           to={`/editregistration/${reg.eid}/${reg.uid}`}
                                       >
                                           {dateToDisplay(reg.eventDate)}

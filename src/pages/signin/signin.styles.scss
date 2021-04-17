@@ -62,12 +62,15 @@
 .signin-page__offer-box {
     // border: black solid 1px;
     margin-top: 5px;
-    color: white;
+    background-color: white;
+    color: black;
+    padding:3px 5px;
+    border-radius: 5px;
     // text-align: center;
 }
 .signin-page__register-link {
     text-decoration: none;
-    color: yellow;
+    color: blue;
     font-weight: bold;
 }
 
