@@ -7,9 +7,10 @@
     text-align: center;
 }
 .registration__header {
-    font-size: 1.1em;
+    font-size: 1.3em;
     font-weight: bold;
-    background-color: #4484CE;
+    padding: 5px 0px;
+    background-color: #4717F6;
     width: 80vw;
     margin-top: 10px;
     color: white;
@@ -21,11 +22,12 @@
     font-size: 1.3em;
     font-weight: bold;
     padding-top: 5px;
-    color: white;
+    color: black;
 }
 .registration__detail-box {
     display: flex;
-    background-color: #286DA8;
+    padding: 15px 0px;
+    background-color: lightgray;
     flex-direction: column;
     border-left: black solid 1px;
     border-right: black solid 1px;
@@ -38,7 +40,7 @@
 .registration__data-label {
     // border: red solid 1px;
     flex-grow: 1;
-    color: white;
+    color: black;
     width: 30vw;
     text-align: right;
     padding: 5px 3px;
@@ -77,6 +79,7 @@
     width: 70vw;
     margin-left: 5vw;
     background: #4484CE;
+    padding: 5px 0px;
     text-align: center;
     font-weight: bold;
     font-size: 1.3em;

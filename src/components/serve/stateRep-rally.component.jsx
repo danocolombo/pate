@@ -9,10 +9,10 @@ const StateRepRally = ({ rally }) => {
         return eventDate;
     };
     return (
-        <div className='sr-rally-list-item'>
-            <Link to={`/serveevent/${rally.uid}`} className='sr-rally-link'>
-                <div className='sr-rally-date'>{dateToDisplay()}</div>
-                <div className='sr-rally-location'>{rally.name}</div>
+        <div className='serve-component__rally-list-item'>
+            <Link to={`/serveevent/${rally.uid}`} className='serve-component__rally-link'>
+                <div className='serve-component__rally-date'>{dateToDisplay()}</div>
+                <div className='serve-component__rally-location'>{rally.name}</div>
             </Link>
         </div>
     );

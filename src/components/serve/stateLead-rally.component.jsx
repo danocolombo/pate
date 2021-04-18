@@ -13,18 +13,11 @@ const StateRallyList = ({ rally }) => {
         return arrayOfName[0];
     }
     return (
-        // <a href={`/serveevent/${rally.uid}`} className='state-lead-item-component__date-link'>
-        <Link to={`/serveevent/${rally.uid}`} className='state-lead-item-component__date-link'>
-        <div className='state-lead-item-component__line-item'>
-        <div className='state-lead-item-component__date'>{dateToDisplay()}</div>
-            <div className='state-lead-item-component__church-name'>{rally.name} -</div>
-            <div className='state-lead-item-component__rep-name'>({coordinatorFirstName()})</div>
-            {/* <Link to={`/serveevent/${rally.uid}`} className='state-lead-item-component__date-link'>
-            //     <div className='state-lead-item-component__date'>{dateToDisplay()}</div>
-            //     <div className='state-lead-item-component__church-name'>{rally.name}</div>
-            //     <div className='state-lead-item-component__rep-name'>{rally?.coordinator?.name}</div>
-            // </Link> 
-            */}
+        <Link to={`/serveevent/${rally.uid}`} className='serve-component__rally-link'>
+        <div className='serve-component-lead__rally-list-item'>
+        <div className='serve-component-lead__rally-date'>{dateToDisplay()}</div>
+            <div className='serve-component-lead__rally-location'>{rally.name} -</div>
+            <div className='serve-lead-component-lead__rep-name'>({coordinatorFirstName()})</div>
         </div>
         </Link>
     );

@@ -6,12 +6,11 @@ import StateRepRally from './stateRep-rally.component';
 import './serve.styles.scss';
 const StateRep = ({ currentUser, rallies }) => {
     useEffect(() => {}, []);
-
     return (
         <>
-            <div className='event-list-header'>Your Events</div>
+            <div className='serve-page__event-list-header'>Your Events</div>
             {rallies
-                ? rallies.map((rally) => <StateRepRally rally={rally} />)
+                ? rallies.map((rally) => <StateRepRally key={rally.uid} rally={rally} />)
                 : null}
         </>
     );

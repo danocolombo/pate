@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BiLogInCircle, BiLogOutCircle } from 'react-icons/bi';
+import { BiLogIn, BiLogOut } from 'react-icons/bi';
 import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Auth } from 'aws-amplify';

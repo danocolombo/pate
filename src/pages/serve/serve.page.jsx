@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { compose } from 'redux';
 import { withRouter } from 'react-router';
-import './serve.styles.scss';
+
 import Header from '../../components/header/header.component';
 import { MainFooter } from '../../components/footers/main-footer';
 import Spinner from '../../components/spinner/Spinner';
@@ -13,7 +13,7 @@ import StateLead from '../../components/serve/stateLead.component';
 // import { loadRegistrations } from '../../redux/registrations/registrations.actions';
 import { loadRallies } from '../../redux/stateRep/stateRep.actions';
 import { loadStateRallies } from '../../redux/stateLead/stateLead.actions';
-
+import './serve.styles.scss';
 const Serve = ({
     setSpinner,
     clearSpinner,
@@ -112,10 +112,12 @@ const Serve = ({
     ) : (
         <>
             <Header />
-            <div className='servepagewrapper'>
-                <div className='serve-pageheader'>Principle 8 Service</div>
-                <div className='servedetailswrapper'>
-                    <div className='serve-page-message-box'>
+            
+            <div className='serve-page__wrapper'>
+                <div className='serve-page_serve-box'>
+                <div className='serve-page__header'>Principle 8 Service</div>
+                <div className='serve-page__details-wrapper'>
+                    <div className='serve-page__message-box'>
                         This page allows you to coordinate events, as well as
                         manage and review details.
                     </div>
@@ -129,6 +131,7 @@ const Serve = ({
                             <StateLead />
                         </>
                     ) : null}
+                </div>
                 </div>
             </div>
             <MainFooter />
