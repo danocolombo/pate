@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
+import { IoTrash } from 'react-icons/io5';
 import StyledLink from '../../components/custom-link/custom-link-white.component';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import { removeRegistration } from '../../redux/registrations/registrations.actions';
@@ -105,7 +106,10 @@ const UserRegistrationOverview = ({
                               <div className='user-reg-flex__event-wrapper'>
                                   <div className='user-reg-flex__date'>
                                       <StyledLink
-                                          style={{ textDecoration: 'none', color: 'blue' }}
+                                          style={{
+                                              textDecoration: 'none',
+                                              color: 'blue',
+                                          }}
                                           to={`/editregistration/${reg.eid}/${reg.uid}`}
                                       >
                                           {dateToDisplay(reg.eventDate)}
@@ -132,7 +136,7 @@ const UserRegistrationOverview = ({
                                               handleCancellation(reg);
                                           }}
                                       >
-                                          X
+                                          <IoTrash />
                                       </Link>
                                   </div>
                               </div>

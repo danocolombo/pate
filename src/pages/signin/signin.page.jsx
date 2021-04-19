@@ -321,6 +321,65 @@ const SignIn = ({
     ) : (
         <>
             <Header />
+            <div className='signin-page__page-frame'>
+                <div className='signin-page__content-wrapper'>
+                    <div className='signin-page__content-box'>
+                        <div className='signin-page__section-title'>LOGIN</div>
+                        <div className='signin-page__section-box'>
+                            <div className='signin-page__data-line'>
+                                <div className='signin-page__data-label'>
+                                    Username
+                                </div>
+                                <div className='signin-page__data-control'>
+                                    <input
+                                        type='text'
+                                        name='username'
+                                        id='username'
+                                        value={username}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                </div>
+                            </div>
+                            <div className='signin-page__data-line'>
+                                <div className='signin-page__data-label'>
+                                    Password
+                                </div>
+                                <div className='signin-page__data-control'>
+                                    <input
+                                        type='password'
+                                        id='password'
+                                        name='password'
+                                        onChange={handleChange}
+                                        value={password}
+                                        required
+                                    />
+                                </div>
+                            </div>
+                            <div className='signin-page__button-wrapper'>
+                                <CustomButton
+                                    onClick={signIn}
+                                    className='signin-page__signin-button'
+                                >
+                                    {' '}
+                                    Sign In{' '}
+                                </CustomButton>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='signin-page__offer-box'>
+                        Don't have an account?
+                        <Link
+                            className='signin-page__register-link'
+                            to='/register'
+                        >
+                            {' '}
+                            REGISTER
+                        </Link>
+                    </div>
+                </div>
+            </div>
+            {/*
             <div className='signin-page__signin-wrapper'>
                 <div className='signin-page__title-box'>LOGIN</div>
                 <div className='signin-page__signin-box'>
@@ -368,6 +427,7 @@ const SignIn = ({
                     </Link>
                 </div>
             </div>
+            */}
             <MainFooter />
         </>
     );

@@ -1,3 +1,63 @@
+//-----------------------------------
+// new formatting
+//-----------------------------------
+.signin-page__page-frame {
+    display: flex;
+    justify-content: center;
+}
+.signin-page__content-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+}
+.signin-page__content-box {
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+    background-color: lightgray;
+    border: black solid 1px;
+    border-radius: 5px;
+}
+.signin-page__section-title {
+    background-color: #4717f6;
+    color: white;
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+.signin-page__section-box {
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+}
+.signin-page__data-line {
+    display: flex;
+    justify-content: flex-end;
+}
+.signin-page__data-label {
+    text-align: right;
+    padding-right: 10px;
+    width: 45%;
+}
+.signin-page__data-control {
+    width: 70%;
+}
+.signin-page__offer-box {
+    // border: black solid 1px;
+    margin-top: 5px;
+    background-color: white;
+    color: black;
+    padding: 3px 5px;
+    border-radius: 5px;
+    // text-align: center;
+}
+.signin-page__register-link {
+    text-decoration: none;
+    color: blue;
+    font-weight: bold;
+}
+
+//####################################
 .signin-page__signin-wrapper {
     display: flex;
     flex-direction: column;
@@ -12,7 +72,7 @@
 //     }
 // }
 .signin-page__title-box {
-    background-color: #4717F6;
+    background-color: #4717f6;
     border-top: black solid 1px;
     border-left: black solid 1px;
     border-right: black solid 1px;
@@ -59,20 +119,6 @@
     background: yellow;
     border-radius: 5px;
 }
-.signin-page__offer-box {
-    // border: black solid 1px;
-    margin-top: 5px;
-    background-color: white;
-    color: black;
-    padding:3px 5px;
-    border-radius: 5px;
-    // text-align: center;
-}
-.signin-page__register-link {
-    text-decoration: none;
-    color: blue;
-    font-weight: bold;
-}
 
 /* greater than mobile */
 @media only screen and (min-width: 415px) and (max-width: 1024px) {
@@ -117,14 +163,14 @@ signin-page_signin-box {
     padding-top: 0px;
     width: 300px;
     // align-items: center;
-    background: #286DA8;
+    background: #286da8;
     color: white;
     margin: 10px;
     // margin-left: 20%;
     border: black solid 1px;
 }
 .signin-title-box {
-    background-color: #4484CE;
+    background-color: #4484ce;
     border-top: black solid 1px;
     border-left: black solid 1px;
     border-right: black solid 1px;

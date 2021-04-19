@@ -1,0 +1,22 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: 10% auto 10%;
+}
+.grid-item {
+    padding: 3rem;
+    border: black solid 1px;
+    background-color: lightgray;
+    font-size: 1.3rem;
+    font-weight: bold;
+    text-align: center;
+}
+.event-box {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+}
+.event-label {
+    background-color: blue;
+}
+.event-control {
+    background-color: orange;
+}
