@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { BiLogIn, BiLogOut } from 'react-icons/bi';
+import { AiOutlineSetting } from 'react-icons/ai';
+import { FaSlideshare } from 'react-icons/fa';
 import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Auth } from 'aws-amplify';
@@ -48,7 +50,7 @@ const Header = ({
             <header className='header__flex-container'>
                 <div className='header__brand-box'>
                     <Link to='/' className='header__brand-name'>
-                        PATE
+                        P8 Rally
                     </Link>
                 </div>
                 <div className='header__nav-box'>
@@ -60,7 +62,8 @@ const Header = ({
                                         to='/serve'
                                         className='header__nav-control-link'
                                     >
-                                        SERVE
+                                    <span className='nav-icon'><FaSlideshare/></span>{' '}
+                                    <span className='hide-sm'>SERVE</span>
                                     </Link>
                                 </div>
                             ) : null}
@@ -69,7 +72,8 @@ const Header = ({
                                     to='/profile'
                                     className='header__nav-control-link'
                                 >
-                                    PROFILE
+                                    <span className='nav-icon'><AiOutlineSetting/></span>{' '}
+                                    <span className='hide-sm'>PROFILE</span>
                                 </Link>
                             </div>
                             <div className='header__nav-item'>
@@ -78,7 +82,8 @@ const Header = ({
                                     onClick={logoutRequest}
                                     className='header__nav-control-link'
                                 >
-                                    LOGOUT
+                                    <span className='nav-icon'><BiLogOut/></span>{' '}
+                                    <span className='hide-sm'>LOGOUT</span>
                                 </Link>
                             </div>
                         </>
@@ -88,7 +93,8 @@ const Header = ({
                                 className='header__nav-control-link'
                                 to='/signin'
                             >
-                                Login/Sign-up
+                            <span className='nav-icon'><BiLogIn/></span>{' '}
+                                <span className='hide-sm'>Login/Sign-up</span>
                             </Link>
                         </div>
                     )}

@@ -11,7 +11,12 @@
     height: 40vmin;
     pointer-events: none;
 }
-
+/* hide nav words when smaller than 700px */
+@media (max-width: 500px) {
+    .hide-sm {
+      display: none;
+    }
+  }
 @media (prefers-reduced-motion: no-preference) {
     .App-logo {
         animation: App-logo-spin infinite 20s linear;
