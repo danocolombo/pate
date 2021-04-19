@@ -19,7 +19,7 @@ const Support = () => {
                             situation.
                             <br />
                             <a href='mailto:fortsonguru@gmail.com'>
-                                pate.support@gmail.com
+                                fortsonguru@gmail.com
                             </a>
                         </p>
                     </div>

@@ -6,7 +6,7 @@ export const RegisteredHelp = () => {
             <div className='help-box'>
                 <div className='help-flex-box__container'>
                     <div className='help-flex-box__body'>
-                        <div className='help-title'>Registered PATE Help</div>
+                        <div className='help-title'>Registered P8 Rally Help</div>
                         <dl className='help-definition__list'>
                             <dt className='help-definition__term'>
                                 Why should I register?

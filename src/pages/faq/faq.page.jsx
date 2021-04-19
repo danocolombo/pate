@@ -14,12 +14,6 @@ const FAQ = () => {
                         </div>
                         <dl className='faq-definition__list'>
                             <dt className='faq-definition__term'>
-                                What is PATE
-                            </dt>
-                            <dd className='faq-definition__definition'>
-                                It is just shorthand for Principle 8 (P8)
-                            </dd>
-                            <dt className='faq-definition__term'>
                                 What is a P8?
                             </dt>
                             <dd className='faq-definition__definition'>
