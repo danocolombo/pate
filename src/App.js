@@ -24,6 +24,7 @@ import Alert from './components/alert/alert.component';
 import Support from './pages/support/support.page';
 import Help from './pages/help/help.page';
 import GridTest from './pages/cssgrid/cssgrid.page';
+import Leroy from './pages/junkyard/junkyard';
 //----------------------
 //AMPLIFY INTEGRATION
 //----------------------
@@ -37,6 +38,7 @@ function App() {
                 <Alert />
                 <Router>
                     <Route exact path='/gridtest' component={GridTest} />
+                    <Route path='/junkyard' component={Leroy} />
                     <Route exact path='/' component={Events} />
                     <Route path='/faq' component={FAQ} />
                     <Route path='/help' component={Help} />
