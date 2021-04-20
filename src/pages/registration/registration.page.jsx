@@ -44,7 +44,6 @@ const EventRegistration = ({
     // const [plan, setPlan] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
     const [inputModalVisible, setInputModalVisible] = useState(false);
-    
 
     const [attendeeCount, setAttendeeCount] = useState(1);
     const [mealCount, setMealCount] = useState(0);
@@ -560,22 +559,16 @@ const EventRegistration = ({
         //for calculation purposes to include 'today'.
         //--------------------------------------------------------------------
         let dbDate = pateSystem?.rally?.meal?.deadline;
-        //if there is no value or it is not a date, will return false
-        //NOTE!!! next line will always make the date 1 day less. So
-        // need to add extra date below
-        let convertedDBDate = new Date(dbDate);
-        let deadline = new Date();
-        // add 1 day for conversion (above) and 1 day to include today in check
-        deadline.setDate(convertedDBDate.getDate() + 2);
+        let convertedDBDate = Date.parse(dbDate);
+        let deadlineTestDate = new Date(convertedDBDate);
+        deadlineTestDate.setDate(deadlineTestDate.getDate() + 1);
         var today = new Date();
-        if(today.getTime() < deadline.getTime()){
-            //today is = or < than dbDate
+        if (today.getTime() < deadlineTestDate.getTime()) {
             return true;
-        }else{
-            //today is after dbDate
+        } else {
             return false;
         }
-    }
+    };
     return pateSystem.showSpinner ? (
         <Spinner />
     ) : (
@@ -856,34 +849,37 @@ const EventRegistration = ({
                             </div>
                         </div>
                     </div>
-                    { madeMealDeadline() ?(
-                    <div className='registration-page__meal-box'>
-                        <p className='registration-page__meal-message'>
-                            This particular event offers a "free" lunch at 12
-                            noon, please indicate how many will attend the
-                            lunch.
-                        </p>
-                        <div className='registration-page__meal-input-line'>
-                            <div className='registration-page__meal-input-label'>
-                                Meal Guests
+                    {madeMealDeadline() ? (
+                        <div className='registration-page__meal-box'>
+                            <p className='registration-page__meal-message'>
+                                This particular event offers a "free" lunch at
+                                12 noon, please indicate how many will attend
+                                the lunch.
+                            </p>
+                            <div className='registration-page__meal-input-line'>
+                                <div className='registration-page__meal-input-label'>
+                                    Meal Guests
+                                </div>
+                                <div className='registration-page__meal-count'>
+                                    <input
+                                        type='number'
+                                        className='meal-count-component'
+                                        id='mealCount'
+                                        name='mealCount'
+                                        onChange={handleChange}
+                                        value={mealCount}
+                                        required
+                                    />
+                                </div>
                             </div>
-                            <div className='registration-page__meal-count'>
-                                <input
-                                    type='number'
-                                    className='meal-count-component'
-                                    id='mealCount'
-                                    name='mealCount'
-                                    onChange={handleChange}
-                                    value={mealCount}
-                                    required
-                                />
+                            <div className='registration-page__meal-message'>
+                                <div>
+                                    Deadline for meals:{' '}
+                                    {pateSystem?.rally?.meal?.deadline}
+                                </div>
                             </div>
                         </div>
-                        <div className='registration-page__meal-message'>
-                            <div>Deadline for meals: {pateSystem?.rally?.meal?.deadline}</div>
-                        </div>
-                    </div>
-                    ):null}
+                    ) : null}
                     <div className='registration-page__button-wrapper'>
                         <button
                             className='registration-page__register-button'

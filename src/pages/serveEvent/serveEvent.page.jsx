@@ -122,14 +122,14 @@ const Serve = ({
                 )
                     .then((response) => response.json())
                     .then((data) => {
-                        const util = require('util');
-                        console.log(
-                            'registrations-data:\n' +
-                                util.inspect(data.body, {
-                                    showHidden: false,
-                                    depth: null,
-                                })
-                        );
+                        // const util = require('util');
+                        // console.log(
+                        //     'registrations-data:\n' +
+                        //         util.inspect(data.body, {
+                        //             showHidden: false,
+                        //             depth: null,
+                        //         })
+                        // );
                         loadEventRegistrations(data?.body?.Items);
                     });
             } catch (error) {
@@ -848,9 +848,7 @@ const Serve = ({
                         </div>
                     </div>
                     <div className='registration__data-row'>
-                        <div className='registration__data-label'>
-                            Message:
-                        </div>
+                        <div className='registration__data-label'>Message:</div>
                         <div className='registration__data-input'>
                             <input
                                 type='memo'
@@ -863,7 +861,9 @@ const Serve = ({
                         </div>
                     </div>
                     <div className='registration__data-row'>
-                        <div className='registration__data-label'>Deadline:</div>
+                        <div className='registration__data-label'>
+                            Deadline:
+                        </div>
                         <div className='registration__data-input'>
                             <input
                                 type='date'
