@@ -44,6 +44,8 @@ const EventRegistration = ({
     // const [plan, setPlan] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
     const [inputModalVisible, setInputModalVisible] = useState(false);
+    
+
     const [attendeeCount, setAttendeeCount] = useState(1);
     const [mealCount, setMealCount] = useState(0);
     const [firstName, setFirstName] = useState(currentUser?.firstName);
@@ -552,6 +554,28 @@ const EventRegistration = ({
         setChurchCity(currentUser?.church?.city);
         setChurchStateProv(currentUser?.church?.stateProv);
     };
+    const madeMealDeadline = () => {
+        //--------------------------------------------------------------------
+        //for the meal deadline we need to get the redux value and add 1 day
+        //for calculation purposes to include 'today'.
+        //--------------------------------------------------------------------
+        let dbDate = pateSystem?.rally?.meal?.deadline;
+        //if there is no value or it is not a date, will return false
+        //NOTE!!! next line will always make the date 1 day less. So
+        // need to add extra date below
+        let convertedDBDate = new Date(dbDate);
+        let deadline = new Date();
+        // add 1 day for conversion (above) and 1 day to include today in check
+        deadline.setDate(convertedDBDate.getDate() + 2);
+        var today = new Date();
+        if(today.getTime() < deadline.getTime()){
+            //today is = or < than dbDate
+            return true;
+        }else{
+            //today is after dbDate
+            return false;
+        }
+    }
     return pateSystem.showSpinner ? (
         <Spinner />
     ) : (
@@ -832,6 +856,7 @@ const EventRegistration = ({
                             </div>
                         </div>
                     </div>
+                    { madeMealDeadline() ?(
                     <div className='registration-page__meal-box'>
                         <p className='registration-page__meal-message'>
                             This particular event offers a "free" lunch at 12
@@ -854,7 +879,11 @@ const EventRegistration = ({
                                 />
                             </div>
                         </div>
+                        <div className='registration-page__meal-message'>
+                            <div>Deadline for meals: {pateSystem?.rally?.meal?.deadline}</div>
+                        </div>
                     </div>
+                    ):null}
                     <div className='registration-page__button-wrapper'>
                         <button
                             className='registration-page__register-button'

@@ -61,6 +61,7 @@ const Serve = ({
     const [mealCount, setMealCount] = useState(0);
     const [mealsServed, setMealsServed] = useState(0);
     const [mealMessage, setMealMessage] = useState('');
+    const [mealDeadline, setMealDeadline] = useState('');
     const [attendeeCount, setAttendeeCount] = useState(0);
     const [registrationCount, setRegistrationCount] = useState(0);
 
@@ -152,8 +153,9 @@ const Serve = ({
                 cost: '0',
                 message: '',
                 mealsServed: 0,
+                deadline: '20211225',
             },
-            eventDate: '20210406',
+            eventDate: '20211225',
             contact: {
                 name: '',
                 phone: '',
@@ -192,7 +194,7 @@ const Serve = ({
         let d = parseInt(dateToday.getUTCDate());
         let y = parseInt(dateToday.getFullYear());
         dateToday = y + '-' + m + '-' + d;
-        dateToday = '2021-04-06';
+        dateToday = '2021-12-25';
         setEventDate(dateToday);
         setChurchName('');
         setStreet('');
@@ -216,6 +218,7 @@ const Serve = ({
         setMealCount(0);
         setMealsServed(0);
         setMealMessage('');
+        setMealDeadline(dateToday);
         setAttendeeCount(0);
         setRegistrationCount(0);
     };
@@ -269,6 +272,7 @@ const Serve = ({
                     setMealCount(rallyEvent?.meal?.mealCount);
                     setMealsServed(rallyEvent?.meal?.mealsServed);
                     setMealMessage(rallyEvent?.meal?.message);
+                    setMealDeadline(rallyEvent?.meal?.deadline);
                     setAttendeeCount(rallyEvent?.attendees);
                     setRegistrationCount(rallyEvent?.registrations);
                 }
@@ -312,6 +316,7 @@ const Serve = ({
                     setMealCount(rallyEvent?.meal?.mealCount);
                     setMealsServed(rallyEvent?.meal?.mealsServed);
                     setMealMessage(rallyEvent?.meal?.message);
+                    setMealDeadline(rallyEvent?.meal?.deadline);
                     setAttendeeCount(rallyEvent?.attendees);
                     setRegistrationCount(rallyEvent?.registrations);
                 }
@@ -391,6 +396,7 @@ const Serve = ({
         newRally.meal.mealCount = mealCount;
         newRally.meal.mealsServed = mealsServed;
         newRally.meal.message = mealMessage;
+        newRally.meal.deadline = mealDeadline;
         newRally.registrations = registrationCount;
         newRally.attendees = attendeeCount;
 
@@ -521,6 +527,9 @@ const Serve = ({
                 break;
             case 'mealMessage':
                 setMealMessage(value);
+                break;
+            case 'mealDeadline':
+                setMealDeadline(value);
                 break;
             case 'attendanceCount':
                 setAttendeeCount(value);
@@ -840,7 +849,7 @@ const Serve = ({
                     </div>
                     <div className='registration__data-row'>
                         <div className='registration__data-label'>
-                            Meal Message:
+                            Message:
                         </div>
                         <div className='registration__data-input'>
                             <input
@@ -849,6 +858,19 @@ const Serve = ({
                                 name='mealMessage'
                                 onChange={handleChange}
                                 value={mealMessage}
+                                required
+                            />
+                        </div>
+                    </div>
+                    <div className='registration__data-row'>
+                        <div className='registration__data-label'>Deadline:</div>
+                        <div className='registration__data-input'>
+                            <input
+                                type='date'
+                                id='mealDeadline'
+                                name='mealDeadline'
+                                onChange={handleChange}
+                                value={mealDeadline}
                                 required
                             />
                         </div>
