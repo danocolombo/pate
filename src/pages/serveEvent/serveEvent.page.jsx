@@ -110,7 +110,7 @@ const Serve = ({
                     {
                         method: 'POST',
                         body: JSON.stringify({
-                            operation: 'getRegistrationsForEvent',
+                            operation: 'getRegistrationsForEventOrdered',
                             payload: {
                                 eid: eid,
                             },
