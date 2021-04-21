@@ -909,15 +909,16 @@ const Serve = ({
                             />
                         </div>
                     </div>
+                    <div className='registration__button-wrapper'>
+                        <button
+                            className='registration__button-update'
+                            onClick={handleSubmitClick}
+                        >
+                            Update
+                        </button>
+                    </div>
                 </div>
-                <div className='registration__button-wrapper'>
-                    <button
-                        className='registration__button-update'
-                        onClick={handleSubmitClick}
-                    >
-                        Update
-                    </button>
-                </div>
+
                 <div className='registration__registration-list-box'>
                     {match.params.id !== '0' ? (
                         <>

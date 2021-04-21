@@ -14,6 +14,7 @@ import Header from '../../components/header/header.component';
 import { MainFooter } from '../../components/footers/main-footer';
 import EventInfo from '../../components/event-info/event-info.component';
 import Registrar from '../../components/registrar/registrar.component';
+
 const UserProfile = ({
     currentUser,
     pate,
@@ -84,7 +85,9 @@ const UserProfile = ({
             <Header />
             <EventInfo eventInfo={pate.rally} />
             {pate?.registration ? (
-                <Registrar regData={pate.registration} />
+                <>
+                    <Registrar regData={pate.registration} />
+                </>
             ) : null}
             <MainFooter />
         </>

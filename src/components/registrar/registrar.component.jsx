@@ -376,261 +376,270 @@ const Registrar = ({
     };
     return (
         <>
-            <div className='registrationpagewrapper'>
-                <>
-                    <div className='registrationdetailswrapper'>
-                        <div>
-                            <hr className='registerhorizontalbreak' />
+            <div className='registration-page__wrapper'>
+                <div className='registration-page__form-box'>
+                    <div className='registration-page__header'>
+                        REGISTRATION
+                    </div>
+                    <div className='registration-page__section-header'>
+                        Contact Information
+                    </div>
+                    <div className='registration-page__data-input-box'>
+                        <div className='registration-page__input-line'>
+                            <div className='registration-page__input-label'>
+                                First Name
+                            </div>
+                            <div className='registration-page__input-control'>
+                                <input
+                                    type='text'
+                                    name='firstName'
+                                    id='firstName'
+                                    value={firstName}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
                         </div>
-                        <div className='formwrapper'>
-                            <form>
-                                <div className='registrar-data'>
-                                    <div className='register-identity-wrapper'>
-                                        <div className='register-contact-label'>
-                                            Contact Information
-                                        </div>
-                                        <div className='register-contact-section'>
-                                            <div>
-                                                <label htmlFor='firstName'>
-                                                    First name
-                                                </label>
-                                                <input
-                                                    type='text'
-                                                    name='firstName'
-                                                    id='firstName'
-                                                    value={firstName}
-                                                    onChange={handleChange}
-                                                    required
-                                                />
-                                            </div>
-                                            <div>
-                                                <label htmlFor='lastName'>
-                                                    Last name
-                                                </label>
-                                                <input
-                                                    type='text'
-                                                    id='lastName'
-                                                    name='lastName'
-                                                    onChange={handleChange}
-                                                    value={lastName}
-                                                    required
-                                                />
-                                            </div>
-                                            <div>
-                                                <label htmlFor='email'>
-                                                    E-mail
-                                                </label>
-                                                <input
-                                                    type='text'
-                                                    id='email'
-                                                    name='email'
-                                                    onChange={handleChange}
-                                                    value={email}
-                                                    required
-                                                />
-                                            </div>
-                                            <div>
-                                                <PhoneInput
-                                                    onlyCountries={['us']}
-                                                    country='us'
-                                                    placeholder='(702) 123-4567'
-                                                    disableCountryCode
-                                                    disableDropdown
-                                                    value={phone}
-                                                    onChange={(phone) =>
-                                                        setPhone(phone)
-                                                    }
-                                                    inputProps={{
-                                                        name: 'phone',
-                                                        required: true,
-                                                        placeholder:
-                                                            '(706) 396-1234',
-                                                    }}
-                                                />
-                                            </div>
-                                        </div>
-                                        <div className='register-address-label'>
-                                            Address
-                                        </div>
-                                        <div className='register-address-section'>
-                                            <div>
-                                                <label htmlFor='homeStreet'>
-                                                    Street
-                                                </label>
-                                                <input
-                                                    type='text'
-                                                    id='homeStreet'
-                                                    name='homeStreet'
-                                                    onChange={handleChange}
-                                                    value={homeStreet}
-                                                    required
-                                                />
-                                            </div>
-                                            <div>
-                                                <label htmlFor='homeCity'>
-                                                    City
-                                                </label>
-                                                <input
-                                                    type='text'
-                                                    id='homeCity'
-                                                    name='homeCity'
-                                                    onChange={handleChange}
-                                                    value={homeCity}
-                                                    required
-                                                />
-                                            </div>
-                                            <div>
-                                                <label htmlFor='homeStateProv'>
-                                                    State
-                                                </label>
-                                                <input
-                                                    type='text'
-                                                    id='homeStateProv'
-                                                    name='homeStateProv'
-                                                    onChange={handleChange}
-                                                    value={homeStateProv}
-                                                    required
-                                                />
-                                            </div>
-                                            <div>
-                                                <label htmlFor='homePostalCode'>
-                                                    Zipcode
-                                                </label>
-                                                <input
-                                                    type='text'
-                                                    id='homePostalCode'
-                                                    name='homePostalCode'
-                                                    onChange={handleChange}
-                                                    value={homePostalCode}
-                                                    required
-                                                />
-                                            </div>
-                                        </div>
-                                        <div className='register-church-label'>
-                                            Your CR Information
-                                        </div>
-                                        <label htmlFor='churchName'>
-                                            Church
-                                        </label>
-                                        <input
-                                            type='text'
-                                            id='churchName'
-                                            name='churchName'
-                                            onChange={handleChange}
-                                            value={churchName}
-                                            required
-                                        />
-
-                                        <div>
-                                            <label htmlFor='churchCity'>
-                                                City
-                                            </label>
-                                            <input
-                                                type='text'
-                                                id='churchCity'
-                                                name='churchCity'
-                                                onChange={handleChange}
-                                                value={churchCity}
-                                                required
-                                            />
-                                        </div>
-                                        <div>
-                                            <label htmlFor='churchStateProv'>
-                                                State
-                                            </label>
-                                            <input
-                                                type='text'
-                                                id='churchStateProv'
-                                                name='churchStateProv'
-                                                onChange={handleChange}
-                                                value={churchStateProv}
-                                                required
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className='attendeewrapper'>
-                                        <label
-                                            className='attendee-label'
-                                            htmlFor='attendeeCount'
-                                        >
-                                            Attendees
-                                        </label>
-                                        <input
-                                            type='number'
-                                            className='attendee-count-component'
-                                            id='attendeeCount'
-                                            name='attendeeCount'
-                                            onChange={handleChange}
-                                            value={attendeeCount}
-                                            min='0'
-                                            step='1'
-                                            max='10'
-                                            required
-                                        />
-                                        {/*<NumericInput min='0' max='10' value={attendeeCount} size='2'/>*/}
-                                    </div>
-
-                                    <div className='meal-wrapper'>
-                                        <p className='meal-description-label'>
-                                            This particular event offers a
-                                            "free" lunch at 12 noon, please
-                                            indicate how many will attend the
-                                            lunch.
-                                        </p>
-                                        <label
-                                            className='meal-count-label'
-                                            htmlFor='mealCount'
-                                        >
-                                            Meal Guests
-                                        </label>
-
-                                        <input
-                                            type='number'
-                                            className='meal-count-component'
-                                            id='mealCount'
-                                            name='mealCount'
-                                            onChange={handleChange}
-                                            value={mealCount}
-                                            min='0'
-                                            step='1'
-                                            max='10'
-                                            required
-                                        />
-                                    </div>
-                                    <div className='registrar-component_button-wrapper'>
-                                        <button
-                                            className='registrar-component_button-register'
-                                            onClick={
-                                                handleRegistrationUpdateRequest
-                                            }
-                                        >
-                                            Update
-                                        </button>
-                                        <button
-                                            className='registrar-component_button-cancel'
-                                            onClick={handleCancel}
-                                        >
-                                            Cancel
-                                        </button>
-                                        {currentUser?.stateLead ===
-                                            pateSystem?.registration?.location
-                                                ?.stateProv ||
-                                        currentUser?.uid ===
-                                            pateSystem?.rally?.coordinator
-                                                ?.id ? (
-                                            <button
-                                                className='registrar-component_button-delete'
-                                                onClick={handleDelete}
-                                            >
-                                                Delete
-                                            </button>
-                                        ) : null}
-                                    </div>
-                                </div>
-                            </form>
+                        <div className='registration-page__input-line'>
+                            <div className='registration-page__input-label'>
+                                Last Name
+                            </div>
+                            <div className='registration-page__input-control'>
+                                <input
+                                    type='text'
+                                    id='lastName'
+                                    name='lastName'
+                                    onChange={handleChange}
+                                    value={lastName}
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div className='registration-page__input-line'>
+                            <div className='registration-page__input-label'>
+                                Email
+                            </div>
+                            <div className='registration-page__input-control'>
+                                <input
+                                    type='text'
+                                    id='email'
+                                    name='email'
+                                    onChange={handleChange}
+                                    value={email}
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div className='registration-page__input-line'>
+                            <div className='registration-page__input-label'>
+                                Phone
+                            </div>
+                            <div className='registration-page__input-control'>
+                                <PhoneInput
+                                    onlyCountries={['us']}
+                                    country='us'
+                                    placeholder='(702) 123-4567'
+                                    disableCountryCode
+                                    disableDropdown
+                                    value={phone}
+                                    onChange={(phone) => setPhone(phone)}
+                                    inputProps={{
+                                        // name: 'phone',
+                                        required: true,
+                                        placeholder: '(XXX) XXX-XXXX',
+                                    }}
+                                />
+                            </div>
                         </div>
                     </div>
-                </>
+                    <div className='registration-page__section-header'>
+                        Address
+                    </div>
+                    <div className='registration-page__data-input-box'>
+                        <div className='registration-page__input-line'>
+                            <div className='registration-page__input-label'>
+                                Street
+                            </div>
+                            <div className='registration-page__input-control'>
+                                <input
+                                    type='text'
+                                    id='homeStreet'
+                                    name='homeStreet'
+                                    onChange={handleChange}
+                                    value={homeStreet}
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div className='registration-page__input-line'>
+                            <div className='registration-page__input-label'>
+                                City
+                            </div>
+                            <div className='registration-page__input-control'>
+                                <input
+                                    type='text'
+                                    id='homeCity'
+                                    name='homeCity'
+                                    onChange={handleChange}
+                                    value={homeCity}
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div className='registration-page__input-line'>
+                            <div className='registration-page__input-label'>
+                                State
+                            </div>
+                            <div className='registration-page__input-control'>
+                                <input
+                                    type='text'
+                                    id='homeStateProv'
+                                    name='homeStateProv'
+                                    onChange={handleChange}
+                                    value={homeStateProv}
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div className='registration-page__input-line'>
+                            <div className='registration-page__input-label'>
+                                Zipcode
+                            </div>
+                            <div className='registration-page__input-control'>
+                                <input
+                                    type='text'
+                                    id='homePostalCode'
+                                    name='homePostalCode'
+                                    onChange={handleChange}
+                                    value={homePostalCode}
+                                    required
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div className='registration-page__section-header'>
+                        Your CR Info
+                    </div>
+                    <div className='registration-page__data-input-box'>
+                        <div className='registration-page__input-line'>
+                            <div className='registration-page__input-label'>
+                                Church
+                            </div>
+                            <div className='registration-page__input-control'>
+                                <input
+                                    type='text'
+                                    id='churchName'
+                                    name='churchName'
+                                    onChange={handleChange}
+                                    value={churchName}
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div className='registration-page__input-line'>
+                            <div className='registration-page__input-label'>
+                                City
+                            </div>
+                            <div className='registration-page__input-control'>
+                                <input
+                                    type='text'
+                                    id='churchCity'
+                                    name='churchCity'
+                                    onChange={handleChange}
+                                    value={churchCity}
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div className='registration-page__input-line'>
+                            <div className='registration-page__input-label'>
+                                State
+                            </div>
+                            <div className='registration-page__input-control'>
+                                <input
+                                    type='text'
+                                    id='churchStateProv'
+                                    name='churchStateProv'
+                                    onChange={handleChange}
+                                    value={churchStateProv}
+                                    required
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div className='registration-page__section-header'>
+                        Attendance Info
+                    </div>
+                    <div className='registration-page__data-input-box'>
+                        <div className='registration-page__input-line'>
+                            <div className='registration-page__input-label'>
+                                Attendee(s)
+                            </div>
+                            <div className='edit-registration-page__input-control'>
+                                <input
+                                    type='number'
+                                    className='attendee-count-component'
+                                    id='attendeeCount'
+                                    name='attendeeCount'
+                                    onChange={handleChange}
+                                    value={attendeeCount}
+                                    min='0'
+                                    step='1'
+                                    max='10'
+                                    required
+                                />
+                            </div>
+                            {/*<NumericInput min='0' max='10' value={attendeeCount} size='2'/>*/}
+                        </div>
+                    </div>
+                    <div className='registration-page__data-input-box'>
+                        <div className='registration-page__input-line'>
+                            <div className='registration-page__input-label'>
+                                Meal(s)
+                            </div>
+                            <div className='edit-registration-page__input-control'>
+                                <input
+                                    type='number'
+                                    className='meal-count-component'
+                                    id='mealCount'
+                                    name='mealCount'
+                                    onChange={handleChange}
+                                    value={mealCount}
+                                    min='0'
+                                    step='1'
+                                    max='10'
+                                    required
+                                />
+                            </div>
+                            {/*<NumericInput min='0' max='10' value={attendeeCount} size='2'/>*/}
+                        </div>
+                    </div>
+                    <div className='registrar-component_button-wrapper'>
+                        <button
+                            className='registrar-component_button-register'
+                            onClick={handleRegistrationUpdateRequest}
+                        >
+                            Update
+                        </button>
+                        <button
+                            className='registrar-component_button-cancel'
+                            onClick={handleCancel}
+                        >
+                            Cancel
+                        </button>
+                        {currentUser?.stateLead ===
+                            pateSystem?.registration?.location?.stateProv ||
+                        currentUser?.uid ===
+                            pateSystem?.rally?.coordinator?.id ? (
+                            <button
+                                className='registrar-component_button-delete'
+                                onClick={handleDelete}
+                            >
+                                Delete
+                            </button>
+                        ) : null}
+                    </div>
+                </div>
             </div>
         </>
     );
