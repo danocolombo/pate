@@ -377,7 +377,7 @@ const Registrar = ({
     return (
         <>
             <div className='registration-page__wrapper'>
-                <div className='registration-page__form-box'>
+                <div className='registrar-component__form-box'>
                     <div className='registration-page__header'>
                         REGISTRATION
                     </div>
@@ -570,12 +570,12 @@ const Registrar = ({
                     <div className='registration-page__section-header'>
                         Attendance Info
                     </div>
-                    <div className='registration-page__data-input-box'>
-                        <div className='registration-page__input-line'>
-                            <div className='registration-page__input-label'>
-                                Attendee(s)
+                    <div className='registration-component__data-input-box'>
+                        <div className='registrar-component__attendance-input-line'>
+                            <div className='registrar-component__attendance-input-label'>
+                                Attendance
                             </div>
-                            <div className='edit-registration-page__input-control'>
+                            <div className='registrar-component__attendance-input-control'>
                                 <input
                                     type='number'
                                     className='attendee-count-component'
@@ -591,13 +591,11 @@ const Registrar = ({
                             </div>
                             {/*<NumericInput min='0' max='10' value={attendeeCount} size='2'/>*/}
                         </div>
-                    </div>
-                    <div className='registration-page__data-input-box'>
-                        <div className='registration-page__input-line'>
-                            <div className='registration-page__input-label'>
-                                Meal(s)
+                        <div className='registrar-component__attendance-input-line'>
+                            <div className='registrar-component__attendance-input-label'>
+                                Meal
                             </div>
-                            <div className='edit-registration-page__input-control'>
+                            <div className='registrar-component__attendance-input-control'>
                                 <input
                                     type='number'
                                     className='meal-count-component'

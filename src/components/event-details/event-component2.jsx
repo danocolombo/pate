@@ -6,7 +6,7 @@ const EventDetails = ({ theEvent }) => {
     const util = require('util');
 
     //get data ready to display
-    const displayThis = theEvent?.body?.Items[0];
+    const displayThis = theEvent;
     // console.log(
     //     'component.dislayThis: \n' +
     //         util.inspect(displayThis, { showHidden: false, depth: null })
@@ -16,20 +16,11 @@ const EventDetails = ({ theEvent }) => {
         //the new formatted date coming in will look like this...
         //            2021-04-21
         let dateParts = displayThis?.eventDate.split('-');
-        console.log(dateParts);
-        // dateParts.forEach(element => {
-        //     console.log(element);
-        // });
-        // let newEventDate = new Date(dateParts[0], dateParts[1], dateParts[2]);
-        // let newTheDate = newEventDate.toDateString();
-        // console.log('newTheDate:' + newTheDate);
-        let y = parseInt(displayThis?.eventDate.substring(0, 4));
-        let m = parseInt(displayThis?.eventDate.substring(4, 6)) - 1;
-        let d = parseInt(displayThis?.eventDate.substring(6, 8));
+        let y = parseInt(dateParts[0]);
+        let m = parseInt(dateParts[1]) - 1;
+        let d = parseInt(dateParts[2]);
         let eventDate = new Date(y, m, d);
-        let theDate = eventDate.toDateString();
-
-        return theDate;
+        return eventDate.toDateString();
     };
     const displayTimes = () => {
         if (displayThis?.startTime) {
@@ -59,27 +50,20 @@ const EventDetails = ({ theEvent }) => {
     };
     return (
         <>
-            <div className='event-details__wrapper'>
-                <div className='event-details__graphic-wrapper'>
-                    {displayThis?.graphic !== 'tbd'?(
-                    <img
-                        className='event-details__graphic-image'
-                        src={displayThis?.graphic}
-                        alt='CR P8 Rally'
-                    ></img>):null}
-                </div>
-                <div className='event-details__church-info'>
-                    <div className='event-details__church-name'>{displayThis?.name}</div>
-                    <div className='event-details__church-street'>{displayThis?.street}</div>
-                    <div className='event-details__city-state-postal'>
+            <div className='event-details-component__wrapper'>
+                <div className='event-details-component__form-box'>
+                    <div className='event-details-component__header'>THE EVENT</div>
+                    <div className='event-details-component__section-header'>
+                        {displayThis?.name}
+                    </div>
+                    <div className='event-details-component__church-address-line'>{displayThis?.street}</div>
+                    <div className='event-details-component__church-address-line'>
                         {displayThis?.city},{displayThis?.stateProv}&nbsp;
                         {displayThis?.postalCode}
                     </div>
-                </div>
-                <div className='event-details__event-date'>{displayDate()}</div>
-                <div className='event-details__event-time'>{displayTimes()}</div>
-                <div className='event-details__event-message'>
-                {displayThis?.message}
+                    <div className='event-details__event-date'>{displayDate()}</div>
+                    <div className='event-details__event-time'>{displayTimes()}</div>
+                    <div className='event-details__event-message'>{displayThis?.message}</div>
                 </div>
             </div>
         </>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,useState } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
@@ -13,6 +13,7 @@ import './edit-registration.styles.scss';
 import Header from '../../components/header/header.component';
 import { MainFooter } from '../../components/footers/main-footer';
 import EventInfo from '../../components/event-info/event-info.component';
+import EventDetails from '../../components/event-details/event-component2';
 import Registrar from '../../components/registrar/registrar.component';
 
 const UserProfile = ({
@@ -26,7 +27,6 @@ const UserProfile = ({
     const history = useHistory();
     let theRegistration = {};
     const registrationReference = match.params.rid;
-
     const regInfo = registrations.tempRegistration;
     useEffect(() => {
         if (!currentUser.isLoggedIn) {
@@ -57,24 +57,27 @@ const UserProfile = ({
                         },
                     }
                 )
-                    .then((response) => response.json())
-                    .then((data) => {
-                        // const util = require("util");
-                        // console.log(
-                        //   "registrations-data:\n" +
-                        //     util.inspect(data.body, {
-                        //       showHidden: false,
-                        //       depth: null,
-                        //     })
-                        // );
-                        theRegistration = data?.body?.Items[0];
-                        if (theRegistration) {
-                            clearRegistration();
-                            loadRegistration(theRegistration);
-                        }
-                    });
+                .then((response) => response.json())
+                .then((data) => {
+                    // const util = require("util");
+                    // console.log(
+                    //   "registrations-data:\n" +
+                    //     util.inspect(data.body, {
+                    //       showHidden: false,
+                    //       depth: null,
+                    //     })
+                    // );
+                    theRegistration = data?.body?.Items[0];
+                    if (theRegistration) {
+                        clearRegistration();
+                        loadRegistration(theRegistration);
+                    }
+                });
+                
             }
             getIt();
+            //load information into object to display for Event-Details
+            
         } catch (error) {
             console.log('Error fetching registrations \n' + error);
         }
@@ -83,7 +86,8 @@ const UserProfile = ({
     return (
         <>
             <Header />
-            <EventInfo eventInfo={pate.rally} />
+            {/*<EventInfo eventInfo={pate.rally} />*/}
+            <EventDetails theEvent={pate.rally}/>
             {pate?.registration ? (
                 <>
                     <Registrar regData={pate.registration} />
