@@ -4,13 +4,27 @@ registrar-component__wrapper {
     justify-content: center;
     align-items: center;
 }
-.registrar-component__form-box{
+.registrar-component__form-box {
     background-color: lightgray;
     width: 280px;
     margin: 0px 0 10px 0;
     border: black solid 1px;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
+}
+.registrar-component__header {
+    font-size: 1.2em;
+    padding: 5px 0;
+    font-weight: bold;
+    background-color: #4484ce;
+    text-align: center;
+    color: white;
+    border-bottom: black solid 2px;
+}
+.registrar-component__phone-input-line {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 14px;
 }
 .registrar-component__data-input-box {
     display: flex;
@@ -19,7 +33,7 @@ registrar-component__wrapper {
 }
 .registrar-component__attendance-input-line {
     display: flex;
-    padding-right: 60px;
+    padding-right: 75px;
 }
 .registrar-component__attendance-input-label {
     flex-grow: 1;
@@ -27,26 +41,10 @@ registrar-component__wrapper {
     text-align: right;
     padding-right: 3px;
 }
-.registrar-component__attendance-input-control{
+.registrar-component__attendance-input-control {
     padding-right: 0px;
 }
-@media only screen and (min-width: 320px) and (max-width: 767px) {
-    .registrar-component__form-box{
-        width: 320px;
-    }
-}
-@media only screen and (min-width: 768px) and (max-width: 1023px) {
-    .registrar-component__form-box{
-        width: 400px;
-    }
-}
-@media only screen and (min-width: 1024px) {
-    .registrar-component__form-box{
-        width: 500px;
-    }
-}
 
-//________________________________
 .edit-registrar_phone-input {
     display: inline-block;
 }
@@ -58,9 +56,12 @@ registrar-component__wrapper {
     display: inline-block;
     padding-right: 10px;
 }
+.registrar-attendee-count-component .registrar-meal-count-component {
+    width: 30px;
+}
 .registrar-component_button-wrapper {
     margin-top: 10px;
-    margin-left: 10%;
+    text-align: center;
     margin-bottom: 15px;
 }
 .registrar-component_button-register {
@@ -71,11 +72,44 @@ registrar-component__wrapper {
 .registrar-component_button-cancel {
     padding: 2px 5px;
     margin: 5px 5px;
-    background-color: #ccc;
+    background-color: white;
 }
 .registrar-component_button-delete {
     padding: 2px 5px;
     margin: 5px 5px;
     background-color: red;
     color: white;
+}
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+    .registrar-component__form-box {
+        width: 320px;
+    }
+    .registrar-component__attendance-input-line {
+        padding-right: 100px;
+    }
+    .registrar-component__phone-input-line {
+        padding-right: 40px;
+    }
+}
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+    .registrar-component__form-box {
+        width: 400px;
+    }
+    .registrar-component__attendance-input-line {
+        padding-right: 140px;
+    }
+    .registrar-component__phone-input-line {
+        padding-right: 90px;
+    }
+}
+@media only screen and (min-width: 1024px) {
+    .registrar-component__form-box {
+        width: 500px;
+    }
+    .registrar-component__attendance-input-line {
+        padding-right: 190px;
+    }
+    .registrar-component__phone-input-line {
+        padding-right: 90px;
+    }
 }

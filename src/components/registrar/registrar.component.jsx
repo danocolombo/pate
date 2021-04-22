@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withRouter } from 'react-router';
+import { FaLock } from 'react-icons/fa';
 import { useHistory } from 'react-router-dom';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import { setAlert } from '../../redux/alert/alert.action';
@@ -374,11 +375,16 @@ const Registrar = ({
                 break;
         }
     };
+    const areMealsLocked = () => {
+        // if pate.rally.meal.deadline is today or in future, return true;
+
+        return true;
+    };
     return (
         <>
             <div className='registration-page__wrapper'>
                 <div className='registrar-component__form-box'>
-                    <div className='registration-page__header'>
+                    <div className='registrar-component__header'>
                         REGISTRATION
                     </div>
                     <div className='registration-page__section-header'>
@@ -430,26 +436,23 @@ const Registrar = ({
                                 />
                             </div>
                         </div>
-                        <div className='registration-page__input-line'>
-                            <div className='registration-page__input-label'>
-                                Phone
-                            </div>
-                            <div className='registration-page__input-control'>
-                                <PhoneInput
-                                    onlyCountries={['us']}
-                                    country='us'
-                                    placeholder='(702) 123-4567'
-                                    disableCountryCode
-                                    disableDropdown
-                                    value={phone}
-                                    onChange={(phone) => setPhone(phone)}
-                                    inputProps={{
-                                        // name: 'phone',
-                                        required: true,
-                                        placeholder: '(XXX) XXX-XXXX',
-                                    }}
-                                />
-                            </div>
+
+                        <div className='registrar-component__phone-input-line'>
+                            <PhoneInput
+                                onlyCountries={['us']}
+                                country='us'
+                                disableCountryCode
+                                disableDropdown
+                                value={phone}
+                                onChange={(phone) => setPhone(phone)}
+                                inputProps={{
+                                    padding: 0,
+                                    name: 'Cell',
+                                    margin: 0,
+                                    required: true,
+                                    placeholder: '(xxx) xxx-xxxx',
+                                }}
+                            />
                         </div>
                     </div>
                     <div className='registration-page__section-header'>
@@ -578,7 +581,7 @@ const Registrar = ({
                             <div className='registrar-component__attendance-input-control'>
                                 <input
                                     type='number'
-                                    className='attendee-count-component'
+                                    className='registrar-attendee-count-component'
                                     id='attendeeCount'
                                     name='attendeeCount'
                                     onChange={handleChange}
@@ -598,7 +601,7 @@ const Registrar = ({
                             <div className='registrar-component__attendance-input-control'>
                                 <input
                                     type='number'
-                                    className='meal-count-component'
+                                    className='registrar-meal-count-component'
                                     id='mealCount'
                                     name='mealCount'
                                     onChange={handleChange}
@@ -606,8 +609,17 @@ const Registrar = ({
                                     min='0'
                                     step='1'
                                     max='10'
+                                    disabled={areMealsLocked}
                                     required
                                 />
+                                {areMealsLocked() ? (
+                                    <span className='registrar-component__meals-lock'>
+                                        <FaLock />
+                                        YES
+                                    </span>
+                                ) : (
+                                    <span>no</span>
+                                )}
                             </div>
                             {/*<NumericInput min='0' max='10' value={attendeeCount} size='2'/>*/}
                         </div>

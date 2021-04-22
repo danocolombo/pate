@@ -35,7 +35,7 @@
 }
 .event-details__event-date {
     padding: 10px 0 0 0;
-    
+
     text-align: center;
     // border: black solid 1px;
     font-weight: bold;
@@ -44,7 +44,7 @@
 .event-details__event-time {
     // color: white;
     flex-grow: 1;
-    
+
     text-align: center;
 }
 
@@ -54,71 +54,72 @@
     // color: white;
     padding: 10px 20px;
 }
-.event-details-component__wrapper{
+.event-details-component__wrapper {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
-.event-details-component__form-box{
+.event-details-component__form-box {
     background-color: lightgray;
     width: 280px;
     margin: 5px 0 0px 0;
     border: black solid 1px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
     // border-radius: 5px;
 }
-.event-details-component__header{
+.event-details-component__header {
     font-size: 1.2em;
     padding: 5px 0;
     font-weight: bold;
-    background-color: #4484CE;
+    background-color: #4484ce;
     text-align: center;
     color: white;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 }
-.event-details-component__section-header{
+.event-details-component__section-header {
     font-weight: bold;
     font-size: 1.1em;
     color: black;
     text-align: center;
     padding: 10px 0 0 0;
 }
-.event-details-component__data-input-box{
+.event-details-component__data-input-box {
     display: flex;
     flex-direction: column;
     margin: 5px 10px 0px 10px;
 }
-.event-details-component__input-line{
+.event-details-component__input-line {
     display: flex;
     padding-right: 15px;
 }
-.event-details-component__church-address-line{
+.event-details-component__church-address-line {
     color: black;
     text-align: center;
-    
 }
-.event-details-component__input-label{
+.event-details-component__input-label {
     flex-grow: 1;
     color: black;
     text-align: right;
     padding-right: 3px;
 }
-.event-details-component__input-control{
+.event-details-component__input-control {
     padding-right: 0px;
 }
 @media only screen and (min-width: 320px) and (max-width: 767px) {
-    .event-details-component__form-box{
+    .event-details-component__form-box {
         width: 320px;
     }
 }
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
-    .event-details-component__form-box{
+    .event-details-component__form-box {
         width: 400px;
     }
 }
 @media only screen and (min-width: 1024px) {
-    .event-details-component__form-box{
+    .event-details-component__form-box {
         width: 500px;
     }
 }
@@ -131,7 +132,7 @@
     padding-top: 10px;
     width: 80%;
     // align-items: center;
-    background: #286DA8;
+    background: #286da8;
     border: black solid 1px;
     color: white;
 }
