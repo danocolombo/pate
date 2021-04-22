@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect,useState } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withRouter } from 'react-router';
@@ -24,6 +24,7 @@ const Registrar = ({
     setAlert,
     clearSpinner,
 }) => {
+    const [mealsLocked, setMealsLocked] = useState(true);
     const [attendeeCount, setAttendeeCount] = useState(regData?.attendeeCount);
     const [mealCount, setMealCount] = useState(
         regData?.mealCount ? regData.mealCount : 0
@@ -51,7 +52,9 @@ const Registrar = ({
     );
 
     const history = useHistory();
-
+    useEffect(() => {
+        areMealsLocked() ? setMealsLocked(true):setMealsLocked(false);
+    }, []);
     const handleCancel = (e) => {
         async function purgeTempReg() {
             clearTempRegistration();
@@ -376,9 +379,20 @@ const Registrar = ({
         }
     };
     const areMealsLocked = () => {
-        // if pate.rally.meal.deadline is today or in future, return true;
-
-        return true;
+        //--------------------------------------------------------------------
+        //for the meal deadline we need to get the redux value and add 1 day
+        //for calculation purposes to include 'today'.
+        //--------------------------------------------------------------------
+        let dbDate = pateSystem?.rally?.meal?.deadline;
+        let convertedDBDate = Date.parse(dbDate);
+        let deadlineTestDate = new Date(convertedDBDate);
+        deadlineTestDate.setDate(deadlineTestDate.getDate() + 1);
+        var today = new Date();
+        if (today.getTime() < deadlineTestDate.getTime()) {
+            return false;
+        } else {
+            return true;
+        }
     };
     return (
         <>
@@ -598,7 +612,7 @@ const Registrar = ({
                             <div className='registrar-component__attendance-input-label'>
                                 Meal
                             </div>
-                            <div className='registrar-component__attendance-input-control'>
+                            <div className='registrar-component__meal-input-control'>
                                 <input
                                     type='number'
                                     className='registrar-meal-count-component'
@@ -609,17 +623,14 @@ const Registrar = ({
                                     min='0'
                                     step='1'
                                     max='10'
-                                    disabled={areMealsLocked}
+                                    disabled={mealsLocked}
                                     required
                                 />
-                                {areMealsLocked() ? (
+                                {mealsLocked ? (
                                     <span className='registrar-component__meals-lock'>
-                                        <FaLock />
-                                        YES
+                                        {' '} <FaLock />
                                     </span>
-                                ) : (
-                                    <span>no</span>
-                                )}
+                                ) : null}
                             </div>
                             {/*<NumericInput min='0' max='10' value={attendeeCount} size='2'/>*/}
                         </div>
