@@ -64,9 +64,17 @@ const Events = ({
             <div className='eventwrapper'>
                 <EventDetails theEvent={plan} />
                 <div>
-                    <Link to={`/registration/${plan?.body?.Items[0]?.uid}`}>
-                        <button className='registerbutton'>REGISTER NOW</button>
-                    </Link>
+                    {currentUser?.isLoggedIn === true ? (
+                        <Link to={`/registration/${plan?.body?.Items[0]?.uid}`}>
+                            <button className='registerbutton'>
+                                REGISTER NOW
+                            </button>
+                        </Link>
+                    ) : (
+                        <Link to={`/signin`}>
+                            <button className='registerbutton'>SIGN-IN</button>
+                        </Link>
+                    )}
                 </div>
             </div>
             <MainFooter />

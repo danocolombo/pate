@@ -16,16 +16,16 @@ export const BasicHelp = () => {
                                 as quick registrations. Ability to modify your
                                 registration, cancel your registration and keep
                                 track of all your registrations and attendance.
+                                <br />
+                                It also provides a way for the Celebrate
+                                Recovery state rep to contact you.
                             </dd>
                             <dt className='help-definition__term'>
                                 Do I have to register?
                             </dt>
                             <dd className='help-definition__definition'>
-                                No. you can register by typing in all your
-                                information. NOTE: you will need to contact your
-                                Celebrate Recovery state rep to modify and
-                                cancel your regisration. You will not be able to
-                                link to your registrations later.
+                                No. You can arrive at the event a little bit
+                                early and register at the door.
                             </dd>
                             <dt className='help-definition__term'>
                                 Will I be notified if the event changes or is
