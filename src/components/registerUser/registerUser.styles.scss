@@ -1,32 +1,44 @@
-.registeruserwrapper {
-    text-align: center;
-    // padding: 1rem;
-    // margin: 0.5rem 0;
-    padding-top: 10px;
-    width: 80%;
-    height: auto;
-    // align-items: center;
-    background: lightgray;
+.register-user-component__wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: lightgray;
+    border-left: black solid 1px;
+    border-bottom: black solid 1px;
+    border-right: black solid 1px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    width: 80vw;
+    padding-top:10px;
+}
+.register-user-component__input-line{
+    display: flex;
+    flex-direction: row;
+    width: 80vw;
+    padding-bottom: 5px;
+}
+.register-user-component__input-label{
+    flex-grow: 1;
     color: black;
-}
-.registerform {
+    width:30vw;
     text-align: right;
-    padding-right: 10%;
-    margin-bottom: 20px;
+    padding-right: 5px;
+    // padding:5px 3px;
 }
-.registerform label {
-    margin-right: 10px;
+
+.register-user-component__input-control{
+    flex-grow: 1;
+    width:50vw;
+    text-align: left;
+    // padding:5px;
+    
 }
-.profilehomesection {
-    text-align: center;
-    margin: 10px 0 10px 0;
+.register-user-component__button-wrapper{
+    padding-bottom:5px;
 }
-.churchsection {
-    font-size: 1.2em;
-    text-align: center;
-    margin: 10px 0 10px 0;
-}
-.profilebutton {
-    text-align: center;
-    margin-top: 10px;
+.register-user-component__register-button{
+    background-color: yellow;
+    padding:2px 5px;
+    margin: 5px 0;
+    border-radius: 5px;
 }

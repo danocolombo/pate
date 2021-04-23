@@ -1,0 +1,72 @@
+// .events-marquee-component__flex-container {
+//     display: flex;
+//     flex-direction: column;
+// }
+.events-marquee-compoment__events-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.events-marquee-component__events-box {
+    // border: black solid 1px;
+    // border-radius: 5px;
+    background-color: white;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    width: 280px;
+    margin-top: 5px;
+}
+.events-marquee-component__page-title {
+    background-color: #4717F6;
+    color: white;
+    padding: 2px 0px;
+    font-weight: bold;
+    flex-grow: 1;
+    text-align: center;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.events-marquee-component__event-box {
+    display: flex;
+    flex-direction: column;
+    background-color: lightgray;
+    margin: 5px 10px;
+}
+.events-marquee-component__event-date {
+    background-color: #286DA8;
+    color: white;
+    font-weight: bold;
+    border: black solid 1px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    text-align: center;
+}
+.events-marquee-component__event-church-name {
+    text-align: center;
+    font-size: 1.1em;
+    font-weight: bold;
+    border-left: black solid 1px;
+    border-right: black solid 1px;
+}
+.events-marquee-component__event-church-data {
+    text-align: center;
+    border-left: black solid 1px;
+    border-right: black solid 1px;
+}
+.events-marquee-component__view-details {
+    text-align: center;
+    background-color: #4484CE;
+    padding: 5px 0px;
+    border-left: black solid 1px;
+    border-right: black solid 1px;
+    border-bottom: black solid 1px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+.events-marquee-component__view-details-link {
+    text-decoration: none;
+    color: yellow;
+    font-weight: bold;
+}

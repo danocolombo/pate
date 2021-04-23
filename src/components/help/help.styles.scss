@@ -1,0 +1,33 @@
+.help-box {
+    margin-left: 10vw;
+    margin-top: 15px;
+    border: black solid 1px;
+    border-radius: 5px;
+    width: 80vw;
+    background-color: lightgray;
+}
+.help-flex-box__container {
+    display: flex;
+    padding: 10px;
+}
+.help-flex-box_body {
+}
+.help-title {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 1.3em;
+    font-weight: 800;
+}
+.help-definition__list {
+}
+.help-definition__term {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    font-style: italic;
+    padding-top: 5px;
+}
+.help-definition__definition {
+}
+.help-quote {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-style: italic;
+}

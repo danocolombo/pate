@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withRouter } from 'react-router';
 import Header from '../../components/header/header.component';
+import { MainFooter } from '../../components/footers/main-footer';
 import './support.styles.scss';
 const Support = () => {
     return (
@@ -18,12 +19,13 @@ const Support = () => {
                             situation.
                             <br />
                             <a href='mailto:fortsonguru@gmail.com'>
-                                pate.support@gmail.com
+                                fortsonguru@gmail.com
                             </a>
                         </p>
                     </div>
                 </div>
             </div>
+            <MainFooter />
         </>
     );
 };

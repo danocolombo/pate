@@ -1,11 +1,31 @@
-.pagewrapper {
+.register-user-page__wrapper {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    height: auto;
-    max-width: 350px;
+    width: 80vw;
+    margin-left: 10vw;
 }
-.register-user_offer-confirm-link{
-    color: white;
-    margin-left: 10%;
+.register-user-page__page-header{
+    font-size: 1em;
+    font-weight: bold;
+    background-color: #4484CE;
+    width:80vw;
+    padding: 2px 0px;
+    margin-top:5px;
+    color:white;
+    text-align: center;
+    border: black solid 1px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.register-user-page__offer-confirm-box{
+    margin-top: 5px;
+    background-color: white;
+    color: black;
+    padding:3px 5px;
+    border-radius: 5px;
+}
+.register-user-page__confirmation-link{
+    text-decoration: none;
+    color: blue;
+    font-weight: bold;
 }

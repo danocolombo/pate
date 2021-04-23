@@ -1,6 +1,7 @@
 * {
     padding: 0px;
     margin: 0px;
+    text-decoration: none;
 }
 .App {
     text-align: center;
@@ -10,7 +11,12 @@
     height: 40vmin;
     pointer-events: none;
 }
-
+/* hide nav words when smaller than 700px */
+@media (max-width: 500px) {
+    .hide-sm {
+      display: none;
+    }
+  }
 @media (prefers-reduced-motion: no-preference) {
     .App-logo {
         animation: App-logo-spin infinite 20s linear;
@@ -45,6 +51,11 @@
     to {
         transform: rotate(360deg);
     }
+}
+.landing {
+    position: relative;
+    background: url('./assets/background.jpg') no-repeat center center/cover;
+    height: 100vh;
 }
 .alert {
     padding: 0.8rem;

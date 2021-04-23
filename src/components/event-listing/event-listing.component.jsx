@@ -44,8 +44,8 @@ const EventListing = ({
     };
     return (
         <Fragment>
-            <div className='event-box'>
-                <div className='event-listing__date-box'>
+            <div className='event-listing-component__event-box'>
+                <div className='event-listing-component__date-box'>
                     <div className='event-month'>
                         <h3>
                             {month2Display(eventDate)}&nbsp;
@@ -53,17 +53,23 @@ const EventListing = ({
                         </h3>
                     </div>
                 </div>
-                <div className='event-listing__address-box'>
-                    <div className='event-listing__address-box'>
-                        <div className='event-location'>{name}</div>
-                        <div className='event-street'>{street}</div>
-                        <div className='event-city-state'>
-                            <span>{city}</span>,&nbsp;
-                            <span>{stateProv}</span>
-                        </div>
-                        <div className='event-postalcode'>{postalCode}</div>
+                <div className='event-listing-component__address-box '>
+                    <div className='event-listing-component__church-name'>
+                        {name}
                     </div>
-                    <div className='linkbutton'>
+                    <div className='event-listing-component__street'>
+                        {street}
+                    </div>
+                    <div className='event-listing-component__city-state'>
+                        <span>{city}</span>,&nbsp;
+                        <span>{stateProv}</span>
+                    </div>
+                    <div className='event-listing-component__postal-code'>
+                        {postalCode}
+                    </div>
+                </div>
+                <div className='event-listing-component__view-details-box'>
+                    <div className='event-listing-component__view-details-text'>
                         <StyledLink to={`/event/${uid}`}>
                             VIEW DETAILS
                         </StyledLink>

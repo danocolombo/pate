@@ -125,40 +125,41 @@ const ConfirmUserDetails = ({
         <Spinner />
     ) : (
         <>
-            <div className='confirmuserwrapper'>
-                <div className='confirmform'>
-                    <form>
-                        <div className='instructions'>
-                            Check your email for a confirmation code & enter
-                            below to confirm your registration.
-                        </div>
-                        <div>
-                            <label htmlFor='email'>User Name</label>
-                            <input
-                                type='text'
-                                name='userName'
-                                id='userName'
-                                value={userName}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor='code'>Code</label>
-                            <input
-                                type='text'
-                                id='code'
-                                name='code'
-                                onChange={handleChange}
-                                value={code}
-                                required
-                            />
-                        </div>
-                        <div className='confirmButton'>
-                            <button onClick={handleSubmitClick}>CONFIRM</button>
-                        </div>
-                    </form>
+            <div className='confirm-user-component__wrapper'>   
+                <div className='confirm-user-component__instructions'>
+                    Check your email for a confirmation code & enter
+                    below to confirm your registration.
                 </div>
+                <div className='confirm-user-component__input-line'>
+                    <div className='confirm-user-component__input-label'>User Name</div>    
+                    <div className='confirm-user-component__input-control'>
+                        <input
+                            type='text'
+                            name='userName'
+                            id='userName'
+                            value={userName}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                </div>
+                <div className='confirm-user-component__input-line'>
+                    <div className='confirm-user-component__input-label'>Code</div>    
+                    <div className='confirm-user-component__input-control'>
+                        <input
+                            type='text'
+                            id='code'
+                            name='code'
+                            onChange={handleChange}
+                            value={code}
+                            required
+                        />
+                    </div>
+                </div>
+                <div className='confirm-user-component__button-wrapper'>
+                    <button className='confirm-user-component__confirm-button' onClick={handleSubmitClick}>CONFIRM</button>
+                </div>
+                
             </div>
         </>
     );

@@ -1,49 +1,69 @@
 hr {
     margin: 10px 15px;
 }
-.servepagewrapper {
+.serve-page__wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
+    // border-top: black solid 1px;
+    // border-left: black solid 1px;
+    // border-right: black solid 1px;
+    // border-bottom: black solid 1px;
+
 }
-.serve-pageheader {
-    background: #379683;
-    text-align: center;
-    font-weight: bold;
-    font-size: 1.3em;
-    color: white;
-    width: 80%;
-    margin: 3px 0 0 0;
-    padding: 5px 0px;
+.serve-page__serve-box{
+    display:flex;
+    flex-direction: column;
     border-top: black solid 1px;
     border-left: black solid 1px;
     border-right: black solid 1px;
     border-bottom: black solid 1px;
+    border-radius: 5px;
 }
-.servedetailswrapper {
-    text-align: center;
-    padding-top: 10px;
-    padding-bottom: 15px;
-    width: 80%;
-    background: #557a95;
-    color: white;
-    border-right: black solid 1px;
-    border-bottom: black solid 1px;
-    border-left: black solid 1px;
-}
-.serve-page-message-box {
-    font-family: 'Roboto', sans-serif;
-    margin: 0px 40px;
-}
-.event-list-header {
+.serve-page__header {
+    background: #4717F6;
     text-align: center;
     font-weight: bold;
     font-size: 1.3em;
     color: white;
-    // width: 80%;
+    width: 100%;
     margin: 3px 0 0 0;
     padding: 5px 0px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    // border-top: black solid 1px;
+    // border-left: black solid 1px;
+    // border-right: black solid 1px;
+    // border-bottom: black solid 1px;
 }
-.event-list-item {
-    margin: 3px 0;
+.serve-page__details-wrapper {
+    text-align: center;
+    // padding-top: 10px;
+    padding-bottom: 15px;
+    width: 100%;
+    // background: #286DA8;
+    background-color: white;
+    color: black;
+    border-right: black solid 1px;
+    border-bottom: black solid 1px;
+    border-left: black solid 1px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
+.serve-page__message-box {
+    font-family: 'Roboto', sans-serif;
+    margin: 0px 40px;
+    padding: 10px 0px;
+}
+// .event-list-header {
+//     text-align: center;
+//     font-weight: bold;
+//     font-size: 1.3em;
+//     color: white;
+//     // width: 80%;
+//     margin: 3px 0 0 0;
+//     padding: 5px 0px;
+// }
+// .event-list-item {
+//     margin: 3px 0;
+// }

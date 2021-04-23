@@ -1,28 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
+import { IoTrash } from 'react-icons/io5';
 import StyledLink from '../../components/custom-link/custom-link-white.component';
-import './userregistrationsoverview.styles.scss';
+import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import { removeRegistration } from '../../redux/registrations/registrations.actions';
+
+import './userregistrationsoverview.styles.scss';
 const UserRegistrationOverview = ({
     currentUser,
     registrations,
+    setSpinner,
+    clearSpinner,
     removeRegistration,
 }) => {
     const history = useHistory();
-    if(!currentUser?.isLoggedIn){
+    if (!currentUser?.isLoggedIn) {
         history.push('/');
     }
-    // const util = require('util');
-    // console.log(
-    //     '&%&%&%&%&%___registrations___&%&%&%&%&%\n' +
-    //         util.inspect(registrationInfo, { showHidden: false, depth: null })
-    // );
-    // const registrations = registrationInfo;
-
-    // if (registrations) {
-    //     registrations.forEach((r) => {});
-    // }
     const dateToDisplay = (dt) => {
         const y = dt.substring(0, 4);
         const m = parseInt(dt.substring(4, 6));
@@ -33,6 +28,8 @@ const UserRegistrationOverview = ({
     };
     const handleCancellation = async (registration) => {
         //delete from database
+        setSpinner();
+
         await fetch(
             'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/registrations',
             {
@@ -40,8 +37,8 @@ const UserRegistrationOverview = ({
                 body: JSON.stringify({
                     operation: 'deleteRegistration',
                     payload: {
-                        Key: { uid: registration.uid }
-                    }
+                        Key: { uid: registration.uid },
+                    },
                 }),
                 headers: {
                     'Content-type': 'application/json; charset=UTF-8',
@@ -50,14 +47,14 @@ const UserRegistrationOverview = ({
         )
             .then((response) => response.json())
             .then((data) => {
-                const util = require('util');
-                console.log(
-                    'db data returned: \n' +
-                        util.inspect(data, {
-                            showHidden: false,
-                            depth: null,
-                        })
-                );
+                // const util = require('util');
+                // console.log(
+                //     'db data returned: \n' +
+                //         util.inspect(data, {
+                //             showHidden: false,
+                //             depth: null,
+                //         })
+                // );
             });
         //-------------------------
         // reduce event numbers.
@@ -69,7 +66,7 @@ const UserRegistrationOverview = ({
             },
         };
         const mCount = parseInt(registration.mealCount, 10) * -1;
-        if (mCount != 0) {
+        if (mCount !== 0) {
             eventUpdate.adjustments.mealCount = mCount;
         }
         await fetch(
@@ -95,24 +92,31 @@ const UserRegistrationOverview = ({
         //??????
         // may need to reload stateRep & stateLead redux
         //??????
+        clearSpinner();
     };
     return (
         <>
             <div className='user-reg-overview__wrapper'>
+                <div className='user-reg-overview__section-header'>
+                    YOUR REGISTRATIONS
+                </div>
                 {registrations
                     ? registrations.map((reg) => (
                           <>
-                              <div className='user-reg-overview__item'>
-                                  <div className='user-reg-overview__date'>
+                              <div className='user-reg-flex__event-wrapper'>
+                                  <div className='user-reg-flex__date'>
                                       <StyledLink
-                                          style={{ textDecoration: 'none' }}
+                                          style={{
+                                              textDecoration: 'none',
+                                              color: 'blue',
+                                          }}
                                           to={`/editregistration/${reg.eid}/${reg.uid}`}
                                       >
                                           {dateToDisplay(reg.eventDate)}
                                       </StyledLink>
                                   </div>
 
-                                  <div className='user-reg-overview__name'>
+                                  <div className='user-reg-flex__location'>
                                       {reg?.location.name}
                                       <br />
                                       {reg?.location?.city},{' '}
@@ -121,16 +125,18 @@ const UserRegistrationOverview = ({
 
                                   {reg.registrar?.firstName !==
                                   currentUser?.firstName ? (
-                                      <span>({reg.registrar?.firstName})</span>
+                                      <div className='user-reg-flex__location'>
+                                          ({reg.registrar?.firstName})
+                                      </div>
                                   ) : null}
 
-                                  <div className='user-reg-overview__cancel-button'>
+                                  <div className='user-reg-flex__cancel'>
                                       <Link
                                           onClick={() => {
                                               handleCancellation(reg);
                                           }}
                                       >
-                                          X
+                                          <IoTrash />
                                       </Link>
                                   </div>
                               </div>
@@ -143,6 +149,8 @@ const UserRegistrationOverview = ({
 };
 
 const mapDispatchToProps = (dispatch) => ({
+    setSpinner: () => dispatch(setSpinner()),
+    clearSpinner: () => dispatch(clearSpinner()),
     removeRegistration: (registration) =>
         dispatch(removeRegistration(registration)),
 });

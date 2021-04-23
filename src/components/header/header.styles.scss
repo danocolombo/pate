@@ -1,160 +1,173 @@
-// .header {
-//     height: 70px;
-//     width: 100%;
-//     display: flex;
-//     justify-content: space-between;
-//     margin-bottom: 25px;
-
-//     .logo-container {
-//         height: 100%;
-//         width: 100%;
-//         padding-left: 20px;
-//     }
-//     .logo {
-//         width: 125px;
-//         height: 100px;
-//         position: absolute;
-//         padding-bottom: 10px;
-//     }
-//     .options {
-//         width: 50%;
-//         height: 100%;
-//         display: flex;
-//         align-items: center;
-//         justify-content: flex-end;
-
-//         .option {
-//             padding: 10px 15px;
-//             cursor: pointer;
-//         }
-//     }
-// }
-.main-header {
-    background: #379683;
-    width: 100%;
-    padding: 8px 16px;
+.header__flex-container {
+    background: #4484CE;
+    width: 100vw;
+    display: flex;
+    align-items: center;
 }
-.main-header > div {
-    //this formats a div that directly follows the main-header class object
-    display: inline-block;
-    width: 60px;
-    vertical-align: middle;
+.header__brand-box {
+    // background-color: blue;
 }
-.brand-name {
+.header__brand-name {
     color: white;
-    font-family: 'Abril Fatface', cursive;
+    // font-family: 'Abril Fatface', cursive;
+    font-family: 'Exo', sans-serif;
     font-size: 24px;
     font-weight: bold;
     text-decoration: none;
+    padding: 5px;
+    text-align: flex-start;
 }
-.main-nav {
-    display: inline-block;
-    text-align: right;
-    width: calc(100% - 75px);
-    vertical-align: middle;
+.header__nav-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    flex-grow: 1;
+    // border: yellow dotted 1px;
 }
-.main-navigation-button {
-    // background-color: lightgray;
+.header__nav-item {
     color: white;
+    align-items: flex-end;
+    margin-right: 10px;
+    // border: blue solid 1px;
 }
-.main-nav__items {
-    margin: 0;
-    padding: 0;
-    color: white;
-    list-style: none;
-}
-.main-nav__item {
-    display: inline-block;
-    margin: 0 15px;
-}
-.main-nav__item a {
-    text-decoration: none;
+.header__nav-control-link {
     color: white;
     font-weight: bold;
-
-    // &:hover {
-    //     text-decoration: none;
-    //     background-color: lightgray;
-    // }
-    // font-family: 'Abril Fatface', cursive;
+    text-decoration: none;
 }
 
-// .login-icon {
-//     padding-right: 30px;
-//     text-align: center;
+// .header__nav-control {
+//     border: yellow solid 1px;
+//     align-items: center;
+//     text-align: flex-end;
+// }
+
+// .main-header {
+//     background: #4484CE;
+//     width: 100vw;
+//     padding: 8px 16px;
+// }
+// .main-header > div {
+//     //this formats a div that directly follows the main-header class object
+//     display: inline-block;
+//     width: 60px;
+//     vertical-align: middle;
 // }
 // .brand-name {
-//     font-family: 'Abril Fatface', cursive;
 //     color: white;
+//     font-family: 'Abril Fatface', cursive;
 //     font-size: 24px;
-// }
-// .toggle-button:focus {
-//     outline: none;
-// }
-
-// .toggle-button__bar {
-//     width: 100%;
-//     height: 0.2rem;
-//     background: black;
-//     display: block;
-//     margin: 0.6rem 0;
-// }
-
-// .main-header__brand {
-//     color: #0e4f1f;
-//     text-decoration: none;
 //     font-weight: bold;
-//     /* width: 20px; */
+//     text-decoration: none;
 // }
-
-// .main-header__brand img {
-//     height: 2.5rem;
-//     vertical-align: middle;
-//     /* width: 100%; */
-// }
-
 // .main-nav {
-//     display: none;
+//     display: inline-block;
+//     text-align: right;
+//     width: calc(100% - 75px);
+//     vertical-align: middle;
 // }
-
+// .main-navigation-button {
+//     // background-color: lightgray;
+//     color: white;
+// }
 // .main-nav__items {
 //     margin: 0;
 //     padding: 0;
+//     color: white;
 //     list-style: none;
-//     display: flex;
 // }
-
 // .main-nav__item {
-//     margin: 0 1rem;
+//     display: inline-block;
+//     margin: 0 15px;
 // }
-
-// .main-nav__item a,
-// .mobile-nav__item a {
+// .main-nav__item a {
 //     text-decoration: none;
-//     color: #0e4f1f;
+//     color: white;
 //     font-weight: bold;
-//     padding: 0.2rem 0;
+
+//     // &:hover {
+//     //     text-decoration: none;
+//     //     background-color: lightgray;
+//     // }
+//     // font-family: 'Abril Fatface', cursive;
 // }
 
-// .main-nav__item a:hover,
-// .main-nav__item a:active {
-//     color: white;
-//     border-bottom: 5px solid white;
-// }
+// // .login-icon {
+// //     padding-right: 30px;
+// //     text-align: center;
+// // }
+// // .brand-name {
+// //     font-family: 'Abril Fatface', cursive;
+// //     color: white;
+// //     font-size: 24px;
+// // }
+// // .toggle-button:focus {
+// //     outline: none;
+// // }
 
-// .main-nav__item--cta a,
-// .mobile-nav__item--cta a {
-//     color: white;
-//     background: #ff1b68;
-//     padding: 0.5rem 1rem;
-//     border-radius: 8px;
-// }
+// // .toggle-button__bar {
+// //     width: 100%;
+// //     height: 0.2rem;
+// //     background: black;
+// //     display: block;
+// //     margin: 0.6rem 0;
+// // }
 
-// .main-nav__item--cta a:hover,
-// .main-nav__item--cta a:active,
-// .mobile-nav__item--cta a:hover,
-// .mobile-nav__item--cta a:active {
-//     color: #ff1b68;
-//     background: white;
-//     border: none;
-// }
+// // .main-header__brand {
+// //     color: #0e4f1f;
+// //     text-decoration: none;
+// //     font-weight: bold;
+// //     /* width: 20px; */
+// // }
+
+// // .main-header__brand img {
+// //     height: 2.5rem;
+// //     vertical-align: middle;
+// //     /* width: 100%; */
+// // }
+
+// // .main-nav {
+// //     display: none;
+// // }
+
+// // .main-nav__items {
+// //     margin: 0;
+// //     padding: 0;
+// //     list-style: none;
+// //     display: flex;
+// // }
+
+// // .main-nav__item {
+// //     margin: 0 1rem;
+// // }
+
+// // .main-nav__item a,
+// // .mobile-nav__item a {
+// //     text-decoration: none;
+// //     color: #0e4f1f;
+// //     font-weight: bold;
+// //     padding: 0.2rem 0;
+// // }
+
+// // .main-nav__item a:hover,
+// // .main-nav__item a:active {
+// //     color: white;
+// //     border-bottom: 5px solid white;
+// // }
+
+// // .main-nav__item--cta a,
+// // .mobile-nav__item--cta a {
+// //     color: white;
+// //     background: #ff1b68;
+// //     padding: 0.5rem 1rem;
+// //     border-radius: 8px;
+// // }
+
+// // .main-nav__item--cta a:hover,
+// // .main-nav__item--cta a:active,
+// // .mobile-nav__item--cta a:hover,
+// // .mobile-nav__item--cta a:active {
+// //     color: #ff1b68;
+// //     background: white;
+// //     border: none;
+// // }

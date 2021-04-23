@@ -13,6 +13,16 @@ const EventDetails = ({ theEvent }) => {
     // );
     const displayDate = () => {
         // format the date and return it
+        //the new formatted date coming in will look like this...
+        //            2021-04-21
+        let dateParts = displayThis?.eventDate.split('-');
+        console.log(dateParts);
+        // dateParts.forEach(element => {
+        //     console.log(element);
+        // });
+        // let newEventDate = new Date(dateParts[0], dateParts[1], dateParts[2]);
+        // let newTheDate = newEventDate.toDateString();
+        // console.log('newTheDate:' + newTheDate);
         let y = parseInt(displayThis?.eventDate.substring(0, 4));
         let m = parseInt(displayThis?.eventDate.substring(4, 6)) - 1;
         let d = parseInt(displayThis?.eventDate.substring(6, 8));
@@ -49,28 +59,27 @@ const EventDetails = ({ theEvent }) => {
     };
     return (
         <>
-            <div className='eventdetailswrapper'>
-                <div className='event_graphics'>
+            <div className='event-details__wrapper'>
+                <div className='event-details__graphic-wrapper'>
+                    {displayThis?.graphic !== 'tbd'?(
                     <img
-                        className='event_image'
+                        className='event-details__graphic-image'
                         src={displayThis?.graphic}
                         alt='CR P8 Rally'
-                    ></img>
+                    ></img>):null}
                 </div>
-                <div className='church_info'>
-                    <div className='church_name'>{displayThis?.name}</div>
-                    <div>{displayThis?.street}</div>
-                    <div>
+                <div className='event-details__church-info'>
+                    <div className='event-details__church-name'>{displayThis?.name}</div>
+                    <div className='event-details__church-street'>{displayThis?.street}</div>
+                    <div className='event-details__city-state-postal'>
                         {displayThis?.city},{displayThis?.stateProv}&nbsp;
                         {displayThis?.postalCode}
                     </div>
                 </div>
-                <div className='event_date'>{displayDate()}</div>
-                <div className='event_date_time'>
-                    <div className='event_date'>{displayTimes()}</div>
-                </div>
-                <div className='eventmessage'>
-                    <div>{displayThis?.message}</div>
+                <div className='event-details__event-date'>{displayDate()}</div>
+                <div className='event-details__event-time'>{displayTimes()}</div>
+                <div className='event-details__event-message'>
+                {displayThis?.message}
                 </div>
             </div>
         </>

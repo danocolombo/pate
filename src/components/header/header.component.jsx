@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
-import { BiLogInCircle, BiLogOutCircle } from 'react-icons/bi';
+import { BiLogIn, BiLogOut } from 'react-icons/bi';
+import { AiOutlineSetting } from 'react-icons/ai';
+import { FaSlideshare } from 'react-icons/fa';
 import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Auth } from 'aws-amplify';
@@ -45,51 +47,58 @@ const Header = ({
     };
     return (
         <>
-            <header className='main-header'>
-                <div>
-                    <Link to='/' className='brand-name'>
-                        PATE
+            <header className='header__flex-container'>
+                <div className='header__brand-box'>
+                    <Link to='/' className='header__brand-name'>
+                        P8 Rally
                     </Link>
                 </div>
-                <nav className='main-nav'>
+                <div className='header__nav-box'>
                     {currentUser?.isLoggedIn ? (
-                        <ul className='main-nav__items'>
+                        <>
                             {currentUser?.stateRep || currentUser?.stateLead ? (
-                                <li className='main-nav__item'>
+                                <div className='header__nav-item'>
                                     <Link
                                         to='/serve'
-                                        className='main-navigation-button'
+                                        className='header__nav-control-link'
                                     >
-                                        SERVE
+                                    <span className='nav-icon'><FaSlideshare/></span>{' '}
+                                    <span className='hide-sm'>SERVE</span>
                                     </Link>
-                                </li>
+                                </div>
                             ) : null}
-                            <li className='main-nav__item'>
+                            <div className='header__nav-item'>
                                 <Link
                                     to='/profile'
-                                    className='main-navigation-button'
+                                    className='header__nav-control-link'
                                 >
-                                    PROFILE
+                                    <span className='nav-icon'><AiOutlineSetting/></span>{' '}
+                                    <span className='hide-sm'>PROFILE</span>
                                 </Link>
-                            </li>
-                            <li className='main-nav__item'>
+                            </div>
+                            <div className='header__nav-item'>
                                 <Link
-                                    to="#"
+                                    to='#'
                                     onClick={logoutRequest}
-                                    className='main-navigation-button'
+                                    className='header__nav-control-link'
                                 >
-                                    LOGOUT
+                                    <span className='nav-icon'><BiLogOut/></span>{' '}
+                                    <span className='hide-sm'>LOGOUT</span>
                                 </Link>
-                            </li>
-                        </ul>
+                            </div>
+                        </>
                     ) : (
-                        <ul> 
-                            <li className='main-nav__item'>
-                                <Link to='/signin'>Login/Sign-up</Link>
-                            </li>
-                        </ul>
+                        <div className='header__nav-item'>
+                            <Link
+                                className='header__nav-control-link'
+                                to='/signin'
+                            >
+                            <span className='nav-icon'><BiLogIn/></span>{' '}
+                                <span className='hide-sm'>Login/Sign-up</span>
+                            </Link>
+                        </div>
                     )}
-                </nav>
+                </div>
             </header>
         </>
     );

@@ -16,8 +16,8 @@ const ConfirmUser = ({ pateSystem, match }) => {
         <>
             <Header />
 
-            <div className='pagewrapper'>
-                <div className='pageheader'>CONFIRM REGISTRATION</div>
+            <div className='register-user-page__wrapper'>
+                <div className='register-user-page__page-header'>CONFIRM REGISTRATION</div>
                 <ConfirmUserDetails id={match.params.id} />
             </div>
         </>

@@ -8,13 +8,18 @@ const StateRallyList = ({ rally }) => {
         let eventDate = em + '/' + ed;
         return eventDate;
     };
+    const coordinatorFirstName = () => {
+        const arrayOfName = rally.coordinator.name.split(' ');
+        return arrayOfName[0];
+    }
     return (
-        <div className='sr-rally-list-item'>
-            <Link to={`/serveevent/${rally.uid}`} className='sr-rally-link'>
-                <div className='sr-rally-date'>{dateToDisplay()}</div>
-                <div className='sr-rally-location'>{rally.name}</div>
-            </Link>
+        <Link to={`/serveevent/${rally.uid}`} className='serve-component__rally-link'>
+        <div className='serve-component-lead__rally-list-item'>
+        <div className='serve-component-lead__rally-date'>{dateToDisplay()}</div>
+            <div className='serve-component-lead__rally-location'>{rally.name} -</div>
+            <div className='serve-lead-component-lead__rep-name'>({coordinatorFirstName()})</div>
         </div>
+        </Link>
     );
 };
 

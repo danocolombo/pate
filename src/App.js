@@ -10,7 +10,7 @@ import './App.css';
 
 import Events from './pages/events/events.component';
 import Profile from './pages/profile/profile.page';
-import SignIn from './pages/signin/signin.component';
+import SignIn from './pages/signin/signin.page';
 import Register from './pages/registerUser/registerUser.page';
 import ConfirmUser from './pages/registerUser/confirmUser.page';
 import PrivatePage from './pages/privatePage/privatePage';
@@ -22,6 +22,9 @@ import ServeEvent from './pages/serveEvent/serveEvent.page';
 import EditRegistration from './pages/edit-registration/edit-registration.page';
 import Alert from './components/alert/alert.component';
 import Support from './pages/support/support.page';
+import Help from './pages/help/help.page';
+
+import Leroy from './pages/junkyard/junkyard';
 //----------------------
 //AMPLIFY INTEGRATION
 //----------------------
@@ -31,32 +34,44 @@ import { Auth } from 'aws-amplify';
 function App() {
     return (
         <>
-            <Alert />
-            <Router>
-                <Route exact path='/' component={Events} />
-                <Route path='/faq' component={FAQ}/>
-                {/*  <Route path='/shop' component={ShopPage} />
+            <section className='landing'>
+                <Alert />
+                <Router>
+                    <Route path='/junkyard' component={Leroy} />
+                    <Route exact path='/' component={Events} />
+                    <Route path='/faq' component={FAQ} />
+                    <Route path='/help' component={Help} />
+                    {/*  <Route path='/shop' component={ShopPage} />
                       // <Route exact path='/checkout' component={CheckoutPage} /> */}
-                <Route exact path='/profile' component={Profile} />
-                <Route path='/signin' render={() => <SignIn />} />
-                <Route exact path='/register' component={Register} />
-                <Route exact path='/confirmUser/:id' component={ConfirmUser} />
-                <Route exact path='/privatepage' component={PrivatePage} />
-                <Route exact path='/serve' component={Serve} />
-                <Route exact path='/support' component={Support} />
-                <Route exact path='/serveevent/:id' component={ServeEvent} />
-                <Route
-                    exact
-                    path='/registration/:id'
-                    component={EventRegistration}
-                />
-                <Route
-                    exact
-                    path='/editregistration/:eid/:rid'
-                    component={EditRegistration}
-                />
-                <Route exact path='/event/:id' component={EventDetails} />
-            </Router>
+                    <Route exact path='/profile' component={Profile} />
+                    <Route path='/signin' render={() => <SignIn />} />
+                    <Route exact path='/register' component={Register} />
+                    <Route
+                        exact
+                        path='/confirmUser/:id'
+                        component={ConfirmUser}
+                    />
+                    <Route exact path='/privatepage' component={PrivatePage} />
+                    <Route exact path='/serve' component={Serve} />
+                    <Route exact path='/support' component={Support} />
+                    <Route
+                        exact
+                        path='/serveevent/:id'
+                        component={ServeEvent}
+                    />
+                    <Route
+                        exact
+                        path='/registration/:id'
+                        component={EventRegistration}
+                    />
+                    <Route
+                        exact
+                        path='/editregistration/:eid/:rid'
+                        component={EditRegistration}
+                    />
+                    <Route exact path='/event/:id' component={EventDetails} />
+                </Router>
+            </section>
         </>
     );
     // }

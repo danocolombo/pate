@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { compose } from 'redux';
 import { withRouter } from 'react-router';
-import './serveEvent.styles.scss';
+
 import Header from '../../components/header/header.component';
+import { MainFooter } from '../../components/footers/main-footer';
 import Spinner from '../../components/spinner/Spinner';
 import RegistrationItem from '../../components/registration-serve-list-item/registrationServeListItem.component';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
@@ -15,6 +16,7 @@ import {
     clearEventRegistrations,
 } from '../../redux/registrations/registrations.actions';
 import { updateStateRepRally } from '../../redux/stateRep/stateRep.actions';
+import './serveEvent.styles.scss';
 // import { getEventRegistrations } from './server-event.actions';
 const Serve = ({
     setSpinner,
@@ -33,6 +35,7 @@ const Serve = ({
 }) => {
     let eventID = match?.params?.id;
     console.log('serveEvent: ' + eventID);
+    const refApprovalCheckbox = useRef(null);
     // const [plan, setPlan] = useState([]);
     const [churchName, setChurchName] = useState('');
     const [street, setStreet] = useState('');
@@ -58,6 +61,7 @@ const Serve = ({
     const [mealCount, setMealCount] = useState(0);
     const [mealsServed, setMealsServed] = useState(0);
     const [mealMessage, setMealMessage] = useState('');
+    const [mealDeadline, setMealDeadline] = useState('');
     const [attendeeCount, setAttendeeCount] = useState(0);
     const [registrationCount, setRegistrationCount] = useState(0);
 
@@ -80,10 +84,10 @@ const Serve = ({
         //get the reference to the current event and load to useState
         if (match?.params?.id) {
             clearEventRegistrations();
-            if(match.params.id ==="0" ){
+            if (match.params.id === '0') {
                 // this is a new event request
                 setDefaultEvent();
-            }else{
+            } else {
                 // this is an edit
                 loadEvent();
                 // loadRegistrations();
@@ -106,7 +110,7 @@ const Serve = ({
                     {
                         method: 'POST',
                         body: JSON.stringify({
-                            operation: 'getRegistrationsForEvent',
+                            operation: 'getRegistrationsForEventOrdered',
                             payload: {
                                 eid: eid,
                             },
@@ -118,14 +122,14 @@ const Serve = ({
                 )
                     .then((response) => response.json())
                     .then((data) => {
-                        const util = require('util');
-                        console.log(
-                            'registrations-data:\n' +
-                                util.inspect(data.body, {
-                                    showHidden: false,
-                                    depth: null,
-                                })
-                        );
+                        // const util = require('util');
+                        // console.log(
+                        //     'registrations-data:\n' +
+                        //         util.inspect(data.body, {
+                        //             showHidden: false,
+                        //             depth: null,
+                        //         })
+                        // );
                         loadEventRegistrations(data?.body?.Items);
                     });
             } catch (error) {
@@ -143,53 +147,54 @@ const Serve = ({
         //this is used for creating a default event to display for add
         //create empty event object
         const emptyEvent = {
-            meal:{
-                startTime:"1200",
-                mealCount:0,
-                cost:"0",
-                message:"",
-                mealsServed: 0
+            meal: {
+                startTime: '1200',
+                mealCount: 0,
+                cost: '0',
+                message: '',
+                mealsServed: 0,
+                deadline: '20211225',
             },
-            eventDate: "20210406",
-            contact:{
-                name:"",
-                phone:"",
-                email:""
+            eventDate: '20211225',
+            contact: {
+                name: '',
+                phone: '',
+                email: '',
             },
-            status: "draft",
-            message:"",
-            stateProv:"",
-            coordinator:{
-                name:"",
+            status: 'draft',
+            message: '',
+            stateProv: '',
+            coordinator: {
+                name: '',
                 id: 0,
-                phone:"",
-                email:"",
+                phone: '',
+                email: '',
             },
-            uid:"sdfijvapofiha;jlrav",
-            name:"",
-            registrations:0,
-            startTime: "13:00",
-            city: "",
-            graphic: "",
+            uid: 'sdfijvapofiha;jlrav',
+            name: '',
+            registrations: 0,
+            startTime: '13:00',
+            city: '',
+            graphic: '',
             approved: false,
-            attendees: "0",
-            endTime:"13:00",
+            attendees: '0',
+            endTime: '13:00',
             attendance: 0,
-            id: "agfwspgswrioja",
-            postalCode: "",
-            street: ""
-        }
+            id: 'agfwspgswrioja',
+            postalCode: '',
+            street: '',
+        };
 
         loadRally(emptyEvent);
         //load the useState
         // need date in format mm-dd-yyyy
         let dateToday = new Date();
         // console.log(dateToday);
-        let m = parseInt(dateToday.getUTCMonth()+1);
+        let m = parseInt(dateToday.getUTCMonth() + 1);
         let d = parseInt(dateToday.getUTCDate());
         let y = parseInt(dateToday.getFullYear());
         dateToday = y + '-' + m + '-' + d;
-        dateToday = "2021-04-06";
+        dateToday = '2021-12-25';
         setEventDate(dateToday);
         setChurchName('');
         setStreet('');
@@ -213,10 +218,10 @@ const Serve = ({
         setMealCount(0);
         setMealsServed(0);
         setMealMessage('');
+        setMealDeadline(dateToday);
         setAttendeeCount(0);
         setRegistrationCount(0);
-
-    }
+    };
     const loadEvent = async () => {
         //get the event reference.
         // if the eventID is not in our currentUserRallies,
@@ -267,6 +272,7 @@ const Serve = ({
                     setMealCount(rallyEvent?.meal?.mealCount);
                     setMealsServed(rallyEvent?.meal?.mealsServed);
                     setMealMessage(rallyEvent?.meal?.message);
+                    setMealDeadline(rallyEvent?.meal?.deadline);
                     setAttendeeCount(rallyEvent?.attendees);
                     setRegistrationCount(rallyEvent?.registrations);
                 }
@@ -310,6 +316,7 @@ const Serve = ({
                     setMealCount(rallyEvent?.meal?.mealCount);
                     setMealsServed(rallyEvent?.meal?.mealsServed);
                     setMealMessage(rallyEvent?.meal?.message);
+                    setMealDeadline(rallyEvent?.meal?.deadline);
                     setAttendeeCount(rallyEvent?.attendees);
                     setRegistrationCount(rallyEvent?.registrations);
                 }
@@ -365,7 +372,7 @@ const Serve = ({
     // };
     const handleSubmitClick = (event) => {
         event.preventDefault();
-        console.log('SAVE-SAVE-SAVE');
+
         //get rally object to update
         let newRally = pateSystem?.rally;
         //now update with form values
@@ -389,6 +396,7 @@ const Serve = ({
         newRally.meal.mealCount = mealCount;
         newRally.meal.mealsServed = mealsServed;
         newRally.meal.message = mealMessage;
+        newRally.meal.deadline = mealDeadline;
         newRally.registrations = registrationCount;
         newRally.attendees = attendeeCount;
 
@@ -414,14 +422,14 @@ const Serve = ({
             )
                 .then((response) => response.json())
                 .then((data) => {
-                    const util = require('util');
-                    console.log(
-                        'db data returned: \n' +
-                            util.inspect(data, {
-                                showHidden: false,
-                                depth: null,
-                            })
-                    );
+                    // const util = require('util');
+                    // console.log(
+                    //     'db data returned: \n' +
+                    //         util.inspect(data, {
+                    //             showHidden: false,
+                    //             depth: null,
+                    //         })
+                    // );
                 });
         }
         //next call is to async the above update
@@ -431,7 +439,17 @@ const Serve = ({
         history.push('/serve');
     };
     const handleChange = (e) => {
-        const { value, name } = e.target;
+        // let value = null;
+        // let name = null;
+        // if (e?.target?.name === 'checkbox') {
+        //     console.log('checkbox - ignore');
+        //     name = 'ignore';
+        //     value = null;
+        // } else {
+        //     value = e.target.value;
+        //     name = e.target.name;
+        // }
+        let { value, name } = e.target;
         switch (name) {
             case 'churchName':
                 setChurchName(value);
@@ -467,7 +485,9 @@ const Serve = ({
                 setGraphic(value);
                 break;
             case 'isApproved':
-                setApproved(!isApproved);
+                if (currentUser?.stateLead === stateProv) {
+                    setApproved(!isApproved);
+                }
                 break;
             case 'eventStatus':
                 setEventStatus(value);
@@ -508,6 +528,9 @@ const Serve = ({
             case 'mealMessage':
                 setMealMessage(value);
                 break;
+            case 'mealDeadline':
+                setMealDeadline(value);
+                break;
             case 'attendanceCount':
                 setAttendeeCount(value);
                 break;
@@ -523,213 +546,254 @@ const Serve = ({
     ) : (
         <>
             <Header />
-            <div className='servepagewrapper'>
-                <div className='serve-pageheader'>EVENT</div>
-                <>
-                    <>
-                        <div className='serve-event-content-wrapper'>
-                            <div className='registerform'>
-                                <form>
-                                    <div>
-                                        <label htmlFor='churchName'>
-                                            Church
-                                        </label>
-                                        <input
-                                            type='text'
-                                            name='churchName'
-                                            id='churchName'
-                                            value={churchName}
-                                            onChange={handleChange}
-                                            required
-                                        />
-                                    </div>
-                                    <div>
-                                        <label htmlFor='street'>Street</label>
-                                        <input
-                                            type='text'
-                                            id='street'
-                                            name='street'
-                                            onChange={handleChange}
-                                            value={street}
-                                            required
-                                        />
-                                    </div>
-                                    <div>
-                                        <label htmlFor='city'>City</label>
-                                        <input
-                                            type='text'
-                                            id='city'
-                                            name='city'
-                                            onChange={handleChange}
-                                            value={city}
-                                            required
-                                        />
-                                    </div>
-                                    <div>
-                                        <label htmlFor='stateProv'>State</label>
-                                        <input
-                                            type='text'
-                                            id='stateProv'
-                                            name='stateProv'
-                                            onChange={handleChange}
-                                            value={stateProv}
-                                            required
-                                        />
-                                    </div>
-                                    <div>
-                                        <label htmlFor='postalCode'>
-                                            Postal Code
-                                        </label>
-                                        <input
-                                            type='text'
-                                            id='postalCode'
-                                            name='postalCode'
-                                            onChange={handleChange}
-                                            value={postalCode}
-                                            required
-                                        />
-                                    </div>
-                                    {/** church contact info */}
-                                    <div className='church-contact-header'>
-                                        Church Contact
-                                    </div>
-                                    <div>
-                                        <label htmlFor='contactName'>
-                                            Name
-                                        </label>
-                                        <input
-                                            type='text'
-                                            id='contactName'
-                                            name='contactName'
-                                            onChange={handleChange}
-                                            value={contactName}
-                                            required
-                                        />
-                                    </div>
-                                    <div>
-                                        <label htmlFor='contactPhone'>
-                                            Phone
-                                        </label>
-                                        <input
-                                            type='text'
-                                            id='contactPhone'
-                                            name='contactPhone'
-                                            onChange={handleChange}
-                                            value={contactPhone}
-                                            required
-                                        />
-                                    </div>
-                                    <div>
-                                        <label htmlFor='contactEmail'>
-                                            Email
-                                        </label>
-                                        <input
-                                            type='text'
-                                            id='contactEmail'
-                                            name='contactEmail'
-                                            onChange={handleChange}
-                                            value={contactEmail}
-                                            required
-                                        />
-                                    </div>
-                                    {/** logisitics info */}
-                                    <div className='logistics-header'>
-                                        Logistics
-                                    </div>
-                                    <div>
-                                        <label htmlFor='eventDate'>
-                                            Date (yyyy-mm-dd)
-                                        </label>
-                                        <input
-                                            type='date'
-                                            id='rallyDate'
-                                            name='rallyDate'
-                                            onChange={handleChange}
-                                            value={eventDate}
-                                            required
-                                        />
-                                        {/*}
-                                        <input
-                                            type='text'
-                                            id='eventDate'
-                                            name='eventDate'
-                                            onChange={handleChange}
-                                            value={eventDate}
-                                            required
-                                        /> */}
-                                    </div>
-                                    <div>
-                                        <label htmlFor='eventStart'>
-                                            Start Time
-                                        </label>
-                                        <input
-                                            type='text'
-                                            id='eventStart'
-                                            name='eventStart'
-                                            onChange={handleChange}
-                                            value={eventStart}
-                                            required
-                                        />
-                                    </div>
-                                    <div>
-                                        <label htmlFor='eventEnd'>
-                                            End Time
-                                        </label>
-                                        <input
-                                            type='text'
-                                            id='eventEnd'
-                                            name='eventEnd'
-                                            onChange={handleChange}
-                                            value={eventEnd}
-                                            required
-                                        />
-                                    </div>
-                                    <div>
-                                        <label htmlFor='eventMessage'>
-                                            Message
-                                        </label>
-                                        <input
-                                            type='memo'
-                                            id='eventMessage'
-                                            name='eventMessage'
-                                            onChange={handleChange}
-                                            value={eventMessage}
-                                            required
-                                        />
-                                    </div>
-                                    <div>
-                                        <label htmlFor='isApproved'>
-                                            Approved
-                                        </label>
-                                        {currentUser?.stateLead ? (
-                                            //this is LEAD
-                                            isApproved ? (
-                                                <input
-                                                    type='checkbox'
-                                                    id='isApproved'
-                                                    name='isApproved'
-                                                    checked
-                                                    onClick={handleChange}
-                                                    value='true'
-                                                />
-                                            ) : (
-                                                <input
-                                                    type='checkbox'
-                                                    id='isApproved'
-                                                    name='isApproved'
-                                                    value='true'
-                                                    onClick={handleChange}
-                                                />
-                                            )
-                                        ) : //this is REP
+            <div className='serveevent-page__wrapper'>
+                <div className='serveevent-page__form-box'>
+                    <div className='serveevent-page__header'>EVENT</div>
+                    <div className='serveevent-page__data-input-box'>
+                        <div className='serveevent-page__section-header'>
+                            Location
+                        </div>
+                        <div className='serveevent-page__grid-line'>
+                            <div></div>
+                            <div className='serveevent-page__grid-data-box'>
+                                <div className='serveevent-page__grid-label'>
+                                    Church:
+                                </div>
+                                <div className='serveevent-page__grid-control'>
+                                    <input
+                                        type='text'
+                                        name='churchName'
+                                        id='churchName'
+                                        value={churchName}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div className='serveevent-page__grid-line'>
+                            <div></div>
+                            <div className='serveevent-page__grid-data-box'>
+                                <div className='serveevent-page__grid-label'>
+                                    Street:
+                                </div>
+                                <div className='serveevent-page__grid-control'>
+                                    <input
+                                        type='text'
+                                        id='street'
+                                        name='street'
+                                        onChange={handleChange}
+                                        value={street}
+                                        required
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div className='serveevent-page__grid-line'>
+                            <div></div>
+                            <div className='serveevent-page__grid-data-box'>
+                                <div className='serveevent-page__grid-label'>
+                                    City:
+                                </div>
+                                <div className='serveevent-page__grid-control'>
+                                    <input
+                                        type='text'
+                                        id='city'
+                                        name='city'
+                                        onChange={handleChange}
+                                        value={city}
+                                        required
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div className='serveevent-page__grid-line'>
+                            <div></div>
+                            <div className='serveevent-page__grid-data-box'>
+                                <div className='serveevent-page__grid-label'>
+                                    State:
+                                </div>
+                                <div className='serveevent-page__grid-control'>
+                                    <input
+                                        type='text'
+                                        id='stateProv'
+                                        name='stateProv'
+                                        onChange={handleChange}
+                                        value={stateProv}
+                                        required
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div className='serveevent-page__grid-line'>
+                            <div></div>
+                            <div className='serveevent-page__grid-data-box'>
+                                <div className='serveevent-page__grid-label'>
+                                    Postal Code:
+                                </div>
+                                <div className='serveevent-page__grid-control'>
+                                    <input
+                                        type='text'
+                                        id='postalCode'
+                                        name='postalCode'
+                                        onChange={handleChange}
+                                        value={postalCode}
+                                        required
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div className='serveevent-page__section-header'>
+                            Church Contact
+                        </div>
+                        <div className='serveevent-page__grid-line'>
+                            <div></div>
+                            <div className='serveevent-page__grid-data-box'>
+                                <div className='serveevent-page__grid-label'>
+                                    Name:
+                                </div>
+                                <div className='serveevent-page__grid-control'>
+                                    <input
+                                        type='text'
+                                        id='contactName'
+                                        name='contactName'
+                                        onChange={handleChange}
+                                        value={contactName}
+                                        required
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div className='serveevent-page__grid-line'>
+                            <div></div>
+                            <div className='serveevent-page__grid-data-box'>
+                                <div className='serveevent-page__grid-label'>
+                                    Phone:
+                                </div>
+                                <div className='serveevent-page__grid-control'>
+                                    <input
+                                        type='text'
+                                        id='contactPhone'
+                                        name='contactPhone'
+                                        onChange={handleChange}
+                                        value={contactPhone}
+                                        required
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div className='serveevent-page__grid-line'>
+                            <div></div>
+                            <div className='serveevent-page__grid-data-box'>
+                                <div className='serveevent-page__grid-label'>
+                                    Email:
+                                </div>
+                                <div className='serveevent-page__grid-control'>
+                                    <input
+                                        type='text'
+                                        id='contactEmail'
+                                        name='contactEmail'
+                                        onChange={handleChange}
+                                        value={contactEmail}
+                                        required
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div className='serveevent-page__section-header'>
+                            Logistics
+                        </div>
+                        <div className='serveevent-page__grid-line'>
+                            <div></div>
+                            <div className='serveevent-page__grid-data-box'>
+                                <div className='serveevent-page__grid-label'>
+                                    Date:
+                                </div>
+                                <div className='serveevent-page__grid-control'>
+                                    <input
+                                        type='date'
+                                        id='rallyDate'
+                                        name='rallyDate'
+                                        onChange={handleChange}
+                                        value={eventDate}
+                                        required
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div className='serveevent-page__grid-line'>
+                            <div></div>
+                            <div className='serveevent-page__grid-data-box'>
+                                <div className='serveevent-page__grid-label'>
+                                    Start Time:
+                                </div>
+                                <div className='serveevent-page__grid-control'>
+                                    <input
+                                        type='text'
+                                        id='eventStart'
+                                        name='eventStart'
+                                        onChange={handleChange}
+                                        value={eventStart}
+                                        required
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div className='serveevent-page__grid-line'>
+                            <div></div>
+                            <div className='serveevent-page__grid-data-box'>
+                                <div className='serveevent-page__grid-label'>
+                                    End Time:
+                                </div>
+                                <div className='serveevent-page__grid-control'>
+                                    <input
+                                        type='text'
+                                        id='eventEnd'
+                                        name='eventEnd'
+                                        onChange={handleChange}
+                                        value={eventEnd}
+                                        required
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div className='serveevent-page__grid-line'>
+                            <div></div>
+                            <div className='serveevent-page__grid-data-box'>
+                                <div className='serveevent-page__grid-label'>
+                                    Message:
+                                </div>
+                                <div className='serveevent-page__grid-control'>
+                                    <input
+                                        type='memo'
+                                        id='eventMessage'
+                                        name='eventMessage'
+                                        onChange={handleChange}
+                                        value={eventMessage}
+                                        required
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div className='serveevent-page__grid-line'>
+                            <div></div>
+                            <div className='serveevent-page__grid-data-box'>
+                                <div className='serveevent-page__grid-label'>
+                                    Approved:
+                                </div>
+                                <div className='serveevent-page__grid-control'>
+                                    {currentUser?.stateLead ? (
+                                        //this is LEAD
                                         isApproved ? (
                                             <input
                                                 type='checkbox'
                                                 id='isApproved'
                                                 name='isApproved'
                                                 checked
+                                                onClick={handleChange}
+                                                onChange={() => handleChange}
                                                 value='true'
-                                                readOnly='true'
+                                                ref={refApprovalCheckbox}
                                             />
                                         ) : (
                                             <input
@@ -737,169 +801,208 @@ const Serve = ({
                                                 id='isApproved'
                                                 name='isApproved'
                                                 value='true'
+                                                onClick={handleChange}
+                                                onChange={() => handleChange}
+                                                ref={refApprovalCheckbox}
                                             />
-                                        )}
-                                    </div>
-                                    <div>
-                                        <label
-                                            htmlFor='eventStatus'
-                                            className='sr-event-status-label'
-                                        >
-                                            Status
-                                            <span className='sr-event-status-tooltip'>
-                                                Contact your lead for changes
-                                            </span>
-                                        </label>
-
-                                        <select
-                                            type='text'
-                                            id='eventStatus'
-                                            name='eventStatus'
-                                            value={eventStatus}
-                                            onChange={handleChange}
-                                        >
-                                            <option value='draft'>
-                                                {STATUS_VALUE[0]}
-                                            </option>
-                                            <option value='pending'>
-                                                {STATUS_VALUE[1]}
-                                            </option>
-                                            <option value='rejected'>
-                                                {STATUS_VALUE[2]}
-                                            </option>
-                                            <option value='available'>
-                                                {STATUS_VALUE[3]}
-                                            </option>
-                                            <option value='offered'>
-                                                {STATUS_VALUE[4]}
-                                            </option>
-                                            <option value='archived'>
-                                                {STATUS_VALUE[5]}
-                                            </option>
-                                        </select>
-                                    </div>
-                                    {/** meal info */}
-                                    <div className='meal-header'>
-                                        Meal Details
-                                    </div>
-                                    <div>
-                                        <label htmlFor='mealTime'>
-                                            Start Time
-                                        </label>
-                                        <input
-                                            type='text'
-                                            id='mealTime'
-                                            name='mealTime'
-                                            onChange={handleChange}
-                                            value={mealTime}
-                                            required
-                                        />
-                                    </div>
-                                    <div>
-                                        <label htmlFor='mealCost'>Cost</label>
-                                        <input
-                                            type='text'
-                                            id='mealCost'
-                                            name='mealCost'
-                                            onChange={handleChange}
-                                            value={mealCost}
-                                            required
-                                        />
-                                    </div>
-                                    <div>
-                                        <label htmlFor='mealCount'>
-                                            Planned
-                                        </label>
-                                        <input
-                                            type='number'
-                                            id='mealCount'
-                                            name='mealCount'
-                                            onChange={handleChange}
-                                            value={mealCount}
-                                            readOnly
-                                            required
-                                        />
-                                    </div>
-                                    <div>
-                                        <label htmlFor='mealsServed'>
-                                            Served
-                                        </label>
-                                        <input
-                                            type='number'
-                                            id='mealsServed'
-                                            name='mealsServed'
-                                            onChange={handleChange}
-                                            value={mealsServed}
-                                            required
-                                        />
-                                    </div>
-                                    <div>
-                                        <label htmlFor='mealMessage'>
-                                            Message
-                                        </label>
-                                        <input
-                                            type='memo'
-                                            id='mealMessage'
-                                            name='mealMessage'
-                                            onChange={handleChange}
-                                            value={mealMessage}
-                                            required
-                                        />
-                                    </div>
-                                    {/** logisitics info */}
-                                    <div className='tally-header'>
-                                        Tally Information
-                                    </div>
-                                    <div>
-                                        <label htmlFor='registrations'>
-                                            Registrations
-                                        </label>
-                                        <input
-                                            type='number'
-                                            id='registrations'
-                                            name='registrations'
-                                            onChange={handleChange}
-                                            value={registrationCount}
-                                            required
-                                            readOnly
-                                        />
-                                    </div>
-                                    <div>
-                                        <label htmlFor='attendees'>
-                                            Attendees
-                                        </label>
-                                        <input
-                                            type='number'
-                                            id='attendees'
-                                            name='attendees'
-                                            onChange={handleChange}
-                                            value={attendeeCount}
-                                            required
-                                        />
-                                    </div>
-                                    <div className='submitButton'>
-                                        <button onClick={handleSubmitClick}>
-                                            SUBMIT
-                                        </button>
-                                    </div>
-                                </form>
+                                        )
+                                    ) : //this is REP
+                                    isApproved ? (
+                                        <span className='serve-event-page__approval-true'>
+                                            TRUE
+                                        </span>
+                                    ) : (
+                                        <span className='serve-event-page__approval-false'>
+                                            FALSE
+                                        </span>
+                                    )}
+                                </div>
                             </div>
                         </div>
-                    </>
-                </>
-                {(match.params.id !=="0")?(
-                    <>
-                        <div className='serve-pageheader'>REGISTRATIONS</div>
-                        <div className='serve-event-content-wrapper'>
-                            {registrations?.eventRegistrations ? (
-                                registrations.eventRegistrations.map((rege) => (
-                                    <RegistrationItem key={rege.uid} regItem={rege} />
-                                ))
-                            ) : (
-                                <div>NO</div>
-                            )}
+                        <div className='serveevent-page__section-header'>
+                            Meal Details
                         </div>
-                        {/*
+                        <div className='serveevent-page__grid-line'>
+                            <div></div>
+                            <div className='serveevent-page__grid-data-box'>
+                                <div className='serveevent-page__grid-label'>
+                                    Start Time:
+                                </div>
+                                <div className='serveevent-page__grid-control'>
+                                    <input
+                                        type='text'
+                                        id='mealTime'
+                                        name='mealTime'
+                                        onChange={handleChange}
+                                        value={mealTime}
+                                        required
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div className='serveevent-page__grid-line'>
+                            <div></div>
+                            <div className='serveevent-page__grid-data-box'>
+                                <div className='serveevent-page__grid-label'>
+                                    Cost:
+                                </div>
+                                <div className='serveevent-page__grid-control'>
+                                    <input
+                                        type='text'
+                                        id='mealCost'
+                                        name='mealCost'
+                                        onChange={handleChange}
+                                        value={mealCost}
+                                        required
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div className='serveevent-page__grid-line'>
+                            <div></div>
+                            <div className='serveevent-page__grid-data-box'>
+                                <div className='serveevent-page__grid-label'>
+                                    Planned:
+                                </div>
+                                <div className='serveevent-page__grid-control'>
+                                    <input
+                                        type='number'
+                                        id='mealCount'
+                                        name='mealCount'
+                                        onChange={handleChange}
+                                        value={mealCount}
+                                        readOnly
+                                        required
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div className='serveevent-page__grid-line'>
+                            <div></div>
+                            <div className='serveevent-page__grid-data-box'>
+                                <div className='serveevent-page__grid-label'>
+                                    Served:
+                                </div>
+                                <div className='serveevent-page__grid-control'>
+                                    <input
+                                        type='number'
+                                        id='mealsServed'
+                                        name='mealsServed'
+                                        onChange={handleChange}
+                                        value={mealsServed}
+                                        required
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div className='serveevent-page__grid-line'>
+                            <div></div>
+                            <div className='serveevent-page__grid-data-box'>
+                                <div className='serveevent-page__grid-label'>
+                                    Message:
+                                </div>
+                                <div className='serveevent-page__grid-control'>
+                                    <input
+                                        type='memo'
+                                        id='mealMessage'
+                                        name='mealMessage'
+                                        onChange={handleChange}
+                                        value={mealMessage}
+                                        required
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div className='serveevent-page__grid-line'>
+                            <div></div>
+                            <div className='serveevent-page__grid-data-box'>
+                                <div className='serveevent-page__grid-label'>
+                                    Deadline:
+                                </div>
+                                <div className='serveevent-page__grid-control'>
+                                    <input
+                                        type='date'
+                                        id='mealDeadline'
+                                        name='mealDeadline'
+                                        onChange={handleChange}
+                                        value={mealDeadline}
+                                        required
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div className='serveevent-page__section-header'>
+                            Tally Information
+                        </div>
+                        <div className='serveevent-page__grid-line'>
+                            <div></div>
+                            <div className='serveevent-page__grid-data-box'>
+                                <div className='serveevent-page__grid-label'>
+                                    Registrations:
+                                </div>
+                                <div className='serveevent-page__grid-control'>
+                                    <input
+                                        type='number'
+                                        id='registrations'
+                                        name='registrations'
+                                        onChange={handleChange}
+                                        value={registrationCount}
+                                        required
+                                        readOnly
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div className='serveevent-page__grid-line'>
+                            <div></div>
+                            <div className='serveevent-page__grid-data-box'>
+                                <div className='serveevent-page__grid-label'>
+                                    Attendees:
+                                </div>
+                                <div className='serveevent-page__grid-control'>
+                                    <input
+                                        type='number'
+                                        id='attendees'
+                                        name='attendees'
+                                        onChange={handleChange}
+                                        value={attendeeCount}
+                                        required
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className='serveevent-page__button-wrapper'>
+                            <button
+                                className='serveevent-page__update-button'
+                                onClick={handleSubmitClick}
+                            >
+                                Update
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className='serveevent-page__registration-list-box'>
+                        {match.params.id !== '0' ? (
+                            <>
+                                <div className='serveevent-page__registration-list-header'>
+                                    REGISTRATIONS
+                                </div>
+                                <div className='serveevent-page__registration-data-box'>
+                                    {registrations?.eventRegistrations ? (
+                                        registrations.eventRegistrations.map(
+                                            (rege) => (
+                                                <RegistrationItem
+                                                    key={rege.uid}
+                                                    regItem={rege}
+                                                />
+                                            )
+                                        )
+                                    ) : (
+                                        <div>NO</div>
+                                    )}
+                                </div>
+                                {/*
                         <div className='serve-event__delete-box'>
                             <hr className='serve-event__delete-box__horizontal-line' />
                             <button className='serve-event__delete-button' onClick=''>
@@ -907,9 +1010,12 @@ const Serve = ({
                             </button>
                         </div>
                         */}
-                    </>
-                ):null}
+                            </>
+                        ) : null}
+                    </div>
+                </div>
             </div>
+            <MainFooter />
         </>
     );
 };

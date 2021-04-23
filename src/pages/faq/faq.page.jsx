@@ -1,5 +1,6 @@
 import React from 'react';
 import Header from '../../components/header/header.component';
+import { MainFooter } from '../../components/footers/main-footer';
 import './faq.styles.scss';
 const FAQ = () => {
     return (
@@ -12,12 +13,6 @@ const FAQ = () => {
                             Frequently Asked Questions
                         </div>
                         <dl className='faq-definition__list'>
-                            <dt className='faq-definition__term'>
-                                What is PATE
-                            </dt>
-                            <dd className='faq-definition__definition'>
-                                It is just shorthand for Principle 8 (P8)
-                            </dd>
                             <dt className='faq-definition__term'>
                                 What is a P8?
                             </dt>
@@ -68,6 +63,7 @@ const FAQ = () => {
                     </div>
                 </div>
             </div>
+            <MainFooter />
         </>
     );
 };

@@ -14,14 +14,16 @@ const StateLead = ({ currentUser, rallies }) => {
 
     return (
         <>
-            <div className='event-list-header'>State Events</div>
-            <div className='stateleadintro'>
+            <div className='serve-page__event-list-header'>State Events</div>
+            <div className='serve-page__message-box'>
                 These are the events within your state that you can view and
                 manage, support and change.
             </div>
+            <div className='serve-component-lead__list-wrapper'>
             {rallies
-                ? rallies.map((rally) => <StateRallyList rally={rally} />)
+                ? rallies.map((rally) => <StateRallyList key={rally.uid} rally={rally} />)
                 : null}
+            </div>
         </>
     );
 };

@@ -1,10 +1,240 @@
+.registration-page__wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    // display: flex;
+    // // margin-left: 10vw;
+    // margin-top: 10px;
+    // justify-content: center;
+    // align-items: center;
+    // flex-direction: column;
+    // width: 280px;
+    // background-color: lightgray;
+    // color: black;
+    // text-align: center;
+    // border-left: black solid 1px;
+    // border-right: black solid 1px;
+    // border-bottom: black solid 1px;
+}
+.registration-page__form-box {
+    background-color: lightgray;
+    width: 280px;
+    margin: 5px 0 10px 0;
+    border: black solid 1px;
+    border-radius: 5px;
+}
+.registration-page__header {
+    font-size: 1.2em;
+    padding: 5px 0;
+    font-weight: bold;
+    background-color: #4484CE;
+    text-align: center;
+    // width: 100%;
+    color: white;
+    // border: black solid 1px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.registration-page__image-wrapper {
+    padding-top: 5px;
+    // max-width: 100%;
+}
+
+.registration-page__church-name {
+    font-size: 1.3em;
+    text-align: center;
+    color: black;
+    padding-top: 10px;
+}
+.registration-page__church-street {
+    color: black;
+    text-align: center;
+}
+.registration-page__church-city-state-postal {
+    color: black;
+    text-align: center;
+}
+.registration-page__date {
+    color: black;
+    padding: 10px 0 0 0;
+    // width: 100%;
+    text-align: center;
+    // border: black solid 1px;
+    font-weight: bold;
+    font-size: 1.3em;
+}
+.registration-page__time {
+    color: black;
+    flex-grow: 1;
+    // width: 100%;
+    text-align: center;
+}
+.registration-page__message {
+    // color: white;
+    text-align: center;
+    padding: 5px 15px;
+}
+.registration-page__divider {
+    height: 1px;
+    // width: 90%;
+}
+.registration-page__instructions {
+    color: black;
+    padding: 10px 15px 0 15px;
+    text-align: center;
+}
+.registration-page__login-button {
+    background-color: blue;
+    color: white;
+    padding: 1px 2px;
+}
+.registration-page__signup-button {
+    background-color: orange;
+    color: black;
+    padding: 1px 2px;
+}
+.registration-page__section-header {
+    // width: 100%;
+    font-weight: bold;
+    font-size: 1.1em;
+    color: black;
+    text-align: center;
+    padding: 10px 0 0 0;
+}
+.registration-page__data-input-box {
+    display: flex;
+    flex-direction: column;
+    margin: 5px 10px;
+}
+.registration-page__input-line {
+    display: flex;
+    padding-right: 15px;
+}
+.profile-component__phone-input-line {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 14px;
+}
+.registration-page__attendee-input-line {
+    display: flex;
+    padding-right: 60px;
+}
+.registration-page__input-label {
+    flex-grow: 1;
+    color: black;
+    text-align: right;
+    padding-right: 3px;
+}
+.registration-page__input-control {
+    // flex-grow: 2;
+    // width: 50vw;
+    // text-align: left;
+    padding-right: 0px;
+}
+.registration-page__phone-input {
+    text-align: left;
+    color: black;
+    margin-bottom: 5px;
+}
+.registration-page__button-wrapper {
+    // width: 100%;
+}
+.registration-page__meal-box {
+    // width: 100%;
+    border: black solid 2px;
+    display: flex;
+    flex-direction: column;
+    margin: 15px 10px;
+}
+.registration-page__meal-message {
+    color: black;
+    padding: 10px;
+}
+.registration-page__meal-input-line {
+    // width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+.registration-page__meal-input-label {
+    color: black;
+    flex-grow: 1;
+    padding-right: 0px;
+    padding-bottom: 10px;
+    text-align: right;
+}
+.registration-page__meal-count {
+    padding-left: 10px;
+    padding-bottom: 10px;
+    flex-grow: 1;
+    text-align: left;
+}
+.registration-page__button-wrapper {
+    padding-bottom: 15px;
+    text-align: center;
+}
+.registration-page__register-button {
+    background-color: yellow;
+    color: black;
+    padding: 1px 5px;
+    border-radius: 5px;
+}
+// MEDIA ALTERATIONS ** MEDIA ALTERATIONS ** MEDIA ALTERATIONS **
+//Iphone Series
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+    .registration-page__form-box {
+        width: 320px;
+    }
+    .registration-page__input-control {
+        padding-right: 25px;
+    }
+    .profile-component__phone-input-line {
+        padding-right: 40px;
+    }
+    .registration-page__attendee-input-line {
+        padding-right: 60px;
+    }
+}
+//IPAD Series
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+    .registration-page__form-box {
+        width: 400px;
+    }
+    .registration-page__input-control {
+        padding-right: 75px;
+    }
+    .profile-component__phone-input-line {
+        padding-right: 90px;
+    }
+    .registration-page__attendee-input-line {
+        padding-right: 45px;
+    }
+}
+//desktop
+@media only screen and (min-width: 1024px) {
+    .registration-page__form-box {
+        width: 500px;
+    }
+    .registration-page__input-control {
+        padding-right: 75px;
+    }
+    .profile-component__phone-input-line {
+        padding-right: 90px;
+    }
+    .registration-page__attendee-input-line {
+        padding-right: 95px;
+    }
+}
+
+//==========================
+//==========================
 .registrationpagewrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 .pageheader {
-    background: #379683;
+    background: #4484CE;
     text-align: center;
     font-weight: bold;
     font-size: 1.3em;
@@ -17,7 +247,7 @@
     border-right: black solid 1px;
 }
 .registration-pageheader {
-    background: #379683;
+    background: #4484CE;
     text-align: center;
     font-weight: bold;
     font-size: 1.3em;
@@ -38,7 +268,7 @@
     padding-top: 10px;
     width: 80%;
     // align-items: center;
-    background: #557a95;
+    background: #286DA8;
     color: white;
     border-right: black solid 1px;
     // border-bottom: black solid 1px;
@@ -176,7 +406,7 @@
 .register-church-label {
     font-weight: bold;
     font-size: 1.3em;
-    padding-left: 10%
+    padding-left: 10%;
 }
 .attendeewrapper {
     margin: 10px 0 10px 10%;
@@ -196,7 +426,6 @@
     display: inline-block;
     padding: 5px;
     margin-left: 10%;
-
 }
 .meal-description-label {
     font-size: 0.7em;
@@ -228,7 +457,7 @@
 }
 .react-tel-input {
     display: inline-block;
-    margin-left:10%;
+    margin-left: 10%;
 }
 .special-label {
     display: inline-block;

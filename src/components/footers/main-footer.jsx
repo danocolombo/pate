@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './footers.styles.scss';
 export const MainFooter = () => {
     return (
@@ -10,7 +10,10 @@ export const MainFooter = () => {
                         <Link to='/faq'>FAQ</Link>
                     </li>
                     <li className='main-footer_link'>
-                        <Link to="/support">Support</Link>
+                        <Link to='/help'>Help</Link>
+                    </li>
+                    <li className='main-footer_link'>
+                        <Link to='/support'>Support</Link>
                     </li>
                 </ul>
             </nav>
