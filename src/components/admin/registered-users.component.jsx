@@ -10,6 +10,26 @@ const RegisteredUsers = () => {
     }, [])
     const getRegisteredUsers = () => {
         // need to get the list of registered users from cognito user pool
+        //-------------------------------------
+        // hit cognito user pool api (listUsers)
+        //---------------------------------------------
+        // the data to send
+        //NOTE: max returned users is 60, so will need to use paging
+        /*              
+            {
+                "AttributesToGet": [ "string" ], //null returns *
+                "Filter": "string",
+                "Limit": number,
+                "PaginationToken": "string",
+                "UserPoolId": "string"
+            }
+            OUR ACTUAL REQUEST
+            {         
+                "PaginationToken": "string",
+                "UserPoolId": "us-east-1_2AD4aPWxt"
+            }
+            }
+        */
         setLoadingUsers(false);
     }
     return loadingUsers ? (
