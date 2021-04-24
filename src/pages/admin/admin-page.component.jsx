@@ -1,9 +1,9 @@
 import React from 'react';
 import Header from '../../components/header/header.component';
+import {Link} from 'react-router-dom';
 import { MainFooter } from '../../components/footers/main-footer';
 import './admin-page.styles.scss';
-const AdminPage = (match) => {
-    const id = match.params.id;
+const AdminPage = () => {
     return (
         <>
             <Header />
@@ -12,7 +12,10 @@ const AdminPage = (match) => {
                 <div></div>
                 <div className='admin-page__admin-wrapper'>
                     <div className='admin-page__admin-option'>
-                        Registered Users
+                    <Link to='/administer/registeredusers' className='admin-page__option-link'>
+                        TEST
+                    </Link>    
+                    
                     </div>
                     <div className='admin-page__admin-option'>State Reps</div>
                     <div className='admin-page__admin-option'>State Leads</div>

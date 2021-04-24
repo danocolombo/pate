@@ -1,18 +1,23 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import Header from '../../components/header/header.component';
+import RegisteredUsers from '../../components/admin/registered-users.component';
 import { MainFooter } from '../../components/footers/main-footer';
-import RegisteredUsers from '../../components/admin/registered-users-component';
 import './admin-page.styles.scss';
-const AdminOption = () => {
-    let { option } = useParams();
+const Administer = () => {
+    let {option} = useParams();
     return (
         <>
             <Header />
 
             <div className='admin-page__page-wrapper'>
                 <div></div>
-                {option === 'registeredUsers' ? <RegisteredUsers /> : null}
+                <div className='admin-page__admin-wrapper'>
+                    {option==='registeredusers'?(
+                        <RegisteredUsers/>
+                    ):null}
+                    <div className='admin-page__admin-option'>Profiles</div>
+                </div>
                 <div></div>
             </div>
             <MainFooter />
@@ -20,4 +25,4 @@ const AdminOption = () => {
     );
 };
 
-export default AdminOption;
+export default Administer;
