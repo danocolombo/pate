@@ -24,11 +24,14 @@ const RegisteredUsers = () => {
                 "UserPoolId": "string"
             }
             OUR ACTUAL REQUEST
-            {         
+            let params = {         
                 "PaginationToken": "string",
                 "UserPoolId": "us-east-1_2AD4aPWxt"
             }
-            }
+            cognitoidentityserviceprovider.listUsers(params, function(err, data) {
+                if (err) console.log(err, err.stack); // an error occurred
+                else     console.log(data);           // successful response
+            });
         */
         setLoadingUsers(false);
     }
