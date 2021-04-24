@@ -1,0 +1,15 @@
+.admin-page__page-wrapper {
+    display: grid;
+    grid-template-columns: auto 280px auto;
+    margin: 10px 0px;
+}
+.admin-page__admin-option {
+    border: black solid 2px;
+    border-radius: 5px;
+    padding: 5px 10px;
+    background-color: royalblue;
+    color: white;
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-align: center;
+}

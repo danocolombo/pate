@@ -7,7 +7,8 @@ import {
 } from 'react-router-dom';
 
 import './App.css';
-
+import AdminPage from './pages/admin/admin-page.component';
+import AdminOption from './pages/admin/admin-option-page.component';
 import Events from './pages/events/events.component';
 import Profile from './pages/profile/profile.page';
 import SignIn from './pages/signin/signin.page';
@@ -37,6 +38,8 @@ function App() {
             <section className='landing'>
                 <Alert />
                 <Router>
+                    <Route exact path='/admin' component={AdminPage} />
+                    <Route exact path='/adminoption/:option' component={AdminOption}
                     <Route path='/junkyard' component={Leroy} />
                     <Route exact path='/' component={Events} />
                     <Route path='/faq' component={FAQ} />
