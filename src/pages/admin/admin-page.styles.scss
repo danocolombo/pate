@@ -2,7 +2,9 @@
     display: grid;
     grid-template-columns: auto 280px auto;
     margin: 10px 0px;
+    text-decoration: none;
 }
+
 .admin-page__admin-option {
     border: black solid 2px;
     border-radius: 5px;
@@ -12,4 +14,7 @@
     font-weight: bold;
     font-size: 1.2rem;
     text-align: center;
+}
+.admin-page__admin-option a:visited{
+    color:white;
 }

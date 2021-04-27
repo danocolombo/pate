@@ -1,10 +1,13 @@
+import { get } from 'http';
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Spinner from '../../components/spinner/Spinner';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 
 const RegisteredUsers = ({ currentUser }) => {
+    const [p8Users, setP8Users] = useState([]);
     const [loadingUsers, setLoadingUsers] = useState(true);
+    // const [registeredUser, setRegisteredUser] = useState([]);
     useEffect(() => {
         getRegisteredUsers();
     }, []);
@@ -43,6 +46,9 @@ const RegisteredUsers = ({ currentUser }) => {
                                     depth: null,
                                 })
                         );
+                        preLoadUsers(data?.body?.Users);
+                        // pateUsers = data?.body?.Users;
+                        
                         // theRegistration = data?.body?.Items[0];
                         // if (theRegistration) {
                         //     clearRegistration();
@@ -55,17 +61,42 @@ const RegisteredUsers = ({ currentUser }) => {
         } catch (error) {
             console.log('Error fetching registrations \n' + error);
         }
+        
         clearSpinner();
         setLoadingUsers(false);
     };
+    const preLoadUsers = (cogUsers) => {
+        cogUsers.forEach(user => {
+            setP8Users(p8Users => [...p8Users, user]);
+        })
+        console.log('stored users: ' + p8Users.length);
+    }
     return loadingUsers ? (
         <Spinner />
     ) : (
         <>
+        {/*
             <div className='serveevent-page__header'>REGISTERED USERS</div>
             <div className='serveevent-page__data-input-box'>
                 <div className='serveevent-page__section-header'>Location</div>
                 <div className='serveevent-page__grid-line'></div>
+            </div>
+        */}
+            <div><h2>Registered Users</h2></div>
+            <button onClick={getRegisteredUsers}>Get Users</button>
+            <div>Here are the users<br/>
+                WE HAVE {p8Users.length} USERS!!
+                {   console.log('# of users: ' + p8Users.length)}
+                {p8Users.map(user => {
+                    <div>{user.userName}</div>
+                })}
+                {(p8Users.length>0)?(
+                    p8Users.forEach(p8User => {
+                        <>
+                            <div>{p8User.userName}</div>
+                        </>
+                    })  
+                ):null}
             </div>
         </>
     );

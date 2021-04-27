@@ -13,7 +13,7 @@ const AdminPage = () => {
                 <div className='admin-page__admin-wrapper'>
                     <div className='admin-page__admin-option'>
                     <Link to='/administer/registeredusers' className='admin-page__option-link'>
-                        TEST
+                        Registered Users
                     </Link>    
                     
                     </div>
