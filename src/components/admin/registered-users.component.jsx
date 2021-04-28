@@ -2,12 +2,13 @@ import { get } from 'http';
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Spinner from '../../components/spinner/Spinner';
+import RegisteredUserList from './registered-user-list.component';
 import {
     setSpinner,
     clearSpinner,
     loadRally,
 } from '../../redux/pate/pate.actions';
-
+import './registered-users.style.scss';
 const RegisteredUsers = ({ currentUser }) => {
     const [p8Users, setP8Users] = useState([]);
     const [p8Profiles, setP8Profiles] = useState([]);
@@ -15,10 +16,10 @@ const RegisteredUsers = ({ currentUser }) => {
     const [loadingUsers, setLoadingUsers] = useState(true);
     // const [registeredUser, setRegisteredUser] = useState([]);
     useEffect(() => {
-        // getRegisteredUsers();
-        // getProfiles();
-        // mergeInfo();
-        setLoadingUsers(false);
+        getRegisteredUsers();
+        getProfiles();
+        mergeInfo();
+        // setLoadingUsers(false);
     }, []);
     const getRegisteredUsers = async () => {
         //-----------------------------------------------------
@@ -212,7 +213,7 @@ const RegisteredUsers = ({ currentUser }) => {
                     depth: null,
                 })
         );
-
+        setP8Users(updatedUsers);
         setLoadingUsers(false);
         //
     };
@@ -263,6 +264,14 @@ const RegisteredUsers = ({ currentUser }) => {
                       })
                     : null}
                     */}
+            </div>
+            <div className='admin-registered-users-component__users-box'>
+                {p8Users.map((p8User) =>
+                    <RegisteredUserList
+                        user={p8User}
+                        key={p8User.uid}
+                    />
+                )}
             </div>
         </>
     );

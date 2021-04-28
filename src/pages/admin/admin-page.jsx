@@ -9,7 +9,7 @@ const AdminPage = () => {
             <Header />
 
             <div className='admin-page__page-wrapper'>
-                <div></div>
+                
                 <div className='admin-page__admin-wrapper'>
                     <div className='admin-page__admin-option'>
                     <Link to='/administer/registeredusers' className='admin-page__option-link'>
@@ -21,7 +21,7 @@ const AdminPage = () => {
                     <div className='admin-page__admin-option'>State Leads</div>
                     <div className='admin-page__admin-option'>Events</div>
                 </div>
-                <div></div>
+                
             </div>
             <MainFooter />
         </>

@@ -7,8 +7,8 @@ import {
 } from 'react-router-dom';
 
 import './App.css';
-import AdminPage from './pages/admin/admin-page.component';
-import Administer from './pages/admin/admin-option-page.component';
+import AdminPage from './pages/admin/admin-page';
+import Administer from './pages/admin/admin-option-page';
 import Events from './pages/events/events.component';
 import Profile from './pages/profile/profile.page';
 import SignIn from './pages/signin/signin.page';
