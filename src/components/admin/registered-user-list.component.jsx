@@ -3,8 +3,11 @@ import React from 'react';
 const RegisteredDetails = ({ user, key }) => {
     return (
         <>
-            <h3>{user.login}</h3>
-            <br />
+            <div className='reg-user-list-component__box'>
+                <span>{user.login}</span>
+                <br />
+                <span>{user.firstName}</span>
+            </div>
         </>
     );
 };

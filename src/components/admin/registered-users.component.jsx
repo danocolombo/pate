@@ -16,17 +16,25 @@ const RegisteredUsers = ({ currentUser }) => {
     const [loadingUsers, setLoadingUsers] = useState(true);
     // const [registeredUser, setRegisteredUser] = useState([]);
     useEffect(() => {
-        getRegisteredUsers();
-        getProfiles();
-        mergeInfo();
+        prepUsers();
         // setLoadingUsers(false);
     }, []);
+    const prepUsers = async () => {
+        let rUsers = {};
+        let rProfiles = {};
+
+        rUsers = await getRegisteredUsers();
+        rProfiles = await getProfiles();
+
+        rUsers = await mergeInfo(rUsers, rProfiles);
+    };
     const getRegisteredUsers = async () => {
         //-----------------------------------------------------
         // going to make a call to get the cognito user pool,
         // into an array of users.
         //-----------------------------------------------------
         setSpinner();
+        let theResponse = {};
         //build the request....
         try {
             async function getUsers() {
@@ -55,6 +63,7 @@ const RegisteredUsers = ({ currentUser }) => {
                                     depth: null,
                                 })
                         );
+                        theResponse = data?.body?.Users;
                         preLoadUsers(data?.body?.Users);
                     });
             }
@@ -64,6 +73,7 @@ const RegisteredUsers = ({ currentUser }) => {
         }
 
         clearSpinner();
+        return theResponse;
     };
     const preLoadUsers = (cogUsers) => {
         cogUsers.forEach((user) => {
@@ -100,6 +110,7 @@ const RegisteredUsers = ({ currentUser }) => {
         // into an array of profiles.
         //-----------------------------------------------------
         setSpinner();
+        let theResponse = {};
         //build the request....
         try {
             async function getStoredProfiles() {
@@ -128,6 +139,7 @@ const RegisteredUsers = ({ currentUser }) => {
                                     depth: null,
                                 })
                         );
+                        theResponse = data?.body?.Items;
                         preLoadProfiles(data?.body?.Items);
                         // pateUsers = data?.body?.Users;
 
@@ -144,6 +156,7 @@ const RegisteredUsers = ({ currentUser }) => {
         }
 
         clearSpinner();
+        return theResponse;
     };
     const preLoadProfiles = async (ddbProfiles) => {
         ddbProfiles.forEach((profile) => {
@@ -151,7 +164,7 @@ const RegisteredUsers = ({ currentUser }) => {
         });
         console.log('stored profiles: ' + p8Profiles.length);
     };
-    const mergeInfo = () => {
+    const mergeInfo = (users, profiles) => {
         /*
         export const updateItemInRallyList = (rally, rallyToUpdate) => {
             //this function will update the specified rally, if it exists
@@ -216,21 +229,9 @@ const RegisteredUsers = ({ currentUser }) => {
         setP8Users(updatedUsers);
         setLoadingUsers(false);
         //
+        return null;
     };
-    const manuallyProcess = () => {
-        async function getTheUsers() {
-            getRegisteredUsers();
-        }
-        async function getTheProfiles() {
-            getProfiles();
-        }
-        async function mergeTheInfo() {
-            mergeInfo();
-        }
-        getTheUsers();
-        getTheProfiles();
-        mergeTheInfo();
-    };
+
     return loadingUsers ? (
         <Spinner />
     ) : (
