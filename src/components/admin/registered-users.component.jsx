@@ -234,46 +234,23 @@ const RegisteredUsers = ({ currentUser }) => {
     return loadingUsers ? (
         <Spinner />
     ) : (
-        <>
-            {/*
-            <div className='serveevent-page__header'>REGISTERED USERS</div>
-            <div className='serveevent-page__data-input-box'>
-                <div className='serveevent-page__section-header'>Location</div>
-                <div className='serveevent-page__grid-line'></div>
+        <div className='admin-component__wrapper'>
+            <div className='admin-component__options-box'>
+                <div className='admin-component__page-title'>
+                    Registered Users
+                </div>
+                <div className='admin-component__option-box'>
+                    {p8Users.map((p8User) => (
+                        <div className='admin-component__row-center'>
+                            <RegisteredUserList
+                                user={p8User}
+                                key={p8User.uid}
+                            />
+                        </div>
+                    ))}
+                </div>
             </div>
-        */}
-            <div>
-                <h2>Registered Users</h2>
-            </div>
-            <button onClick={manuallyProcess}>Get Users</button>
-            <div>
-                Here are the users
-                <br />
-                WE HAVE {p8Users.length} USERS!!
-                <br />
-                WE HAVE {p8Profiles.length} PROFILES!!
-                {/*
-                {p8Users.map((user) => {
-                    <div>{user.userName}</div>;
-                })}
-                {p8Users.length > 0
-                    ? p8Users.forEach((p8User) => {
-                          <>
-                              <div>{p8User.userName}</div>
-                          </>;
-                      })
-                    : null}
-                    */}
-            </div>
-            <div className='admin-registered-users-component__users-box'>
-                {p8Users.map((p8User) =>
-                    <RegisteredUserList
-                        user={p8User}
-                        key={p8User.uid}
-                    />
-                )}
-            </div>
-        </>
+        </div>
     );
 };
 const mapDispatchToProps = (dispatch) => ({

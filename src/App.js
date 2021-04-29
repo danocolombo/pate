@@ -8,7 +8,7 @@ import {
 
 import './App.css';
 import AdminPage from './pages/admin/admin-page';
-import Administer from './pages/admin/admin-option-page';
+import Administer from './pages/admin/admin-feature-page';
 import Events from './pages/events/events.component';
 import Profile from './pages/profile/profile.page';
 import SignIn from './pages/signin/signin.page';

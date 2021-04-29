@@ -1,11 +1,12 @@
-import React from 'react'
+import React from 'react';
 
-const RegisteredDetails = ({user, key}) => {
+const RegisteredDetails = ({ user, key }) => {
     return (
-        <div>
-            <div><h3>{key} - {user.login}</h3></div>
-        </div>
-    )
-}
+        <>
+            <h3>{user.login}</h3>
+            <br />
+        </>
+    );
+};
 
-export default RegisteredDetails
+export default RegisteredDetails;
