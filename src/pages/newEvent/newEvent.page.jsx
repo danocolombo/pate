@@ -84,14 +84,14 @@ const Serve = ({
         //create empty event object
         const emptyEvent = {
             meal: {
-                startTime: '1200',
+                startTime: '0000',
                 mealCount: 0,
                 cost: '0',
                 message: '',
                 mealsServed: 0,
-                deadline: '20211225',
+                deadline: '30000101',
             },
-            eventDate: '20211225',
+            eventDate: '30000101',
             contact: {
                 name: '',
                 phone: '',
@@ -106,17 +106,16 @@ const Serve = ({
                 phone: '',
                 email: '',
             },
-            uid: 'sdfijvapofiha;jlrav',
+            uid: '',
             name: '',
             registrations: 0,
-            startTime: '13:00',
+            startTime: '00:00',
             city: '',
             graphic: '',
             approved: false,
-            attendees: '0',
-            endTime: '13:00',
-            attendance: 0,
-            id: 'agfwspgswrioja',
+            attendees: 0,
+            endTime: '00:00',
+            id: '',
             postalCode: '',
             street: '',
         };
@@ -158,115 +157,52 @@ const Serve = ({
         setAttendeeCount(0);
         setRegistrationCount(0);
     };
-    const loadEvent = async () => {
-        //get the event reference.
-        // if the eventID is not in our currentUserRallies,
-        // that means that Lead is viewing. Go to the db
-        // and load into pate.rally
-        //????????????????????????????????????????????????
-        let inRallies = false;
-        rallies.forEach((rallyEvent) => {
-            if (rallyEvent.uid === eventID) {
-                inRallies = true;
-            }
-        });
-        if (inRallies) {
-            rallies.forEach((rallyEvent) => {
-                if (rallyEvent.uid === eventID) {
-                    //-----------------
-                    // convert the eventDate from number to date to display
-                    let ddbDate = rallyEvent.eventDate;
-                    const y = ddbDate.substring(0, 4);
-                    const m = ddbDate.substring(4, 6);
-                    const d = ddbDate.substring(6, 8);
-                    let smDate =
-                        y.toString() + '-' + m.toString() + '-' + d.toString();
-                    rallyEvent.eventDate = smDate;
-                    // save the event to redux
-                    loadRally(rallyEvent);
-                    //load the useState
-                    setEventDate(rallyEvent?.eventDate);
-                    setChurchName(rallyEvent?.name);
-                    setStreet(rallyEvent?.street);
-                    setCity(rallyEvent?.city);
-                    setStateProv(rallyEvent?.stateProv);
-                    setPostalCode(rallyEvent?.postalCode);
-                    setEventStart(rallyEvent?.startTime);
-                    setEventEnd(rallyEvent?.endTime);
-                    setGraphic(rallyEvent?.graphic);
-                    setApproved(rallyEvent?.approved);
-                    setContactName(rallyEvent?.contact?.name);
-                    setContactEmail(rallyEvent?.contact?.email);
-                    setContactPhone(rallyEvent?.contact?.phone);
-                    setEventStatus(rallyEvent?.status);
-                    setEventMessage(rallyEvent?.message);
-                    setRepName(rallyEvent?.coordinator?.name);
-                    setRepEmail(rallyEvent?.coordinator?.email);
-                    setRepPhone(rallyEvent?.coordinator?.phone);
-                    setMealTime(rallyEvent?.meal?.startTime);
-                    setMealCost(rallyEvent?.meal?.cost);
-                    setMealCount(rallyEvent?.meal?.mealCount);
-                    setMealsServed(rallyEvent?.meal?.mealsServed);
-                    setMealMessage(rallyEvent?.meal?.message);
-                    setMealDeadline(rallyEvent?.meal?.deadline);
-                    setAttendeeCount(rallyEvent?.attendees);
-                    setRegistrationCount(rallyEvent?.registrations);
-                }
-            });
-        } else {
-            // go get the rally from staterep leadRallies
-            leadRallies.forEach((rallyEvent) => {
-                if (rallyEvent.uid === eventID) {
-                    //-----------------
-                    // convert the eventDate from number to date to display
-                    let ddbDate = rallyEvent.eventDate;
-                    const y = ddbDate.substring(0, 4);
-                    const m = ddbDate.substring(4, 6);
-                    const d = ddbDate.substring(6, 8);
-                    let smDate =
-                        y.toString() + '-' + m.toString() + '-' + d.toString();
-                    rallyEvent.eventDate = smDate;
-                    // seave the event to redux
-                    loadRally(rallyEvent);
-                    //load the useState
-                    setEventDate(rallyEvent?.eventDate);
-                    setChurchName(rallyEvent?.name);
-                    setStreet(rallyEvent?.street);
-                    setCity(rallyEvent?.city);
-                    setStateProv(rallyEvent?.stateProv);
-                    setPostalCode(rallyEvent?.postalCode);
-                    setEventStart(rallyEvent?.startTime);
-                    setEventEnd(rallyEvent?.endTime);
-                    setGraphic(rallyEvent?.graphic);
-                    setApproved(rallyEvent?.approved);
-                    setContactName(rallyEvent?.contact?.name);
-                    setContactEmail(rallyEvent?.contact?.email);
-                    setContactPhone(rallyEvent?.contact?.phone);
-                    setEventStatus(rallyEvent?.status);
-                    setEventMessage(rallyEvent?.message);
-                    setRepName(rallyEvent?.coordinator?.name);
-                    setRepEmail(rallyEvent?.coordinator?.email);
-                    setRepPhone(rallyEvent?.coordinator?.phone);
-                    setMealTime(rallyEvent?.meal?.startTime);
-                    setMealCost(rallyEvent?.meal?.cost);
-                    setMealCount(rallyEvent?.meal?.mealCount);
-                    setMealsServed(rallyEvent?.meal?.mealsServed);
-                    setMealMessage(rallyEvent?.meal?.message);
-                    setMealDeadline(rallyEvent?.meal?.deadline);
-                    setAttendeeCount(rallyEvent?.attendees);
-                    setRegistrationCount(rallyEvent?.registrations);
-                }
-            });
-        }
-    };
     
-    const handleSubmitClick = (event) => {
+    const handleAddClick = (event) => {
         event.preventDefault();
+        //default rally
+        const newRally = {
+            meal: {
+                startTime: '0000',
+                mealCount: 0,
+                cost: '0',
+                message: '',
+                mealsServed: 0,
+                deadline: '30000101',
+            },
+            eventDate: '30000101',
+            contact: {
+                name: '',
+                phone: '',
+                email: '',
+            },
+            status: 'draft',
+            message: '',
+            stateProv: '',
+            coordinator: {
+                name: '',
+                id: 0,
+                phone: '',
+                email: '',
+            },
+            uid: '',
+            name: '',
+            registrations: 0,
+            startTime: '00:00',
+            city: '',
+            graphic: '',
+            approved: false,
+            attendees: 0,
+            endTime: '00:00',
+            id: '',
+            postalCode: '',
+            street: '',
+        };
 
         //get rally object to update
-        let newRally = pateSystem?.rally;
+        // let newRally = pateSystem?.rally;
         //now update with form values
-
+        
         newRally.name = churchName;
         newRally.street = street;
         newRally.city = city;
@@ -275,20 +211,17 @@ const Serve = ({
         newRally.contact.name = contactName;
         newRally.contact.phone = contactPhone;
         newRally.contact.email = contactEmail;
-        newRally.eventDate = eventDate.replace(/-/g, '');
+        if (eventDate !== null) {
+            newRally.eventDate = eventDate.replace(/-/g, '');
+        }
         newRally.startTime = eventStart;
         newRally.endTime = eventEnd;
         newRally.message = eventMessage;
-        newRally.approved = isApproved;
         newRally.status = eventStatus;
         newRally.meal.startTime = mealTime;
         newRally.meal.cost = mealCost;
-        newRally.meal.mealCount = mealCount;
-        newRally.meal.mealsServed = mealsServed;
         newRally.meal.message = mealMessage;
         newRally.meal.deadline = mealDeadline;
-        newRally.registrations = registrationCount;
-        newRally.attendees = attendeeCount;
 
         //now update redux for future use.
         loadRally(newRally);
@@ -300,7 +233,7 @@ const Serve = ({
                 {
                     method: 'POST',
                     body: JSON.stringify({
-                        operation: 'updateEvent',
+                        operation: 'createEvent',
                         payload: {
                             Item: newRally,
                         },
@@ -329,16 +262,7 @@ const Serve = ({
         history.push('/serve');
     };
     const handleChange = (e) => {
-        // let value = null;
-        // let name = null;
-        // if (e?.target?.name === 'checkbox') {
-        //     console.log('checkbox - ignore');
-        //     name = 'ignore';
-        //     value = null;
-        // } else {
-        //     value = e.target.value;
-        //     name = e.target.name;
-        // }
+        
         let { value, name } = e.target;
         switch (name) {
             case 'churchName':
@@ -374,11 +298,7 @@ const Serve = ({
             case 'graphicFile':
                 setGraphic(value);
                 break;
-            case 'isApproved':
-                if (currentUser?.stateLead === stateProv) {
-                    setApproved(!isApproved);
-                }
-                break;
+            
             case 'eventStatus':
                 setEventStatus(value);
                 break;
@@ -409,23 +329,12 @@ const Serve = ({
             case 'mealCost':
                 setMealCost(value);
                 break;
-            case 'mealCount':
-                setMealCount(value);
-                break;
-            case 'mealsServed':
-                setMealsServed(value);
-                break;
+            
             case 'mealMessage':
                 setMealMessage(value);
                 break;
             case 'mealDeadline':
                 setMealDeadline(value);
-                break;
-            case 'attendanceCount':
-                setAttendeeCount(value);
-                break;
-            case 'registrationCount':
-                setRegistrationCount(value);
                 break;
             default:
                 break;
@@ -619,7 +528,7 @@ const Serve = ({
                                 </div>
                                 <div className='newevent-page__grid-control'>
                                     <input
-                                        type='text'
+                                        type='time'
                                         id='eventStart'
                                         name='eventStart'
                                         onChange={handleChange}
@@ -637,7 +546,7 @@ const Serve = ({
                                 </div>
                                 <div className='newevent-page__grid-control'>
                                     <input
-                                        type='text'
+                                        type='time'
                                         id='eventEnd'
                                         name='eventEnd'
                                         onChange={handleChange}
@@ -654,6 +563,8 @@ const Serve = ({
                                     Message:
                                 </div>
                                 <div className='newevent-page__grid-control'>
+                                <textarea rows="4" cols="15" name="eventMessage" id="eventMessage" onChange={handleChange} value={eventMessage}></textarea>
+                                    {/*
                                     <input
                                         type='memo'
                                         id='eventMessage'
@@ -662,6 +573,7 @@ const Serve = ({
                                         value={eventMessage}
                                         required
                                     />
+                                    */}
                                 </div>
                             </div>
                         </div>
@@ -677,7 +589,7 @@ const Serve = ({
                                 </div>
                                 <div className='newevent-page__grid-control'>
                                     <input
-                                        type='text'
+                                        type='time'
                                         id='mealTime'
                                         name='mealTime'
                                         onChange={handleChange}
@@ -747,7 +659,7 @@ const Serve = ({
                         <div className='newevent-page__button-wrapper'>
                             <button
                                 className='newevent-page__update-button'
-                                onClick={handleSubmitClick}
+                                onClick={handleAddClick}
                             >
                                 ADD
                             </button>
