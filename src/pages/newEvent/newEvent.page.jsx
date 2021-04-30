@@ -414,6 +414,7 @@ const Serve = ({
     const handleCancelClick = () => {
         history.push('/serve');
     }
+    
     return pateSystem.showSpinner ? (
         <Spinner />
     ) : (
@@ -754,6 +755,7 @@ const Serve = ({
                 </div>
             </div>
             <MainFooter />
+            
             <Modal isOpened={modalIsVisible}>
                 <div>
                     <InputErrors onClose={() => setModalIsVisible(false)} />

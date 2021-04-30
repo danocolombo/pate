@@ -7,6 +7,8 @@ import { withRouter } from 'react-router';
 
 import Header from '../../components/header/header.component';
 import { MainFooter } from '../../components/footers/main-footer';
+import Modal from '../../components/modals/wrapper.modal';
+import ConfirmDelete from '../../components/modals/serve-event/serve-event-confirm-delete.modal';
 import Spinner from '../../components/spinner/Spinner';
 import RegistrationItem from '../../components/registration-serve-list-item/registrationServeListItem.component';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
@@ -35,6 +37,7 @@ const Serve = ({
 }) => {
     let eventID = match?.params?.id;
     console.log('serveEvent: ' + eventID);
+    const [modalDeleteConfirmIsVisible, setModalDeleteConfirmIsVisible] = useState(false);
     const refApprovalCheckbox = useRef(null);
     // const [plan, setPlan] = useState([]);
     const [churchName, setChurchName] = useState('');
@@ -544,6 +547,19 @@ const Serve = ({
     const handleCancelClick = () => {
         history.push('/serve');
     }
+    const handleDeleteRequest = () => {
+        setModalDeleteConfirmIsVisible(true);
+    }
+    const handleDeleteConfirm = () => {
+        setModalDeleteConfirmIsVisible(false);
+        alert('DELETING RALLY');
+        return;
+    }
+    const handleDeleteDecline = () => {
+        //cancelling delete request
+        setModalDeleteConfirmIsVisible(false);
+        return;
+    }
     return pateSystem.showSpinner ? (
         <Spinner />
     ) : (
@@ -985,7 +1001,7 @@ const Serve = ({
                             <button className='serveevent-page__cancel-button' onClick={() => handleCancelClick()}>
                                 Cancel
                             </button>
-                            <button className='serveevent-page__delete-button' onClick=''>
+                            <button className='serveevent-page__delete-button' onClick={() => handleDeleteRequest()}>
                                 Delete
                             </button>
                         </div>
@@ -1017,6 +1033,11 @@ const Serve = ({
                 </div>
             </div>
             <MainFooter />
+            <Modal isOpened={modalDeleteConfirmIsVisible}>
+                <div>
+                    <ConfirmDelete confirmDelete={() => handleDeleteConfirm()} declineDelete={()=> handleDeleteDecline()}/>
+                </div>
+            </Modal>
         </>
     );
 };
