@@ -1,5 +1,8 @@
 import { StateRepActionTypes } from './stateRep.types';
-import { updateItemInRallyList } from './stateRep.utils';
+import {
+    removeRallyFromRallyList,
+    updateItemInRallyList,
+} from './stateRep.utils';
 const INITIAL_STATE = {
     rally: [],
     loading: false,
@@ -22,11 +25,13 @@ const stateRepReducer = (state = INITIAL_STATE, action) => {
         case StateRepActionTypes.UPDATE_REP_RALLY:
             return {
                 ...state,
-                rally: updateItemInRallyList(
-                    state.rally,
-                    action
-                )
-            }
+                rally: updateItemInRallyList(state.rally, action),
+            };
+        case StateRepActionTypes.REMOVE_REP_RALLY:
+            return {
+                ...state,
+                rally: removeRallyFromRallyList(state.rally, action),
+            };
         default:
             return state;
     }

@@ -17,7 +17,10 @@ import {
     loadEventRegistrations,
     clearEventRegistrations,
 } from '../../redux/registrations/registrations.actions';
-import { updateStateRepRally } from '../../redux/stateRep/stateRep.actions';
+import {
+    updateStateRepRally,
+    removeRallyFromRallyList,
+} from '../../redux/stateRep/stateRep.actions';
 import './serveEvent.styles.scss';
 // import { getEventRegistrations } from './server-event.actions';
 const Serve = ({
@@ -33,11 +36,15 @@ const Serve = ({
     loadEventRegistrations,
     clearEventRegistrations,
     updateStateRepRally,
+    removeRallyFromRallyList,
     pate,
 }) => {
     let eventID = match?.params?.id;
     console.log('serveEvent: ' + eventID);
-    const [modalDeleteConfirmIsVisible, setModalDeleteConfirmIsVisible] = useState(false);
+    const [
+        modalDeleteConfirmIsVisible,
+        setModalDeleteConfirmIsVisible,
+    ] = useState(false);
     const refApprovalCheckbox = useRef(null);
     // const [plan, setPlan] = useState([]);
     const [churchName, setChurchName] = useState('');
@@ -546,20 +553,54 @@ const Serve = ({
     };
     const handleCancelClick = () => {
         history.push('/serve');
-    }
+    };
     const handleDeleteRequest = () => {
         setModalDeleteConfirmIsVisible(true);
-    }
+    };
     const handleDeleteConfirm = () => {
         setModalDeleteConfirmIsVisible(false);
-        alert('DELETING RALLY');
-        return;
-    }
+        //remove the rally from the database...
+        async function updateDb() {
+            await fetch(
+                'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/events',
+                {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        operation: 'deleteEvent',
+                        payload: {
+                            Key: {
+                                uid: eventID,
+                            },
+                        },
+                    }),
+                    headers: {
+                        'Content-type': 'application/json; charset=UTF-8',
+                    },
+                }
+            )
+                .then((response) => response.json())
+                .then((data) => {
+                    // const util = require('util');
+                    // console.log(
+                    //     'db data returned: \n' +
+                    //         util.inspect(data, {
+                    //             showHidden: false,
+                    //             depth: null,
+                    //         })
+                    // );
+                    removeRallyFromRallyList(eventID);
+                });
+        }
+        //next call is to async the above update
+        updateDb();
+
+        history.push('/serve');
+    };
     const handleDeleteDecline = () => {
         //cancelling delete request
         setModalDeleteConfirmIsVisible(false);
         return;
-    }
+    };
     return pateSystem.showSpinner ? (
         <Spinner />
     ) : (
@@ -998,10 +1039,16 @@ const Serve = ({
                             >
                                 Update
                             </button>
-                            <button className='serveevent-page__cancel-button' onClick={() => handleCancelClick()}>
+                            <button
+                                className='serveevent-page__cancel-button'
+                                onClick={() => handleCancelClick()}
+                            >
                                 Cancel
                             </button>
-                            <button className='serveevent-page__delete-button' onClick={() => handleDeleteRequest()}>
+                            <button
+                                className='serveevent-page__delete-button'
+                                onClick={() => handleDeleteRequest()}
+                            >
                                 Delete
                             </button>
                         </div>
@@ -1035,7 +1082,10 @@ const Serve = ({
             <MainFooter />
             <Modal isOpened={modalDeleteConfirmIsVisible}>
                 <div>
-                    <ConfirmDelete confirmDelete={() => handleDeleteConfirm()} declineDelete={()=> handleDeleteDecline()}/>
+                    <ConfirmDelete
+                        confirmDelete={() => handleDeleteConfirm()}
+                        declineDelete={() => handleDeleteDecline()}
+                    />
                 </div>
             </Modal>
         </>
@@ -1050,6 +1100,8 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch(loadEventRegistrations(registrations)),
     clearEventRegistrations: () => dispatch(clearEventRegistrations()),
     updateStateRepRally: (newRally) => dispatch(updateStateRepRally(newRally)),
+    removeRallyFromRallyList: (rally) =>
+        dispatch(removeRallyFromRallyList(rally)),
 });
 // Serve.propTypes = {
 //     getEventRegistrations: PropTypes.func.isRequired,
