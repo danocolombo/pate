@@ -74,7 +74,6 @@ const Serve = ({
         //++++++++++++++++++++++++++++++++++++++++
         if (!currentUser.isLoggedIn) history.push('/');
         //get the reference to the current event and load to useState
-
     }, []);
 
     useEffect(() => {}, [pateSystem.showSpinner]);
@@ -157,9 +156,9 @@ const Serve = ({
         setAttendeeCount(0);
         setRegistrationCount(0);
     };
-    
+
     const handleAddClick = (event) => {
-        event.preventDefault();
+        // event.preventDefault();
         //default rally
         const newRally = {
             meal: {
@@ -202,7 +201,7 @@ const Serve = ({
         //get rally object to update
         // let newRally = pateSystem?.rally;
         //now update with form values
-        
+
         newRally.name = churchName;
         newRally.street = street;
         newRally.city = city;
@@ -224,7 +223,7 @@ const Serve = ({
         newRally.meal.deadline = mealDeadline;
 
         //now update redux for future use.
-        loadRally(newRally);
+        // loadRally(newRally);
         //reload stateRep and stateLead
         //now save the newRally data to database
         async function updateDb() {
@@ -245,14 +244,14 @@ const Serve = ({
             )
                 .then((response) => response.json())
                 .then((data) => {
-                    // const util = require('util');
-                    // console.log(
-                    //     'db data returned: \n' +
-                    //         util.inspect(data, {
-                    //             showHidden: false,
-                    //             depth: null,
-                    //         })
-                    // );
+                    const util = require('util');
+                    console.log(
+                        'db data returned: \n' +
+                            util.inspect(data, {
+                                showHidden: false,
+                                depth: null,
+                            })
+                    );
                 });
         }
         //next call is to async the above update
@@ -262,7 +261,6 @@ const Serve = ({
         history.push('/serve');
     };
     const handleChange = (e) => {
-        
         let { value, name } = e.target;
         switch (name) {
             case 'churchName':
@@ -298,7 +296,7 @@ const Serve = ({
             case 'graphicFile':
                 setGraphic(value);
                 break;
-            
+
             case 'eventStatus':
                 setEventStatus(value);
                 break;
@@ -329,7 +327,7 @@ const Serve = ({
             case 'mealCost':
                 setMealCost(value);
                 break;
-            
+
             case 'mealMessage':
                 setMealMessage(value);
                 break;
@@ -563,7 +561,14 @@ const Serve = ({
                                     Message:
                                 </div>
                                 <div className='newevent-page__grid-control'>
-                                <textarea rows="4" cols="15" name="eventMessage" id="eventMessage" onChange={handleChange} value={eventMessage}></textarea>
+                                    <textarea
+                                        rows='4'
+                                        cols='15'
+                                        name='eventMessage'
+                                        id='eventMessage'
+                                        onChange={handleChange}
+                                        value={eventMessage}
+                                    ></textarea>
                                     {/*
                                     <input
                                         type='memo'
@@ -577,7 +582,7 @@ const Serve = ({
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div className='newevent-page__section-header'>
                             Meal Details
                         </div>
@@ -617,7 +622,7 @@ const Serve = ({
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div className='newevent-page__grid-line'>
                             <div></div>
                             <div className='newevent-page__grid-data-box'>
@@ -654,12 +659,11 @@ const Serve = ({
                                 </div>
                             </div>
                         </div>
-                        
 
                         <div className='newevent-page__button-wrapper'>
                             <button
                                 className='newevent-page__update-button'
-                                onClick={handleAddClick}
+                                onClick={() => handleAddClick()}
                             >
                                 ADD
                             </button>
