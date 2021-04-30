@@ -19,6 +19,7 @@ import EventRegistration from './pages/registration/registration.page';
 import FAQ from './pages/faq/faq.page';
 import Serve from './pages/serve/serve.page';
 import ServeEvent from './pages/serveEvent/serveEvent.page';
+import NewEvent from './pages/newEvent/newEvent.page';
 import EditRegistration from './pages/edit-registration/edit-registration.page';
 import Alert from './components/alert/alert.component';
 import Support from './pages/support/support.page';
@@ -59,6 +60,7 @@ function App() {
                         path='/serveevent/:id'
                         component={ServeEvent}
                     />
+                    <Route exact  path='/newevent' component={NewEvent}/>
                     <Route
                         exact
                         path='/registration/:id'

@@ -14,8 +14,8 @@ const StateLead = ({ currentUser, rallies }) => {
 
     return (
         <>
-            <div className='serve-page__event-list-header'>State Events</div>
-            <div className='serve-page__message-box'>
+            <div className='serve-component__event-list-header'>State Events</div>
+            <div className='serve-component__message-box'>
                 These are the events within your state that you can view and
                 manage, support and change.
             </div>

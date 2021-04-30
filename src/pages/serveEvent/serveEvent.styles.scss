@@ -122,6 +122,26 @@
     color: black;
     padding: 1px 5px;
     border-radius: 5px;
+    margin: 0px 5px;
+}
+.serveevent-page__cancel-button {
+    background-color: darkgray;
+    color: black;
+    padding: 1px 5px;
+    border-radius: 5px;
+    margin: 0px 10px;
+}
+.serveevent-page__delete-button {
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+    padding: 1px 5px;
+    border-radius: 5px;
+    margin-left:5px;
+    // font-weight: bold;
+    // font-size: 1em;
+    // margin: 10px 0px;
 }
 .serveevent-page__registration-list-box {
     width: 280px;
@@ -305,14 +325,7 @@
 .serve-event__delete-box__horizontal-line {
     border-top: 3px dotted red;
 }
-.serve-event__delete-button {
-    background-color: red;
-    color: white;
-    font-family: 'Roboto', sans-serif;
-    font-weight: bold;
-    font-size: 1em;
-    margin: 10px 0px;
-}
+
 // MEDIA ALTERATIONS ** MEDIA ALTERATIONS ** MEDIA ALTERATIONS **
 //Iphone Series
 @media only screen and (min-width: 320px) and (max-width: 767px) {

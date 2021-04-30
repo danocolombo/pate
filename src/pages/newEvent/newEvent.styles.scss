@@ -1,0 +1,378 @@
+.newevent-page__wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.newevent-page__form-box {
+    background-color: lightgray;
+    width: 280px;
+    margin: 10px 0 10px 0;
+    border: black solid 1px;
+    border-radius: 5px;
+    // border-bottom-left-radius: 5px;
+    // border-bottom-right-radius: 5px;
+}
+.newevent-page__header {
+    font-size: 1.2em;
+    padding: 5px 0;
+    font-weight: bold;
+    background-color: #4484ce;
+    text-align: center;
+    color: white;
+    border-bottom: black solid 2px;
+}
+.newevent-page__section-header {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: black;
+    text-align: center;
+    padding: 10px 0 0 0;
+}
+.newevent-page__data-input-box {
+    display: flex;
+    flex-direction: column;
+
+    margin: 0px 10px;
+}
+.newevent-page__grid-line {
+    padding: 5px 0 0 0;
+    display: grid;
+    grid-template-columns: auto 275px auto;
+}
+.newevent-page__grid-data-box {
+    display: grid;
+    grid-template-columns: 100px 175px;
+}
+.newevent-page__grid-label {
+    color: black;
+    text-align: right;
+    // border: green double 1px;
+}
+.newevent-page__grid-control {
+    border: none;
+}
+.newevent-page__button-wrapper {
+    padding: 15px 0;
+    text-align: center;
+}
+.newevent-page__update-button {
+    background-color: yellow;
+    color: black;
+    padding: 1px 5px;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+.newevent-page__cancel-button {
+    background-color: darkgray;
+    color: black;
+    padding: 1px 5px;
+    margin-left:10px;
+    border-radius: 5px;
+}
+//=======================
+// BELOW ARE NOT USED?
+// .newevent-page__input-line {
+//     display: flex;
+//     flex-direction: row;
+//     border: orange solid 1px;
+//     // padding-right: 15px;
+// }
+// .newevent-page__input-label {
+//     flex-grow: 1;
+//     color: black;
+//     text-align: right;
+//     padding-right: 3px;
+// }
+// .newevent-page__input-control {
+//     padding-right: 0px;
+// }
+// .registration__box {
+//     display: flex;
+//     margin-left: 10vw;
+//     align-items: center;
+//     flex-direction: column;
+//     width: 80vw;
+//     text-align: center;
+// }
+// .registration__header {
+//     font-size: 1.3em;
+//     font-weight: bold;
+//     padding: 5px 0px;
+//     background-color: #4717f6;
+//     width: 80vw;
+//     margin-top: 10px;
+//     color: white;
+//     border: black solid 1px;
+//     border-top-left-radius: 5px;
+//     border-top-right-radius: 5px;
+// }
+// .newevent-page__section-header {
+//     font-size: 1.3em;
+//     font-weight: bold;
+//     padding-top: 5px;
+//     color: black;
+// }
+// // .newevent-page__input-line {
+// //     display: flex;
+// //     flex-direction: row;
+// //     width: 80vw;
+// // }
+// .newevent-page__input-label {
+//     // border: red solid 1px;
+//     flex-grow: 1;
+//     color: black;
+//     width: 30vw;
+//     text-align: right;
+//     padding: 5px 3px;
+// }
+// .newevent-page__input-control {
+//     // border: blue solid 1px;
+//     flex-grow: 1;
+//     width: 50vw;
+//     text-align: left;
+//     padding: 5px;
+// }
+
+// .newevent-page__registration-list-box {
+//     width: 280px;
+//     background-color: #286da8;
+//     border-left: black solid 1px;
+//     border-right: black solid 1px;
+//     border-bottom: black solid 1px;
+//     border-bottom-left-radius: 5px;
+//     border-bottom-right-radius: 5px;
+//     align-items: center;
+//     padding-bottom: 10px;
+// }
+// .newevent-page__registration-list-header {
+//     // width: 70vw;
+//     // margin-left: 5vw;
+//     background-color: #286da8;
+//     padding: 5px 0px;
+//     text-align: center;
+//     font-weight: bold;
+//     font-size: 1.3em;
+//     color: white;
+// }
+// .newevent-page__registration-data-box {
+//     // width: 70vw;
+//     margin: 0px 15px;
+//     // display: flex;
+//     background: lightgray;
+//     color: black;
+//     padding: 5px 0px;
+//     border-right: black solid 1px;
+//     border-left: black solid 1px;
+//     border-bottom: black solid 1px;
+//     border-bottom-left-radius: 5px;
+//     border-bottom-right-radius: 5px;
+// }
+// //##########################
+// //##########################
+// .registration__button-wrapper {
+//     padding-top: 5px;
+//     padding-bottom: 10px;
+//     background-color: lightgray;
+//     // border-left: black solid 1px;
+//     // border-right: black solid 1px;
+//     width: 80vw;
+// }
+// .registration__button-update {
+//     padding: 2px 10px;
+//     background-color: yellow;
+// }
+// .registration__registration-list-box {
+//     width: 80vw;
+//     background-color: #286da8;
+//     border-left: black solid 1px;
+//     border-right: black solid 1px;
+//     border-bottom: black solid 1px;
+//     border-bottom-left-radius: 5px;
+//     border-bottom-right-radius: 5px;
+//     align-items: center;
+//     padding-bottom: 10px;
+// }
+// .registration__registration-list-header {
+//     width: 70vw;
+//     margin-left: 5vw;
+//     background-color: #286da8;
+//     padding: 5px 0px;
+//     text-align: center;
+//     font-weight: bold;
+//     font-size: 1.3em;
+//     color: white;
+//     // border-top: black solid 1px;
+//     // border-left: black solid 1px;
+//     // border-right: black solid 1px;
+//     // border-top-left-radius: 5px;
+//     // border-top-right-radius: 5px;
+// }
+// .registration__registration-data-row {
+//     width: 70vw;
+//     margin-left: 5vw;
+//     background: lightgray;
+//     color: black;
+//     padding-top: 5px;
+//     padding-bottom: 5px;
+//     border-right: black solid 1px;
+//     border-left: black solid 1px;
+//     border-bottom: black solid 1px;
+//     border-bottom-left-radius: 5px;
+//     border-bottom-right-radius: 5px;
+// }
+
+// .serve-event-page__approval-true {
+//     font-weight: bold;
+//     color: white;
+//     background-color: green;
+//     padding: 1px;
+// }
+// .serve-event-page__approval-false {
+//     font-weight: bold;
+//     color: white;
+//     background-color: red;
+//     padding: 1px;
+// }
+
+// //==================================
+// .serve-event-content-wrapper {
+//     text-align: center;
+//     // padding: 1rem;
+//     // margin: 0.5rem 0;
+//     padding-top: 10px;
+//     width: 80%;
+//     height: auto;
+//     // align-items: center;
+//     background: lightgray;
+//     color: black;
+// }
+
+// .church-contact-header {
+//     font-weight: bold;
+//     margin-top: 10px;
+// }
+// .logistics-header {
+//     font-weight: bold;
+//     margin-top: 10px;
+// }
+// .meal-header {
+//     font-weight: bold;
+//     margin-top: 10px;
+// }
+// .tally-header {
+//     font-weight: bold;
+//     margin-top: 10px;
+// }
+// .sr-event-status-label .sr-event-status-tooltip {
+//     visibility: hidden;
+//     width: 120px;
+//     background-color: #555;
+//     color: #fff;
+//     text-align: center;
+//     border-radius: 6px;
+//     padding: 5px 0;
+//     position: absolute;
+//     z-index: 1;
+//     bottom: 125%;
+//     left: 50%;
+//     margin-left: -60px;
+//     opacity: 0;
+//     transition: opacity 0.3s;
+// }
+// .sr-event-status-label .sr-event-status-tooltip::after {
+//     content: '';
+//     position: absolute;
+//     top: 100%;
+//     left: 50%;
+//     margin-left: -5px;
+//     border-width: 5px;
+//     border-style: solid;
+//     border-color: #555 transparent transparent transparent;
+// }
+// .sr-event-status-label:hover .sr-event-status-tooltip {
+//     visibility: visible;
+//     opacity: 1;
+// }
+// .serve-item-none-to-report-message {
+//     margin-bottom: 10px;
+// }
+// .serve-event-register-item-wrapper {
+//     margin-bottom: 5px;
+// }
+// .serve-event-register-item-name {
+//     display: inline-block;
+// }
+// .serve-event-register-item-numbers {
+//     display: inline-block;
+//     padding-left: 10px;
+// }
+
+// .serve-event__delete-box {
+//     background: lightgray;
+//     width: 80%;
+//     text-align: center;
+// }
+// .serve-event__delete-box__horizontal-line {
+//     border-top: 3px dotted red;
+// }
+// .serve-event__delete-button {
+//     background-color: red;
+//     color: white;
+//     font-family: 'Roboto', sans-serif;
+//     font-weight: bold;
+//     font-size: 1em;
+//     margin: 10px 0px;
+// }
+// MEDIA ALTERATIONS ** MEDIA ALTERATIONS ** MEDIA ALTERATIONS **
+//Iphone Series
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+    .newevent-page__form-box {
+        width: 320px;
+    }
+    // .serveevent-page__input-control {
+    //     padding-right: 25px;
+    // }
+    // .profile-component__phone-input-line {
+    //     padding-right: 40px;
+    // }
+    // .serveevent-page__attendee-input-line {
+    //     padding-right: 60px;
+    // }
+    // .serveevent-page__registration-list-box {
+    //     width: 320px;
+    // }
+    // .serveevent-page__registration-data-box {
+    //     margin: 0px 35px;
+    // }
+}
+//IPAD Series
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+    .newevent-page__form-box {
+        width: 400px;
+    }
+    // .serveevent-page__input-control {
+    //     padding-right: 75px;
+    // }
+    // .serveevent-page__registration-list-box {
+    //     width: 400px;
+    // }
+    // .serveevent-page__registration-data-box {
+    //     margin: 0px 45px;
+    // }
+}
+//desktop
+@media only screen and (min-width: 1024px) {
+    .newevent-page__form-box {
+        width: 500px;
+    }
+    // .serveevent-page__input-control {
+    //     padding-right: 300px;
+    // }
+    // .serveevent-page__registration-list-box {
+    //     width: 500px;
+    // }
+    // .serveevent-page__registration-data-box {
+    //     margin: 0px 60px;
+    // }
+}
