@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import './serve.styles.scss';
 const StateRepRally = ({ rally }) => {
     const dateToDisplay = () => {
+        if (rally.eventDate === "30000101"){
+            return "";
+        }
         let em = parseInt(rally.eventDate.substring(4, 6));
         let ed = parseInt(rally.eventDate.substring(6, 8));
         let eventDate = em + '/' + ed;

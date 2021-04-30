@@ -541,6 +541,9 @@ const Serve = ({
                 break;
         }
     };
+    const handleCancelClick = () => {
+        history.push('/serve');
+    }
     return pateSystem.showSpinner ? (
         <Spinner />
     ) : (
@@ -979,6 +982,12 @@ const Serve = ({
                             >
                                 Update
                             </button>
+                            <button className='serveevent-page__cancel-button' onClick={() => handleCancelClick()}>
+                                Cancel
+                            </button>
+                            <button className='serveevent-page__delete-button' onClick=''>
+                                Delete
+                            </button>
                         </div>
                     </div>
 
@@ -1002,14 +1011,6 @@ const Serve = ({
                                         <div>NO</div>
                                     )}
                                 </div>
-                                {/*
-                        <div className='serve-event__delete-box'>
-                            <hr className='serve-event__delete-box__horizontal-line' />
-                            <button className='serve-event__delete-button' onClick=''>
-                                DELETE EVENT
-                            </button>
-                        </div>
-                        */}
                             </>
                         ) : null}
                     </div>

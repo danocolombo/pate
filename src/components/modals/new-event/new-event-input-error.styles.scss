@@ -1,0 +1,40 @@
+.new-event-input-error__modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+.new-event-input-error__modal-wrapper {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 55vw;
+    height: 30vw;
+    z-index: 3;
+    background-color: #fff; 
+    padding: 10px;
+    border: black solid 1px; 
+}
+.new-event-input-error__message__header{
+    margin-top:35px;
+    text-align: center;
+    font-weight: bold;
+    color:red;
+}
+.new-event-input-error__close-button {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    background-color: red;
+    color: white;
+    padding:3px 5px;
+    cursor: pointer;
+}
+.new-event-input-error__modal-content {
+    margin-top: 10px;
+    text-align: center;
+}

@@ -7,6 +7,10 @@ import { withRouter } from 'react-router';
 
 import Header from '../../components/header/header.component';
 import { MainFooter } from '../../components/footers/main-footer';
+import Modal from '../../components/modals/wrapper.modal';
+import InputErrors from '../../components/modals/new-event/new-event-input-error.modal';
+import SuccessModal from '../../components/modals/new-event/new-event-success.modal';
+import SuccessMessage from '../../components/modals/new-event/new-event-success-msg.component';
 import Spinner from '../../components/spinner/Spinner';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import { loadRally } from '../../redux/pate/pate.actions';
@@ -25,10 +29,13 @@ const Serve = ({
     updateStateRepRally,
     pate,
 }) => {
+    const [modalIsVisible, setModalIsVisible] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
+    const [showRegistrationSuccess, setShowRegistrationSuccess] = useState(
+        false
+    );
     let eventID = match?.params?.id;
-    console.log('serveEvent: ' + eventID);
-    const refApprovalCheckbox = useRef(null);
-    // const [plan, setPlan] = useState([]);
+    
     const [churchName, setChurchName] = useState('');
     const [street, setStreet] = useState('');
     const [city, setCity] = useState('');
@@ -158,6 +165,60 @@ const Serve = ({
     };
 
     const handleAddClick = (event) => {
+        //=====================================
+        // need to make sure required fields
+        // are provided.
+        //=====================================
+        let fieldMessage = {};
+        let okayToProceed = true;
+        if (churchName?.length < 2) {
+            okayToProceed = false;
+            fieldMessage.Church_Name = 'is required';
+        }
+        if (street?.length < 2) {
+            okayToProceed = false;
+            fieldMessage.Location_Street = 'is required';
+        }
+        if (city?.length < 2) {
+            okayToProceed = false;
+            fieldMessage.Location_City = 'is required';
+        }
+        if (stateProv?.length < 2) {
+            okayToProceed = false;
+            fieldMessage.Location_State = 'is required';
+        }
+        if (postalCode?.length < 2) {
+            okayToProceed = false;
+            fieldMessage.Location_PostalCode = 'is required';
+        }
+        if (contactName?.length < 2) {
+            okayToProceed = false;
+            fieldMessage.Contact_Name = 'is required';
+        }
+        if (contactPhone?.length < 2) {
+            okayToProceed = false;
+            fieldMessage.Contact_Phone = 'is required';
+        }
+        if (contactEmail?.length < 2) {
+            okayToProceed = false;
+            fieldMessage.Contact_Email = 'is required';
+        }
+        if (!okayToProceed) {
+            // alert(
+            //     'Please correct your request.\n' + JSON.stringify(fieldMessage)
+            // );
+            clearSpinner();
+            setModalMessage('All the fields are required');
+            setModalIsVisible(true);
+            // const alertPayload = {
+            //     msg: 'ALL FIELDS ARE REQUIRED',
+            //     alertType: 'danger',
+            // };
+            // setAlert(alertPayload);
+            window.scrollTo(0, 0);
+
+            return;
+        }
         // event.preventDefault();
         //default rally
         const newRally = {
@@ -210,8 +271,10 @@ const Serve = ({
         newRally.contact.name = contactName;
         newRally.contact.phone = contactPhone;
         newRally.contact.email = contactEmail;
-        if (eventDate !== null) {
+        if (eventDate !== null && eventDate.length>0) {
             newRally.eventDate = eventDate.replace(/-/g, '');
+        }else{
+            newRally.eventDate = "30000101";
         }
         newRally.startTime = eventStart;
         newRally.endTime = eventEnd;
@@ -221,6 +284,11 @@ const Serve = ({
         newRally.meal.cost = mealCost;
         newRally.meal.message = mealMessage;
         newRally.meal.deadline = mealDeadline;
+        //need to add the currently logged in user as the coordinator
+        newRally.coordinator.name = currentUser.firstName + " " + currentUser.lastName;
+        newRally.coordinator.id = currentUser.uid;
+        newRally.coordinator.phone = currentUser.phone;
+        newRally.coordinator.email = currentUser.email;
 
         //now update redux for future use.
         // loadRally(newRally);
@@ -258,7 +326,8 @@ const Serve = ({
         updateDb();
         //now update the stateRep.rally
         updateStateRepRally(newRally);
-        history.push('/serve');
+        setShowRegistrationSuccess(true);
+        // history.push('/serve');
     };
     const handleChange = (e) => {
         let { value, name } = e.target;
@@ -338,6 +407,13 @@ const Serve = ({
                 break;
         }
     };
+    const successAcknowledged = () => {
+        setShowRegistrationSuccess(false);
+        history.push('/serve');
+    };
+    const handleCancelClick = () => {
+        history.push('/serve');
+    }
     return pateSystem.showSpinner ? (
         <Spinner />
     ) : (
@@ -668,8 +744,8 @@ const Serve = ({
                                 ADD
                             </button>
                             <button
-                                className='newevent-page__update-button'
-                                onClick=''
+                                className='newevent-page__cancel-button'
+                                onClick={() => handleCancelClick()}
                             >
                                 CANCEL
                             </button>
@@ -678,6 +754,15 @@ const Serve = ({
                 </div>
             </div>
             <MainFooter />
+            <Modal isOpened={modalIsVisible}>
+                <div>
+                    <InputErrors onClose={() => setModalIsVisible(false)} />
+                    {/*<div>{modalMessage}</div>*/}
+                </div>
+            </Modal>
+            <SuccessModal isOpened={showRegistrationSuccess}>
+                <SuccessMessage onClose={() => successAcknowledged()} />
+            </SuccessModal>
         </>
     );
 };
