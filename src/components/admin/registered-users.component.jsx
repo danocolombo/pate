@@ -38,10 +38,7 @@ const RegisteredUsers = ({
     };
     const getRegisteredUsers = async () => {
         try {
-            let theUsersObject = {};
             let theUsersArray = [];
-            console.log('@@@@@@@@@@@@@@@@@@@@@@@@@');
-            console.log('getRegisteredUsers');
             try {
                 fetch(
                     'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/admin',
@@ -60,14 +57,14 @@ const RegisteredUsers = ({
                 )
                     .then((response) => response.json())
                     .then((data) => {
-                        const util = require('util');
-                        console.log(
-                            'data.body.Users:\n' +
-                                util.inspect(data.body.Users, {
-                                    showHidden: false,
-                                    depth: null,
-                                })
-                        );
+                        // const util = require('util');
+                        // console.log(
+                        //     'data.body.Users:\n' +
+                        //         util.inspect(data.body.Users, {
+                        //             showHidden: false,
+                        //             depth: null,
+                        //         })
+                        // );
                         theUsersArray = data?.body?.Users;
                         let newArray = [];
 
@@ -99,57 +96,23 @@ const RegisteredUsers = ({
                         loadRegisteredUsers(newArray);
                     });
             } catch (error) {
-                console.log('Error fetching registrations \n' + error);
+                console.log('Error fetching users \n' + error);
                 console.err(error);
             }
-            theUsersArray.forEach((user) => {
-                console.log('login:' + user.Username);
-            });
             return theUsersArray;
-            // dispatch({type: GET_EVENT_REGISTRATIONS});
         } catch (err) {
-            console.log('getEventRegistrations ERR');
+            console.log('getRegisteredUsers ERR');
             console.error(err);
             return null;
         }
     };
 
-    // const preLoadUsers = (cogUsers) => {
-    //     cogUsers.forEach((user) => {
-    //         let thisUser = {};
-    //         //need to parse data into desired format
-    //         //--------------------------------------
-    //         thisUser.login = user.Username;
-    //         thisUser.status = user.UserStatus;
-    //         //--------------------------------------
-    //         // loop through attributes
-    //         //--------------------------------------
-    //         user.Attributes.forEach((a) => {
-    //             switch (a.Name) {
-    //                 case 'sub':
-    //                     thisUser.uid = a.Value;
-    //                     break;
-    //                 case 'email_verified':
-    //                     thisUser.emailVerified = a.Value;
-    //                     break;
-    //                 case 'email':
-    //                     thisUser.email = a.Value;
-    //                     break;
-    //                 default:
-    //                     break;
-    //             }
-    //         });
-    //         setP8Users((p8Users) => [...p8Users, thisUser]);
-    //     });
-    //     console.log('stored users: ' + p8Users.length);
-    // };
     const getProfiles = async () => {
         //-----------------------------------------------------
         // going to make a call to get the profiles from ddb,
         // into an array of profiles.
         //-----------------------------------------------------
-        setSpinner();
-        let theResponse = {};
+        let theResponse = [];
         //build the request....
         try {
             async function getStoredProfiles() {

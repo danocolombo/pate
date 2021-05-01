@@ -1,6 +1,6 @@
 import React from 'react';
 
-const RegisteredDetails = ({ user, key }) => {
+const RegisteredDetails = ({ user }) => {
     return (
         <>
             <div className='reg-user-list-component__box'>
