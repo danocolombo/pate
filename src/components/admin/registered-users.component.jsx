@@ -9,7 +9,13 @@ import {
     loadRegisteredUsers,
 } from '../../redux/pate/pate.actions';
 import './registered-users.style.scss';
-const RegisteredUsers = ({ currentUser,setSpinner, clearSpinner, loadRegisteredUsers }) => {
+const RegisteredUsers = ({
+    currentUser,
+    pate,
+    setSpinner,
+    clearSpinner,
+    loadRegisteredUsers,
+}) => {
     const [p8Users, setP8Users] = useState([]);
     const [p8Profiles, setP8Profiles] = useState([]);
 
@@ -62,17 +68,43 @@ const RegisteredUsers = ({ currentUser,setSpinner, clearSpinner, loadRegisteredU
                                     depth: null,
                                 })
                         );
-                        theUsersArray= data?.body?.Users;
-                        loadRegisteredUsers(theUsersArray);
-                        
+                        theUsersArray = data?.body?.Users;
+                        let newArray = [];
+
+                        data.body.Users.forEach((user) => {
+                            let peep = {};
+                            peep.Username = user.Username;
+                            peep.UserCreateDate = user.UserCreateDate;
+                            peep.UserLastModifiedDate =
+                                user.UserLastModifiedDate;
+                            peep.Enabled = user.Enabled;
+                            peep.UserStatus = user.UserStatus;
+                            user.Attributes.forEach((a) => {
+                                switch (a.Name) {
+                                    case 'sub':
+                                        peep.uid = a.Value;
+                                        break;
+                                    case 'email_verified':
+                                        peep.emailVerified = a.Value;
+                                        break;
+                                    case 'email':
+                                        peep.email = a.Value;
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            });
+                            newArray.push(peep);
+                        });
+                        loadRegisteredUsers(newArray);
                     });
             } catch (error) {
                 console.log('Error fetching registrations \n' + error);
                 console.err(error);
             }
-            theUsersArray.forEach(user => {
+            theUsersArray.forEach((user) => {
                 console.log('login:' + user.Username);
-            })
+            });
             return theUsersArray;
             // dispatch({type: GET_EVENT_REGISTRATIONS});
         } catch (err) {
@@ -80,60 +112,8 @@ const RegisteredUsers = ({ currentUser,setSpinner, clearSpinner, loadRegisteredU
             console.error(err);
             return null;
         }
-        
-    }
-    const getRegisteredUsers1 = async () => {
-        //-----------------------------------------------------
-        // going to make a call to get the cognito user pool,
-        // into an array of users.
-        //-----------------------------------------------------
-        
-        let theResponse = {};
-        //build the request....
-        try {
-            async function getUsers() {
-                try {
-                    fetch(
-                        'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/admin',
-                        {
-                            method: 'POST',
-                            body: JSON.stringify({
-                                operation: 'getUsers',
-                                payload: {
-                                    uniqueKey: currentUser.uid,
-                                },
-                            }),
-                            headers: {
-                                'Content-type': 'application/json; charset=UTF-8',
-                            },
-                        }
-                    )
-                    .then((response) => response.json())
-                    .then((data) => {
-                        const util = require('util');
-                        console.log(
-                            'cognito-pool-users:\n' +
-                                util.inspect(data.body, {
-                                    showHidden: false,
-                                    depth: null,
-                                })
-                        );
-                        setP8Users(data?.body?.Users);
-                        theResponse = data?.body?.Users;
-                        // preLoadUsers(data?.body?.Users);
-                    });
-                } catch (error) {
-                    console.log('failed the fetch call: \n' + error.message);   
-                }
-            }
-            getUsers();
-        } catch (error) {
-            console.log('Error fetching getUsers \n' + error);
-        }
-
-        
-        return theResponse;
     };
+
     // const preLoadUsers = (cogUsers) => {
     //     cogUsers.forEach((user) => {
     //         let thisUser = {};
@@ -300,16 +280,16 @@ const RegisteredUsers = ({ currentUser,setSpinner, clearSpinner, loadRegisteredU
                     Registered Users
                 </div>
                 <div className='admin-component__option-box'>
-                    {p8Users ? (
-                        p8Users.map((p8User) => (
-                            <div className='admin-component__row-center'>
-                                <RegisteredUserList
-                                    user={p8User}
-                                    key={p8User.uid}
-                                />
-                            </div>
-                        ))
-                    ):null};
+                    {pate.users
+                        ? pate.users.map((user) => (
+                              <div className='admin-component__row-center'>
+                                  <RegisteredUserList
+                                      user={user}
+                                      key={user.uid}
+                                  />
+                              </div>
+                          ))
+                        : null}
                 </div>
             </div>
         </div>
@@ -322,9 +302,6 @@ const mapDispatchToProps = (dispatch) => ({
 });
 const mapStateToProps = (state) => ({
     currentUser: state.user.currentUser,
+    pate: state.pate,
 });
-export default connect(mapStateToProps, {
-    setSpinner,
-    clearSpinner,
-    mapDispatchToProps,
-})(RegisteredUsers);
+export default connect(mapStateToProps, mapDispatchToProps)(RegisteredUsers);
