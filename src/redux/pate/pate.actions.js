@@ -22,3 +22,7 @@ export const clearRegistration = () => ({
     type: PateActionTypes.CLEAR_PATE_REGISTRATION,
     payload: null
 });
+export const loadRegisteredUsers = (users) => ({
+    type: PateActionTypes.LOAD_REGISTERED_USERS,
+    payload: users
+});

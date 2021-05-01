@@ -6,10 +6,10 @@ import RegisteredUserList from './registered-user-list.component';
 import {
     setSpinner,
     clearSpinner,
-    loadRally,
+    loadRegisteredUsers,
 } from '../../redux/pate/pate.actions';
 import './registered-users.style.scss';
-const RegisteredUsers = ({ currentUser }) => {
+const RegisteredUsers = ({ currentUser,setSpinner, clearSpinner, loadRegisteredUsers }) => {
     const [p8Users, setP8Users] = useState([]);
     const [p8Profiles, setP8Profiles] = useState([]);
 
@@ -22,22 +22,21 @@ const RegisteredUsers = ({ currentUser }) => {
     const prepUsers = async () => {
         let rUsers = {};
         let rProfiles = {};
-
+        setSpinner();
         rUsers = await getRegisteredUsers();
         rProfiles = await getProfiles();
 
-        rUsers = await mergeInfo(rUsers, rProfiles);
+        // rUsers = await mergeInfo(rUsers, rProfiles);
+        setP8Users(await mergeInfo(rUsers, rProfiles));
+        clearSpinner();
     };
     const getRegisteredUsers = async () => {
-        //-----------------------------------------------------
-        // going to make a call to get the cognito user pool,
-        // into an array of users.
-        //-----------------------------------------------------
-        setSpinner();
-        let theResponse = {};
-        //build the request....
         try {
-            async function getUsers() {
+            let theUsersObject = {};
+            let theUsersArray = [];
+            console.log('@@@@@@@@@@@@@@@@@@@@@@@@@');
+            console.log('getRegisteredUsers');
+            try {
                 fetch(
                     'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/admin',
                     {
@@ -57,53 +56,113 @@ const RegisteredUsers = ({ currentUser }) => {
                     .then((data) => {
                         const util = require('util');
                         console.log(
+                            'data.body.Users:\n' +
+                                util.inspect(data.body.Users, {
+                                    showHidden: false,
+                                    depth: null,
+                                })
+                        );
+                        theUsersArray= data?.body?.Users;
+                        loadRegisteredUsers(theUsersArray);
+                        
+                    });
+            } catch (error) {
+                console.log('Error fetching registrations \n' + error);
+                console.err(error);
+            }
+            theUsersArray.forEach(user => {
+                console.log('login:' + user.Username);
+            })
+            return theUsersArray;
+            // dispatch({type: GET_EVENT_REGISTRATIONS});
+        } catch (err) {
+            console.log('getEventRegistrations ERR');
+            console.error(err);
+            return null;
+        }
+        
+    }
+    const getRegisteredUsers1 = async () => {
+        //-----------------------------------------------------
+        // going to make a call to get the cognito user pool,
+        // into an array of users.
+        //-----------------------------------------------------
+        
+        let theResponse = {};
+        //build the request....
+        try {
+            async function getUsers() {
+                try {
+                    fetch(
+                        'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/admin',
+                        {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                operation: 'getUsers',
+                                payload: {
+                                    uniqueKey: currentUser.uid,
+                                },
+                            }),
+                            headers: {
+                                'Content-type': 'application/json; charset=UTF-8',
+                            },
+                        }
+                    )
+                    .then((response) => response.json())
+                    .then((data) => {
+                        const util = require('util');
+                        console.log(
                             'cognito-pool-users:\n' +
                                 util.inspect(data.body, {
                                     showHidden: false,
                                     depth: null,
                                 })
                         );
+                        setP8Users(data?.body?.Users);
                         theResponse = data?.body?.Users;
-                        preLoadUsers(data?.body?.Users);
+                        // preLoadUsers(data?.body?.Users);
                     });
+                } catch (error) {
+                    console.log('failed the fetch call: \n' + error.message);   
+                }
             }
             getUsers();
         } catch (error) {
-            console.log('Error fetching registrations \n' + error);
+            console.log('Error fetching getUsers \n' + error);
         }
 
-        clearSpinner();
+        
         return theResponse;
     };
-    const preLoadUsers = (cogUsers) => {
-        cogUsers.forEach((user) => {
-            let thisUser = {};
-            //need to parse data into desired format
-            //--------------------------------------
-            thisUser.login = user.Username;
-            thisUser.status = user.UserStatus;
-            //--------------------------------------
-            // loop through attributes
-            //--------------------------------------
-            user.Attributes.forEach((a) => {
-                switch (a.Name) {
-                    case 'sub':
-                        thisUser.uid = a.Value;
-                        break;
-                    case 'email_verified':
-                        thisUser.emailVerified = a.Value;
-                        break;
-                    case 'email':
-                        thisUser.email = a.Value;
-                        break;
-                    default:
-                        break;
-                }
-            });
-            setP8Users((p8Users) => [...p8Users, thisUser]);
-        });
-        console.log('stored users: ' + p8Users.length);
-    };
+    // const preLoadUsers = (cogUsers) => {
+    //     cogUsers.forEach((user) => {
+    //         let thisUser = {};
+    //         //need to parse data into desired format
+    //         //--------------------------------------
+    //         thisUser.login = user.Username;
+    //         thisUser.status = user.UserStatus;
+    //         //--------------------------------------
+    //         // loop through attributes
+    //         //--------------------------------------
+    //         user.Attributes.forEach((a) => {
+    //             switch (a.Name) {
+    //                 case 'sub':
+    //                     thisUser.uid = a.Value;
+    //                     break;
+    //                 case 'email_verified':
+    //                     thisUser.emailVerified = a.Value;
+    //                     break;
+    //                 case 'email':
+    //                     thisUser.email = a.Value;
+    //                     break;
+    //                 default:
+    //                     break;
+    //             }
+    //         });
+    //         setP8Users((p8Users) => [...p8Users, thisUser]);
+    //     });
+    //     console.log('stored users: ' + p8Users.length);
+    // };
     const getProfiles = async () => {
         //-----------------------------------------------------
         // going to make a call to get the profiles from ddb,
@@ -140,7 +199,7 @@ const RegisteredUsers = ({ currentUser }) => {
                                 })
                         );
                         theResponse = data?.body?.Items;
-                        preLoadProfiles(data?.body?.Items);
+                        // preLoadProfiles(data?.body?.Items);
                         // pateUsers = data?.body?.Users;
 
                         // theRegistration = data?.body?.Items[0];
@@ -158,12 +217,12 @@ const RegisteredUsers = ({ currentUser }) => {
         clearSpinner();
         return theResponse;
     };
-    const preLoadProfiles = async (ddbProfiles) => {
-        ddbProfiles.forEach((profile) => {
-            setP8Profiles((p8Profiles) => [...p8Profiles, profile]);
-        });
-        console.log('stored profiles: ' + p8Profiles.length);
-    };
+    // const preLoadProfiles = async (ddbProfiles) => {
+    //     ddbProfiles.forEach((profile) => {
+    //         setP8Profiles((p8Profiles) => [...p8Profiles, profile]);
+    //     });
+    //     console.log('stored profiles: ' + p8Profiles.length);
+    // };
     const mergeInfo = (users, profiles) => {
         /*
         export const updateItemInRallyList = (rally, rallyToUpdate) => {
@@ -241,14 +300,16 @@ const RegisteredUsers = ({ currentUser }) => {
                     Registered Users
                 </div>
                 <div className='admin-component__option-box'>
-                    {p8Users.map((p8User) => (
-                        <div className='admin-component__row-center'>
-                            <RegisteredUserList
-                                user={p8User}
-                                key={p8User.uid}
-                            />
-                        </div>
-                    ))}
+                    {p8Users ? (
+                        p8Users.map((p8User) => (
+                            <div className='admin-component__row-center'>
+                                <RegisteredUserList
+                                    user={p8User}
+                                    key={p8User.uid}
+                                />
+                            </div>
+                        ))
+                    ):null};
                 </div>
             </div>
         </div>
@@ -257,6 +318,7 @@ const RegisteredUsers = ({ currentUser }) => {
 const mapDispatchToProps = (dispatch) => ({
     setSpinner: () => dispatch(setSpinner()),
     clearSpinner: () => dispatch(clearSpinner()),
+    loadRegisteredUsers: (users) => dispatch(loadRegisteredUsers(users)),
 });
 const mapStateToProps = (state) => ({
     currentUser: state.user.currentUser,

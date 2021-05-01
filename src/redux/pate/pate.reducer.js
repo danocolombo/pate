@@ -3,7 +3,8 @@ import { PateActionTypes } from './pate.types';
 const INITIAL_STATE = {
     showSpinner: false,
     rally: null,
-    registration: null
+    registration: null,
+    users: null
 };
 
 const pateReducer = (state = INITIAL_STATE, action = null) => {
@@ -39,6 +40,11 @@ const pateReducer = (state = INITIAL_STATE, action = null) => {
             return{
                 ...state,
                 registration: null
+            };
+        case PateActionTypes.LOAD_REGISTERED_USERS:
+            return{
+                ...state,
+                users: action.payload
             };
         default:
             return state;
