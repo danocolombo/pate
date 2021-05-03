@@ -1,5 +1,7 @@
 import { PateActionTypes } from './pate.types';
-
+import {
+    updateUserWithProfile
+} from './pate.utils';
 const INITIAL_STATE = {
     showSpinner: false,
     rally: null,
@@ -46,6 +48,14 @@ const pateReducer = (state = INITIAL_STATE, action = null) => {
                 ...state,
                 users: action.payload
             };
+        // case PateActionTypes.UPDATE_USER_WITH_PROFILE:
+        //     return {
+        //         ...state,
+        //         users: updateUserWithProfile(
+        //             state.users,
+        //             action.payload
+        //         ),
+        //     };
         default:
             return state;
     }

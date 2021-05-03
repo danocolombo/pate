@@ -26,3 +26,7 @@ export const loadRegisteredUsers = (users) => ({
     type: PateActionTypes.LOAD_REGISTERED_USERS,
     payload: users
 });
+// export const addProfileToUser = (profile) => ({
+//     type: PateActionTypes.UPDATE_USER_WITH_PROFILE,
+//     payload: profile
+// });

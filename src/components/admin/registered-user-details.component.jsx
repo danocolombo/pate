@@ -1,11 +1,16 @@
 import React from 'react'
 
-const RegisteredUserList = ({user, key}) => {
+const RegisteredUserDetails = ({user, key}) => {
     return (
         <div>
-            <div><h3>{key} - {user.login}</h3></div>
+            {user.firstName? (
+                <div>{user.firstName}</div>
+            ):(
+                <div>{user.login}</div>
+            )}
+            
         </div>
     )
 }
 
-export default RegisteredUserList
+export default RegisteredUserDetails;
