@@ -25,6 +25,16 @@ const RegisteredDetails = ({ user, pate, clearTmpUser }) => {
                         ) : (
                             <span>{user.login} </span>
                         )}
+                        {user.stateRep ? (
+                            <span className='reg-user-list-component__role-inicator'>
+                                (R)
+                            </span>
+                        ) : null}
+                        {user.stateLead ? (
+                            <span className='reg-user-list-component__role-inicator'>
+                                (L)
+                            </span>
+                        ) : null}
                     </Link>
                 </div>
             </div>

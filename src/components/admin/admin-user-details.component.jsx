@@ -435,7 +435,12 @@ const UserDetailsForm = ({
                         <div className='admin-user-details-component__read-only-row'>
                             login: {pate.tmpUser.login}
                         </div>
-
+                        <div className='admin-user-details-component__read-only-row'>
+                            status: {pate.tmpUser.status}
+                        </div>
+                        <div className='admin-user-details-component__read-only-row-sm'>
+                            last modified: {pate.tmpUser.lastModifiedDate}
+                        </div>
                         <div className='admin-user-details-component__button-wrapper'>
                             <button
                                 className='admin-user-details-component__update-button'
