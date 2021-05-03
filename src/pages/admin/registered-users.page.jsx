@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 ==============================================*/
 import { connect } from 'react-redux';
 import Spinner from '../../components/spinner/Spinner';
-import RegisteredUserList from '../../components/admin/registered-user-list.component';
+import RegisteredUserList from '../../components/admin/admin-registered-user-list.component';
 import {
     setSpinner,
     clearSpinner,

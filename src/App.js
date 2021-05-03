@@ -9,8 +9,8 @@ import {
 import './App.css';
 import AdminPage from './pages/admin/admin-page';
 import Administer from './pages/admin/admin-feature-page';
-import UserDetails from './pages/admin/admin-user-details.page.jsx'
-import RegisteredUserDetails from './pages/admin/admin-registered-user-details.page';
+import UserDetails from './pages/admin/admin-user-details.page.jsx';
+// import RegisteredUserDetails from './pages/admin/admin-registered-user-details.page';
 import Events from './pages/events/events.component';
 import Profile from './pages/profile/profile.page';
 import SignIn from './pages/signin/signin.page';
@@ -69,11 +69,7 @@ function App() {
                         path='/userdetails/:id'
                         component={UserDetails}
                     />
-                    <Route
-                        exact
-                        path='/registereduserdetails/:id'
-                        component={RegisteredUserDetails}
-                    />
+
                     <Route
                         exact
                         path='/registration/:id'
@@ -94,3 +90,9 @@ function App() {
 
 export default App;
 //<Header loggedIn={isLoggedIn} onClick={signOut} />
+
+// <Route
+//     exact
+//     path='/registereduserdetails/:id'
+//     component={RegisteredUserDetails}
+// />

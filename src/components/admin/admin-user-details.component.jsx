@@ -3,52 +3,77 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { compose } from 'redux';
 import { useHistory } from 'react-router-dom';
-// import Spinner from '../../components/spinner/Spinner';
+import Spinner from '../../components/spinner/Spinner';
 import PhoneInput from 'react-phone-input-2';
-import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
-import { updateCurrentUser } from '../../redux/user/user.actions';
+import {
+    setSpinner,
+    clearSpinner,
+    clearTmpUser,
+    loadTmpUser,
+} from '../../redux/pate/pate.actions';
+// import { updateCurrentUser } from '../../redux/user/user.actions';
 import './admin-user-details-component.styles.scss';
 const UserDetailsForm = ({
     currentUser,
+    tmpUser,
     setSpinner,
-    updateCurrentUser,
+    clearTmpUser,
+    loadTmpUser,
+    // updateCurrentUser,
     clearSpinner,
-    pateSystem,
+    pate,
     match,
 }) => {
     const history = useHistory();
     let userId = match?.params?.id;
+    const [tmpUserLoading, setTmpUserLoading] = useState(true);
     // variables for the form
-    const [firstName, setFirstName] = useState(currentUser?.firstName);
-    const [lastName, setLastName] = useState(currentUser?.lastName);
-    const [email, setEmail] = useState(currentUser?.email);
-    const [phone, setPhone] = useState(currentUser?.phone);
+    const [firstName, setFirstName] = useState(pate.tmpUser?.firstName);
+    const [lastName, setLastName] = useState(pate.tmpUser?.lastName);
+    const [email, setEmail] = useState(pate.tmpUser?.email);
+    const [phone, setPhone] = useState(pate.tmpUser?.phone);
     const [homeStreet, setHomeStreet] = useState(
-        currentUser?.residence?.street
+        pate.tmpUser?.residence?.street
     );
-    const [homeCity, setHomeCity] = useState(currentUser?.residence?.city);
+    const [homeCity, setHomeCity] = useState(pate.tmpUser?.residence?.city);
     const [homeState, setHomeState] = useState(
-        currentUser?.residence?.stateProv
+        pate.tmpUser?.residence?.stateProv
     );
     const [homePostalCode, setHomePostalCode] = useState(
-        currentUser?.residence?.postalCode
+        pate.tmpUser?.residence?.postalCode
     );
-    const [churchName, setChurchName] = useState(currentUser?.church?.name);
-    const [churchCity, setChurchCity] = useState(currentUser?.church?.city);
+    const [churchName, setChurchName] = useState(pate.tmpUser?.church?.name);
+    const [churchCity, setChurchCity] = useState(pate.tmpUser?.church?.city);
     const [churchState, setChurchState] = useState(
-        currentUser?.church?.stateProv
+        pate.tmpUser?.church?.stateProv
     );
-    
+
     useEffect(() => {
         // if (!currentUser.isLoggedIn) history.push('/');
         //need to identify the selected user and define the
         //redux value to display
-        
+
+        getTmpUser();
     }, []);
-    useEffect(() => {}, [pateSystem.showSpinner]);
-    const handleCancelClick = () =>{
+    useEffect(() => {}, [pate.showSpinner]);
+    const getTmpUser = () => {
+        //clear any data we might have
+        async function clearData() {
+            clearTmpUser();
+        }
+        clearData();
+        //search pate.users for this user
+        pate.users.forEach((user) => {
+            if (user.uid === userId) {
+                console.log('FOUND IT');
+                loadTmpUser(user);
+                setTmpUserLoading(false);
+            }
+        });
+    };
+    const handleCancelClick = () => {
         history.push('/administer/registeredusers');
-    }
+    };
     const handleSubmitClick = (event) => {
         event.preventDefault();
         setSpinner();
@@ -183,7 +208,7 @@ const UserDetailsForm = ({
         newCurrentUser.jwt = currentUser.jwt;
         //====== 3. update redux
         async function updateRedux() {
-            updateCurrentUser(newCurrentUser);
+            // updateCurrentUser(newCurrentUser);
             console.log('updateRedux function.............................');
         }
         updateRedux();
@@ -233,7 +258,9 @@ const UserDetailsForm = ({
                 break;
         }
     };
-    return (
+    return tmpUserLoading ? (
+        <Spinner />
+    ) : (
         <>
             <div className='admin-user-details-component__wrapper'>
                 <div className='admin-user-details-component__events-box'>
@@ -428,20 +455,24 @@ const UserDetailsForm = ({
     );
 };
 const mapDispatchToProps = (dispatch) => ({
-    updateCurrentUser: (user) => dispatch(updateCurrentUser(user)),
+    // updateCurrentUser: (user) => dispatch(updateCurrentUser(user)),
     setSpinner: () => dispatch(setSpinner()),
     clearSpinner: () => dispatch(clearSpinner()),
+    loadTmpUser: (user) => dispatch(loadTmpUser(user)),
+    clearTmpUser: () => dispatch(clearTmpUser()),
 });
 const mapStateToProps = (state) => ({
     currentUser: state.user.currentUser,
-    pateSystem: state.pate,
+    tmpUser: state.pate.tmpUser,
+    pate: state.pate,
 });
 export default compose(
     withRouter,
     connect(mapStateToProps, {
         setSpinner,
         clearSpinner,
-        updateCurrentUser,
+        clearTmpUser,
+        loadTmpUser,
         mapDispatchToProps,
     })
 )(UserDetailsForm);
