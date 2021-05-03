@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import Header from '../../components/header/header.component';
-import RegisteredUsers from '../../components/admin/registered-users.component';
+import RegisteredUsers from './registered-users.page';
 import { MainFooter } from '../../components/footers/main-footer';
 import './admin-page.styles.scss';
 const Administer = () => {

@@ -1,8 +1,11 @@
-import { get } from 'http';
 import React, { useState, useEffect } from 'react';
+/*=============================================
+    This file does the call to API to get the
+    registered users
+==============================================*/
 import { connect } from 'react-redux';
 import Spinner from '../../components/spinner/Spinner';
-import RegisteredUserList from './registered-user-list.component';
+import RegisteredUserList from '../../components/admin/registered-user-list.component';
 import {
     setSpinner,
     clearSpinner,
@@ -28,7 +31,7 @@ const RegisteredUsers = ({
 
         setSpinner();
         rUsers = await getRegisteredUsers();
-        
+
         clearSpinner();
     };
     const getRegisteredUsers = async () => {
@@ -96,7 +99,6 @@ const mapDispatchToProps = (dispatch) => ({
     setSpinner: () => dispatch(setSpinner()),
     clearSpinner: () => dispatch(clearSpinner()),
     loadRegisteredUsers: (users) => dispatch(loadRegisteredUsers(users)),
-    
 });
 const mapStateToProps = (state) => ({
     currentUser: state.user.currentUser,
