@@ -25,52 +25,49 @@ const UserDetailsForm = ({
     match,
 }) => {
     const history = useHistory();
-    let userId = match?.params?.id;
-    const [tmpUserLoading, setTmpUserLoading] = useState(true);
+    // let userId = match?.params?.id;
+    // const [tmpUserLoading, setTmpUserLoading] = useState(true);
     // variables for the form
     const [firstName, setFirstName] = useState(pate.tmpUser?.firstName);
     const [lastName, setLastName] = useState(pate.tmpUser?.lastName);
     const [email, setEmail] = useState(pate.tmpUser?.email);
     const [phone, setPhone] = useState(pate.tmpUser?.phone);
-    const [homeStreet, setHomeStreet] = useState(
-        pate.tmpUser?.residence?.street
-    );
-    const [homeCity, setHomeCity] = useState(pate.tmpUser?.residence?.city);
-    const [homeState, setHomeState] = useState(
-        pate.tmpUser?.residence?.stateProv
-    );
-    const [homePostalCode, setHomePostalCode] = useState(
-        pate.tmpUser?.residence?.postalCode
-    );
-    const [churchName, setChurchName] = useState(pate.tmpUser?.church?.name);
-    const [churchCity, setChurchCity] = useState(pate.tmpUser?.church?.city);
+    const [street, setStreet] = useState(pate.tmpUser?.street);
+    const [city, setCity] = useState(pate.tmpUser?.city);
+    const [stateProv, setStateProv] = useState(pate.tmpUser?.stateProv);
+    const [postalCode, setPostalCode] = useState(pate.tmpUser?.postalCode);
+    const [churchName, setChurchName] = useState(pate.tmpUser?.churchName);
+    const [churchCity, setChurchCity] = useState(pate.tmpUser?.churchCity);
     const [churchState, setChurchState] = useState(
-        pate.tmpUser?.church?.stateProv
+        pate.tmpUser?.churchStateProv
     );
+    const [uid, setUID] = useState(pate.tmpUser.uid);
 
     useEffect(() => {
         // if (!currentUser.isLoggedIn) history.push('/');
         //need to identify the selected user and define the
         //redux value to display
+        console.log('component start');
+        // getTmpUser();
 
-        getTmpUser();
+        console.log('component end');
     }, []);
-    useEffect(() => {}, [pate.showSpinner]);
-    const getTmpUser = () => {
-        //clear any data we might have
-        async function clearData() {
-            clearTmpUser();
-        }
-        clearData();
-        //search pate.users for this user
-        pate.users.forEach((user) => {
-            if (user.uid === userId) {
-                console.log('FOUND IT');
-                loadTmpUser(user);
-                setTmpUserLoading(false);
-            }
-        });
-    };
+    // useEffect(() => {}, [pate.showSpinner]);
+    // const getTmpUser = () => {
+    //     //clear any data we might have
+    //     async function clearData() {
+    //         clearTmpUser();
+    //     }
+    //     clearData();
+    //     //search pate.users for this user
+    //     pate.users.forEach((user) => {
+    //         if (user.uid === userId) {
+    //             console.log('FOUND IT');
+    //             loadTmpUser(user);
+    //             setTmpUserLoading(false);
+    //         }
+    //     });
+    // };
     const handleCancelClick = () => {
         history.push('/administer/registeredusers');
     };
@@ -105,20 +102,20 @@ const UserDetailsForm = ({
 
         //section for address....
         let residence = {};
-        if (homeStreet || homeCity || homeState || homePostalCode) {
+        if (street || city || stateProv || postalCode) {
             // let address = {};
             // profileUpdate.address = {};
-            if (homeStreet !== undefined && homeStreet !== '') {
-                residence.street = homeStreet;
+            if (street !== undefined && street !== '') {
+                residence.street = street;
             }
-            if (homeCity !== undefined && homeCity !== '') {
-                residence.city = homeCity;
+            if (city !== undefined && city !== '') {
+                residence.city = city;
             }
-            if (homeState !== undefined && homeState !== '') {
-                residence.stateProv = homeState;
+            if (stateProv !== undefined && stateProv !== '') {
+                residence.stateProv = stateProv;
             }
-            if (homePostalCode !== undefined && homePostalCode !== '') {
-                residence.postalCode = homePostalCode;
+            if (postalCode !== undefined && postalCode !== '') {
+                residence.postalCode = postalCode;
             }
             // profileUpdate.address = address;
         }
@@ -145,14 +142,7 @@ const UserDetailsForm = ({
         //profileUpdate.uid = currentUser.uid;
 
         // 2. save the object to the pate db
-        const util = require('util');
-        console.log(
-            'residence \n' +
-                util.inspect(residence, {
-                    showHidden: false,
-                    depth: null,
-                })
-        );
+
         let newCurrentUser = {};
         newCurrentUser = coreUser;
 
@@ -164,7 +154,7 @@ const UserDetailsForm = ({
         ) {
             newCurrentUser = { ...newCurrentUser, residence };
         }
-        if (church?.name || church?.city || church?.stateProv) {
+        if (churchName || churchCity || churchState) {
             newCurrentUser = { ...newCurrentUser, church };
         }
         //======================================
@@ -233,17 +223,17 @@ const UserDetailsForm = ({
             case 'phone':
                 setPhone(value);
                 break;
-            case 'homeStreet':
-                setHomeStreet(value);
+            case 'street':
+                setStreet(value);
                 break;
-            case 'homeCity':
-                setHomeCity(value);
+            case 'city':
+                setCity(value);
                 break;
-            case 'homeState':
-                setHomeState(value);
+            case 'stateProv':
+                setStateProv(value);
                 break;
-            case 'homePostalCode':
-                setHomePostalCode(value);
+            case 'postalCode':
+                setPostalCode(value);
                 break;
             case 'churchName':
                 setChurchName(value);
@@ -258,9 +248,11 @@ const UserDetailsForm = ({
                 break;
         }
     };
-    return tmpUserLoading ? (
-        <Spinner />
-    ) : (
+    // return tmpUserLoading ? (
+    //     <Spinner />
+    // ) : (
+
+    return (
         <>
             <div className='admin-user-details-component__wrapper'>
                 <div className='admin-user-details-component__events-box'>
@@ -345,10 +337,10 @@ const UserDetailsForm = ({
                             <input
                                 className='admin-user-details-component__date-control'
                                 type='text'
-                                id='homeStreet'
-                                name='homeStreet'
+                                id='street'
+                                name='street'
                                 onChange={handleChange}
-                                value={homeStreet}
+                                value={street}
                                 required
                             />
                         </div>
@@ -359,10 +351,10 @@ const UserDetailsForm = ({
                             <input
                                 className='admin-user-details-component__date-control'
                                 type='text'
-                                id='homeCity'
-                                name='homeCity'
+                                id='city'
+                                name='city'
                                 onChange={handleChange}
-                                value={homeCity}
+                                value={city}
                                 required
                             />
                         </div>
@@ -373,10 +365,10 @@ const UserDetailsForm = ({
                             <input
                                 className='admin-user-details-component__date-control'
                                 type='text'
-                                id='homeState'
-                                name='homeState'
+                                id='stateProv'
+                                name='stateProv'
                                 onChange={handleChange}
-                                value={homeState}
+                                value={stateProv}
                                 required
                             />
                         </div>
@@ -387,10 +379,10 @@ const UserDetailsForm = ({
                             <input
                                 className='admin-user-details-component__date-control'
                                 type='text'
-                                id='homePostalCode'
-                                name='homePostalCode'
+                                id='postalCode'
+                                name='postalCode'
                                 onChange={handleChange}
-                                value={homePostalCode}
+                                value={postalCode}
                                 required
                             />
                         </div>
@@ -434,6 +426,16 @@ const UserDetailsForm = ({
                                 value={churchState}
                             />
                         </div>
+                        <div className='profilehomesection'>
+                            System Information
+                        </div>
+                        <div className='admin-user-details-component__read-only-row-sm'>
+                            {pate.tmpUser.uid}
+                        </div>
+                        <div className='admin-user-details-component__read-only-row'>
+                            login: {pate.tmpUser.login}
+                        </div>
+
                         <div className='admin-user-details-component__button-wrapper'>
                             <button
                                 className='admin-user-details-component__update-button'
