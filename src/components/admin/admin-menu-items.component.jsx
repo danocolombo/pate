@@ -8,14 +8,16 @@ const AdminMenu = () => {
                 <div className='admin-component__page-title'>
                     ADMIN FEATURES
                 </div>
-                <div className='admin-component__option-box'>
+                
                     <div className='admin-component__row-center'>
+                        <div className='admin-component__link-wrapper'>
                         <Link
                             to='/administer/registeredusers'
-                            className='admin-page__option-link'
+                            className='admin-component__option-link'
                         >
                             Users
                         </Link>
+                        </div>
                     </div>
                     <div className='admin-component__row-center'>
                         State Reps
@@ -24,7 +26,7 @@ const AdminMenu = () => {
                         State Leads
                     </div>
                     <div className='admin-component__row-center'>Events</div>
-                </div>
+                
             </div>
         </div>
     );

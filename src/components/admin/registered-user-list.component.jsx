@@ -9,8 +9,9 @@ const RegisteredDetails = ({ user }) => {
     return (
         <>
             <div className='reg-user-list-component__box'>
+                <div className='reg-user-list-component__link-wrapper'>
                 <Link
-                    to={`/registereduserdetails/${user.uid}`}
+                    to={`/userdetails/${user.uid}`}
                     className='reg-user-list-component__detail-link'
                 >
                     {user.firstName ? (
@@ -21,6 +22,7 @@ const RegisteredDetails = ({ user }) => {
                         <span>{user.login} </span>
                     )}
                 </Link>
+                </div>
             </div>
         </>
     );

@@ -10,14 +10,17 @@
 .admin-component__options-box {
     width: 280px;
     margin-top: 5px;
-    background: white;
+    background: lightgray;
     border: black solid 1px;
     border-radius: 5px;
 }
 .admin-component__page-title {
     background-color: #4717f6;
     color: white;
-    padding: 2px 0px;
+    font-size: 1.3em;
+    font-weight: bold;
+    
+    padding: 5px 0px;
     font-weight: bold;
     flex-grow: 1;
     text-align: center;
@@ -42,6 +45,19 @@
 }
 .admin-component__data-control {
     flex: 2;
+}
+.admin-component__link-wrapper{
+    border: black solid 2px;
+    border-radius: 5px;
+    margin: 5px 10px;
+    padding: 5px 0px;
+    width: 100%;
+    text-align: center;
+    background: #286DA8;
+    color: white;
+}
+.admin-component__option-link{
+    color: white;
 }
 
 // MEDIA ALTERATIONS ** MEDIA ALTERATIONS ** MEDIA ALTERATIONS **
