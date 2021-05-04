@@ -99,62 +99,61 @@ const UserDetailsForm = ({
             }
         };
         //check if stateRep
-        if(stateRep === true){
+        if(stateRep === stateProv){
             userDefinition.stateRep = stateProv;
         }
-        if(stateLead === true){
+        if(stateLead === stateProv){
             userDefinition.stateLead = stateProv;
         }
         //======================================
         // 1. update database
-        // 2. add JWt to object
-        // 3. update Redux
         //======================================
         //====== 1. update database
-        async function updateDb() {
-            fetch(
-                'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/users',
-                {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        operation: 'updateUser',
-                        payload: {
-                            Item: userDefinition,
+        const DEBUG = false;
+        if(!DEBUG){
+        
+            async function updateDb() {
+                fetch(
+                    'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/users',
+                    {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            operation: 'updateUser',
+                            payload: {
+                                Item: userDefinition,
+                            },
+                        }),
+                        headers: {
+                            'Content-type': 'application/json; charset=UTF-8',
                         },
-                    }),
-                    headers: {
-                        'Content-type': 'application/json; charset=UTF-8',
-                    },
-                }
-            )
-                .then((response) => response.json())
-                .then((data) => {
-                    // const util = require('util');
-                    // console.log(
-                    //     'db data returned: \n' +
-                    //         util.inspect(data, {
-                    //             showHidden: false,
-                    //             depth: null,
-                    //         })
-                    // );
-                });
-        }
-        //next call is to async the above update
-        updateDb();
+                    }
+                )
+                    .then((response) => response.json())
+                    .then((data) => {
+                        // const util = require('util');
+                        // console.log(
+                        //     'db data returned: \n' +
+                        //         util.inspect(data, {
+                        //             showHidden: false,
+                        //             depth: null,
+                        //         })
+                        // );
+                    });
+            }
+            //next call is to async the above update
+            updateDb();
 
-        // //====== 2. add JWT to object
-        // newCurrentUser.jwt = currentUser.jwt;
-        // //====== 3. update redux
-        // async function updateRedux() {
-        //     // updateCurrentUser(newCurrentUser);
-        //     console.log('updateRedux function.............................');
-        // }
-        // updateRedux();
-
-        history.push('/');
-
-        history.push('/');
-        clearSpinner();
+            // //====== 2. add JWT to object
+            // newCurrentUser.jwt = currentUser.jwt;
+            // //====== 3. update redux
+            // async function updateRedux() {
+            //     // updateCurrentUser(newCurrentUser);
+            //     console.log('updateRedux function.............................');
+            // }
+            // updateRedux();
+            clearSpinner();
+            history.push('/administer/registeredusers');
+        }else{clearSpinner();}
     };
     const handleChange = (e) => {
         const { value, name } = e.target;
@@ -193,10 +192,18 @@ const UserDetailsForm = ({
                 setChurchState(value);
                 break;
             case 'stateRep':
-                setStateRep(!stateRep);
+                if(stateRep === stateProv){
+                    setStateRep('');
+                }else{
+                    setStateRep(stateProv);
+                }
                 break;
             case 'stateLead':
-                setStateLead(!stateLead);
+                if(stateLead === stateProv){
+                    setStateLead('');
+                }else{
+                    setStateLead(stateProv);
+                }
                 break;
             default:
                 break;
@@ -405,7 +412,7 @@ const UserDetailsForm = ({
                                     State Rep:
                                 </div>
                                 <div className='admin-user-details-component__data-control'>
-                                    {pate.tmpUser?.stateRep ? (
+                                    {stateRep === stateProv ? (
                                         //this is a rep
                                         <input
                                             type='checkbox'
@@ -438,7 +445,7 @@ const UserDetailsForm = ({
                                     State Lead:
                                 </div>
                                 <div className='admin-user-details-component__data-control'>
-                                    {pate.tmpUser?.stateLead ? (
+                                    {stateLead === stateProv ? (
                                         //this is a rep
                                         <input
                                             type='checkbox'
@@ -474,7 +481,7 @@ const UserDetailsForm = ({
                         <div className='admin-user-details-component__button-wrapper'>
                             <button
                                 className='admin-user-details-component__update-button'
-                                // onClick={handleSubmitClick}
+                                onClick={handleSubmitClick}
                             >
                                 UPDATE
                             </button>
