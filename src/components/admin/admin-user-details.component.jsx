@@ -29,6 +29,7 @@ const UserDetailsForm = ({
     // const [tmpUserLoading, setTmpUserLoading] = useState(true);
     // variables for the form
     const refStateRepCheckbox = useRef(null);
+    const refStateLeadCheckbox = useRef(null);
     const [firstName, setFirstName] = useState(pate.tmpUser?.firstName);
     const [lastName, setLastName] = useState(pate.tmpUser?.lastName);
     const [email, setEmail] = useState(pate.tmpUser?.email);
@@ -42,6 +43,8 @@ const UserDetailsForm = ({
     const [churchState, setChurchState] = useState(
         pate.tmpUser?.churchStateProv
     );
+    const [stateRep, setStateRep] = useState(pate?.tmpUser?.stateRep);
+    const [stateLead, setStateLead] = useState(pate?.tmpUser?.stateLead);
     const [uid, setUID] = useState(pate.tmpUser.uid);
 
     useEffect(() => {
@@ -75,88 +78,32 @@ const UserDetailsForm = ({
     const handleSubmitClick = (event) => {
         event.preventDefault();
         setSpinner();
-        // build currentUser object
-        let coreUser = {
-            uid: currentUser.uid,
-            isLoggedIn: currentUser.isLoggedIn,
-            loading: currentUser.loading,
+        // build userDefinition object
+        // THERE ARE PROFILE VALUES ONLY
+        let userDefinition = {
+            uid: pate.tmpUser.uid,
             firstName: firstName,
             lastName: lastName,
             email: email,
             phone: phone,
+            residence: {
+                street: street,
+                city: city,
+                stateProv: stateProv,
+                postalCode: postalCode
+            },
+            church: {
+                name: churchName,
+                city: churchCity,
+                stateProv: churchState,
+            }
         };
-        //need to add stateRep & stateLead if set...
-        if (currentUser?.stateRep) {
-            coreUser.stateRep = currentUser.stateRep;
+        //check if stateRep
+        if(stateRep === true){
+            userDefinition.stateRep = stateProv;
         }
-        if (currentUser.stateLead) {
-            coreUser.stateLead = currentUser.stateLead;
-        }
-        //add staterep and or statelead
-        if (currentUser?.stateRep) {
-            coreUser.stateRep = currentUser.stateRep;
-        }
-        //add staterep and or statelead
-        if (currentUser?.stateLead) {
-            coreUser.stateLead = currentUser.stateLead;
-        }
-
-        //section for address....
-        let residence = {};
-        if (street || city || stateProv || postalCode) {
-            // let address = {};
-            // profileUpdate.address = {};
-            if (street !== undefined && street !== '') {
-                residence.street = street;
-            }
-            if (city !== undefined && city !== '') {
-                residence.city = city;
-            }
-            if (stateProv !== undefined && stateProv !== '') {
-                residence.stateProv = stateProv;
-            }
-            if (postalCode !== undefined && postalCode !== '') {
-                residence.postalCode = postalCode;
-            }
-            // profileUpdate.address = address;
-        }
-
-        //church values are optional, so we want to send empty string if undefined
-        let church = {};
-        if (churchName || churchCity || churchState) {
-            // let church = {};
-            // profileUpdate.church = {};
-            if (churchName !== undefined && churchName !== '') {
-                church.name = churchName;
-            }
-            if (churchCity !== undefined && churchCity !== '') {
-                church.city = churchCity;
-            }
-            if (churchState !== undefined && churchState !== '')
-                church.stateProv = churchState;
-            // profileUpdate.church = church;
-        }
-
-        //profileUpdate.dateUpdated = '2021-03-18T09:09';
-        // now save the information to the pate db
-        // 1. add the uid to the data to update database.
-        //profileUpdate.uid = currentUser.uid;
-
-        // 2. save the object to the pate db
-
-        let newCurrentUser = {};
-        newCurrentUser = coreUser;
-
-        if (
-            residence?.street ||
-            residence?.city ||
-            residence?.stateProv ||
-            residence?.postalCode
-        ) {
-            newCurrentUser = { ...newCurrentUser, residence };
-        }
-        if (churchName || churchCity || churchState) {
-            newCurrentUser = { ...newCurrentUser, church };
+        if(stateLead === true){
+            userDefinition.stateLead = stateProv;
         }
         //======================================
         // 1. update database
@@ -172,7 +119,7 @@ const UserDetailsForm = ({
                     body: JSON.stringify({
                         operation: 'updateUser',
                         payload: {
-                            Item: newCurrentUser,
+                            Item: userDefinition,
                         },
                     }),
                     headers: {
@@ -195,14 +142,14 @@ const UserDetailsForm = ({
         //next call is to async the above update
         updateDb();
 
-        //====== 2. add JWT to object
-        newCurrentUser.jwt = currentUser.jwt;
-        //====== 3. update redux
-        async function updateRedux() {
-            // updateCurrentUser(newCurrentUser);
-            console.log('updateRedux function.............................');
-        }
-        updateRedux();
+        // //====== 2. add JWT to object
+        // newCurrentUser.jwt = currentUser.jwt;
+        // //====== 3. update redux
+        // async function updateRedux() {
+        //     // updateCurrentUser(newCurrentUser);
+        //     console.log('updateRedux function.............................');
+        // }
+        // updateRedux();
 
         history.push('/');
 
@@ -245,6 +192,12 @@ const UserDetailsForm = ({
             case 'churchState':
                 setChurchState(value);
                 break;
+            case 'stateRep':
+                setStateRep(!stateRep);
+                break;
+            case 'stateLead':
+                setStateLead(!stateLead);
+                break;
             default:
                 break;
         }
@@ -266,7 +219,7 @@ const UserDetailsForm = ({
                                 First name
                             </div>
                             <input
-                                className='admin-user-details-component__date-control'
+                                className='admin-user-details-component__data-control'
                                 name='firstName'
                                 id='firstName'
                                 value={firstName}
@@ -279,7 +232,7 @@ const UserDetailsForm = ({
                                 Last Name
                             </div>
                             <input
-                                className='admin-user-details-component__date-control'
+                                className='admin-user-details-component__data-control'
                                 type='text'
                                 id='lastName'
                                 name='lastName'
@@ -293,7 +246,7 @@ const UserDetailsForm = ({
                                 E-mail
                             </div>
                             <input
-                                className='admin-user-details-component__date-control'
+                                className='admin-user-details-component__data-control'
                                 type='text'
                                 id='email'
                                 name='email'
@@ -320,7 +273,7 @@ const UserDetailsForm = ({
                             />
                             {/*
                             <input
-                                className='admin-user-details-component__date-control'
+                                className='admin-user-details-component__data-control'
                                 type='text'
                                 id='phone'
                                 name='phone'
@@ -336,7 +289,7 @@ const UserDetailsForm = ({
                                 Street
                             </div>
                             <input
-                                className='admin-user-details-component__date-control'
+                                className='admin-user-details-component__data-control'
                                 type='text'
                                 id='street'
                                 name='street'
@@ -350,7 +303,7 @@ const UserDetailsForm = ({
                                 City
                             </div>
                             <input
-                                className='admin-user-details-component__date-control'
+                                className='admin-user-details-component__data-control'
                                 type='text'
                                 id='city'
                                 name='city'
@@ -364,7 +317,7 @@ const UserDetailsForm = ({
                                 State
                             </div>
                             <input
-                                className='admin-user-details-component__date-control'
+                                className='admin-user-details-component__data-control'
                                 type='text'
                                 id='stateProv'
                                 name='stateProv'
@@ -378,7 +331,7 @@ const UserDetailsForm = ({
                                 Zipcode
                             </div>
                             <input
-                                className='admin-user-details-component__date-control'
+                                className='admin-user-details-component__data-control'
                                 type='text'
                                 id='postalCode'
                                 name='postalCode'
@@ -393,7 +346,7 @@ const UserDetailsForm = ({
                                 Name
                             </div>
                             <input
-                                className='admin-user-details-component__date-control'
+                                className='admin-user-details-component__data-control'
                                 type='text'
                                 id='churchName'
                                 name='churchName'
@@ -406,7 +359,7 @@ const UserDetailsForm = ({
                                 City
                             </div>
                             <input
-                                className='admin-user-details-component__date-control'
+                                className='admin-user-details-component__data-control'
                                 type='text'
                                 id='churchCity'
                                 name='churchCity'
@@ -478,7 +431,39 @@ const UserDetailsForm = ({
                                 </div>
                             </div>
                         </div>
-
+                        <div className='admin-user-details-component__data-row'>
+                            <div></div>
+                            <div className='serveevent-page__grid-data-box'>
+                                <div className='admin-user-details-component__data-label'>
+                                    State Lead:
+                                </div>
+                                <div className='admin-user-details-component__data-control'>
+                                    {pate.tmpUser?.stateLead ? (
+                                        //this is a rep
+                                        <input
+                                            type='checkbox'
+                                            id='stateLead'
+                                            name='stateLead'
+                                            checked
+                                            onClick={handleChange}
+                                            onChange={() => handleChange}
+                                            value='true'
+                                            ref={refStateLeadCheckbox}
+                                        />
+                                    ) : (
+                                        <input
+                                            type='checkbox'
+                                            id='stateLead'
+                                            name='stateLead'
+                                            value='true'
+                                            onClick={handleChange}
+                                            onChange={() => handleChange}
+                                            ref={refStateLeadCheckbox}
+                                        />
+                                    )}
+                                </div>
+                            </div>
+                        </div>
 
 
 
