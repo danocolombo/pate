@@ -789,7 +789,7 @@ const Serve = ({
                                 </div>
                                 <div className='serveevent-page__grid-control'>
                                     <input
-                                        type='text'
+                                        type='time'
                                         id='eventStart'
                                         name='eventStart'
                                         onChange={handleChange}
@@ -807,7 +807,7 @@ const Serve = ({
                                 </div>
                                 <div className='serveevent-page__grid-control'>
                                     <input
-                                        type='text'
+                                        type='time'
                                         id='eventEnd'
                                         name='eventEnd'
                                         onChange={handleChange}
@@ -890,7 +890,7 @@ const Serve = ({
                                 </div>
                                 <div className='serveevent-page__grid-control'>
                                     <input
-                                        type='text'
+                                        type='time'
                                         id='mealTime'
                                         name='mealTime'
                                         onChange={handleChange}
