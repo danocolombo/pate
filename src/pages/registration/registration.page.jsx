@@ -334,6 +334,52 @@ const EventRegistration = ({
         e.preventDefault();
         history.push('/register');
     };
+    const displayDate2 = (displayThis) => {
+        // format the date and return it
+        //the new formatted date coming in will look like this...
+        //            2021-04-21
+        let dateParts = displayThis?.eventDate.split('-');
+        console.log(dateParts);
+        // dateParts.forEach(element => {
+        //     console.log(element);
+        // });
+        // let newEventDate = new Date(dateParts[0], dateParts[1], dateParts[2]);
+        // let newTheDate = newEventDate.toDateString();
+        // console.log('newTheDate:' + newTheDate);
+        let y = parseInt(displayThis?.eventDate.substring(0, 4));
+        let m = parseInt(displayThis?.eventDate.substring(4, 6)) - 1;
+        let d = parseInt(displayThis?.eventDate.substring(6, 8));
+        let eventDate = new Date(y, m, d);
+        let theDate = eventDate.toDateString();
+
+        return theDate;
+    };
+    const displayTimes2 = (displayThis) => {
+        if (displayThis?.startTime) {
+            let sTime = displayThis?.startTime.split(':');
+            let eTime = displayThis?.endTime.split(':');
+
+            let startTime = '';
+            let endTime = '';
+            if (parseInt(sTime[0]) < 13) {
+                startTime = displayThis?.startTime;
+            } else {
+                let newHour = parseInt(sTime[0]) - 12;
+
+                startTime = newHour.toString() + ':' + sTime[1];
+            }
+            if (parseInt(eTime[0]) < 13) {
+                endTime = displayThis.endTime;
+            } else {
+                let newHour = parseInt(eTime[0]) - 12;
+                endTime = newHour.toString() + ':' + eTime[1];
+            }
+            let returnValue = startTime + ' - ' + endTime;
+            return returnValue;
+        } else {
+            return null;
+        }
+    };
     const handleRegisterRequest = async (e) => {
         e.preventDefault();
         setSpinner();
@@ -537,6 +583,60 @@ const EventRegistration = ({
         // setAlert(alertPayload);
         // alert('REGISTRATION SUCCESSFUL - SEE PROFILE');
         // history.push('/');
+        //=================================================
+        // send email to registrar
+        //=================================================
+        let displayThis = {
+            eventDate: theEvent?.details?.eventDate,
+            startTime: theEvent?.details?.startTime,
+            endTime: theEvent?.details?.endTime,
+        };
+        let emailBody =
+            'Congrats ' +
+            firstName +
+            ', you have successfully registered for the P8 Rally. Put it on your calendar!!<br/><br/><center>';
+        emailBody = emailBody.concat(displayDate2(displayThis), '<br/>');
+        emailBody = emailBody.concat(displayTimes2(displayThis), '<br/>');
+
+        emailBody = emailBody.concat(
+            '<h3>',
+            theEvent?.details?.name,
+            '</h3><br/>'
+        );
+        emailBody = emailBody.concat(theEvent?.details?.street, '<br/>');
+        emailBody = emailBody.concat(theEvent?.details?.city, ', ');
+        emailBody = emailBody.concat(theEvent?.details?.stateProv, ' ');
+        emailBody = emailBody.concat(
+            theEvent?.details?.postalCode,
+            '</center><br/><br/>'
+        );
+        emailBody = emailBody.concat(
+            'You can visist <a href="p8rally.com">P8Rally.com</a> to manage your registration and keep up with other rally plans<br/>'
+        );
+        let emailRequest = {
+            toAddresses: [email],
+            ccAddresses: ['support@p8rally.com'],
+            subject: 'P8 Rally Registration Confirmation',
+            message: emailBody,
+        };
+        await fetch(
+            'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/admin',
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    operation: 'emailNotification',
+                    payload: emailRequest,
+                }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            }
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                console.log('maintainEventNumbers successful');
+            });
+
         clearSpinner();
         setShowRegistrationSuccess(true);
     };
