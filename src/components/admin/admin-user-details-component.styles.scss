@@ -1,0 +1,100 @@
+.admin-user-details-component__wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.admin-user-details-component__events-box {
+    background-color: lightgray;
+    width: 280px;
+    margin: 5px 0 10px 0;
+    border: black solid 1px;
+    border-radius: 5px;
+}
+.admin-user-details-component__page-title {
+    background-color: #4717f6;
+    color: white;
+    font-size: 1.3em;
+    font-weight: bold;
+
+    padding: 5px 0px;
+    font-weight: bold;
+    flex-grow: 1;
+    text-align: center;
+}
+.admin-user-details-component__event-box {
+    display: flex;
+    flex-direction: column;
+    margin: 5px 10px;
+}
+.admin-user-details-component__data-row-phone {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 18px;
+}
+.admin-user-details-component__data-row {
+    display: flex;
+    justify-content: flex-end;
+}
+.admin-user-details-component__data-label {
+    flex: 1;
+    text-align: right;
+    padding-right: 3px;
+}
+.admin-user-details-component__data-control {
+    flex: 2;
+}
+.admin-user-details-component__button-wrapper {
+    flex-grow: 1;
+    text-align: center;
+    padding: 10px 0 5px 0;
+}
+.admin-user-details-component__update-button {
+    background-color: yellow;
+    padding: 3px 5px;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+.admin-user-details-component__cancel-button {
+    background-color: white;
+    color: black;
+    padding: 3px 5px;
+    margin-left: 10px;
+    border-radius: 5px;
+}
+.admin-user-details-component__read-only-row-sm {
+    text-align: center;
+    font-size: 12px;
+}
+.admin-user-details-component__read-only-row {
+    text-align: center;
+    font-size: 1em;
+}
+// MEDIA ALTERATIONS ** MEDIA ALTERATIONS ** MEDIA ALTERATIONS **
+//Iphone Series
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+    .admin-user-details-component__events-box {
+        width: 320px;
+    }
+    .admin-user-details-component__data-row-phone {
+        padding-right: 52px;
+    }
+}
+//IPAD Series
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+    .admin-user-details-component__events-box {
+        width: 400px;
+    }
+    .admin-user-details-component__data-row-phone {
+        padding-right: 103px;
+    }
+}
+//desktop
+@media only screen and (min-width: 1024px) {
+    .admin-user-details-component__events-box {
+        width: 500px;
+    }
+    .admin-user-details-component__data-row-phone {
+        padding-right: 173px;
+    }
+}

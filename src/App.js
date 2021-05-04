@@ -7,7 +7,10 @@ import {
 } from 'react-router-dom';
 
 import './App.css';
-
+import AdminPage from './pages/admin/admin-page';
+import Administer from './pages/admin/admin-feature-page';
+import UserDetails from './pages/admin/admin-user-details.page.jsx';
+// import RegisteredUserDetails from './pages/admin/admin-registered-user-details.page';
 import Events from './pages/events/events.component';
 import Profile from './pages/profile/profile.page';
 import SignIn from './pages/signin/signin.page';
@@ -38,6 +41,8 @@ function App() {
             <section className='landing'>
                 <Alert />
                 <Router>
+                    <Route exact path='/admin' component={AdminPage} />
+                    <Route path='/administer/:option' component={Administer} />
                     <Route path='/junkyard' component={Leroy} />
                     <Route exact path='/' component={Events} />
                     <Route path='/faq' component={FAQ} />
@@ -63,6 +68,12 @@ function App() {
                     <Route exact  path='/newevent' component={NewEvent}/>
                     <Route
                         exact
+                        path='/userdetails/:id'
+                        component={UserDetails}
+                    />
+
+                    <Route
+                        exact
                         path='/registration/:id'
                         component={EventRegistration}
                     />
@@ -81,3 +92,9 @@ function App() {
 
 export default App;
 //<Header loggedIn={isLoggedIn} onClick={signOut} />
+
+// <Route
+//     exact
+//     path='/registereduserdetails/:id'
+//     component={RegisteredUserDetails}
+// />

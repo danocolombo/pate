@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withRouter } from 'react-router';
@@ -13,7 +13,7 @@ import {
 } from '../../redux/registrations/registrations.actions';
 import PhoneInput from 'react-phone-input-2';
 import './registrar.styles.scss';
-import { SSL_OP_NETSCAPE_DEMO_CIPHER_CHANGE_BUG } from 'constants';
+// import { SSL_OP_NETSCAPE_DEMO_CIPHER_CHANGE_BUG } from 'constants';
 const Registrar = ({
     regData,
     currentUser,
@@ -53,7 +53,7 @@ const Registrar = ({
 
     const history = useHistory();
     useEffect(() => {
-        areMealsLocked() ? setMealsLocked(true):setMealsLocked(false);
+        areMealsLocked() ? setMealsLocked(true) : setMealsLocked(false);
     }, []);
     const handleCancel = (e) => {
         async function purgeTempReg() {
@@ -628,7 +628,8 @@ const Registrar = ({
                                 />
                                 {mealsLocked ? (
                                     <span className='registrar-component__meals-lock'>
-                                        {' '} <FaLock />
+                                        {' '}
+                                        <FaLock />
                                     </span>
                                 ) : null}
                             </div>

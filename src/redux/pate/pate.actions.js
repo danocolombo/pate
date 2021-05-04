@@ -22,3 +22,19 @@ export const clearRegistration = () => ({
     type: PateActionTypes.CLEAR_PATE_REGISTRATION,
     payload: null
 });
+export const loadRegisteredUsers = (users) => ({
+    type: PateActionTypes.LOAD_REGISTERED_USERS,
+    payload: users
+});
+export const loadTmpUser = (user) => ({
+    type: PateActionTypes.LOAD_TMP_USER,
+    payload: user
+})
+export const clearTmpUser = () => ({
+    type: PateActionTypes.CLEAR_TMP_USER,
+    payload: null
+})
+// export const addProfileToUser = (profile) => ({
+//     type: PateActionTypes.UPDATE_USER_WITH_PROFILE,
+//     payload: profile
+// });

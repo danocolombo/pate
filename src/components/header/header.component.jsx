@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { BiLogIn, BiLogOut } from 'react-icons/bi';
 import { AiOutlineSetting } from 'react-icons/ai';
+import { GiSecurityGate } from 'react-icons/gi';
 import { FaSlideshare } from 'react-icons/fa';
 import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -56,14 +57,30 @@ const Header = ({
                 <div className='header__nav-box'>
                     {currentUser?.isLoggedIn ? (
                         <>
+                            {' '}
+                            {currentUser?.login === 'guru' ? (
+                                <div className='header__nav-item'>
+                                    <Link
+                                        to='/admin'
+                                        className='header__nav-control-link'
+                                    >
+                                        <span className='nav-icon'>
+                                            <GiSecurityGate />
+                                        </span>{' '}
+                                        <span className='hide-sm'>ADMIN</span>
+                                    </Link>
+                                </div>
+                            ) : null}
                             {currentUser?.stateRep || currentUser?.stateLead ? (
                                 <div className='header__nav-item'>
                                     <Link
                                         to='/serve'
                                         className='header__nav-control-link'
                                     >
-                                    <span className='nav-icon'><FaSlideshare/></span>{' '}
-                                    <span className='hide-sm'>SERVE</span>
+                                        <span className='nav-icon'>
+                                            <FaSlideshare />
+                                        </span>{' '}
+                                        <span className='hide-sm'>SERVE</span>
                                     </Link>
                                 </div>
                             ) : null}
@@ -72,7 +89,9 @@ const Header = ({
                                     to='/profile'
                                     className='header__nav-control-link'
                                 >
-                                    <span className='nav-icon'><AiOutlineSetting/></span>{' '}
+                                    <span className='nav-icon'>
+                                        <AiOutlineSetting />
+                                    </span>{' '}
                                     <span className='hide-sm'>PROFILE</span>
                                 </Link>
                             </div>
@@ -82,7 +101,9 @@ const Header = ({
                                     onClick={logoutRequest}
                                     className='header__nav-control-link'
                                 >
-                                    <span className='nav-icon'><BiLogOut/></span>{' '}
+                                    <span className='nav-icon'>
+                                        <BiLogOut />
+                                    </span>{' '}
                                     <span className='hide-sm'>LOGOUT</span>
                                 </Link>
                             </div>
@@ -93,7 +114,9 @@ const Header = ({
                                 className='header__nav-control-link'
                                 to='/signin'
                             >
-                            <span className='nav-icon'><BiLogIn/></span>{' '}
+                                <span className='nav-icon'>
+                                    <BiLogIn />
+                                </span>{' '}
                                 <span className='hide-sm'>Login/Sign-up</span>
                             </Link>
                         </div>
