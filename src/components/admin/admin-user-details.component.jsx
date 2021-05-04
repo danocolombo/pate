@@ -11,6 +11,8 @@ import {
     clearTmpUser,
     loadTmpUser,
 } from '../../redux/pate/pate.actions';
+import NoRegWarningModal from '../../components/modals/modifyRegisteredUsers/no-reg-warning.modal';
+import WarningMessage from '../../components/modals/modifyRegisteredUsers/no-reg-warning-msg.component';
 // import { updateCurrentUser } from '../../redux/user/user.actions';
 import './admin-user-details-component.styles.scss';
 const UserDetailsForm = ({
@@ -24,6 +26,7 @@ const UserDetailsForm = ({
     pate,
     match,
 }) => {
+    const [modalWarningIsVisible, setModalWarningIsVisible] = useState(false);
     const history = useHistory();
     // let userId = match?.params?.id;
     // const [tmpUserLoading, setTmpUserLoading] = useState(true);
@@ -77,6 +80,10 @@ const UserDetailsForm = ({
     };
     const handleSubmitClick = (event) => {
         event.preventDefault();
+        if (pate.tmpUser.registration === false) {
+            setModalWarningIsVisible(true);
+            return;
+        }
         setSpinner();
         // build userDefinition object
         // THERE ARE PROFILE VALUES ONLY
@@ -90,19 +97,19 @@ const UserDetailsForm = ({
                 street: street,
                 city: city,
                 stateProv: stateProv,
-                postalCode: postalCode
+                postalCode: postalCode,
             },
             church: {
                 name: churchName,
                 city: churchCity,
                 stateProv: churchState,
-            }
+            },
         };
         //check if stateRep
-        if(stateRep === stateProv){
+        if (stateRep === stateProv) {
             userDefinition.stateRep = stateProv;
         }
-        if(stateLead === stateProv){
+        if (stateLead === stateProv) {
             userDefinition.stateLead = stateProv;
         }
         //======================================
@@ -110,8 +117,7 @@ const UserDetailsForm = ({
         //======================================
         //====== 1. update database
         const DEBUG = false;
-        if(!DEBUG){
-        
+        if (!DEBUG) {
             async function updateDb() {
                 fetch(
                     'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/users',
@@ -153,7 +159,9 @@ const UserDetailsForm = ({
             // updateRedux();
             clearSpinner();
             history.push('/administer/registeredusers');
-        }else{clearSpinner();}
+        } else {
+            clearSpinner();
+        }
     };
     const handleChange = (e) => {
         const { value, name } = e.target;
@@ -192,16 +200,16 @@ const UserDetailsForm = ({
                 setChurchState(value);
                 break;
             case 'stateRep':
-                if(stateRep === stateProv){
+                if (stateRep === stateProv) {
                     setStateRep('');
-                }else{
+                } else {
                     setStateRep(stateProv);
                 }
                 break;
             case 'stateLead':
-                if(stateLead === stateProv){
+                if (stateLead === stateProv) {
                     setStateLead('');
-                }else{
+                } else {
                     setStateLead(stateProv);
                 }
                 break;
@@ -403,7 +411,6 @@ const UserDetailsForm = ({
                             last modified: {pate.tmpUser.lastModifiedDate}
                         </div>
                         {/* ================== */}
-                        
 
                         <div className='admin-user-details-component__data-row'>
                             <div></div>
@@ -412,7 +419,8 @@ const UserDetailsForm = ({
                                     State Rep:
                                 </div>
                                 <div className='admin-user-details-component__data-control'>
-                                    {stateRep === stateProv ? (
+                                    {pate?.tmpUser?.stateRep &&
+                                    stateRep === stateProv ? (
                                         //this is a rep
                                         <input
                                             type='checkbox'
@@ -445,7 +453,8 @@ const UserDetailsForm = ({
                                     State Lead:
                                 </div>
                                 <div className='admin-user-details-component__data-control'>
-                                    {stateLead === stateProv ? (
+                                    {pate?.tmpUser?.stateLead &&
+                                    stateLead === stateProv ? (
                                         //this is a rep
                                         <input
                                             type='checkbox'
@@ -472,11 +481,6 @@ const UserDetailsForm = ({
                             </div>
                         </div>
 
-
-
-
-
-
                         {/* ================== */}
                         <div className='admin-user-details-component__button-wrapper'>
                             <button
@@ -495,6 +499,12 @@ const UserDetailsForm = ({
                     </div>
                 </div>
             </div>
+
+            <NoRegWarningModal isOpened={modalWarningIsVisible}>
+                <WarningMessage
+                    onClose={() => setModalWarningIsVisible(false)}
+                />
+            </NoRegWarningModal>
         </>
     );
 };

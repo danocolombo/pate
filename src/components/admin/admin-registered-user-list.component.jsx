@@ -13,7 +13,13 @@ const RegisteredDetails = ({ user, pate, clearTmpUser }) => {
     return (
         <>
             <div className='reg-user-list-component__box'>
-                <div className='reg-user-list-component__link-wrapper'>
+                <div
+                    className={
+                        user.registration
+                            ? 'reg-user-list-component__link-wrapper'
+                            : 'reg-user-list-component__unreg-link-wrapper'
+                    }
+                >
                     <Link
                         to={`/userdetails/${user.uid}`}
                         className='reg-user-list-component__detail-link'
