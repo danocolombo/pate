@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { compose } from 'redux';
@@ -28,6 +28,7 @@ const UserDetailsForm = ({
     // let userId = match?.params?.id;
     // const [tmpUserLoading, setTmpUserLoading] = useState(true);
     // variables for the form
+    const refStateRepCheckbox = useRef(null);
     const [firstName, setFirstName] = useState(pate.tmpUser?.firstName);
     const [lastName, setLastName] = useState(pate.tmpUser?.lastName);
     const [email, setEmail] = useState(pate.tmpUser?.email);
@@ -418,7 +419,7 @@ const UserDetailsForm = ({
                                 State
                             </div>
                             <input
-                                className='admin-user-details-component__date-control'
+                                className='admin-user-details-component__data-control'
                                 type='text'
                                 id='churchState'
                                 name='churchState'
@@ -441,6 +442,50 @@ const UserDetailsForm = ({
                         <div className='admin-user-details-component__read-only-row-sm'>
                             last modified: {pate.tmpUser.lastModifiedDate}
                         </div>
+                        {/* ================== */}
+                        
+
+                        <div className='admin-user-details-component__data-row'>
+                            <div></div>
+                            <div className='serveevent-page__grid-data-box'>
+                                <div className='admin-user-details-component__data-label'>
+                                    State Rep:
+                                </div>
+                                <div className='admin-user-details-component__data-control'>
+                                    {pate.tmpUser?.stateRep ? (
+                                        //this is a rep
+                                        <input
+                                            type='checkbox'
+                                            id='stateRep'
+                                            name='stateRep'
+                                            checked
+                                            onClick={handleChange}
+                                            onChange={() => handleChange}
+                                            value='true'
+                                            ref={refStateRepCheckbox}
+                                        />
+                                    ) : (
+                                        <input
+                                            type='checkbox'
+                                            id='stateRep'
+                                            name='stateRep'
+                                            value='true'
+                                            onClick={handleChange}
+                                            onChange={() => handleChange}
+                                            ref={refStateRepCheckbox}
+                                        />
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+
+
+                        {/* ================== */}
                         <div className='admin-user-details-component__button-wrapper'>
                             <button
                                 className='admin-user-details-component__update-button'
