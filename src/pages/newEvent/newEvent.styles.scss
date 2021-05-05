@@ -44,6 +44,11 @@
     display: grid;
     grid-template-columns: 100px 175px;
 }
+.newevent-page__data-row-phone {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 18px;
+}
 .newevent-page__grid-label {
     color: black;
     text-align: right;
@@ -67,7 +72,7 @@
     background-color: darkgray;
     color: black;
     padding: 1px 5px;
-    margin-left:10px;
+    margin-left: 10px;
     border-radius: 5px;
 }
 //=======================
@@ -330,6 +335,9 @@
     .newevent-page__form-box {
         width: 320px;
     }
+    .newevent-page__data-row-phone {
+        padding-right: 52px;
+    }
     // .serveevent-page__input-control {
     //     padding-right: 25px;
     // }
@@ -351,6 +359,9 @@
     .newevent-page__form-box {
         width: 400px;
     }
+    .newevent-page__data-row-phone {
+        padding-right: 103px;
+    }
     // .serveevent-page__input-control {
     //     padding-right: 75px;
     // }
@@ -365,6 +376,9 @@
 @media only screen and (min-width: 1024px) {
     .newevent-page__form-box {
         width: 500px;
+    }
+    .newevent-page__data-row-phone {
+        padding-right: 173px;
     }
     // .serveevent-page__input-control {
     //     padding-right: 300px;

@@ -15,3 +15,7 @@ export const removeRallyFromRallyList = (rally) => ({
     type: StateRepActionTypes.REMOVE_REP_RALLY,
     payload: rally,
 });
+export const loadDoneRallies = (rallies) => ({
+    type: StateRepActionTypes.LOAD_REP_DONE_RALLIES,
+    payload: rallies,
+});

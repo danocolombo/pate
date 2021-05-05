@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { compose } from 'redux';
 import { withRouter } from 'react-router';
-
+import PhoneInput from 'react-phone-input-2';
 import Header from '../../components/header/header.component';
 import { MainFooter } from '../../components/footers/main-footer';
 import Modal from '../../components/modals/wrapper.modal';
@@ -35,7 +35,7 @@ const Serve = ({
         false
     );
     let eventID = match?.params?.id;
-    
+
     const [churchName, setChurchName] = useState('');
     const [street, setStreet] = useState('');
     const [city, setCity] = useState('');
@@ -271,10 +271,10 @@ const Serve = ({
         newRally.contact.name = contactName;
         newRally.contact.phone = contactPhone;
         newRally.contact.email = contactEmail;
-        if (eventDate !== null && eventDate.length>0) {
+        if (eventDate !== null && eventDate.length > 0) {
             newRally.eventDate = eventDate.replace(/-/g, '');
-        }else{
-            newRally.eventDate = "30000101";
+        } else {
+            newRally.eventDate = '30000101';
         }
         newRally.startTime = eventStart;
         newRally.endTime = eventEnd;
@@ -285,7 +285,8 @@ const Serve = ({
         newRally.meal.message = mealMessage;
         newRally.meal.deadline = mealDeadline;
         //need to add the currently logged in user as the coordinator
-        newRally.coordinator.name = currentUser.firstName + " " + currentUser.lastName;
+        newRally.coordinator.name =
+            currentUser.firstName + ' ' + currentUser.lastName;
         newRally.coordinator.id = currentUser.uid;
         newRally.coordinator.phone = currentUser.phone;
         newRally.coordinator.email = currentUser.email;
@@ -413,8 +414,8 @@ const Serve = ({
     };
     const handleCancelClick = () => {
         history.push('/serve');
-    }
-    
+    };
+
     return pateSystem.showSpinner ? (
         <Spinner />
     ) : (
@@ -539,21 +540,24 @@ const Serve = ({
                             </div>
                         </div>
                         <div className='newevent-page__grid-line'>
-                            <div></div>
-                            <div className='newevent-page__grid-data-box'>
-                                <div className='newevent-page__grid-label'>
-                                    Phone:
-                                </div>
-                                <div className='newevent-page__grid-control'>
-                                    <input
-                                        type='text'
-                                        id='contactPhone'
-                                        name='contactPhone'
-                                        onChange={handleChange}
-                                        value={contactPhone}
-                                        required
-                                    />
-                                </div>
+                            <div className='newevent-page__data-row-phone'>
+                                <PhoneInput
+                                    onlyCountries={['us']}
+                                    country='us'
+                                    disableCountryCode
+                                    disableDropdown
+                                    value={contactPhone}
+                                    onChange={(contactPhone) =>
+                                        setContactPhone(contactPhone)
+                                    }
+                                    inputProps={{
+                                        padding: 0,
+                                        name: 'Cell',
+                                        margin: 0,
+                                        required: true,
+                                        placeholder: '(xxx) xxx-xxxx',
+                                    }}
+                                />
                             </div>
                         </div>
                         <div className='newevent-page__grid-line'>
@@ -755,7 +759,7 @@ const Serve = ({
                 </div>
             </div>
             <MainFooter />
-            
+
             <Modal isOpened={modalIsVisible}>
                 <div>
                     <InputErrors onClose={() => setModalIsVisible(false)} />

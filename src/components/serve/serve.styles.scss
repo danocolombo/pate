@@ -2,7 +2,7 @@
     text-align: center;
     font-weight: bold;
     font-size: 1.4em;
-    background-color: #286DA8;
+    background-color: #286da8;
     color: white;
     // width: 80%;
     margin: 3px 0 0 0;
@@ -19,8 +19,8 @@
     padding: 1px 5px;
     border-radius: 5px;
 }
-.serve-component__message-box{
-    margin:5px 0px;
+.serve-component__message-box {
+    margin: 5px 0px;
     padding: 0px 10px;
 }
 .event-list-item {
@@ -29,25 +29,45 @@
 .stateleadintro {
     padding: 0 15px 20px 15px;
 }
-.serve-component-lead__list-wrapper{
+.serve-component-lead__list-wrapper,
+.serve-component__list-wrapper {
+    display: flex;
+    flex-direction: column;
+
     background-color: lightgray;
     border: black solid 1px;
     border-radius: 5px;
-    margin-left:5px;
-    margin-right:5px;
+    margin: 8px 5px;
 }
-.serve-component-lead__rally-list-item{
+.serve-component__rally-list-item,
+.serve-component-lead__rally-list-item {
     display: flex;
     flex-direction: row;
-    padding: 5px 0px 5px 2vw;
-    
+    padding: 5px 0px 5px 0px;
 }
-.serve-component-lead__rally-link{
+.serve-component__section-label {
+    font-size: 1.1em;
+    font-weight: bold;
+    padding: 3px 0px;
+}
+.serve-component__link-wrapper {
+    border: black solid 2px;
+    border-radius: 5px;
+    // margin: 5px 10px;
+    padding: 5px 0px;
+    margin: 0px 0px 10px 0px;
+    width: 98%;
+    text-align: center;
+    background: #f5f5f5;
+    color: black;
+    box-shadow: 3px 3px darkgray;
+}
+.serve-component__rally-link {
     text-decoration: none;
     color: black;
-    
 }
-.serve-component-lead__rally-date{
+.serve-component__rally-date,
+.serve-component-lead__rally-date {
     color: black;
     min-width: 45px;
     text-align: center;
@@ -55,20 +75,21 @@
 // .serve-lead-component__church-name{
 //     color: black;
 // }
-.serve-component-lead__rep-name{
+.serve-component-lead__rep-name {
     color: blue;
-    font-size: .8em;
+    font-size: 0.8em;
     padding-top: 2px;
     padding-left: 1px;
 }
 .serve-component__rally-list-item {
     margin: 10px 20px 10px 20px;
 }
-.serve-component__rally-date {
-    display: inline-block;
-    padding-right: 5px;
-}
-.serve-component__rally-location {
+// .serve-component__rally-date {
+//     display: inline-block;
+//     padding-right: 5px;
+// }
+.serve-component__rally-location,
+.serve-component-lead__rally-location {
     display: inline-block;
 }
 .sr-rally-link {
