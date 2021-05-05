@@ -11,8 +11,14 @@ import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import StateRep from '../../components/serve/stateRep.component';
 import StateLead from '../../components/serve/stateLead.component';
 // import { loadRegistrations } from '../../redux/registrations/registrations.actions';
-import { loadRallies } from '../../redux/stateRep/stateRep.actions';
-import { loadStateRallies } from '../../redux/stateLead/stateLead.actions';
+import {
+    loadRallies,
+    loadDoneRallies,
+} from '../../redux/stateRep/stateRep.actions';
+import {
+    loadLeadRallies,
+    loadLeadDoneRallies,
+} from '../../redux/stateLead/stateLead.actions';
 import './serve.styles.scss';
 const Serve = ({
     setSpinner,
@@ -21,7 +27,9 @@ const Serve = ({
     pateSystem,
     currentUser,
     loadRallies,
-    loadStateRallies,
+    loadDoneRallies,
+    loadLeadRallies,
+    loadLeadDoneRallies,
 }) => {
     const history = useHistory();
 
@@ -49,10 +57,8 @@ const Serve = ({
             {
                 method: 'POST',
                 body: JSON.stringify({
-                    operation: 'getEventsForRep',
-                    payload: {
-                        uid: currentUser.uid,
-                    },
+                    operation: 'getActiveEvents',
+                    coordinator: currentUser.uid,
                 }),
                 headers: {
                     'Content-type': 'application/json; charset=UTF-8',
@@ -66,6 +72,26 @@ const Serve = ({
         // setRallyInfo(rallyInfo.concat(repData));
 
         loadRallies(repData);
+        await fetch(
+            'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/events',
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    operation: 'getHistoricEvents',
+                    coordinator: currentUser.uid,
+                }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            }
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                repData = data.body;
+            });
+        // setRallyInfo(rallyInfo.concat(repData));
+
+        loadDoneRallies(repData);
     };
 
     const getStateRallies = async () => {
@@ -77,12 +103,8 @@ const Serve = ({
             {
                 method: 'POST',
                 body: JSON.stringify({
-                    operation: 'getEventsForLead',
-                    payload: {
-                        Item: {
-                            stateID: searchState,
-                        },
-                    },
+                    operation: 'getActiveEvents',
+                    state: currentUser.stateLead,
                 }),
                 headers: {
                     'Content-type': 'application/json; charset=UTF-8',
@@ -91,20 +113,28 @@ const Serve = ({
         )
             .then((response) => response.json())
             .then((data) => {
-                // const util = require('util');
-                // console.log(
-                //     'dataBackFromDDB:  \n' +
-                //         util.inspect(data, {
-                //             showHidden: false,
-                //             depth: null,
-                //         })
-                // );
-
-                stateData = data.body.Items;
+                stateData = data.body;
             });
-        // setRallyInfo(rallyInfo.concat(repData));
-
-        loadStateRallies(stateData);
+        loadLeadRallies(stateData);
+        stateData = {};
+        await fetch(
+            'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/events',
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    operation: 'getHistoricEvents',
+                    state: currentUser.stateLead,
+                }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            }
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                stateData = data.body;
+            });
+        loadLeadDoneRallies(stateData);
     };
 
     return pateSystem.showSpinner ? (
@@ -112,26 +142,28 @@ const Serve = ({
     ) : (
         <>
             <Header />
-            
+
             <div className='serve-page__wrapper'>
                 <div className='serve-page_serve-box'>
-                <div className='serve-page__header'>Principle 8 Service</div>
-                <div className='serve-page__details-wrapper'>
-                    <div className='serve-page__message-box'>
-                        This page allows you to coordinate events, as well as
-                        manage and review details.
+                    <div className='serve-page__header'>
+                        Principle 8 Service
                     </div>
-                    <StateRep />
+                    <div className='serve-page__details-wrapper'>
+                        <div className='serve-page__message-box'>
+                            This page allows you to coordinate events, as well
+                            as manage and review details.
+                        </div>
+                        <StateRep />
 
-                    {currentUser?.stateLead ? (
-                        <>
-                            <div>
-                                <hr />
-                            </div>
-                            <StateLead />
-                        </>
-                    ) : null}
-                </div>
+                        {currentUser?.stateLead ? (
+                            <>
+                                <div>
+                                    <hr />
+                                </div>
+                                <StateLead />
+                            </>
+                        ) : null}
+                    </div>
                 </div>
             </div>
             <MainFooter />
@@ -141,7 +173,9 @@ const Serve = ({
 const mapDispatchToProps = (dispatch) => ({
     // setCurrentUser: (user) => dispatch(setCurrentUser(user)),
     loadRallies: (rallies) => dispatch(loadRallies(rallies)),
-    loadStateRallies: (srallies) => dispatch(loadStateRallies(srallies)),
+    loadDoneRallies: (rallies) => dispatch(loadDoneRallies(rallies)),
+    loadLeadRallies: (srallies) => dispatch(loadLeadRallies(srallies)),
+    loadLeadDoneRallies: (srallies) => dispatch(loadLeadDoneRallies(srallies)),
     setSpinner: () => dispatch(setSpinner()),
     clearSpinner: () => dispatch(clearSpinner()),
 });

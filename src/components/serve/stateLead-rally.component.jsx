@@ -11,15 +11,26 @@ const StateRallyList = ({ rally }) => {
     const coordinatorFirstName = () => {
         const arrayOfName = rally.coordinator.name.split(' ');
         return arrayOfName[0];
-    }
+    };
     return (
-        <Link to={`/serveevent/${rally.uid}`} className='serve-component__rally-link'>
-        <div className='serve-component-lead__rally-list-item'>
-        <div className='serve-component-lead__rally-date'>{dateToDisplay()}</div>
-            <div className='serve-component-lead__rally-location'>{rally.name} -</div>
-            <div className='serve-lead-component-lead__rep-name'>({coordinatorFirstName()})</div>
+        <div className='serve-component__link-wrapper'>
+            <Link
+                to={`/serveevent/${rally.uid}`}
+                className='serve-component__rally-link'
+            >
+                <div className='serve-component-lead__rally-list-item'>
+                    <div className='serve-component-lead__rally-date'>
+                        {dateToDisplay()}
+                    </div>
+                    <div className='serve-component-lead__rally-location'>
+                        {rally.name} -
+                    </div>
+                    <div className='serve-lead-component-lead__rep-name'>
+                        ({coordinatorFirstName()})
+                    </div>
+                </div>
+            </Link>
         </div>
-        </Link>
     );
 };
 

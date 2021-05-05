@@ -5,6 +5,7 @@ import {
 } from './stateRep.utils';
 const INITIAL_STATE = {
     rally: [],
+    doneRally: [],
     loading: false,
     error: {},
 };
@@ -31,6 +32,11 @@ const stateRepReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 rally: removeRallyFromRallyList(state.rally, action),
+            };
+        case StateRepActionTypes.LOAD_REP_DONE_RALLIES:
+            return {
+                ...state,
+                doneRally: action.payload,
             };
         default:
             return state;

@@ -2,6 +2,7 @@ import { StateLeadActionTypes } from './stateLead.types';
 
 const INITIAL_STATE = {
     rally: [],
+    doneRally: [],
     loading: false,
     error: {},
 };
@@ -13,9 +14,27 @@ const stateLeadReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 rally: action.payload,
             };
+        case StateLeadActionTypes.CLEAR_LEAD_RALLIES:
+            return {
+                ...state,
+                rally: null,
+                loading: true,
+            };
+        case StateLeadActionTypes.LOAD_LEAD_DONE_RALLIES:
+            return {
+                ...state,
+                doneRally: action.payload,
+            };
+        case StateLeadActionTypes.CLEAR_LEAD_DONE_RALLIES:
+            return {
+                ...state,
+                doneRally: null,
+                loading: true,
+            };
         case StateLeadActionTypes.CLEAR_STATE_LEAD:
             return {
                 ...state,
+                doneRally: null,
                 rally: null,
                 loading: true,
             };
