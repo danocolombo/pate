@@ -243,14 +243,16 @@ const Serve = ({
         //????????????????????????????????????????????????
         let inRallies = false;
         let eventType = null;
-        rallies.forEach((rallyEvent) => {
-            if (rallyEvent.uid === eventID) {
-                // inRallies = true;
-                eventType = 'future';
-            }
-        });
+        if (rallies.length > 0) {
+            rallies.forEach((rallyEvent) => {
+                if (rallyEvent.uid === eventID) {
+                    // inRallies = true;
+                    eventType = 'future';
+                }
+            });
+        }
         //check doneRallies
-        if ((eventType === null) & (doneRallies.length > 0)) {
+        if (eventType === null && doneRallies.length > 0) {
             doneRallies.forEach((rallyEvent) => {
                 if (rallyEvent.uid === eventID) {
                     // inRallies = true;
@@ -258,7 +260,7 @@ const Serve = ({
                 }
             });
         }
-        if ((eventType === null) & (leadRallies.length > 0)) {
+        if (eventType === null && leadRallies.length > 0) {
             leadRallies.forEach((rallyEvent) => {
                 if (rallyEvent.uid === eventID) {
                     // inRallies = true;
@@ -266,7 +268,7 @@ const Serve = ({
                 }
             });
         }
-        if ((eventType === null) & (leadDoneRallies.length > 0)) {
+        if (eventType === null && leadDoneRallies.length > 0) {
             leadDoneRallies.forEach((rallyEvent) => {
                 if (rallyEvent.uid === eventID) {
                     // inRallies = true;
