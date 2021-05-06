@@ -35,14 +35,16 @@
 
     margin: 0px 10px;
 }
-.newevent-page__grid-line {
-    padding: 5px 0 0 0;
-    display: grid;
-    grid-template-columns: auto 275px auto;
-}
+// .newevent-page__grid-line {
+//     padding: 5px 0 0 0;
+//     display: grid;
+//     grid-template-columns: auto 275px auto;
+//     border: purple solid 2px;
+// }
 .newevent-page__grid-data-box {
     display: grid;
     grid-template-columns: 100px 175px;
+    // border: darkmagenta solid 1px;
 }
 .newevent-page__data-row-phone {
     display: flex;
@@ -69,7 +71,7 @@
     border-radius: 5px;
 }
 .newevent-page__cancel-button {
-    background-color: darkgray;
+    background-color: white;
     color: black;
     padding: 1px 5px;
     margin-left: 10px;
