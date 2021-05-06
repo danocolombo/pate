@@ -47,7 +47,7 @@
 .serveevent-page__data-row-phone {
     display: flex;
     justify-content: flex-end;
-    padding-right: 18px;
+    // padding-right: 15px;
 }
 .serveevent-page__grid-label {
     color: black;
@@ -56,6 +56,11 @@
 }
 .serveevent-page__grid-control {
     border: none;
+}
+.serveevent-page__data-row-phone {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 18px;
 }
 .serveevent-page__input-line {
     display: flex;
@@ -352,6 +357,9 @@
     .serveevent-page__registration-data-box {
         margin: 0px 35px;
     }
+    .serveevent-page__data-row-phone {
+        padding-right: 52px;
+    }
 }
 //IPAD Series
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
@@ -367,6 +375,9 @@
     .serveevent-page__registration-data-box {
         margin: 0px 45px;
     }
+    .serveevent-page__data-row-phone {
+        padding-right: 130px;
+    }
 }
 //desktop
 @media only screen and (min-width: 1024px) {
@@ -374,12 +385,15 @@
         width: 500px;
     }
     .serveevent-page__input-control {
-        padding-right: 300px;
+        padding-right: 250px;
     }
     .serveevent-page__registration-list-box {
         width: 500px;
     }
     .serveevent-page__registration-data-box {
-        margin: 0px 60px;
+        margin: 0px 80px;
+    }
+    .serveevent-page__data-row-phone {
+        padding-right: 220px;
     }
 }
