@@ -44,6 +44,11 @@
     display: grid;
     grid-template-columns: 100px 175px;
 }
+.serveevent-page__data-row-phone {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 18px;
+}
 .serveevent-page__grid-label {
     color: black;
     text-align: right;

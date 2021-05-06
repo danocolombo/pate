@@ -21,6 +21,7 @@ const stateRepReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 rally: null,
+                doneRally: null,
                 loading: true,
             };
         case StateRepActionTypes.UPDATE_REP_RALLY:

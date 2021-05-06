@@ -428,229 +428,209 @@ const Serve = ({
                         <div className='newevent-page__section-header'>
                             Location
                         </div>
-                        <div className='newevent-page__grid-line'>
-                            <div></div>
-                            <div className='newevent-page__grid-data-box'>
-                                <div className='newevent-page__grid-label'>
-                                    Church:
-                                </div>
-                                <div className='newevent-page__grid-control'>
-                                    <input
-                                        type='text'
-                                        name='churchName'
-                                        id='churchName'
-                                        value={churchName}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </div>
+
+                        <div className='newevent-page__grid-data-box'>
+                            <div className='newevent-page__grid-label'>
+                                Church:
                             </div>
-                        </div>
-                        <div className='newevent-page__grid-line'>
-                            <div></div>
-                            <div className='newevent-page__grid-data-box'>
-                                <div className='newevent-page__grid-label'>
-                                    Street:
-                                </div>
-                                <div className='newevent-page__grid-control'>
-                                    <input
-                                        type='text'
-                                        id='street'
-                                        name='street'
-                                        onChange={handleChange}
-                                        value={street}
-                                        required
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div className='newevent-page__grid-line'>
-                            <div></div>
-                            <div className='newevent-page__grid-data-box'>
-                                <div className='newevent-page__grid-label'>
-                                    City:
-                                </div>
-                                <div className='newevent-page__grid-control'>
-                                    <input
-                                        type='text'
-                                        id='city'
-                                        name='city'
-                                        onChange={handleChange}
-                                        value={city}
-                                        required
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div className='newevent-page__grid-line'>
-                            <div></div>
-                            <div className='newevent-page__grid-data-box'>
-                                <div className='newevent-page__grid-label'>
-                                    State:
-                                </div>
-                                <div className='newevent-page__grid-control'>
-                                    <input
-                                        type='text'
-                                        id='stateProv'
-                                        name='stateProv'
-                                        onChange={handleChange}
-                                        value={stateProv}
-                                        required
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div className='newevent-page__grid-line'>
-                            <div></div>
-                            <div className='newevent-page__grid-data-box'>
-                                <div className='newevent-page__grid-label'>
-                                    Postal Code:
-                                </div>
-                                <div className='newevent-page__grid-control'>
-                                    <input
-                                        type='text'
-                                        id='postalCode'
-                                        name='postalCode'
-                                        onChange={handleChange}
-                                        value={postalCode}
-                                        required
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div className='newevent-page__section-header'>
-                            Church Contact
-                        </div>
-                        <div className='newevent-page__grid-line'>
-                            <div></div>
-                            <div className='newevent-page__grid-data-box'>
-                                <div className='newevent-page__grid-label'>
-                                    Name:
-                                </div>
-                                <div className='newevent-page__grid-control'>
-                                    <input
-                                        type='text'
-                                        id='contactName'
-                                        name='contactName'
-                                        onChange={handleChange}
-                                        value={contactName}
-                                        required
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div className='newevent-page__grid-line'>
-                            <div className='newevent-page__data-row-phone'>
-                                <PhoneInput
-                                    onlyCountries={['us']}
-                                    country='us'
-                                    disableCountryCode
-                                    disableDropdown
-                                    value={contactPhone}
-                                    onChange={(contactPhone) =>
-                                        setContactPhone(contactPhone)
-                                    }
-                                    inputProps={{
-                                        padding: 0,
-                                        name: 'Cell',
-                                        margin: 0,
-                                        required: true,
-                                        placeholder: '(xxx) xxx-xxxx',
-                                    }}
+                            <div className='newevent-page__grid-control'>
+                                <input
+                                    type='text'
+                                    name='churchName'
+                                    id='churchName'
+                                    value={churchName}
+                                    onChange={handleChange}
+                                    required
                                 />
                             </div>
                         </div>
-                        <div className='newevent-page__grid-line'>
-                            <div></div>
-                            <div className='newevent-page__grid-data-box'>
-                                <div className='newevent-page__grid-label'>
-                                    Email:
-                                </div>
-                                <div className='newevent-page__grid-control'>
-                                    <input
-                                        type='text'
-                                        id='contactEmail'
-                                        name='contactEmail'
-                                        onChange={handleChange}
-                                        value={contactEmail}
-                                        required
-                                    />
-                                </div>
+
+                        <div className='newevent-page__grid-data-box'>
+                            <div className='newevent-page__grid-label'>
+                                Street:
+                            </div>
+                            <div className='newevent-page__grid-control'>
+                                <input
+                                    type='text'
+                                    id='street'
+                                    name='street'
+                                    onChange={handleChange}
+                                    value={street}
+                                    required
+                                />
                             </div>
                         </div>
+
+                        <div className='newevent-page__grid-data-box'>
+                            <div className='newevent-page__grid-label'>
+                                City:
+                            </div>
+                            <div className='newevent-page__grid-control'>
+                                <input
+                                    type='text'
+                                    id='city'
+                                    name='city'
+                                    onChange={handleChange}
+                                    value={city}
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        <div className='newevent-page__grid-data-box'>
+                            <div className='newevent-page__grid-label'>
+                                State:
+                            </div>
+                            <div className='newevent-page__grid-control'>
+                                <input
+                                    type='text'
+                                    id='stateProv'
+                                    name='stateProv'
+                                    onChange={handleChange}
+                                    value={stateProv}
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        <div className='newevent-page__grid-data-box'>
+                            <div className='newevent-page__grid-label'>
+                                Postal Code:
+                            </div>
+                            <div className='newevent-page__grid-control'>
+                                <input
+                                    type='text'
+                                    id='postalCode'
+                                    name='postalCode'
+                                    onChange={handleChange}
+                                    value={postalCode}
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        <div className='newevent-page__section-header'>
+                            Church Contact
+                        </div>
+
+                        <div className='newevent-page__grid-data-box'>
+                            <div className='newevent-page__grid-label'>
+                                Name:
+                            </div>
+                            <div className='newevent-page__grid-control'>
+                                <input
+                                    type='text'
+                                    id='contactName'
+                                    name='contactName'
+                                    onChange={handleChange}
+                                    value={contactName}
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        <div className='newevent-page__data-row-phone'>
+                            <PhoneInput
+                                onlyCountries={['us']}
+                                country='us'
+                                disableCountryCode
+                                disableDropdown
+                                value={contactPhone}
+                                onChange={(contactPhone) =>
+                                    setContactPhone(contactPhone)
+                                }
+                                inputProps={{
+                                    padding: 0,
+                                    name: 'Cell',
+                                    margin: 0,
+                                    required: true,
+                                    placeholder: '(xxx) xxx-xxxx',
+                                }}
+                            />
+                        </div>
+
+                        <div className='newevent-page__grid-data-box'>
+                            <div className='newevent-page__grid-label'>
+                                Email:
+                            </div>
+                            <div className='newevent-page__grid-control'>
+                                <input
+                                    type='text'
+                                    id='contactEmail'
+                                    name='contactEmail'
+                                    onChange={handleChange}
+                                    value={contactEmail}
+                                    required
+                                />
+                            </div>
+                        </div>
+
                         <div className='newevent-page__section-header'>
                             Logistics
                         </div>
-                        <div className='newevent-page__grid-line'>
-                            <div></div>
-                            <div className='newevent-page__grid-data-box'>
-                                <div className='newevent-page__grid-label'>
-                                    Date:
-                                </div>
-                                <div className='newevent-page__grid-control'>
-                                    <input
-                                        type='date'
-                                        id='rallyDate'
-                                        name='rallyDate'
-                                        onChange={handleChange}
-                                        value={eventDate}
-                                        required
-                                    />
-                                </div>
+
+                        <div className='newevent-page__grid-data-box'>
+                            <div className='newevent-page__grid-label'>
+                                Date:
+                            </div>
+                            <div className='newevent-page__grid-control'>
+                                <input
+                                    type='date'
+                                    id='rallyDate'
+                                    name='rallyDate'
+                                    onChange={handleChange}
+                                    value={eventDate}
+                                    required
+                                />
                             </div>
                         </div>
-                        <div className='newevent-page__grid-line'>
-                            <div></div>
-                            <div className='newevent-page__grid-data-box'>
-                                <div className='newevent-page__grid-label'>
-                                    Start Time:
-                                </div>
-                                <div className='newevent-page__grid-control'>
-                                    <input
-                                        type='time'
-                                        id='eventStart'
-                                        name='eventStart'
-                                        onChange={handleChange}
-                                        value={eventStart}
-                                        required
-                                    />
-                                </div>
+
+                        <div className='newevent-page__grid-data-box'>
+                            <div className='newevent-page__grid-label'>
+                                Start Time:
+                            </div>
+                            <div className='newevent-page__grid-control'>
+                                <input
+                                    type='time'
+                                    id='eventStart'
+                                    name='eventStart'
+                                    onChange={handleChange}
+                                    value={eventStart}
+                                    required
+                                />
                             </div>
                         </div>
-                        <div className='newevent-page__grid-line'>
-                            <div></div>
-                            <div className='newevent-page__grid-data-box'>
-                                <div className='newevent-page__grid-label'>
-                                    End Time:
-                                </div>
-                                <div className='newevent-page__grid-control'>
-                                    <input
-                                        type='time'
-                                        id='eventEnd'
-                                        name='eventEnd'
-                                        onChange={handleChange}
-                                        value={eventEnd}
-                                        required
-                                    />
-                                </div>
+
+                        <div className='newevent-page__grid-data-box'>
+                            <div className='newevent-page__grid-label'>
+                                End Time:
+                            </div>
+                            <div className='newevent-page__grid-control'>
+                                <input
+                                    type='time'
+                                    id='eventEnd'
+                                    name='eventEnd'
+                                    onChange={handleChange}
+                                    value={eventEnd}
+                                    required
+                                />
                             </div>
                         </div>
-                        <div className='newevent-page__grid-line'>
-                            <div></div>
-                            <div className='newevent-page__grid-data-box'>
-                                <div className='newevent-page__grid-label'>
-                                    Message:
-                                </div>
-                                <div className='newevent-page__grid-control'>
-                                    <textarea
-                                        rows='4'
-                                        cols='15'
-                                        name='eventMessage'
-                                        id='eventMessage'
-                                        onChange={handleChange}
-                                        value={eventMessage}
-                                    ></textarea>
-                                    {/*
+
+                        <div className='newevent-page__grid-data-box'>
+                            <div className='newevent-page__grid-label'>
+                                Message:
+                            </div>
+                            <div className='newevent-page__grid-control'>
+                                <textarea
+                                    rows='4'
+                                    cols='15'
+                                    name='eventMessage'
+                                    id='eventMessage'
+                                    onChange={handleChange}
+                                    value={eventMessage}
+                                ></textarea>
+                                {/*
                                     <input
                                         type='memo'
                                         id='eventMessage'
@@ -660,84 +640,74 @@ const Serve = ({
                                         required
                                     />
                                     */}
-                                </div>
                             </div>
                         </div>
 
                         <div className='newevent-page__section-header'>
                             Meal Details
                         </div>
-                        <div className='newevent-page__grid-line'>
-                            <div></div>
-                            <div className='newevent-page__grid-data-box'>
-                                <div className='newevent-page__grid-label'>
-                                    Start Time:
-                                </div>
-                                <div className='newevent-page__grid-control'>
-                                    <input
-                                        type='time'
-                                        id='mealTime'
-                                        name='mealTime'
-                                        onChange={handleChange}
-                                        value={mealTime}
-                                        required
-                                    />
-                                </div>
+
+                        <div className='newevent-page__grid-data-box'>
+                            <div className='newevent-page__grid-label'>
+                                Start Time:
                             </div>
-                        </div>
-                        <div className='newevent-page__grid-line'>
-                            <div></div>
-                            <div className='newevent-page__grid-data-box'>
-                                <div className='newevent-page__grid-label'>
-                                    Cost:
-                                </div>
-                                <div className='newevent-page__grid-control'>
-                                    <input
-                                        type='text'
-                                        id='mealCost'
-                                        name='mealCost'
-                                        onChange={handleChange}
-                                        value={mealCost}
-                                        required
-                                    />
-                                </div>
+                            <div className='newevent-page__grid-control'>
+                                <input
+                                    type='time'
+                                    id='mealTime'
+                                    name='mealTime'
+                                    onChange={handleChange}
+                                    value={mealTime}
+                                    required
+                                />
                             </div>
                         </div>
 
-                        <div className='newevent-page__grid-line'>
-                            <div></div>
-                            <div className='newevent-page__grid-data-box'>
-                                <div className='newevent-page__grid-label'>
-                                    Message:
-                                </div>
-                                <div className='newevent-page__grid-control'>
-                                    <input
-                                        type='memo'
-                                        id='mealMessage'
-                                        name='mealMessage'
-                                        onChange={handleChange}
-                                        value={mealMessage}
-                                        required
-                                    />
-                                </div>
+                        <div className='newevent-page__grid-data-box'>
+                            <div className='newevent-page__grid-label'>
+                                Cost:
+                            </div>
+                            <div className='newevent-page__grid-control'>
+                                <input
+                                    type='text'
+                                    id='mealCost'
+                                    name='mealCost'
+                                    onChange={handleChange}
+                                    value={mealCost}
+                                    required
+                                />
                             </div>
                         </div>
-                        <div className='newevent-page__grid-line'>
-                            <div></div>
-                            <div className='newevent-page__grid-data-box'>
-                                <div className='newevent-page__grid-label'>
-                                    Deadline:
-                                </div>
-                                <div className='newevent-page__grid-control'>
-                                    <input
-                                        type='date'
-                                        id='mealDeadline'
-                                        name='mealDeadline'
-                                        onChange={handleChange}
-                                        value={mealDeadline}
-                                        required
-                                    />
-                                </div>
+
+                        <div className='newevent-page__grid-data-box'>
+                            <div className='newevent-page__grid-label'>
+                                Message:
+                            </div>
+                            <div className='newevent-page__grid-control'>
+                                <input
+                                    type='memo'
+                                    id='mealMessage'
+                                    name='mealMessage'
+                                    onChange={handleChange}
+                                    value={mealMessage}
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        <div className='newevent-page__grid-data-box'>
+                            <div className='newevent-page__grid-label'>
+                                Deadline:
+                            </div>
+                            <div className='newevent-page__grid-control'>
+                                <input
+                                    type='date'
+                                    id='mealDeadline'
+                                    name='mealDeadline'
+                                    onChange={handleChange}
+                                    value={mealDeadline}
+                                    required
+                                />
                             </div>
                         </div>
 
