@@ -250,26 +250,32 @@ const Serve = ({
             }
         });
         //check doneRallies
-        doneRallies.forEach((rallyEvent) => {
-            if (rallyEvent.uid === eventID) {
-                // inRallies = true;
-                eventType = 'historical';
-            }
-        });
-        leadRallies.forEach((rallyEvent) => {
-            if (rallyEvent.uid === eventID) {
-                // inRallies = true;
-                eventType = 'leadFuture';
-            }
-        });
-        leadDoneRallies.forEach((rallyEvent) => {
-            if (rallyEvent.uid === eventID) {
-                // inRallies = true;
-                eventType = 'leadHistorical';
-            }
-        });
+        if ((eventType === null) & (doneRallies.length > 0)) {
+            doneRallies.forEach((rallyEvent) => {
+                if (rallyEvent.uid === eventID) {
+                    // inRallies = true;
+                    eventType = 'historical';
+                }
+            });
+        }
+        if ((eventType === null) & (leadRallies.length > 0)) {
+            leadRallies.forEach((rallyEvent) => {
+                if (rallyEvent.uid === eventID) {
+                    // inRallies = true;
+                    eventType = 'leadFuture';
+                }
+            });
+        }
+        if ((eventType === null) & (leadDoneRallies.length > 0)) {
+            leadDoneRallies.forEach((rallyEvent) => {
+                if (rallyEvent.uid === eventID) {
+                    // inRallies = true;
+                    eventType = 'leadHistorical';
+                }
+            });
+        }
         if (eventType === 'future' || eventType === 'historical') {
-            if(eventType === 'future'){
+            if (eventType === 'future') {
                 rallies.forEach((rallyEvent) => {
                     if (rallyEvent.uid === eventID) {
                         //-----------------
@@ -279,7 +285,11 @@ const Serve = ({
                         const m = ddbDate.substring(4, 6);
                         const d = ddbDate.substring(6, 8);
                         let smDate =
-                            y.toString() + '-' + m.toString() + '-' + d.toString();
+                            y.toString() +
+                            '-' +
+                            m.toString() +
+                            '-' +
+                            d.toString();
                         rallyEvent.eventDate = smDate;
                         // save the event to redux
                         loadRally(rallyEvent);
@@ -313,7 +323,7 @@ const Serve = ({
                     }
                 });
             }
-            if(eventType === 'historical'){
+            if (eventType === 'historical') {
                 doneRallies.forEach((rallyEvent) => {
                     if (rallyEvent.uid === eventID) {
                         //-----------------
@@ -323,7 +333,11 @@ const Serve = ({
                         const m = ddbDate.substring(4, 6);
                         const d = ddbDate.substring(6, 8);
                         let smDate =
-                            y.toString() + '-' + m.toString() + '-' + d.toString();
+                            y.toString() +
+                            '-' +
+                            m.toString() +
+                            '-' +
+                            d.toString();
                         rallyEvent.eventDate = smDate;
                         // save the event to redux
                         loadRally(rallyEvent);
@@ -359,7 +373,7 @@ const Serve = ({
             }
         } else {
             // go get the rally from staterep leadRallies
-            if(eventType === 'leadFuture'){
+            if (eventType === 'leadFuture') {
                 leadRallies.forEach((rallyEvent) => {
                     if (rallyEvent.uid === eventID) {
                         //-----------------
@@ -369,7 +383,11 @@ const Serve = ({
                         const m = ddbDate.substring(4, 6);
                         const d = ddbDate.substring(6, 8);
                         let smDate =
-                            y.toString() + '-' + m.toString() + '-' + d.toString();
+                            y.toString() +
+                            '-' +
+                            m.toString() +
+                            '-' +
+                            d.toString();
                         rallyEvent.eventDate = smDate;
                         // seave the event to redux
                         loadRally(rallyEvent);
@@ -403,7 +421,7 @@ const Serve = ({
                     }
                 });
             }
-            if(eventType === 'leadHistorical'){
+            if (eventType === 'leadHistorical') {
                 leadDoneRallies.forEach((rallyEvent) => {
                     if (rallyEvent.uid === eventID) {
                         //-----------------
@@ -413,7 +431,11 @@ const Serve = ({
                         const m = ddbDate.substring(4, 6);
                         const d = ddbDate.substring(6, 8);
                         let smDate =
-                            y.toString() + '-' + m.toString() + '-' + d.toString();
+                            y.toString() +
+                            '-' +
+                            m.toString() +
+                            '-' +
+                            d.toString();
                         rallyEvent.eventDate = smDate;
                         // seave the event to redux
                         loadRally(rallyEvent);
