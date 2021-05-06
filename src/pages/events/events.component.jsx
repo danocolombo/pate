@@ -17,7 +17,13 @@ import EventMarquee2 from '../../components/events-marquee/event-marquee2.compon
 class Events extends React.Component {
     constructor() {
         super();
-        this.state = { data: [], plans: [], cnt: 0, loading: true };
+        this.state = {
+            data: [],
+            plans: [],
+            cnt: 0,
+            loading: true,
+            noPlans: true,
+        };
     }
     async componentDidMount() {
         await fetch(
@@ -50,13 +56,33 @@ class Events extends React.Component {
                             Upcoming P8 Rallies
                         </div>
                         <div className='events-page__events-box2'>
-                            {this.state.plans.map((plan) =>
-                                plan.approved ? (
-                                    <EventMarquee2
-                                        event={plan}
-                                        key={plan.uid}
+                            {this.state.plans.length > 0 ? (
+                                this.state.plans.map((plan) =>
+                                    plan.approved ? (
+                                        <>
+                                            {(this.noPlans = false)}
+                                            <EventMarquee2
+                                                event={plan}
+                                                key={plan.uid}
+                                            />
+                                            {this.noPlans ? (
+                                                <>
+                                                    <img
+                                                        src='https://pate-images.s3.amazonaws.com/NoEvents.png'
+                                                        alt='No Scheduled Events. Come Back Soon for more info'
+                                                    />
+                                                </>
+                                            ) : null}
+                                        </>
+                                    ) : null
+                                )
+                            ) : (
+                                <>
+                                    <img
+                                        src='https://pate-images.s3.amazonaws.com/NoEvents.png'
+                                        alt='No Scheduled Events. Come Back Soon for more info'
                                     />
-                                ) : null
+                                </>
                             )}
                         </div>
                     </div>

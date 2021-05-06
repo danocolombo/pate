@@ -611,7 +611,7 @@ const EventRegistration = ({
             '</center><br/><br/>'
         );
         emailBody = emailBody.concat(
-            'You can visist <a href="p8rally.com">P8Rally.com</a> to manage your registration and keep up with other rally plans<br/>'
+            'You can visit <a href="p8rally.com">P8Rally.com</a> to manage your registration and keep up with other rally plans<br/>'
         );
         let emailRequest = {
             toAddresses: [email],
