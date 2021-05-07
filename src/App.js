@@ -5,7 +5,6 @@ import {
     Redirect,
     BrowserRouter as Router,
 } from 'react-router-dom';
-
 import './App.css';
 import AdminPage from './pages/admin/admin-page';
 import Administer from './pages/admin/admin-feature-page';
@@ -34,7 +33,6 @@ import Leroy from './pages/junkyard/junkyard';
 //AMPLIFY INTEGRATION
 //----------------------
 // import { withAuthenticator } from '@aws-amplify/ui-react';
-import { Auth } from 'aws-amplify';
 
 function App() {
     return (
@@ -66,7 +64,7 @@ function App() {
                         path='/serveevent/:id'
                         component={ServeEvent}
                     />
-                    <Route exact  path='/newevent' component={NewEvent}/>
+                    <Route exact path='/newevent' component={NewEvent} />
                     <Route
                         exact
                         path='/userdetails/:id'
