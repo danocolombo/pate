@@ -157,9 +157,6 @@ const Serve = ({
 
                         {currentUser?.stateLead ? (
                             <>
-                                <div>
-                                    <hr />
-                                </div>
                                 <StateLead />
                             </>
                         ) : null}
