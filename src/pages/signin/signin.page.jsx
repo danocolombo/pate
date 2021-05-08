@@ -8,8 +8,9 @@ import CustomButton from '../../components/custom-button/custom-button.component
 import Header from '../../components/header/header.component';
 import { MainFooter } from '../../components/footers/main-footer';
 import Spinner from '../../components/spinner/Spinner';
-import ResetPasswordModal from '../../components/modals/auth/forgot-password-prompt.modal';
-import ResetPasswordMessage from '../../components/modals/auth/forgot-password-msg.component';
+import Modal from '../../components/modals/wrapper.modal';
+import ResetPassword from '../../components/modals/auth/reset-password.modal';
+
 //----- actions needed -------
 import {
     loadRegistrations,
@@ -31,6 +32,8 @@ const SignIn = ({
     pateSystem,
     currentUser,
 }) => {
+    const [modalIsVisible, setModalIsVisible] = useState(false);
+    
     const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(
         false
     );
@@ -373,9 +376,9 @@ const SignIn = ({
                             </div>
                             <div className='signin-page__data-line'>
                                 <div className='signin-page__forgot-offer'>
-                                    <a href='/forgotpassword'>
+                                    <span onClick={() => setModalIsVisible(true)}>
                                         Forgot your password?
-                                    </a>
+                                    </span>
                                 </div>
                             </div>
                             <div className='signin-page__button-wrapper'>
@@ -402,9 +405,17 @@ const SignIn = ({
                 </div>
             </div>
             <MainFooter />
+            <Modal isOpened={modalIsVisible}>
+                <div>
+                    <ResetPassword resetDecline={() => setModalIsVisible(false)} resetAccept={() => setModalIsVisible(false)} />
+                    {/*<div>{modalMessage}</div>*/}
+                </div>
+            </Modal>
+            {/*
             <ResetPasswordModal isOpened={showForgotPasswordModal}>
                 <ResetPasswordMessage onClose={() => resetPasswordResponse()} />
             </ResetPasswordModal>
+            */}
         </>
     );
 };
