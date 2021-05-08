@@ -8,6 +8,8 @@ import CustomButton from '../../components/custom-button/custom-button.component
 import Header from '../../components/header/header.component';
 import { MainFooter } from '../../components/footers/main-footer';
 import Spinner from '../../components/spinner/Spinner';
+import ResetPasswordModal from '../../components/modals/auth/forgot-password-prompt.modal';
+import ResetPasswordMessage from '../../components/modals/auth/forgot-password-msg.component';
 //----- actions needed -------
 import {
     loadRegistrations,
@@ -29,6 +31,9 @@ const SignIn = ({
     pateSystem,
     currentUser,
 }) => {
+    const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(
+        false
+    );
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const history = useHistory();
@@ -79,7 +84,12 @@ const SignIn = ({
                                 alertType: 'danger',
                             };
                             break;
-
+                        case 'PasswordResetRequiredException':
+                            alertPayload = {
+                                msg: e.message,
+                                alertType: 'danger',
+                            };
+                            break;
                         default:
                             alertPayload = {
                                 msg: 'Signin error: [' + e.message + ']',
@@ -316,6 +326,11 @@ const SignIn = ({
                 break;
         }
     };
+    const resetPasswordResponse = (response) => {
+        setShowForgotPasswordModal(false);
+        console.log('the user clicked' + response);
+        return;
+    };
     return pateSystem.showSpinner ? (
         <Spinner />
     ) : (
@@ -356,6 +371,13 @@ const SignIn = ({
                                     />
                                 </div>
                             </div>
+                            <div className='signin-page__data-line'>
+                                <div className='signin-page__forgot-offer'>
+                                    <a href='/forgotpassword'>
+                                        Forgot your password?
+                                    </a>
+                                </div>
+                            </div>
                             <div className='signin-page__button-wrapper'>
                                 <CustomButton
                                     onClick={signIn}
@@ -379,56 +401,10 @@ const SignIn = ({
                     </div>
                 </div>
             </div>
-            {/*
-            <div className='signin-page__signin-wrapper'>
-                <div className='signin-page__title-box'>LOGIN</div>
-                <div className='signin-page__signin-box'>
-                    <div className='signin-page__input-line'>
-                        <div className='signin-page__input-label'>Username</div>
-                        <div className='signin-page__input-control'>
-                            <input
-                                type='text'
-                                name='username'
-                                id='username'
-                                value={username}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-                    </div>
-                    <div className='signin-page__input-line'>
-                        <div className='signin-page__input-label'>Password</div>
-                        <div className='signin-page__input-control'>
-                            <input
-                                type='password'
-                                id='password'
-                                name='password'
-                                onChange={handleChange}
-                                value={password}
-                                required
-                            />
-                        </div>
-                    </div>
-                    <div className='signin-page__button-wrapper'>
-                        <CustomButton
-                            onClick={signIn}
-                            className='signin-page__signin-button'
-                        >
-                            {' '}
-                            Sign In{' '}
-                        </CustomButton>
-                    </div>
-                </div>
-                <div className='signin-page__offer-box'>
-                    Don't have an account?
-                    <Link className='signin-page__register-link' to='/register'>
-                        {' '}
-                        REGISTER
-                    </Link>
-                </div>
-            </div>
-            */}
             <MainFooter />
+            <ResetPasswordModal isOpened={showForgotPasswordModal}>
+                <ResetPasswordMessage onClose={() => resetPasswordResponse()} />
+            </ResetPasswordModal>
         </>
     );
 };
