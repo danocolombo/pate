@@ -1,24 +1,46 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './reset-password.styles.scss';
-const ResetPassword = ({ isOpened = true, children, resetDecline, resetAccept }) => {
+const ResetPassword = ({ isOpened = true, children, userNameId, resetConfirmed, resetDecline }) => {
+    const [userName, setUserName] = useState(userNameId)
+    
+    const handleChange = (e) => {
+        const { value, name } = e.target;
+        switch (name) {
+            case 'username':
+                setUserName(value);
+                break;
+            default:
+                break;
+        }
+    };
     return (
         <div>
-            <div className='success-message__wrapper'>
-                <div className='success-message__header'>
-                    Warning
+            <div className='reset-password__wrapper'>
+                <div className='reset-password__header'>
+                    ATTENTION
                 </div>
                 <div className='success-message__message'>
-                    If you need to reset your password or recover your account, click Yes to proceed
+                    Provide your user name, and click RESET.<br/><br/>If the user name exists, a code will be sent to the email account registered.
                 </div>
-                <div className='success-message__button-wrapper'>
+                <div className='reset-password__username-textbox-wrapper'>
+                    <input
+                        type='text'
+                        name='username'
+                        id='username'
+                        value={userName}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div className='reset-password__button-wrapper'>
                     <button
-                        className='success-message__ok-button'
-                        onClick={resetDecline}
+                        className='reset-password__ok-button'
+                        onClick={resetConfirmed}
                     >
-                        OK
+                        RESET
                     </button>
                     <button
-                        className='success-message__ok-button'
+                        className='reset-password__cancel-button'
                         onClick={resetDecline}
                     >
                         CANCEL

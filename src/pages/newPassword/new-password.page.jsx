@@ -407,12 +407,15 @@ const SignIn = ({
             <MainFooter />
             <Modal isOpened={modalIsVisible}>
                 <div>
-                    <ResetPassword userNameId={username} resetDecline={() => setModalIsVisible(false)} resetConfirmed={() => setModalIsVisible(false)} />
+                    <ResetPassword resetDecline={() => setModalIsVisible(false)} resetAccept={() => setModalIsVisible(false)} />
                     {/*<div>{modalMessage}</div>*/}
                 </div>
             </Modal>
-            
-            
+            {/*
+            <ResetPasswordModal isOpened={showForgotPasswordModal}>
+                <ResetPasswordMessage onClose={() => resetPasswordResponse()} />
+            </ResetPasswordModal>
+            */}
         </>
     );
 };
