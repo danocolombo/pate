@@ -8,6 +8,11 @@ import CustomButton from '../../components/custom-button/custom-button.component
 import Header from '../../components/header/header.component';
 import { MainFooter } from '../../components/footers/main-footer';
 import Spinner from '../../components/spinner/Spinner';
+import Modal from '../../components/modals/wrapper.modal';
+import ResetPassword from '../../components/modals/auth/reset-password.modal';
+import Modal2 from '../../components/modals/wrapper.modal';
+import CheckEmailModal from '../../components/modals/auth/check-email.modal';
+
 //----- actions needed -------
 import {
     loadRegistrations,
@@ -29,6 +34,12 @@ const SignIn = ({
     pateSystem,
     currentUser,
 }) => {
+    const [modalIsVisible, setModalIsVisible] = useState(false);
+    const [modal2IsVisible, setModal2IsVisible] = useState(false);
+    const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(
+        false
+    );
+    const [resetEmailDest, setResetEmailDest] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const history = useHistory();
@@ -79,7 +90,12 @@ const SignIn = ({
                                 alertType: 'danger',
                             };
                             break;
-
+                        case 'PasswordResetRequiredException':
+                            alertPayload = {
+                                msg: e.message,
+                                alertType: 'danger',
+                            };
+                            break;
                         default:
                             alertPayload = {
                                 msg: 'Signin error: [' + e.message + ']',
@@ -136,14 +152,14 @@ const SignIn = ({
         }
     };
 
-    const changePassword = async () => {
-        Auth.currentAuthenticatedUser()
-            .then((user) => {
-                return Auth.changePassword(user, 'oldPassword', 'newPassword');
-            })
-            .then((data) => console.log(data))
-            .catch((err) => console.log(err));
-    };
+    // const changePassword = async () => {
+    //     Auth.currentAuthenticatedUser()
+    //         .then((user) => {
+    //             return Auth.changePassword(user, 'oldPassword', 'newPassword');
+    //         })
+    //         .then((data) => console.log(data))
+    //         .catch((err) => console.log(err));
+    // };
     const getRegistrations = async (uid) => {
         async function getUserReg() {
             try {
@@ -316,6 +332,44 @@ const SignIn = ({
                 break;
         }
     };
+    const handleResetPasswordRequest = async (uName) => {
+        setModalIsVisible(false);
+        // alert('USER WANTS TO CHANGE PASSWORD:' + uName);
+        await Auth.forgotPassword(uName)
+        .then((requestResponse) => {
+            const util = require('util');
+            console.log(
+                'forgotPassword OK - requestResponse \n' +
+                    util.inspect(requestResponse, {
+                        showHidden: false,
+                        depth: null,
+                    })
+            );
+            setResetEmailDest(requestResponse.CodeDeliveryDetails.Destination);
+        })
+        .catch((e) => {
+            const util = require('util');
+            console.log(
+                'forgotPassword error (e): \n' +
+                    util.inspect(e, {
+                        showHidden: false,
+                        depth: null,
+                    })
+            );
+            return;
+        });
+        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // NEED TO CALL ForgotPassword
+        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        setModal2IsVisible(true);
+        return;
+    };
+    const handleResetEmailAcknowledge = () => {
+        setModal2IsVisible(false);
+        // alert('GOING TO NEW PASSWORD PAGE');
+        history.push('/newpassword');
+    };
+
     return pateSystem.showSpinner ? (
         <Spinner />
     ) : (
@@ -356,6 +410,15 @@ const SignIn = ({
                                     />
                                 </div>
                             </div>
+                            <div className='signin-page__data-line'>
+                                <div className='signin-page__forgot-offer'>
+                                    <span
+                                        onClick={() => setModalIsVisible(true)}
+                                    >
+                                        Forgot your password?
+                                    </span>
+                                </div>
+                            </div>
                             <div className='signin-page__button-wrapper'>
                                 <CustomButton
                                     onClick={signIn}
@@ -379,56 +442,23 @@ const SignIn = ({
                     </div>
                 </div>
             </div>
-            {/*
-            <div className='signin-page__signin-wrapper'>
-                <div className='signin-page__title-box'>LOGIN</div>
-                <div className='signin-page__signin-box'>
-                    <div className='signin-page__input-line'>
-                        <div className='signin-page__input-label'>Username</div>
-                        <div className='signin-page__input-control'>
-                            <input
-                                type='text'
-                                name='username'
-                                id='username'
-                                value={username}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-                    </div>
-                    <div className='signin-page__input-line'>
-                        <div className='signin-page__input-label'>Password</div>
-                        <div className='signin-page__input-control'>
-                            <input
-                                type='password'
-                                id='password'
-                                name='password'
-                                onChange={handleChange}
-                                value={password}
-                                required
-                            />
-                        </div>
-                    </div>
-                    <div className='signin-page__button-wrapper'>
-                        <CustomButton
-                            onClick={signIn}
-                            className='signin-page__signin-button'
-                        >
-                            {' '}
-                            Sign In{' '}
-                        </CustomButton>
-                    </div>
-                </div>
-                <div className='signin-page__offer-box'>
-                    Don't have an account?
-                    <Link className='signin-page__register-link' to='/register'>
-                        {' '}
-                        REGISTER
-                    </Link>
-                </div>
-            </div>
-            */}
             <MainFooter />
+            <Modal isOpened={modalIsVisible}>
+                <div>
+                    <ResetPassword
+                        userNameId={username}
+                        resetDecline={() => setModalIsVisible(false)}
+                        resetConfirmed={handleResetPasswordRequest}
+                    />
+                </div>
+            </Modal>
+            <Modal2 isOpened={modal2IsVisible}>
+                <div>
+                    <CheckEmailModal emailDest={resetEmailDest}
+                        acknowledged={() => handleResetEmailAcknowledge()}
+                    />
+                </div>
+            </Modal2>
         </>
     );
 };
