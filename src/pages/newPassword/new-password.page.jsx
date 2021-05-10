@@ -66,6 +66,22 @@ const NewPassword = ({ setAlert, clearSpinner, setSpinner }) => {
             setAlert(alertPayload);
             return;
         }
+        if (password1.length < 7) {
+            alertPayload = {
+                msg: 'Password must be greater than 6 characters.',
+                alertType: 'danger',
+            };
+            setAlert(alertPayload);
+            return;
+        }
+        if (confirmationCode.length !== 6) {
+            alertPayload = {
+                msg: 'Please validate the code.',
+                alertType: 'danger',
+            };
+            setAlert(alertPayload);
+            return;
+        }
         setSpinner();
         await Auth.forgotPasswordSubmit(username, confirmationCode, password1)
             .then((requestResponse) => {
@@ -77,6 +93,8 @@ const NewPassword = ({ setAlert, clearSpinner, setSpinner }) => {
                             depth: null,
                         })
                 );
+                clearSpinner();
+                setShowChangePasswordModal(true);
             })
             .catch((e) => {
                 const util = require('util');
@@ -87,15 +105,28 @@ const NewPassword = ({ setAlert, clearSpinner, setSpinner }) => {
                             depth: null,
                         })
                 );
-                alertPayload = {
-                    msg: 'Error resetting password\n',
-                    alertType: 'danger',
-                };
+                switch (e.code) {
+                    case 'InvalidParameterException':
+                        alertPayload = {
+                            msg:
+                                'Error: password did not meet requirements\nMust be longer than 6 characters.\nInclude upper and lower case letters.\nMust include a number',
+                            alertType: 'danger',
+                            timeout: 10000,
+                        };
+                        break;
+
+                    default:
+                        alertPayload = {
+                            msg: e.message,
+                            alertType: 'danger',
+                            timeout: 10000,
+                        };
+                        break;
+                }
+                clearSpinner();
                 setAlert(alertPayload);
                 return;
             });
-        clearSpinner();
-        setShowChangePasswordModal(true);
     };
 
     return (
