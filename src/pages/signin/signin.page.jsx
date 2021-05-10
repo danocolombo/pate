@@ -39,6 +39,7 @@ const SignIn = ({
     const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(
         false
     );
+    const [resetEmailDest, setResetEmailDest] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const history = useHistory();
@@ -331,13 +332,32 @@ const SignIn = ({
                 break;
         }
     };
-    const handleResetPasswordRequest = (uName) => {
+    const handleResetPasswordRequest = async (uName) => {
         setModalIsVisible(false);
-        alert('USER WANTS TO CHANGE PASSWORD:' + uName);
-        const params = {
-            ClientId: clientInformation.id,
-            Username: uName,
-        };
+        // alert('USER WANTS TO CHANGE PASSWORD:' + uName);
+        await Auth.forgotPassword(uName)
+        .then((requestResponse) => {
+            const util = require('util');
+            console.log(
+                'forgotPassword OK - requestResponse \n' +
+                    util.inspect(requestResponse, {
+                        showHidden: false,
+                        depth: null,
+                    })
+            );
+            setResetEmailDest(requestResponse.CodeDeliveryDetails.Destination);
+        })
+        .catch((e) => {
+            const util = require('util');
+            console.log(
+                'forgotPassword error (e): \n' +
+                    util.inspect(e, {
+                        showHidden: false,
+                        depth: null,
+                    })
+            );
+            return;
+        });
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // NEED TO CALL ForgotPassword
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -346,7 +366,7 @@ const SignIn = ({
     };
     const handleResetEmailAcknowledge = () => {
         setModal2IsVisible(false);
-        alert('GOING TO NEW PASSWORD PAGE');
+        // alert('GOING TO NEW PASSWORD PAGE');
         history.push('/newpassword');
     };
 
@@ -434,7 +454,7 @@ const SignIn = ({
             </Modal>
             <Modal2 isOpened={modal2IsVisible}>
                 <div>
-                    <CheckEmailModal
+                    <CheckEmailModal emailDest={resetEmailDest}
                         acknowledged={() => handleResetEmailAcknowledge()}
                     />
                 </div>

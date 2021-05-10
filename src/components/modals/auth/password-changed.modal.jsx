@@ -1,7 +1,6 @@
 import React from 'react';
 import './check-email.styles.scss';
-const CheckEmail = ({ emailDest, isOpened = true, children, acknowledged }) => {
-    console.log('recovery code sent to ' + emailDest);
+const CheckEmail = ({ isOpened = true, children, acknowledged }) => {
     return (
         <div>
             <div className='success-message__wrapper'>
