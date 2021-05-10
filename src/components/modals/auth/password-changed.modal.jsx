@@ -5,10 +5,10 @@ const CheckEmail = ({ isOpened = true, children, acknowledged }) => {
         <div>
             <div className='success-message__wrapper'>
                 <div className='success-message__header'>
-                    CHECK EMAIL
+                    CHANGE PASSWORD SUCCESSFUL
                 </div>
                 <div className='success-message__message'>
-                    If user name exists, a confirmation code was sent to the email account.
+                    Password change was successful, you can now login.
                 </div>
                 <div className='success-message__button-wrapper'>
                     <button
