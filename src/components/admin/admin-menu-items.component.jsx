@@ -26,6 +26,16 @@ const AdminMenu = () => {
                         State Leads
                     </div>
                     <div className='admin-component__row-center'>Events</div>
+                    <div className='admin-component__row-center'>
+                        <div className='admin-component__link-wrapper'>
+                        <Link
+                            to='/administer/storage'
+                            className='admin-component__option-link'
+                        >
+                            Storage
+                        </Link>
+                        </div>
+                    </div>
                 
             </div>
         </div>

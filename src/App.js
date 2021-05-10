@@ -5,10 +5,10 @@ import {
     Redirect,
     BrowserRouter as Router,
 } from 'react-router-dom';
-
 import './App.css';
 import AdminPage from './pages/admin/admin-page';
 import Administer from './pages/admin/admin-feature-page';
+
 import UserDetails from './pages/admin/admin-user-details.page.jsx';
 // import RegisteredUserDetails from './pages/admin/admin-registered-user-details.page';
 import Events from './pages/events/events.component';
@@ -34,7 +34,6 @@ import Leroy from './pages/junkyard/junkyard';
 //AMPLIFY INTEGRATION
 //----------------------
 // import { withAuthenticator } from '@aws-amplify/ui-react';
-import { Auth } from 'aws-amplify';
 
 function App() {
     return (

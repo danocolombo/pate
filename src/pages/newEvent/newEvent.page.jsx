@@ -624,7 +624,7 @@ const Serve = ({
                             <div className='newevent-page__grid-control'>
                                 <textarea
                                     rows='4'
-                                    cols='15'
+                                    cols='18'
                                     name='eventMessage'
                                     id='eventMessage'
                                     onChange={handleChange}
@@ -684,6 +684,15 @@ const Serve = ({
                                 Message:
                             </div>
                             <div className='newevent-page__grid-control'>
+                                <textarea
+                                    rows='4'
+                                    cols='18'
+                                    name='mealMessage'
+                                    id='mealMessage'
+                                    onChange={handleChange}
+                                    value={mealMessage}
+                                ></textarea>
+                                {/*
                                 <input
                                     type='memo'
                                     id='mealMessage'
@@ -692,6 +701,7 @@ const Serve = ({
                                     value={mealMessage}
                                     required
                                 />
+                            */}
                             </div>
                         </div>
 

@@ -934,14 +934,14 @@ const Serve = ({
                                 Message:
                             </div>
                             <div className='serveevent-page__grid-control'>
-                                <input
-                                    type='memo'
-                                    id='eventMessage'
+                                <textarea
+                                    rows='4'
+                                    cols='18'
                                     name='eventMessage'
+                                    id='eventMessage'
                                     onChange={handleChange}
                                     value={eventMessage}
-                                    required
-                                />
+                                ></textarea>
                             </div>
                         </div>
                         <div className='serveevent-page__grid-data-box'>
@@ -1054,14 +1054,14 @@ const Serve = ({
                                 Message:
                             </div>
                             <div className='serveevent-page__grid-control'>
-                                <input
-                                    type='memo'
-                                    id='mealMessage'
+                                <textarea
+                                    rows='4'
+                                    cols='18'
                                     name='mealMessage'
+                                    id='mealMessage'
                                     onChange={handleChange}
                                     value={mealMessage}
-                                    required
-                                />
+                                ></textarea>
                             </div>
                         </div>
                         <div className='serveevent-page__grid-data-box'>

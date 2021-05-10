@@ -31,7 +31,7 @@ class Events extends React.Component {
             {
                 method: 'POST',
                 body: JSON.stringify({
-                    operation: 'getActiveEvents',
+                    operation: 'getAllActiveApprovedEvents',
                 }),
                 headers: {
                     'Content-type': 'application/json; charset=UTF-8',

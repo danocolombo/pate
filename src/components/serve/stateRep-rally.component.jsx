@@ -4,7 +4,7 @@ import './serve.styles.scss';
 const StateRepRally = ({ rally }) => {
     const dateToDisplay = () => {
         if (rally.eventDate === '30000101') {
-            return '[TBD]';
+            return 'TBD';
         }
         let em = parseInt(rally.eventDate.substring(4, 6));
         let ed = parseInt(rally.eventDate.substring(6, 8));
