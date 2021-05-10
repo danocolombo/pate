@@ -14,6 +14,7 @@ import UserDetails from './pages/admin/admin-user-details.page.jsx';
 import Events from './pages/events/events.component';
 import Profile from './pages/profile/profile.page';
 import SignIn from './pages/signin/signin.page';
+import NewPassword from './pages/newPassword/new-password.page';
 import Register from './pages/registerUser/registerUser.page';
 import ConfirmUser from './pages/registerUser/confirmUser.page';
 import PrivatePage from './pages/privatePage/privatePage';
@@ -52,6 +53,7 @@ function App() {
                     <Route exact path='/profile' component={Profile} />
                     <Route path='/signin' render={() => <SignIn />} />
                     <Route exact path='/register' component={Register} />
+                    <Route exact path='/newpassword' component={NewPassword} />
                     <Route
                         exact
                         path='/confirmUser/:id'
@@ -65,7 +67,7 @@ function App() {
                         path='/serveevent/:id'
                         component={ServeEvent}
                     />
-                    <Route exact  path='/newevent' component={NewEvent}/>
+                    <Route exact path='/newevent' component={NewEvent} />
                     <Route
                         exact
                         path='/userdetails/:id'

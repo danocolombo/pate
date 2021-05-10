@@ -19,7 +19,7 @@ import {
 import { setCurrentUser } from '../../redux/user/user.actions';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import { setAlert } from '../../redux/alert/alert.action';
-import './signin.styles.scss';
+import './new-password.styles.scss';
 
 const SignIn = ({
     onSignIn,
@@ -33,7 +33,7 @@ const SignIn = ({
     currentUser,
 }) => {
     const [modalIsVisible, setModalIsVisible] = useState(false);
-    
+
     const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(
         false
     );
@@ -376,7 +376,9 @@ const SignIn = ({
                             </div>
                             <div className='signin-page__data-line'>
                                 <div className='signin-page__forgot-offer'>
-                                    <span onClick={() => setModalIsVisible(true)}>
+                                    <span
+                                        onClick={() => setModalIsVisible(true)}
+                                    >
                                         Forgot your password?
                                     </span>
                                 </div>
@@ -407,7 +409,10 @@ const SignIn = ({
             <MainFooter />
             <Modal isOpened={modalIsVisible}>
                 <div>
-                    <ResetPassword resetDecline={() => setModalIsVisible(false)} resetAccept={() => setModalIsVisible(false)} />
+                    <ResetPassword
+                        resetDecline={() => setModalIsVisible(false)}
+                        resetAccept={() => setModalIsVisible(false)}
+                    />
                     {/*<div>{modalMessage}</div>*/}
                 </div>
             </Modal>

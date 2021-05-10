@@ -1,8 +1,14 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import './reset-password.styles.scss';
-const ResetPassword = ({ isOpened = true, children, userNameId, resetConfirmed, resetDecline }) => {
-    const [userName, setUserName] = useState(userNameId)
-    
+const ResetPassword = ({
+    isOpened = true,
+    children,
+    userNameId,
+    resetConfirmed,
+    resetDecline,
+}) => {
+    const [userName, setUserName] = useState(userNameId);
+
     const handleChange = (e) => {
         const { value, name } = e.target;
         switch (name) {
@@ -16,11 +22,13 @@ const ResetPassword = ({ isOpened = true, children, userNameId, resetConfirmed, 
     return (
         <div>
             <div className='reset-password__wrapper'>
-                <div className='reset-password__header'>
-                    ATTENTION
-                </div>
+                <div className='reset-password__header'>ATTENTION</div>
                 <div className='success-message__message'>
-                    Provide your user name, and click RESET.<br/><br/>If the user name exists, a code will be sent to the email account registered.
+                    Provide your user name, and click RESET.
+                    <br />
+                    <br />
+                    If the user name exists, a code will be sent to the email
+                    account registered.
                 </div>
                 <div className='reset-password__username-textbox-wrapper'>
                     <input
@@ -32,16 +40,21 @@ const ResetPassword = ({ isOpened = true, children, userNameId, resetConfirmed, 
                         required
                     />
                 </div>
+                <div className='reset-password__username-warning'>
+                    <span className='reset-password__username-warning-msg'>
+                        User name, NOT email address!
+                    </span>
+                </div>
                 <div className='reset-password__button-wrapper'>
                     <button
                         className='reset-password__ok-button'
-                        onClick={resetConfirmed}
+                        onClick={() => resetConfirmed(userName)}
                     >
                         RESET
                     </button>
                     <button
                         className='reset-password__cancel-button'
-                        onClick={resetDecline}
+                        onClick={() => resetDecline()}
                     >
                         CANCEL
                     </button>

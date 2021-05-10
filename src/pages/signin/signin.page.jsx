@@ -10,6 +10,8 @@ import { MainFooter } from '../../components/footers/main-footer';
 import Spinner from '../../components/spinner/Spinner';
 import Modal from '../../components/modals/wrapper.modal';
 import ResetPassword from '../../components/modals/auth/reset-password.modal';
+import Modal2 from '../../components/modals/wrapper.modal';
+import CheckEmailModal from '../../components/modals/auth/check-email.modal';
 
 //----- actions needed -------
 import {
@@ -33,7 +35,7 @@ const SignIn = ({
     currentUser,
 }) => {
     const [modalIsVisible, setModalIsVisible] = useState(false);
-    
+    const [modal2IsVisible, setModal2IsVisible] = useState(false);
     const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(
         false
     );
@@ -149,14 +151,14 @@ const SignIn = ({
         }
     };
 
-    const changePassword = async () => {
-        Auth.currentAuthenticatedUser()
-            .then((user) => {
-                return Auth.changePassword(user, 'oldPassword', 'newPassword');
-            })
-            .then((data) => console.log(data))
-            .catch((err) => console.log(err));
-    };
+    // const changePassword = async () => {
+    //     Auth.currentAuthenticatedUser()
+    //         .then((user) => {
+    //             return Auth.changePassword(user, 'oldPassword', 'newPassword');
+    //         })
+    //         .then((data) => console.log(data))
+    //         .catch((err) => console.log(err));
+    // };
     const getRegistrations = async (uid) => {
         async function getUserReg() {
             try {
@@ -329,11 +331,25 @@ const SignIn = ({
                 break;
         }
     };
-    const resetPasswordResponse = (response) => {
-        setShowForgotPasswordModal(false);
-        console.log('the user clicked' + response);
+    const handleResetPasswordRequest = (uName) => {
+        setModalIsVisible(false);
+        alert('USER WANTS TO CHANGE PASSWORD:' + uName);
+        const params = {
+            ClientId: clientInformation.id,
+            Username: uName,
+        };
+        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // NEED TO CALL ForgotPassword
+        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        setModal2IsVisible(true);
         return;
     };
+    const handleResetEmailAcknowledge = () => {
+        setModal2IsVisible(false);
+        alert('GOING TO NEW PASSWORD PAGE');
+        history.push('/newpassword');
+    };
+
     return pateSystem.showSpinner ? (
         <Spinner />
     ) : (
@@ -376,7 +392,9 @@ const SignIn = ({
                             </div>
                             <div className='signin-page__data-line'>
                                 <div className='signin-page__forgot-offer'>
-                                    <span onClick={() => setModalIsVisible(true)}>
+                                    <span
+                                        onClick={() => setModalIsVisible(true)}
+                                    >
                                         Forgot your password?
                                     </span>
                                 </div>
@@ -407,12 +425,20 @@ const SignIn = ({
             <MainFooter />
             <Modal isOpened={modalIsVisible}>
                 <div>
-                    <ResetPassword userNameId={username} resetDecline={() => setModalIsVisible(false)} resetConfirmed={() => setModalIsVisible(false)} />
-                    {/*<div>{modalMessage}</div>*/}
+                    <ResetPassword
+                        userNameId={username}
+                        resetDecline={() => setModalIsVisible(false)}
+                        resetConfirmed={handleResetPasswordRequest}
+                    />
                 </div>
             </Modal>
-            
-            
+            <Modal2 isOpened={modal2IsVisible}>
+                <div>
+                    <CheckEmailModal
+                        acknowledged={() => handleResetEmailAcknowledge()}
+                    />
+                </div>
+            </Modal2>
         </>
     );
 };
