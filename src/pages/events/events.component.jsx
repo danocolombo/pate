@@ -68,6 +68,7 @@ class Events extends React.Component {
                                             {this.noPlans ? (
                                                 <>
                                                     <img
+                                                        className='events-marquee-component__graphic-image'
                                                         src='https://pate-images.s3.amazonaws.com/NoEvents.png'
                                                         alt='No Scheduled Events. Come Back Soon for more info'
                                                     />

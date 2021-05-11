@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { Storage } from 'aws-amplify';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
@@ -521,7 +522,7 @@ const Serve = ({
     //     }
     //     await getEventRegistrations();
     // };
-    const handleSubmitClick = (event) => {
+    const handleSubmitClick = async (event) => {
         event.preventDefault();
 
         //get rally object to update
@@ -550,7 +551,48 @@ const Serve = ({
         newRally.meal.deadline = mealDeadline;
         newRally.registrations = registrationCount;
         newRally.attendees = attendeeCount;
+        //=======================================
+        // check if we need to load new graphics
+        // --------------------------------------
+        // if graphicFileObj is null, there is
+        // no file to upload, keep the original.
+        // Otherwise, load and record file name.
+        //========================================
+        if (graphicFileObj?.name) {
+            // we have a new graphic to upload...
+            let graphicFileLocation = 'events/' + graphicFileObj.name;
+            const { key } = await Storage.put(
+                graphicFileLocation,
+                graphicFileObj,
+                { contentType: 'image/*' }
+            );
 
+            //=================================
+            // if new file name, need to delete
+            // the old file name from S3
+            //=================================
+            if (graphicFileObj.name !== pateSystem?.rally?.graphic) {
+                //delete the old file
+                if (pateSystem?.rally?.graphic !== 'tbd.png') {
+                    let fileToDelete = 'events/' + pateSystem?.rally?.graphic;
+                    try {
+                        await Storage.remove(fileToDelete);
+                    } catch (error) {
+                        console.log('ERROR: we failed to remove the old file');
+                    }
+                }
+            }
+            //=================================
+            // need to save new file name
+            //=================================
+            newRally.graphic = graphicFileObj.name;
+        } else {
+            //no file selected for upload, keep
+            // the current value
+            newRally.graphic = graphicFileName;
+        }
+        // let DANOTEST = true;
+        // if (DANOTEST) return;
         //now update redux for future use.
         loadRally(newRally);
         //reload stateRep and stateLead
@@ -1080,30 +1122,39 @@ const Serve = ({
                                 />
                             </div>
                         </div>
-                        {
-                            currentUser.stateRep === 'TT' || currentUser.stateLead === 'TT' ?
-                                (<><div className='serveevent-page__section-header'>
+                        {currentUser?.stateRep === 'TT' ||
+                        currentUser?.stateLead === 'TT' ? (
+                            <>
+                                <div className='serveevent-page__section-header'>
                                     Graphic File
                                 </div>
                                 <div className='serveevent-page__graphic-section'>
-                                <div>DB Graphic: {graphicFileName}</div>
-                                <div className='serveevent-page__graphic-file-control'>
-                                    <div>
-                                        <input type='file' 
-                                            accept='image/*' 
-                                            id='graphicFile' 
-                                            name='graphicFile' 
-                                            onChange={e => setGraphicFileObj(e.target.files[0])}/>
+                                    <div>DB Graphic: {graphicFileName}</div>
+                                    <div className='serveevent-page__graphic-file-control'>
+                                        <div>
+                                            <input
+                                                type='file'
+                                                accept='image/*'
+                                                id='graphicFile'
+                                                name='graphicFile'
+                                                onChange={(e) =>
+                                                    setGraphicFileObj(
+                                                        e.target.files[0]
+                                                    )
+                                                }
+                                            />
+                                        </div>
                                     </div>
-                                    
+                                    <div className='serveevent-page__graphic-preview'>
+                                        <img
+                                            className='serveevent-page__graphic-image'
+                                            src={`https://pate20213723ed06531948b6a5a0b14d1c3fb499175248-dev.s3.amazonaws.com/public/events/${graphicFileName}`}
+                                            alt='event-graphic'
+                                        />
+                                    </div>
                                 </div>
-                                <div className='serveevent-page__graphic-preview'>
-                                    <img className='serveevent-page__graphic-image' src={`https://pate20213723ed06531948b6a5a0b14d1c3fb499175248-dev.s3.amazonaws.com/public/events/${graphicFileName}`} alt='event-graphic'/>
-                                </div>
-                                </div></>)
-                                
-                            : null
-                        }
+                            </>
+                        ) : null}
                         <div className='serveevent-page__section-header'>
                             Tally Information
                         </div>
