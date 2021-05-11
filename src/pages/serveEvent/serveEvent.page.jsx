@@ -57,7 +57,8 @@ const Serve = ({
     const [eventDate, setEventDate] = useState('');
     const [eventStart, setEventStart] = useState('');
     const [eventEnd, setEventEnd] = useState('');
-    const [graphic, setGraphic] = useState('');
+    const [graphicFileName, setGraphicFileName] = useState('');
+    const [graphicFileObj, setGraphicFileObj] = useState();
     const [isApproved, setApproved] = useState(false);
 
     const [contactName, setContactName] = useState('');
@@ -187,7 +188,7 @@ const Serve = ({
             registrations: 0,
             startTime: '13:00',
             city: '',
-            graphic: '',
+            graphicFile: '',
             approved: false,
             attendees: '0',
             endTime: '13:00',
@@ -215,7 +216,7 @@ const Serve = ({
         setPostalCode('');
         setEventStart('');
         setEventEnd('');
-        setGraphic('');
+        setGraphicFileName('');
         setApproved('false');
         setContactName('');
         setContactEmail('');
@@ -304,7 +305,7 @@ const Serve = ({
                         setPostalCode(rallyEvent?.postalCode);
                         setEventStart(rallyEvent?.startTime);
                         setEventEnd(rallyEvent?.endTime);
-                        setGraphic(rallyEvent?.graphic);
+                        setGraphicFileName(rallyEvent?.graphic);
                         setApproved(rallyEvent?.approved);
                         setContactName(rallyEvent?.contact?.name);
                         setContactEmail(rallyEvent?.contact?.email);
@@ -352,7 +353,7 @@ const Serve = ({
                         setPostalCode(rallyEvent?.postalCode);
                         setEventStart(rallyEvent?.startTime);
                         setEventEnd(rallyEvent?.endTime);
-                        setGraphic(rallyEvent?.graphic);
+                        setGraphicFileName(rallyEvent?.graphic);
                         setApproved(rallyEvent?.approved);
                         setContactName(rallyEvent?.contact?.name);
                         setContactEmail(rallyEvent?.contact?.email);
@@ -402,7 +403,7 @@ const Serve = ({
                         setPostalCode(rallyEvent?.postalCode);
                         setEventStart(rallyEvent?.startTime);
                         setEventEnd(rallyEvent?.endTime);
-                        setGraphic(rallyEvent?.graphic);
+                        setGraphicFileName(rallyEvent?.graphic);
                         setApproved(rallyEvent?.approved);
                         setContactName(rallyEvent?.contact?.name);
                         setContactEmail(rallyEvent?.contact?.email);
@@ -450,7 +451,7 @@ const Serve = ({
                         setPostalCode(rallyEvent?.postalCode);
                         setEventStart(rallyEvent?.startTime);
                         setEventEnd(rallyEvent?.endTime);
-                        setGraphic(rallyEvent?.graphic);
+                        setGraphicFileName(rallyEvent?.graphic);
                         setApproved(rallyEvent?.approved);
                         setContactName(rallyEvent?.contact?.name);
                         setContactEmail(rallyEvent?.contact?.email);
@@ -632,7 +633,7 @@ const Serve = ({
                 setEventEnd(value);
                 break;
             case 'graphicFile':
-                setGraphic(value);
+                setGraphicFileName(value);
                 break;
             case 'isApproved':
                 if (currentUser?.stateLead === stateProv) {
@@ -1079,6 +1080,30 @@ const Serve = ({
                                 />
                             </div>
                         </div>
+                        {
+                            currentUser.stateRep === 'TT' || currentUser.stateLead === 'TT' ?
+                                (<><div className='serveevent-page__section-header'>
+                                    Graphic File
+                                </div>
+                                <div className='serveevent-page__graphic-section'>
+                                <div>DB Graphic: {graphicFileName}</div>
+                                <div className='serveevent-page__graphic-file-control'>
+                                    <div>
+                                        <input type='file' 
+                                            accept='image/*' 
+                                            id='graphicFile' 
+                                            name='graphicFile' 
+                                            onChange={e => setGraphicFileObj(e.target.files[0])}/>
+                                    </div>
+                                    
+                                </div>
+                                <div className='serveevent-page__graphic-preview'>
+                                    <img className='serveevent-page__graphic-image' src={`https://pate20213723ed06531948b6a5a0b14d1c3fb499175248-dev.s3.amazonaws.com/public/events/${graphicFileName}`} alt='event-graphic'/>
+                                </div>
+                                </div></>)
+                                
+                            : null
+                        }
                         <div className='serveevent-page__section-header'>
                             Tally Information
                         </div>

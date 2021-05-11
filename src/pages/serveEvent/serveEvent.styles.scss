@@ -49,6 +49,18 @@
     justify-content: flex-end;
     // padding-right: 15px;
 }
+.serveevent-page__graphic-section {
+    border: black solid 1px;
+}
+.serveevent-page__graphic-file-control{
+    border: black solid 1px;
+}
+.serveevent-page__graphic-preview{
+    border: black solid 1px;
+}
+.serveevent-page__graphic-image{
+    max-width: 80vw;
+}
 .serveevent-page__grid-label {
     color: black;
     text-align: right;

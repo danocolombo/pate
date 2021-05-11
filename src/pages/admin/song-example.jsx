@@ -6,7 +6,13 @@ const SongExample = () => {
     const handleUpload = async () => {
         console.log('graphicInfo:', graphicInfo);
         console.log('graphicFile: ', graphicFile);
-        const { key } = await Storage.put(graphicFile.name, graphicFile, {contentType: 'image/*'});
+        // we need to put events/ in front of the name to store it in S3 location
+        const fileLocation = 'events/' + graphicFile.name;
+        console.log('fileLocation: ', fileLocation);
+        
+        const { key } = await Storage.put(fileLocation, graphicFile, {contentType: 'image/*'});
+
+        console.log('key:', key);
 
     }
     return (
