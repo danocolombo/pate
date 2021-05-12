@@ -384,6 +384,7 @@ const Registrar = ({
         //for calculation purposes to include 'today'.
         //--------------------------------------------------------------------
         let dbDate = pateSystem?.rally?.meal?.deadline;
+        // let dbDate = pateSystem?.rally?.body?.Items[0]?.meal?.deadline;
         let convertedDBDate = Date.parse(dbDate);
         let deadlineTestDate = new Date(convertedDBDate);
         deadlineTestDate.setDate(deadlineTestDate.getDate() + 1);
