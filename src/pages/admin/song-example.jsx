@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Storage } from 'aws-amplify';
 import { AmplifyS3Image } from '@aws-amplify/ui-react';
-import { aws } from 'aws-sdk';
+//import { aws } from 'aws-sdk';
 const SongExample = () => {
     const [imageToDisplay, setImageToDisplay] = useState();
     const [graphicInfo, setGraphicInfo] = useState({});
     const [graphicFile, setGraphicFile] = useState();
     useEffect(() => {
         console.log('imageToDisplay changed');
-    }, [imageToDisplay])
+    }, [imageToDisplay]);
     const handleUpload = async () => {
         // we need to put events/ in front of the name to store it in S3 location
         const fileLocation = 'events/' + graphicFile.name;
@@ -24,9 +24,12 @@ const SongExample = () => {
         <>
             <div>Song Sample (storage)</div>
             <div>
-            <AmplifyS3Image style={{"--height": "150px"}} imgKey='background.jpg' />
-            <AmplifyS3Image imgKey='public/events/background.jpg' />
-            <AmplifyS3Image  path="public/events/background.jpg"/>
+                <AmplifyS3Image
+                    style={{ '--height': '150px' }}
+                    imgKey='background.jpg'
+                />
+                <AmplifyS3Image imgKey='public/events/background.jpg' />
+                <AmplifyS3Image path='public/events/background.jpg' />
             </div>
             <div>
                 <span>File Name</span>
@@ -69,14 +72,14 @@ const SongExample = () => {
                 />
             </div>
             <button onClick={handleUpload}>Upload</button>
-            {
-                imageToDisplay ?
-                    (
-                        <>
-                            <AmplifyS3Image style={{"--width": "100px"}} path={imageToDisplay}/>
-                        </>
-                    ):null
-            }
+            {imageToDisplay ? (
+                <>
+                    <AmplifyS3Image
+                        style={{ '--width': '100px' }}
+                        path={imageToDisplay}
+                    />
+                </>
+            ) : null}
         </>
     );
 };

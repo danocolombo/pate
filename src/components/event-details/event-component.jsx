@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { AmplifyS3Image } from '@aws-amplify/ui-react';
 import { Link } from 'react-router-dom';
 import './event.styles.scss';
 //event: { uid, eventDate, startTime, endTime, location },
@@ -7,6 +8,22 @@ const EventDetails = ({ theEvent }) => {
 
     //get data ready to display
     const displayThis = theEvent?.body?.Items[0];
+    //-------------------------------------------------------
+    // if the graphic file name is available and not tbd.png
+    // add the correct path to display from s3
+    //-------------------------------------------------------
+    if (displayThis?.graphic) {
+        const testValue = displayThis?.graphic;
+        if (testValue !== 'tbd.png') {
+            if (testValue.length > 0) {
+                //have a value that is not tbd.png
+                //update path and inject eventID
+                let newFileValue =
+                    'events/' + displayThis.uid + displayThis.graphic;
+                displayThis.graphic = newFileValue;
+            }
+        }
+    }
     // console.log(
     //     'component.dislayThis: \n' +
     //         util.inspect(displayThis, { showHidden: false, depth: null })
@@ -61,25 +78,35 @@ const EventDetails = ({ theEvent }) => {
         <>
             <div className='event-details__wrapper'>
                 <div className='event-details__graphic-wrapper'>
-                    {displayThis?.graphic !== 'tbd'?(
-                    <img
-                        className='event-details__graphic-image'
-                        src={displayThis?.graphic}
-                        alt='CR P8 Rally'
-                    ></img>):null}
+                    {displayThis?.graphic !== 'tbd' ? (
+                        <>
+                            {displayThis?.graphic && (
+                                <AmplifyS3Image
+                                    style={{ '--width': '100%' }}
+                                    imgKey={displayThis?.graphic}
+                                />
+                            )}
+                        </>
+                    ) : null}
                 </div>
                 <div className='event-details__church-info'>
-                    <div className='event-details__church-name'>{displayThis?.name}</div>
-                    <div className='event-details__church-street'>{displayThis?.street}</div>
+                    <div className='event-details__church-name'>
+                        {displayThis?.name}
+                    </div>
+                    <div className='event-details__church-street'>
+                        {displayThis?.street}
+                    </div>
                     <div className='event-details__city-state-postal'>
                         {displayThis?.city},{displayThis?.stateProv}&nbsp;
                         {displayThis?.postalCode}
                     </div>
                 </div>
                 <div className='event-details__event-date'>{displayDate()}</div>
-                <div className='event-details__event-time'>{displayTimes()}</div>
+                <div className='event-details__event-time'>
+                    {displayTimes()}
+                </div>
                 <div className='event-details__event-message'>
-                {displayThis?.message}
+                    {displayThis?.message}
                 </div>
             </div>
         </>
