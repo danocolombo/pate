@@ -7,6 +7,23 @@ const EventDetails = ({ theEvent }) => {
 
     //get data ready to display
     const displayThis = theEvent;
+    //-------------------------------------------------------
+    // if the graphic file name is available and not tbd.png
+    // add the correct path to display from s3
+    //-------------------------------------------------------
+    if (displayThis?.graphic) {
+        const testValue = displayThis?.graphic;
+        if (testValue !== 'tbd.png') {
+            if (testValue.length > 0) {
+                //have a value that is not tbd.png
+                //update path and inject eventID
+                let newFileValue =
+                    'events/' + displayThis.uid + displayThis.graphic;
+                displayThis.graphic = newFileValue;
+            }
+        }
+    }
+
     // console.log(
     //     'component.dislayThis: \n' +
     //         util.inspect(displayThis, { showHidden: false, depth: null })
@@ -52,18 +69,28 @@ const EventDetails = ({ theEvent }) => {
         <>
             <div className='event-details-component__wrapper'>
                 <div className='event-details-component__form-box'>
-                    <div className='event-details-component__header'>THE EVENT</div>
+                    <div className='event-details-component__header'>
+                        THE EVENT
+                    </div>
                     <div className='event-details-component__section-header'>
                         {displayThis?.name}
                     </div>
-                    <div className='event-details-component__church-address-line'>{displayThis?.street}</div>
+                    <div className='event-details-component__church-address-line'>
+                        {displayThis?.street}
+                    </div>
                     <div className='event-details-component__church-address-line'>
                         {displayThis?.city},{displayThis?.stateProv}&nbsp;
                         {displayThis?.postalCode}
                     </div>
-                    <div className='event-details__event-date'>{displayDate()}</div>
-                    <div className='event-details__event-time'>{displayTimes()}</div>
-                    <div className='event-details__event-message'>{displayThis?.message}</div>
+                    <div className='event-details__event-date'>
+                        {displayDate ? () => displayDate() : null}
+                    </div>
+                    <div className='event-details__event-time'>
+                        {displayTimes()}
+                    </div>
+                    <div className='event-details__event-message'>
+                        {displayThis?.message}
+                    </div>
                 </div>
             </div>
         </>

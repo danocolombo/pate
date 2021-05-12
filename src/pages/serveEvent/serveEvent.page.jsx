@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Storage } from 'aws-amplify';
-import {AmplifyS3Image} from "@aws-amplify/ui-react";
+import { AmplifyS3Image } from '@aws-amplify/ui-react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
@@ -45,10 +45,8 @@ const Serve = ({
 }) => {
     let eventID = match?.params?.id;
     console.log('serveEvent: ' + eventID);
-    const [
-        modalDeleteConfirmIsVisible,
-        setModalDeleteConfirmIsVisible,
-    ] = useState(false);
+    const [modalDeleteConfirmIsVisible, setModalDeleteConfirmIsVisible] =
+        useState(false);
     const refApprovalCheckbox = useRef(null);
     // const [plan, setPlan] = useState([]);
     const [churchName, setChurchName] = useState('');
@@ -60,7 +58,7 @@ const Serve = ({
     const [eventStart, setEventStart] = useState('');
     const [eventEnd, setEventEnd] = useState('');
     const [graphicFileName, setGraphicFileName] = useState('');
-    const [graphicLocation, setGraphicLocation] = useState();
+    const [graphicLocation, setGraphicLocation] = useState('');
     const [graphicFileObj, setGraphicFileObj] = useState();
     const [isApproved, setApproved] = useState(false);
 
@@ -309,7 +307,7 @@ const Serve = ({
                         setEventStart(rallyEvent?.startTime);
                         setEventEnd(rallyEvent?.endTime);
                         setGraphicFileName(rallyEvent?.graphic);
-                        let tmpStr = 'events/' + rallyEvent?.graphic;
+                        let tmpStr = 'events/' + eventID + rallyEvent?.graphic;
                         setGraphicLocation(tmpStr);
                         setApproved(rallyEvent?.approved);
                         setContactName(rallyEvent?.contact?.name);
@@ -359,7 +357,7 @@ const Serve = ({
                         setEventStart(rallyEvent?.startTime);
                         setEventEnd(rallyEvent?.endTime);
                         setGraphicFileName(rallyEvent?.graphic);
-                        let tmpStr = 'events/' + rallyEvent?.graphic;
+                        let tmpStr = 'events/' + eventID + rallyEvent?.graphic;
                         setGraphicLocation(tmpStr);
                         setApproved(rallyEvent?.approved);
                         setContactName(rallyEvent?.contact?.name);
@@ -411,7 +409,7 @@ const Serve = ({
                         setEventStart(rallyEvent?.startTime);
                         setEventEnd(rallyEvent?.endTime);
                         setGraphicFileName(rallyEvent?.graphic);
-                        let tmpStr = 'events/' + rallyEvent?.graphic;
+                        let tmpStr = 'events/' + eventID + rallyEvent?.graphic;
                         setGraphicLocation(tmpStr);
                         setApproved(rallyEvent?.approved);
                         setContactName(rallyEvent?.contact?.name);
@@ -461,7 +459,7 @@ const Serve = ({
                         setEventStart(rallyEvent?.startTime);
                         setEventEnd(rallyEvent?.endTime);
                         setGraphicFileName(rallyEvent?.graphic);
-                        let tmpStr = 'events/' + rallyEvent?.graphic;
+                        let tmpStr = 'events/' + eventID + rallyEvent?.graphic;
                         setGraphicLocation(tmpStr);
                         setApproved(rallyEvent?.approved);
                         setContactName(rallyEvent?.contact?.name);
@@ -569,23 +567,24 @@ const Serve = ({
         // Otherwise, load and record file name.
         //========================================
         if (graphicFileObj?.name) {
+            const previousGraphicFile = pateSystem?.rally?.graphic;
+
             // we have a new graphic to upload...
-            let tmpStr = 'events/' + graphicFileObj.name;
-            setGraphicLocation(tmpStr);
-            const { key } = await Storage.put(
-                graphicLocation,
-                graphicFileObj,
-                { contentType: 'image/*' }
-            );
+            let tmpStr = 'events/' + eventID + graphicFileObj.name;
+            // setGraphicLocation(tmpStr);
+            const { key } = await Storage.put(tmpStr, graphicFileObj, {
+                contentType: 'image/*',
+            });
 
             //=================================
             // if new file name, need to delete
             // the old file name from S3
             //=================================
-            if (graphicFileObj.name !== pateSystem?.rally?.graphic) {
+            if (graphicFileObj.name !== previousGraphicFile) {
                 //delete the old file
-                if (pateSystem?.rally?.graphic !== 'tbd.png') {
-                    let fileToDelete = 'events/' + pateSystem?.rally?.graphic;
+                if (previousGraphicFile !== 'tbd.png') {
+                    let fileToDelete =
+                        'events/' + eventID + previousGraphicFile;
                     try {
                         await Storage.remove(fileToDelete);
                     } catch (error) {
@@ -1133,38 +1132,40 @@ const Serve = ({
                                 />
                             </div>
                         </div>
-                        {currentUser?.stateRep === 'TT' ||
-                        currentUser?.stateLead === 'TT' ? (
-                            <>
-                                <div className='serveevent-page__section-header'>
-                                    Graphic File
+
+                        <>
+                            <div className='serveevent-page__section-header'>
+                                Graphic File
+                            </div>
+                            <div className='serveevent-page__graphic-section'>
+                                <div className='serveevent-page__graphic-preview'>
+                                    {graphicLocation && (
+                                        <AmplifyS3Image
+                                            style={{ '--width': '100%' }}
+                                            imgKey={graphicLocation}
+                                        />
+                                    )}
+                                    {graphicFileName}
                                 </div>
-                                <div className='serveevent-page__graphic-section'>
-                                    
-                                    <div className='serveevent-page__graphic-preview'>
-                                    
-                                    {graphicLocation && <AmplifyS3Image style={{"--width": "100%"}} imgKey={graphicLocation} />}
-                                    </div>
-                                    <div>{graphicFileName}</div>
-                                    <div>{graphicLocation}</div>
-                                    <div className='serveevent-page__graphic-file-control'>
-                                        <div>
-                                            <input
-                                                type='file'
-                                                accept='image/*'
-                                                id='graphicFile'
-                                                name='graphicFile'
-                                                onChange={(e) =>
-                                                    setGraphicFileObj(
-                                                        e.target.files[0]
-                                                    )
-                                                }
-                                            />
-                                        </div>
+
+                                <div className='serveevent-page__graphic-file-control'>
+                                    <div>
+                                        <input
+                                            type='file'
+                                            accept='image/*'
+                                            id='graphicFile'
+                                            name='graphicFile'
+                                            onChange={(e) =>
+                                                setGraphicFileObj(
+                                                    e.target.files[0]
+                                                )
+                                            }
+                                        />
                                     </div>
                                 </div>
-                            </>
-                        ) : null}
+                            </div>
+                        </>
+
                         <div className='serveevent-page__section-header'>
                             Tally Information
                         </div>
