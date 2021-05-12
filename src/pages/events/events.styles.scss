@@ -26,7 +26,9 @@
     border-radius: 5px;
     background-color: lightgray;
 }
-
+.events-page__no-events-image {
+    max-width: 100%;
+}
 .events-wrapper {
     display: flex;
     flex-direction: column;
