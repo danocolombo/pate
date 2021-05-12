@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Storage } from 'aws-amplify';
+import {AmplifyS3Image} from "@aws-amplify/ui-react";
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
@@ -59,6 +60,7 @@ const Serve = ({
     const [eventStart, setEventStart] = useState('');
     const [eventEnd, setEventEnd] = useState('');
     const [graphicFileName, setGraphicFileName] = useState('');
+    const [graphicLocation, setGraphicLocation] = useState();
     const [graphicFileObj, setGraphicFileObj] = useState();
     const [isApproved, setApproved] = useState(false);
 
@@ -307,6 +309,8 @@ const Serve = ({
                         setEventStart(rallyEvent?.startTime);
                         setEventEnd(rallyEvent?.endTime);
                         setGraphicFileName(rallyEvent?.graphic);
+                        let tmpStr = 'events/' + rallyEvent?.graphic;
+                        setGraphicLocation(tmpStr);
                         setApproved(rallyEvent?.approved);
                         setContactName(rallyEvent?.contact?.name);
                         setContactEmail(rallyEvent?.contact?.email);
@@ -355,6 +359,8 @@ const Serve = ({
                         setEventStart(rallyEvent?.startTime);
                         setEventEnd(rallyEvent?.endTime);
                         setGraphicFileName(rallyEvent?.graphic);
+                        let tmpStr = 'events/' + rallyEvent?.graphic;
+                        setGraphicLocation(tmpStr);
                         setApproved(rallyEvent?.approved);
                         setContactName(rallyEvent?.contact?.name);
                         setContactEmail(rallyEvent?.contact?.email);
@@ -405,6 +411,8 @@ const Serve = ({
                         setEventStart(rallyEvent?.startTime);
                         setEventEnd(rallyEvent?.endTime);
                         setGraphicFileName(rallyEvent?.graphic);
+                        let tmpStr = 'events/' + rallyEvent?.graphic;
+                        setGraphicLocation(tmpStr);
                         setApproved(rallyEvent?.approved);
                         setContactName(rallyEvent?.contact?.name);
                         setContactEmail(rallyEvent?.contact?.email);
@@ -453,6 +461,8 @@ const Serve = ({
                         setEventStart(rallyEvent?.startTime);
                         setEventEnd(rallyEvent?.endTime);
                         setGraphicFileName(rallyEvent?.graphic);
+                        let tmpStr = 'events/' + rallyEvent?.graphic;
+                        setGraphicLocation(tmpStr);
                         setApproved(rallyEvent?.approved);
                         setContactName(rallyEvent?.contact?.name);
                         setContactEmail(rallyEvent?.contact?.email);
@@ -560,9 +570,10 @@ const Serve = ({
         //========================================
         if (graphicFileObj?.name) {
             // we have a new graphic to upload...
-            let graphicFileLocation = 'events/' + graphicFileObj.name;
+            let tmpStr = 'events/' + graphicFileObj.name;
+            setGraphicLocation(tmpStr);
             const { key } = await Storage.put(
-                graphicFileLocation,
+                graphicLocation,
                 graphicFileObj,
                 { contentType: 'image/*' }
             );
@@ -1129,7 +1140,13 @@ const Serve = ({
                                     Graphic File
                                 </div>
                                 <div className='serveevent-page__graphic-section'>
-                                    <div>DB Graphic: {graphicFileName}</div>
+                                    
+                                    <div className='serveevent-page__graphic-preview'>
+                                    
+                                    {graphicLocation && <AmplifyS3Image style={{"--width": "100%"}} imgKey={graphicLocation} />}
+                                    </div>
+                                    <div>{graphicFileName}</div>
+                                    <div>{graphicLocation}</div>
                                     <div className='serveevent-page__graphic-file-control'>
                                         <div>
                                             <input
@@ -1144,13 +1161,6 @@ const Serve = ({
                                                 }
                                             />
                                         </div>
-                                    </div>
-                                    <div className='serveevent-page__graphic-preview'>
-                                        <img
-                                            className='serveevent-page__graphic-image'
-                                            src={`https://pate20213723ed06531948b6a5a0b14d1c3fb499175248-dev.s3.amazonaws.com/public/events/${graphicFileName}`}
-                                            alt='event-graphic'
-                                        />
                                     </div>
                                 </div>
                             </>

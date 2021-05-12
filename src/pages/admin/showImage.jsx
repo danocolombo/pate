@@ -6,8 +6,8 @@ import awsconfig from "../../aws-exports";
 const ShowImage = () => {
     return (
         <div>
-            Show Image
-            // <AmplifyS3Image imgKey="events/rob8.gif" />;
+            Show Rob from S3 bucket
+            <AmplifyS3Image imgKey="events/rob8.gif" />;
         </div>
     )
 }
