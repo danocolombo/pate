@@ -52,15 +52,16 @@ class Events extends React.Component {
                 <Header />
                 <div className='events-marquee-compoment__events-wrapper'>
                     <div className='events-marquee-component__events-box'>
-                        <div className='events-marquee-component__page-title'>
-                            Upcoming P8 Rallies
-                        </div>
+                        
                         <div className='events-page__events-box2'>
                             {this.state.plans.length > 0 ? (
                                 this.state.plans.map((plan) =>
                                     plan.approved ? (
                                         <>
                                             {(this.noPlans = false)}
+                                            <div className='events-marquee-component__page-title'>
+                                                Upcoming P8 Rallies
+                                            </div>
                                             <EventMarquee2
                                                 event={plan}
                                                 key={plan.uid}
@@ -79,6 +80,7 @@ class Events extends React.Component {
                             ) : (
                                 <>
                                     <img
+                                        className='events-page__no-events-image'
                                         src='https://pate-images.s3.amazonaws.com/NoEvents.png'
                                         alt='No Scheduled Events. Come Back Soon for more info'
                                     />
