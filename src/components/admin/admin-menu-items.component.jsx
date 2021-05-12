@@ -29,6 +29,16 @@ const AdminMenu = () => {
                     <div className='admin-component__row-center'>
                         <div className='admin-component__link-wrapper'>
                         <Link
+                            to='/administer/showImage'
+                            className='admin-component__option-link'
+                        >
+                            Show S3 Image
+                        </Link>
+                        </div>
+                    </div>
+                    <div className='admin-component__row-center'>
+                        <div className='admin-component__link-wrapper'>
+                        <Link
                             to='/administer/storage'
                             className='admin-component__option-link'
                         >
