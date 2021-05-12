@@ -21,18 +21,19 @@
 .event-details__church-info {
     background-color: lightgray;
     color: black;
+    text-align: center;
 }
 .event-details__church-name {
-    font-size: 1.3em;
-    padding-left: 5vw;
+    font-size: 1em;
+    // padding-left: 5vw;
 }
-.event-details__church-street {
-    // padding-left: 10vh;
-    padding-left: 5vw;
-}
-.event-details__city-state-postal {
-    padding-left: 5vw;
-}
+// .event-details__church-street {
+//     // padding-left: 10vh;
+//     // padding-left: 5vw;
+// }
+// .event-details__city-state-postal {
+//     // padding-left: 5vw;
+// }
 .event-details__event-date {
     padding: 10px 0 0 0;
 
@@ -168,4 +169,23 @@
 .eventmessage {
     margin-bottom: 25px;
     padding: 0px 5px;
+}
+// MEDIA ALTERATIONS ** MEDIA ALTERATIONS ** MEDIA ALTERATIONS **
+//Iphone Series
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+    .event-details__church-name {
+        font-size: 1.3em;
+    }
+}
+//IPAD Series
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+    .event-details__church-name {
+        font-size: 1.3em;
+    }
+}
+//desktop
+@media only screen and (min-width: 1024px) {
+    .event-details__church-name {
+        font-size: 1.3em;
+    }
 }
