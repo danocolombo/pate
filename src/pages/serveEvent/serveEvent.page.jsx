@@ -533,7 +533,7 @@ const Serve = ({
     // };
     const handleSubmitClick = async (event) => {
         event.preventDefault();
-
+        setSpinner();
         //get rally object to update
         let newRally = pateSystem?.rally;
         //now update with form values
@@ -640,12 +640,13 @@ const Serve = ({
         updateDb();
         //now update the stateRep.rally
         updateStateRepRally(newRally);
+        clearSpinner();
         history.push('/serve');
     };
-    const handleStateChange = ({newValue}) => {
-        console.log('stateProv:',newValue);
+    const handleStateChange = ({ newValue }) => {
+        console.log('stateProv:', newValue);
         setStateProv(newValue);
-    }
+    };
     const handleChange = (e) => {
         // let value = null;
         // let name = null;
@@ -861,7 +862,10 @@ const Serve = ({
                                 State:
                             </div>
                             <div className='serveevent-page__grid-control'>
-                                <SelectStateProv initialValue={stateProv} doChange={handleStateChange}/>
+                                <SelectStateProv
+                                    initialValue={stateProv}
+                                    doChange={handleStateChange}
+                                />
                             </div>
                         </div>
                         <div className='serveevent-page__grid-data-box'>

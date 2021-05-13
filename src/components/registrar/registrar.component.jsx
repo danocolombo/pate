@@ -6,6 +6,8 @@ import { FaLock } from 'react-icons/fa';
 import { useHistory } from 'react-router-dom';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import { setAlert } from '../../redux/alert/alert.action';
+import SuccessModal from '../../components/modals/registration/registration-cancelled.modal';
+import SuccessMessage from '../../components/modals/registration/registration-cancelled-msg.component';
 import {
     loadTempRegistration,
     clearTempRegistration,
@@ -25,6 +27,8 @@ const Registrar = ({
     setAlert,
     clearSpinner,
 }) => {
+    const [showRegistrationCancelled, setShowRegistrationCancelled] =
+        useState(false);
     const [mealsLocked, setMealsLocked] = useState(true);
     const [attendeeCount, setAttendeeCount] = useState(regData?.attendeeCount);
     const [mealCount, setMealCount] = useState(
@@ -130,7 +134,10 @@ const Registrar = ({
         // may need to reload stateRep & stateLead redux
         //??????
         clearSpinner();
-        alert('REGISTRATION CANCELLED');
+        setShowRegistrationCancelled(true);
+    };
+    const handleCancelledAcknowledgement = () => {
+        setShowRegistrationCancelled(false);
         history.push('/');
     };
     const handleRegistrationUpdateRequest = async (e) => {
@@ -683,6 +690,11 @@ const Registrar = ({
                     </div>
                 </div>
             </div>
+            <SuccessModal isOpened={showRegistrationCancelled}>
+                <SuccessMessage
+                    onClose={() => handleCancelledAcknowledgement()}
+                />
+            </SuccessModal>
         </>
     );
 };
