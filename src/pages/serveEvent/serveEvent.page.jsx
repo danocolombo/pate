@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-dom';
 import { compose } from 'redux';
 import { withRouter } from 'react-router';
 import PhoneInput from 'react-phone-input-2';
+import SelectStateProv from '../../components/state-prov/select-stateProv.component';
 import Header from '../../components/header/header.component';
 import { MainFooter } from '../../components/footers/main-footer';
 import Modal from '../../components/modals/wrapper.modal';
@@ -641,6 +642,10 @@ const Serve = ({
         updateStateRepRally(newRally);
         history.push('/serve');
     };
+    const handleStateChange = ({newValue}) => {
+        console.log('stateProv:',newValue);
+        setStateProv(newValue);
+    }
     const handleChange = (e) => {
         // let value = null;
         // let name = null;
@@ -663,9 +668,9 @@ const Serve = ({
             case 'city':
                 setCity(value);
                 break;
-            case 'stateProv':
-                setStateProv(value);
-                break;
+            // case 'stateProv':
+            //     setStateProv(value);
+            //     break;
             case 'postalCode':
                 setPostalCode(value);
                 break;
@@ -856,14 +861,7 @@ const Serve = ({
                                 State:
                             </div>
                             <div className='serveevent-page__grid-control'>
-                                <input
-                                    type='text'
-                                    id='stateProv'
-                                    name='stateProv'
-                                    onChange={handleChange}
-                                    value={stateProv}
-                                    required
-                                />
+                                <SelectStateProv initialValue={stateProv} doChange={handleStateChange}/>
                             </div>
                         </div>
                         <div className='serveevent-page__grid-data-box'>
