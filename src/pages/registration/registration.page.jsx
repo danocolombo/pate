@@ -9,6 +9,7 @@ import Header from '../../components/header/header.component';
 import { MainFooter } from '../../components/footers/main-footer';
 import Spinner from '../../components/spinner/Spinner';
 import PhoneInput from 'react-phone-input-2';
+import SelectStateProv from '../../components/state-prov/select-stateProv.component';
 import Modal from '../../components/modals/wrapper.modal';
 import InputErrors from '../../components/modals/registration/registation-input-error.modal';
 import SuccessModal from '../../components/modals/registration/registration-success.modal';
@@ -38,9 +39,8 @@ const EventRegistration = ({
 }) => {
     const [modalIsVisible, setModalIsVisible] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
-    const [showRegistrationSuccess, setShowRegistrationSuccess] = useState(
-        false
-    );
+    const [showRegistrationSuccess, setShowRegistrationSuccess] =
+        useState(false);
     // const [plan, setPlan] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
     const [inputModalVisible, setInputModalVisible] = useState(false);
@@ -280,6 +280,13 @@ const EventRegistration = ({
         setShowRegistrationSuccess(false);
         history.push('/');
     };
+    const handleHomeStateChange = ({ newValue }) => {
+        console.log('stateProv:', newValue);
+        setHomeStateProv(newValue);
+    };
+    const handleChurchStateChange = ({ newValue }) => {
+        setChurchStateProv(newValue);
+    };
     const handleChange = (e) => {
         const { value, name } = e.target;
         switch (name) {
@@ -301,9 +308,9 @@ const EventRegistration = ({
             case 'homeCity':
                 setHomeCity(value);
                 break;
-            case 'homeStateProv':
-                setHomeStateProv(value);
-                break;
+            // case 'homeStateProv':
+            //     setHomeStateProv(value);
+            //     break;
             case 'homePostalCode':
                 setHomePostalCode(value);
                 break;
@@ -319,9 +326,9 @@ const EventRegistration = ({
             case 'churchCity':
                 setChurchCity(value);
                 break;
-            case 'churchStateProv':
-                setChurchStateProv(value);
-                break;
+            // case 'churchStateProv':
+            //     setChurchStateProv(value);
+            //     break;
             default:
                 break;
         }
@@ -414,10 +421,10 @@ const EventRegistration = ({
             okayToProceed = false;
             fieldMessage.City = 'is required';
         }
-        if (homeStateProv?.length < 2) {
-            okayToProceed = false;
-            fieldMessage.Home_State = 'is required';
-        }
+        // if (homeStateProv?.length < 2) {
+        //     okayToProceed = false;
+        //     fieldMessage.Home_State = 'is required';
+        // }
         if (homePostalCode?.length < 5) {
             okayToProceed = false;
             fieldMessage.Postal_Code = 'is required';
@@ -430,10 +437,10 @@ const EventRegistration = ({
             okayToProceed = false;
             fieldMessage.Church_City = 'is required';
         }
-        if (churchStateProv?.length < 2) {
-            okayToProceed = false;
-            fieldMessage.Church_State = 'is required';
-        }
+        // if (churchStateProv?.length < 2) {
+        //     okayToProceed = false;
+        //     fieldMessage.Church_State = 'is required';
+        // }
         if (attendeeCount > 10) {
             okayToProceed = false;
             fieldMessage.Attendees = 'limited to 10 per registration';
@@ -851,6 +858,7 @@ const EventRegistration = ({
                             <div className='registration-page__input-label'>
                                 State
                             </div>
+                            {/*
                             <div className='registration-page__input-control'>
                                 <input
                                     type='text'
@@ -861,6 +869,12 @@ const EventRegistration = ({
                                     required
                                 />
                             </div>
+                            */}
+                            <SelectStateProv
+                                controlName='homeStateProv'
+                                initialValue={homeStateProv}
+                                doChange={handleHomeStateChange}
+                            />
                         </div>
                         <div className='registration-page__input-line'>
                             <div className='registration-page__input-label'>
@@ -917,13 +931,18 @@ const EventRegistration = ({
                                 State
                             </div>
                             <div className='registration-page__input-control'>
-                                <input
+                                {/*<input
                                     type='text'
                                     id='churchStateProv'
                                     name='churchStateProv'
                                     onChange={handleChange}
                                     value={churchStateProv}
                                     required
+                                />*/}
+                                <SelectStateProv
+                                    controlName='churchStateProv'
+                                    initialValue={churchStateProv}
+                                    doChange={handleChurchStateChange}
                                 />
                             </div>
                         </div>
