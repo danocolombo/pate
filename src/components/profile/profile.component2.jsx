@@ -342,7 +342,7 @@ const Profile2 = ({
                                 required
                             />
                         </div>
-                        <div className='profile-component__data-row'>
+                        <div className='profile-component__state-row'>
                             <div className='profile-component__data-label'>
                                 State
                             </div>
@@ -393,7 +393,7 @@ const Profile2 = ({
                                 value={churchCity}
                             />
                         </div>
-                        <div className='profile-component__data-row'>
+                        <div className='profile-component__state-row'>
                             <div className='profile-component__data-label'>
                                 State
                             </div>
