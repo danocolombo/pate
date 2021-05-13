@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { compose } from 'redux';
 import { withRouter } from 'react-router';
 // import { withAuthenticator } from '@aws-amplify/ui-react';
-import './registration.styles.scss';
+
 import Header from '../../components/header/header.component';
 import { MainFooter } from '../../components/footers/main-footer';
 import Spinner from '../../components/spinner/Spinner';
@@ -23,7 +23,7 @@ import {
 import { loadRally } from '../../redux/pate/pate.actions';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import { setAlert } from '../../redux/alert/alert.action';
-
+import './registration.styles.scss';
 const EventRegistration = ({
     setSpinner,
     clearSpinner,
@@ -854,22 +854,10 @@ const EventRegistration = ({
                                 />
                             </div>
                         </div>
-                        <div className='registration-page__input-line'>
+                        <div className='registration-page__state-line'>
                             <div className='registration-page__input-label'>
                                 State
                             </div>
-                            {/*
-                            <div className='registration-page__input-control'>
-                                <input
-                                    type='text'
-                                    id='homeStateProv'
-                                    name='homeStateProv'
-                                    onChange={handleChange}
-                                    value={homeStateProv}
-                                    required
-                                />
-                            </div>
-                            */}
                             <SelectStateProv
                                 controlName='homeStateProv'
                                 initialValue={homeStateProv}
@@ -926,25 +914,16 @@ const EventRegistration = ({
                                 />
                             </div>
                         </div>
-                        <div className='registration-page__input-line'>
+                        <div className='registration-page__state-line'>
                             <div className='registration-page__input-label'>
                                 State
                             </div>
-                            <div className='registration-page__input-control'>
-                                {/*<input
-                                    type='text'
-                                    id='churchStateProv'
-                                    name='churchStateProv'
-                                    onChange={handleChange}
-                                    value={churchStateProv}
-                                    required
-                                />*/}
-                                <SelectStateProv
-                                    controlName='churchStateProv'
-                                    initialValue={churchStateProv}
-                                    doChange={handleChurchStateChange}
-                                />
-                            </div>
+
+                            <SelectStateProv
+                                controlName='churchStateProv'
+                                initialValue={churchStateProv}
+                                doChange={handleChurchStateChange}
+                            />
                         </div>
                     </div>
                     <div className='registration-page__section-header'>
