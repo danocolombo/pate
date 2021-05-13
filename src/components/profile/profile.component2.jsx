@@ -80,9 +80,11 @@ const Profile2 = ({
             if (homeCity !== undefined && homeCity !== '') {
                 residence.city = homeCity;
             }
-            if (homeState !== undefined && homeState !== '') {
-                residence.stateProv = homeState;
-            }
+            var homeStateProv = document.getElementById('homeStateProv');
+            residence.stateProv = homeStateProv.value;
+            // if (homeState !== undefined && homeState !== '') {
+            //     residence.stateProv = homeState;
+            // }
             if (homePostalCode !== undefined && homePostalCode !== '') {
                 residence.postalCode = homePostalCode;
             }
@@ -100,8 +102,10 @@ const Profile2 = ({
             if (churchCity !== undefined && churchCity !== '') {
                 church.city = churchCity;
             }
-            if (churchState !== undefined && churchState !== '')
-                church.stateProv = churchState;
+            var churchStateProv = document.getElementById('churchStateProv');
+            church.stateProv = churchStateProv.value;
+            // if (churchState !== undefined && churchState !== '')
+            //     church.stateProv = churchState;
             // profileUpdate.church = church;
         }
 
@@ -184,13 +188,13 @@ const Profile2 = ({
         history.push('/');
         clearSpinner();
     };
-    const handleHomeStateChange = ({newValue}) => {
-        console.log('stateProv:',newValue);
+    const handleHomeStateChange = ({ newValue }) => {
+        console.log('stateProv:', newValue);
         setHomeState(newValue);
-    }
-    const handleChurchStateChange = ({newValue}) => {
+    };
+    const handleChurchStateChange = ({ newValue }) => {
         setChurchState(newValue);
-    }
+    };
 
     const handleChange = (e) => {
         const { value, name } = e.target;
@@ -342,7 +346,11 @@ const Profile2 = ({
                             <div className='profile-component__data-label'>
                                 State
                             </div>
-                            <SelectStateProv initialValue={homeState} doChange={handleHomeStateChange}/>
+                            <SelectStateProv
+                                controlName='homeStateProv'
+                                initialValue={homeState}
+                                doChange={handleHomeStateChange}
+                            />
                         </div>
                         <div className='profile-component__data-row'>
                             <div className='profile-component__data-label'>
@@ -389,7 +397,11 @@ const Profile2 = ({
                             <div className='profile-component__data-label'>
                                 State
                             </div>
-                            <SelectStateProv controlName='churchStateProv' initialValue={churchState} doChange={handleChurchStateChange}/>
+                            <SelectStateProv
+                                controlName='churchStateProv'
+                                initialValue={churchState}
+                                doChange={handleChurchStateChange}
+                            />
                         </div>
                         <div className='profile-component__button-wrapper'>
                             <button

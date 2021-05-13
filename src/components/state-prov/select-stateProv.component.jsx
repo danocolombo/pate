@@ -1,16 +1,25 @@
 import { waitForDomChange } from '@testing-library/dom';
-import React from 'react'
+import React from 'react';
 
-const SelectStateProv = ({controlName = 'stateProv',initialValue, doChange}) => {
+const SelectStateProv = ({
+    controlName = 'stateProv',
+    initialValue,
+    doChange,
+}) => {
     let stateValue = initialValue;
     const handleStateChange = (e) => {
         stateValue = e.target.value;
         doChange(stateValue);
-    }
+    };
     return (
         <div>
             <div className='state-prov__state-prov-control'>
-                <select name='stateProv' id='stateProv' value={stateValue} onChange={handleStateChange}>
+                <select
+                    name={controlName}
+                    id={controlName}
+                    value={stateValue}
+                    onChange={handleStateChange}
+                >
                     <option value='AL'>Alabama</option>
                     <option value='AK'>Alaska</option>
                     <option value='AZ'>Arizona</option>
@@ -19,9 +28,7 @@ const SelectStateProv = ({controlName = 'stateProv',initialValue, doChange}) => 
                     <option value='CO'>Colorado</option>
                     <option value='CT'>Connecticut</option>
                     <option value='DE'>Delaware</option>
-                    <option value='DC'>
-                        District Of Columbia
-                    </option>
+                    <option value='DC'>District Of Columbia</option>
                     <option value='FL'>Florida</option>
                     <option value='GA'>Georgia</option>
                     <option value='HI'>Hawaii</option>
@@ -68,7 +75,7 @@ const SelectStateProv = ({controlName = 'stateProv',initialValue, doChange}) => 
                 </select>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default SelectStateProv
+export default SelectStateProv;
