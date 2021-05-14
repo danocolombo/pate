@@ -6,12 +6,15 @@ import { FaLock } from 'react-icons/fa';
 import { useHistory } from 'react-router-dom';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import { setAlert } from '../../redux/alert/alert.action';
+import SuccessModal from '../../components/modals/registration/registration-cancelled.modal';
+import SuccessMessage from '../../components/modals/registration/registration-cancelled-msg.component';
 import {
     loadTempRegistration,
     clearTempRegistration,
     removeRegistration,
 } from '../../redux/registrations/registrations.actions';
 import PhoneInput from 'react-phone-input-2';
+import SelectStateProv from '../../components/state-prov/select-stateProv.component';
 import './registrar.styles.scss';
 // import { SSL_OP_NETSCAPE_DEMO_CIPHER_CHANGE_BUG } from 'constants';
 const Registrar = ({
@@ -24,6 +27,8 @@ const Registrar = ({
     setAlert,
     clearSpinner,
 }) => {
+    const [showRegistrationCancelled, setShowRegistrationCancelled] =
+        useState(false);
     const [mealsLocked, setMealsLocked] = useState(true);
     const [attendeeCount, setAttendeeCount] = useState(regData?.attendeeCount);
     const [mealCount, setMealCount] = useState(
@@ -129,7 +134,10 @@ const Registrar = ({
         // may need to reload stateRep & stateLead redux
         //??????
         clearSpinner();
-        alert('REGISTRATION CANCELLED');
+        setShowRegistrationCancelled(true);
+    };
+    const handleCancelledAcknowledgement = () => {
+        setShowRegistrationCancelled(false);
         history.push('/');
     };
     const handleRegistrationUpdateRequest = async (e) => {
@@ -171,10 +179,10 @@ const Registrar = ({
             okayToProceed = false;
             fieldMessage.City = 'is required';
         }
-        if (homeStateProv.length < 2) {
-            okayToProceed = false;
-            fieldMessage.Home_State = 'is required';
-        }
+        // if (homeStateProv.length < 2) {
+        //     okayToProceed = false;
+        //     fieldMessage.Home_State = 'is required';
+        // }
         if (homePostalCode.length < 5) {
             okayToProceed = false;
             fieldMessage.Postal_Code = 'is required';
@@ -187,10 +195,10 @@ const Registrar = ({
             okayToProceed = false;
             fieldMessage.Church_City = 'is required';
         }
-        if (churchStateProv.length < 2) {
-            okayToProceed = false;
-            fieldMessage.Church_State = 'is required';
-        }
+        // if (churchStateProv.length < 2) {
+        //     okayToProceed = false;
+        //     fieldMessage.Church_State = 'is required';
+        // }
         let attendeeNumber = parseInt(attendeeCount);
         if (isNaN(attendeeNumber)) {
             okayToProceed = false;
@@ -233,11 +241,13 @@ const Registrar = ({
         regPayload.registrar.email = email;
         regPayload.registrar.residence.street = homeStreet;
         regPayload.registrar.residence.city = homeCity;
-        regPayload.registrar.residence.stateProv = homeStateProv;
+        var homeState = document.getElementById('homeStateProv');
+        regPayload.registrar.residence.stateProv = homeState.value;
         regPayload.registrar.residence.postalCode = homePostalCode;
         regPayload.church.name = churchName;
         regPayload.church.city = churchCity;
-        regPayload.church.stateProv = churchStateProv;
+        var churchState = document.getElementById('churchStateProv');
+        regPayload.church.stateProv = churchState.value;
         regPayload.attendeeCount = attendeeCount;
         regPayload.mealCount = mealCount;
 
@@ -331,7 +341,13 @@ const Registrar = ({
         // NEED TO UPDATE REDUX WITH ANY CHANGES
         history.push('/');
     };
-
+    const handleHomeStateChange = ({ newValue }) => {
+        console.log('stateProv:', newValue);
+        setHomeStateProv(newValue);
+    };
+    const handleChurchStateChange = ({ newValue }) => {
+        setChurchStateProv(newValue);
+    };
     const handleChange = (e) => {
         const { value, name } = e.target;
         switch (name) {
@@ -353,9 +369,9 @@ const Registrar = ({
             case 'homeCity':
                 setHomeCity(value);
                 break;
-            case 'homeStateProv':
-                setHomeStateProv(value);
-                break;
+            // case 'homeStateProv':
+            //     setHomeStateProv(value);
+            //     break;
             case 'homePostalCode':
                 setHomePostalCode(value);
                 break;
@@ -371,9 +387,9 @@ const Registrar = ({
             case 'churchCity':
                 setChurchCity(value);
                 break;
-            case 'churchPostalCode':
-                setChurchStateProv(value);
-                break;
+            // case 'churchPostalCode':
+            //     setChurchStateProv(value);
+            //     break;
             default:
                 break;
         }
@@ -509,13 +525,18 @@ const Registrar = ({
                                 State
                             </div>
                             <div className='registration-page__input-control'>
-                                <input
+                                {/*<input
                                     type='text'
                                     id='homeStateProv'
                                     name='homeStateProv'
                                     onChange={handleChange}
                                     value={homeStateProv}
                                     required
+                                />*/}
+                                <SelectStateProv
+                                    controlName='homeStateProv'
+                                    initialValue={homeStateProv}
+                                    doChange={handleHomeStateChange}
                                 />
                             </div>
                         </div>
@@ -574,13 +595,18 @@ const Registrar = ({
                                 State
                             </div>
                             <div className='registration-page__input-control'>
-                                <input
+                                {/*<input
                                     type='text'
                                     id='churchStateProv'
                                     name='churchStateProv'
                                     onChange={handleChange}
                                     value={churchStateProv}
                                     required
+                                />*/}
+                                <SelectStateProv
+                                    controlName='churchStateProv'
+                                    initialValue={churchStateProv}
+                                    doChange={handleChurchStateChange}
                                 />
                             </div>
                         </div>
@@ -664,6 +690,11 @@ const Registrar = ({
                     </div>
                 </div>
             </div>
+            <SuccessModal isOpened={showRegistrationCancelled}>
+                <SuccessMessage
+                    onClose={() => handleCancelledAcknowledgement()}
+                />
+            </SuccessModal>
         </>
     );
 };

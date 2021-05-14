@@ -28,7 +28,7 @@
     font-size: 1.2em;
     padding: 5px 0;
     font-weight: bold;
-    background-color: #4484CE;
+    background-color: #4484ce;
     text-align: center;
     // width: 100%;
     color: white;
@@ -116,6 +116,10 @@
     justify-content: flex-end;
     padding-right: 14px;
 }
+.registration-page__state-line {
+    display: flex;
+    padding-right: 23px;
+}
 .registration-page__attendee-input-line {
     display: flex;
     padding-right: 60px;
@@ -194,6 +198,9 @@
     .registration-page__attendee-input-line {
         padding-right: 60px;
     }
+    .registration-page__state-line {
+        padding-right: 47px;
+    }
 }
 //IPAD Series
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
@@ -208,6 +215,9 @@
     }
     .registration-page__attendee-input-line {
         padding-right: 45px;
+    }
+    .registration-page__state-line {
+        padding-right: 96px;
     }
 }
 //desktop
@@ -224,6 +234,9 @@
     .registration-page__attendee-input-line {
         padding-right: 95px;
     }
+    .registration-page__state-line {
+        padding-right: 95px;
+    }
 }
 
 //==========================
@@ -234,7 +247,7 @@
     align-items: center;
 }
 .pageheader {
-    background: #4484CE;
+    background: #4484ce;
     text-align: center;
     font-weight: bold;
     font-size: 1.3em;
@@ -247,7 +260,7 @@
     border-right: black solid 1px;
 }
 .registration-pageheader {
-    background: #4484CE;
+    background: #4484ce;
     text-align: center;
     font-weight: bold;
     font-size: 1.3em;
@@ -268,7 +281,7 @@
     padding-top: 10px;
     width: 80%;
     // align-items: center;
-    background: #286DA8;
+    background: #286da8;
     color: white;
     border-right: black solid 1px;
     // border-bottom: black solid 1px;

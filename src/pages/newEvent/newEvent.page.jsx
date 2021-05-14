@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { compose } from 'redux';
 import { withRouter } from 'react-router';
 import PhoneInput from 'react-phone-input-2';
+import StateProv from '../../components/state-prov/select-stateProv.component';
 import Header from '../../components/header/header.component';
 import { MainFooter } from '../../components/footers/main-footer';
 import Modal from '../../components/modals/wrapper.modal';
@@ -31,15 +32,14 @@ const Serve = ({
 }) => {
     const [modalIsVisible, setModalIsVisible] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
-    const [showRegistrationSuccess, setShowRegistrationSuccess] = useState(
-        false
-    );
+    const [showRegistrationSuccess, setShowRegistrationSuccess] =
+        useState(false);
     let eventID = match?.params?.id;
 
     const [churchName, setChurchName] = useState('');
     const [street, setStreet] = useState('');
     const [city, setCity] = useState('');
-    const [stateProv, setStateProv] = useState('');
+    const [stateProv, setStateProv] = useState(currentUser?.residence?.StateProv);
     const [postalCode, setPostalCode] = useState('');
     const [eventDate, setEventDate] = useState('');
     const [eventStart, setEventStart] = useState('');
@@ -140,7 +140,7 @@ const Serve = ({
         setChurchName('');
         setStreet('');
         setCity('');
-        setStateProv('');
+        setStateProv(currentUser?.residence?.stateProv);
         setPostalCode('');
         setEventStart('');
         setEventEnd('');
@@ -183,10 +183,10 @@ const Serve = ({
             okayToProceed = false;
             fieldMessage.Location_City = 'is required';
         }
-        if (stateProv?.length < 2) {
-            okayToProceed = false;
-            fieldMessage.Location_State = 'is required';
-        }
+        // if (stateProv?.length < 2) {
+        //     okayToProceed = false;
+        //     fieldMessage.Location_State = 'is required';
+        // }
         if (postalCode?.length < 2) {
             okayToProceed = false;
             fieldMessage.Location_PostalCode = 'is required';
@@ -266,7 +266,9 @@ const Serve = ({
         newRally.name = churchName;
         newRally.street = street;
         newRally.city = city;
-        newRally.stateProv = stateProv;
+        
+        var e = document.getElementById("stateProv");
+        newRally.stateProv = e.value;
         newRally.postalCode = postalCode;
         newRally.contact.name = contactName;
         newRally.contact.phone = contactPhone;
@@ -330,6 +332,10 @@ const Serve = ({
         setShowRegistrationSuccess(true);
         // history.push('/serve');
     };
+    const handleStateChange = ({newValue}) => {
+        console.log('stateProv:',newValue);
+        setStateProv(newValue);
+    }
     const handleChange = (e) => {
         let { value, name } = e.target;
         switch (name) {
@@ -342,9 +348,9 @@ const Serve = ({
             case 'city':
                 setCity(value);
                 break;
-            case 'stateProv':
-                setStateProv(value);
-                break;
+            // case 'stateProv':
+            //     setStateProv(value);
+            //     break;
             case 'postalCode':
                 setPostalCode(value);
                 break;
@@ -476,7 +482,7 @@ const Serve = ({
                                 />
                             </div>
                         </div>
-
+                        {/*
                         <div className='newevent-page__grid-data-box'>
                             <div className='newevent-page__grid-label'>
                                 State:
@@ -492,7 +498,14 @@ const Serve = ({
                                 />
                             </div>
                         </div>
-
+                        */}
+                        <div className='newevent-page__grid-data-box'>
+                            <div className='newevent-page__grid-label'>
+                                State:
+                            </div>
+                            <StateProv initialValue={stateProv} doChange={handleStateChange}/>
+                            
+                        </div>
                         <div className='newevent-page__grid-data-box'>
                             <div className='newevent-page__grid-label'>
                                 Postal Code:

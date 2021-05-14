@@ -12,7 +12,7 @@
     border-radius: 5px;
 }
 .profile-component__page-title {
-    background-color: #4717F6;
+    background-color: #4717f6;
     color: white;
     padding: 2px 0px;
     font-weight: bold;
@@ -41,6 +41,11 @@
 .profile-component__date-control {
     flex: 2;
 }
+.profile-component__state-row {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 30px;
+}
 .profile-component__button-wrapper {
     flex-grow: 1;
     text-align: center;
@@ -60,6 +65,9 @@
     .profile-component__data-row-phone {
         padding-right: 52px;
     }
+    .profile-component__state-row {
+        padding-right: 60px;
+    }
 }
 //IPAD Series
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
@@ -69,6 +77,9 @@
     .profile-component__data-row-phone {
         padding-right: 103px;
     }
+    .profile-component__state-row {
+        padding-right: 110px;
+    }
 }
 //desktop
 @media only screen and (min-width: 1024px) {
@@ -77,5 +88,8 @@
     }
     .profile-component__data-row-phone {
         padding-right: 173px;
+    }
+    .profile-component__state-row {
+        padding-right: 180px;
     }
 }
