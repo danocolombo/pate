@@ -1,0 +1,16 @@
+{
+  "auth": {
+    "pate20214e565539": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  },
+  "storage": {
+    "pates3": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation"
+    }
+  }
+}
