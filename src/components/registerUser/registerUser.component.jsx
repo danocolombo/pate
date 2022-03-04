@@ -1,3 +1,4 @@
+// registerUser.component.jsx
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Auth } from 'aws-amplify';
@@ -34,6 +35,17 @@ const RegisterUserDetails = ({
             setAlert(alertPayload);
             return;
         }
+        // need to prevent user from registering emails as username
+        let regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if (userName.match(regexEmail)) {
+            //user name is email address
+            alertPayload = {
+                msg: 'Email address not supported for user name.',
+                alertType: 'danger',
+            };
+            setAlert(alertPayload);
+            return;
+        }
 
         if (password1 !== password2) {
             alertPayload = {
@@ -53,7 +65,8 @@ const RegisterUserDetails = ({
             return;
         }
         //email needs to be acceptable format
-        let EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        let EMAIL_REGEX =
+            /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if (!EMAIL_REGEX.test(email)) {
             alertPayload = {
                 msg: 'Valid email address is required.',
@@ -147,7 +160,7 @@ const RegisterUserDetails = ({
     ) : (
         <>
             <div className='register-user-component__wrapper'>
-                <div className='register-user-component__input-line'> 
+                <div className='register-user-component__input-line'>
                     <div className='register-user-component__input-label'>
                         Username
                     </div>
@@ -162,7 +175,7 @@ const RegisterUserDetails = ({
                         />
                     </div>
                 </div>
-                <div className='register-user-component__input-line'> 
+                <div className='register-user-component__input-line'>
                     <div className='register-user-component__input-label'>
                         Password
                     </div>
@@ -177,7 +190,7 @@ const RegisterUserDetails = ({
                         />
                     </div>
                 </div>
-                <div className='register-user-component__input-line'> 
+                <div className='register-user-component__input-line'>
                     <div className='register-user-component__input-label'>
                         Password
                     </div>
@@ -192,7 +205,7 @@ const RegisterUserDetails = ({
                         />
                     </div>
                 </div>
-                <div className='register-user-component__input-line'> 
+                <div className='register-user-component__input-line'>
                     <div className='register-user-component__input-label'>
                         Email
                     </div>
@@ -208,11 +221,13 @@ const RegisterUserDetails = ({
                     </div>
                 </div>
                 <div className='register-user-component__button-wrapper'>
-                    <button className='register-user-component__register-button' onClick={handleSubmitClick}>
+                    <button
+                        className='register-user-component__register-button'
+                        onClick={handleSubmitClick}
+                    >
                         REGISTER
                     </button>
                 </div>
-                   
             </div>
         </>
     );
