@@ -8,7 +8,7 @@ import './register.styles.scss';
 
 import Header from '../../components/header/header.component';
 import { MainFooter } from '../../components/footers/main-footer';
-import RegisterUserDetails from '../../components/registerUser/registerUser2.component';
+import RegisterUserDetails from '../../components/registerUser/registerUser.component';
 
 const RegisterUser = ({ pateSystem }) => {
     useEffect(() => {}, []);
