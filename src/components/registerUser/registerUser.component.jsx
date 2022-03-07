@@ -1,6 +1,8 @@
+// registerUser.component.jsx
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Auth } from 'aws-amplify';
+import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import Spinner from '../../components/spinner/Spinner';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
@@ -34,6 +36,17 @@ const RegisterUserDetails = ({
             setAlert(alertPayload);
             return;
         }
+        // need to prevent user from registering emails as username
+        let regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if (userName.match(regexEmail)) {
+            //user name is email address
+            alertPayload = {
+                msg: 'Email address not supported for user name.',
+                alertType: 'danger',
+            };
+            setAlert(alertPayload);
+            return;
+        }
 
         if (password1 !== password2) {
             alertPayload = {
@@ -53,7 +66,8 @@ const RegisterUserDetails = ({
             return;
         }
         //email needs to be acceptable format
-        let EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        let EMAIL_REGEX =
+            /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if (!EMAIL_REGEX.test(email)) {
             alertPayload = {
                 msg: 'Valid email address is required.',
@@ -146,73 +160,138 @@ const RegisterUserDetails = ({
         <Spinner />
     ) : (
         <>
-            <div className='register-user-component__wrapper'>
-                <div className='register-user-component__input-line'> 
-                    <div className='register-user-component__input-label'>
-                        Username
+            <div className='register-user-component__register-page'>
+                <form
+                    action={handleSubmitClick}
+                    className='register-user-component__register-form'
+                >
+                    <h1 className='register-user-component__signup-title'>
+                        Create An Account
+                    </h1>
+                    <label for='userName'>User Name</label>
+                    <input
+                        type='text'
+                        id='userName'
+                        name='userName'
+                        value={userName}
+                        onChange={handleChange}
+                        required
+                    />
+                    <label for='password1'>Password</label>
+                    <input
+                        type='password'
+                        id='password1'
+                        name='password1'
+                        value={password1}
+                        onChange={handleChange}
+                        required
+                    />
+                    <label for='password2'>Repeat Password</label>
+                    <input
+                        type='password'
+                        id='password2'
+                        name='password2'
+                        value={password2}
+                        onChange={handleChange}
+                        required
+                    />
+                    <label for='email'>E-Mail</label>
+                    <input
+                        type='email'
+                        id='email'
+                        name='email'
+                        value={email}
+                        onChange={handleChange}
+                        required
+                    />
+                    {/* <input type='checkbox' id='agree-terms' required />
+                     <label for='agree-terms'>
+                        Agree to
+                        <a href='./termsConditions'>Terms &amp; Conditions</a>
+                    </label> */}
+                    {/* <div className='register-user-component__input-line'>
+                        <div className='register-user-component__input-label'>
+                            Username
+                        </div>
+                        <div className='register-user-component__input-control'>
+                            <input
+                                type='text'
+                                name='userName'
+                                id='userName'
+                                className='register-user-component__text-boxes'
+                                value={userName}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
                     </div>
-                    <div className='register-user-component__input-control'>
-                        <input
-                            type='text'
-                            name='userName'
-                            id='userName'
-                            value={userName}
-                            onChange={handleChange}
-                            required
-                        />
+                    <div className='register-user-component__input-line'>
+                        <div className='register-user-component__input-label'>
+                            Password
+                        </div>
+                        <div className='register-user-component__input-control'>
+                            <input
+                                type='password'
+                                id='password1'
+                                name='password1'
+                                className='register-user-component__text-boxes'
+                                onChange={handleChange}
+                                value={password1}
+                                required
+                            />
+                        </div>
                     </div>
-                </div>
-                <div className='register-user-component__input-line'> 
-                    <div className='register-user-component__input-label'>
-                        Password
+                    <div className='register-user-component__input-line'>
+                        <div className='register-user-component__input-label'>
+                            Password
+                        </div>
+                        <div className='register-user-component__input-control'>
+                            <input
+                                type='password'
+                                id='password2'
+                                name='password2'
+                                className='register-user-component__text-boxes'
+                                onChange={handleChange}
+                                value={password2}
+                                required
+                            />
+                        </div>
                     </div>
-                    <div className='register-user-component__input-control'>
-                        <input
-                            type='password'
-                            id='password1'
-                            name='password1'
-                            onChange={handleChange}
-                            value={password1}
-                            required
-                        />
+                    <div className='register-user-component__input-line'>
+                        <div className='register-user-component__input-label'>
+                            Email
+                        </div>
+                        <div className='register-user-component__input-control'>
+                            <input
+                                type='text'
+                                id='email'
+                                name='email'
+                                className='register-user-component__email-input-control'
+                                onChange={handleChange}
+                                value={email}
+                                required
+                            />
+                        </div>
+                    </div> */}
+                    <div className='register-user-component__button-wrapper'>
+                        <button
+                            className='register-user-component__register-button'
+                            onClick={handleSubmitClick}
+                        >
+                            REGISTER
+                        </button>
                     </div>
-                </div>
-                <div className='register-user-component__input-line'> 
-                    <div className='register-user-component__input-label'>
-                        Password
+                    <div className='register-user-page__offer-confirm-box'>
+                        Have you registered and need to confirm your account?
+                        <Link
+                            className='register-user-page__confirmation-link'
+                            to='/confirmUser/0'
+                        >
+                            {' '}
+                            Click here
+                        </Link>
                     </div>
-                    <div className='register-user-component__input-control'>
-                        <input
-                            type='password'
-                            id='password2'
-                            name='password2'
-                            onChange={handleChange}
-                            value={password2}
-                            required
-                        />
-                    </div>
-                </div>
-                <div className='register-user-component__input-line'> 
-                    <div className='register-user-component__input-label'>
-                        Email
-                    </div>
-                    <div className='register-user-component__input-control'>
-                        <input
-                            type='text'
-                            id='email'
-                            name='email'
-                            onChange={handleChange}
-                            value={email}
-                            required
-                        />
-                    </div>
-                </div>
-                <div className='register-user-component__button-wrapper'>
-                    <button className='register-user-component__register-button' onClick={handleSubmitClick}>
-                        REGISTER
-                    </button>
-                </div>
-                   
+                </form>
             </div>
         </>
     );

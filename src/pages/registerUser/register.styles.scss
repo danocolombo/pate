@@ -4,28 +4,33 @@
     width: 80vw;
     margin-left: 10vw;
 }
-.register-user-page__page-header{
+.register-user-page__page-header {
     font-size: 1em;
     font-weight: bold;
-    background-color: #4484CE;
-    width:80vw;
+    background-color: #4484ce;
+    width: 80vw;
     padding: 2px 0px;
-    margin-top:5px;
-    color:white;
+    margin-top: 5px;
+    color: white;
     text-align: center;
     border: black solid 1px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 }
-.register-user-page__offer-confirm-box{
+.register-user-page__offer-confirm-box {
     margin-top: 5px;
     background-color: white;
     color: black;
-    padding:3px 5px;
+    padding: 3px 5px;
     border-radius: 5px;
 }
-.register-user-page__confirmation-link{
+.register-user-page__confirmation-link {
     text-decoration: none;
     color: blue;
     font-weight: bold;
+}
+.register-user-page__offer-to-confirm {
+    display: block;
+    // margin-top: 0.5rem;
+    width: 95%;
 }

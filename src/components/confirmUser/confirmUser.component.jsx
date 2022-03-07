@@ -1,3 +1,4 @@
+// src/components/confirmUser/confirmUser.component.jsx
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Auth } from 'aws-amplify';
@@ -41,7 +42,7 @@ const ConfirmUserDetails = ({
         }
         setSpinner();
         try {
-            Auth.confirmSignUp(id, code)
+            Auth.confirmSignUp(userName, code)
                 .then((data) => {
                     alertPayload = {
                         msg: 'Your registration is verified.',
@@ -125,13 +126,15 @@ const ConfirmUserDetails = ({
         <Spinner />
     ) : (
         <>
-            <div className='confirm-user-component__wrapper'>   
+            <div className='confirm-user-component__wrapper'>
                 <div className='confirm-user-component__instructions'>
-                    Check your email for a confirmation code & enter
-                    below to confirm your registration.
+                    Check your email for a confirmation code & enter below to
+                    confirm your registration.
                 </div>
                 <div className='confirm-user-component__input-line'>
-                    <div className='confirm-user-component__input-label'>User Name</div>    
+                    <div className='confirm-user-component__input-label'>
+                        User Name
+                    </div>
                     <div className='confirm-user-component__input-control'>
                         <input
                             type='text'
@@ -144,7 +147,9 @@ const ConfirmUserDetails = ({
                     </div>
                 </div>
                 <div className='confirm-user-component__input-line'>
-                    <div className='confirm-user-component__input-label'>Code</div>    
+                    <div className='confirm-user-component__input-label'>
+                        Code
+                    </div>
                     <div className='confirm-user-component__input-control'>
                         <input
                             type='text'
@@ -157,9 +162,13 @@ const ConfirmUserDetails = ({
                     </div>
                 </div>
                 <div className='confirm-user-component__button-wrapper'>
-                    <button className='confirm-user-component__confirm-button' onClick={handleSubmitClick}>CONFIRM</button>
+                    <button
+                        className='confirm-user-component__confirm-button'
+                        onClick={handleSubmitClick}
+                    >
+                        CONFIRM
+                    </button>
                 </div>
-                
             </div>
         </>
     );
