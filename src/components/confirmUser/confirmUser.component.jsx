@@ -129,7 +129,7 @@ const ConfirmUserDetails = ({
             <div className='confirm-user-component__wrapper'>
                 <div className='confirm-user-component__instructions'>
                     Check your email for a confirmation code & enter below to
-                    confirm your registration.
+                    confirm your account.
                 </div>
                 <div className='confirm-user-component__input-line'>
                     <div className='confirm-user-component__input-label'>
