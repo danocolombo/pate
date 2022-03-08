@@ -36,9 +36,8 @@ const SignIn = ({
 }) => {
     const [modalIsVisible, setModalIsVisible] = useState(false);
     const [modal2IsVisible, setModal2IsVisible] = useState(false);
-    const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(
-        false
-    );
+    const [showForgotPasswordModal, setShowForgotPasswordModal] =
+        useState(false);
     const [resetEmailDest, setResetEmailDest] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -71,8 +70,7 @@ const SignIn = ({
                             })
                             .catch((e) => {
                                 const alertPayload = {
-                                    msg:
-                                        'Authentication failed. Please check your credentials',
+                                    msg: 'Authentication failed. Please check your credentials',
                                     alertType: 'danger',
                                 };
                                 setAlert(alertPayload);
@@ -134,8 +132,7 @@ const SignIn = ({
             switch (error) {
                 case 'No current user':
                     alertPayload = {
-                        msg:
-                            'Authentication failed. Please check your credentials',
+                        msg: 'Authentication failed. Please check your credentials',
                         alertType: 'danger',
                     };
                     break;
@@ -336,28 +333,30 @@ const SignIn = ({
         setModalIsVisible(false);
         // alert('USER WANTS TO CHANGE PASSWORD:' + uName);
         await Auth.forgotPassword(uName)
-        .then((requestResponse) => {
-            const util = require('util');
-            console.log(
-                'forgotPassword OK - requestResponse \n' +
-                    util.inspect(requestResponse, {
-                        showHidden: false,
-                        depth: null,
-                    })
-            );
-            setResetEmailDest(requestResponse.CodeDeliveryDetails.Destination);
-        })
-        .catch((e) => {
-            const util = require('util');
-            console.log(
-                'forgotPassword error (e): \n' +
-                    util.inspect(e, {
-                        showHidden: false,
-                        depth: null,
-                    })
-            );
-            return;
-        });
+            .then((requestResponse) => {
+                const util = require('util');
+                console.log(
+                    'forgotPassword OK - requestResponse \n' +
+                        util.inspect(requestResponse, {
+                            showHidden: false,
+                            depth: null,
+                        })
+                );
+                setResetEmailDest(
+                    requestResponse.CodeDeliveryDetails.Destination
+                );
+            })
+            .catch((e) => {
+                const util = require('util');
+                console.log(
+                    'forgotPassword error (e): \n' +
+                        util.inspect(e, {
+                            showHidden: false,
+                            depth: null,
+                        })
+                );
+                return;
+            });
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // NEED TO CALL ForgotPassword
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -437,7 +436,7 @@ const SignIn = ({
                             to='/register'
                         >
                             {' '}
-                            REGISTER
+                            SIGN-UP
                         </Link>
                     </div>
                 </div>
@@ -454,7 +453,8 @@ const SignIn = ({
             </Modal>
             <Modal2 isOpened={modal2IsVisible}>
                 <div>
-                    <CheckEmailModal emailDest={resetEmailDest}
+                    <CheckEmailModal
+                        emailDest={resetEmailDest}
                         acknowledged={() => handleResetEmailAcknowledge()}
                     />
                 </div>

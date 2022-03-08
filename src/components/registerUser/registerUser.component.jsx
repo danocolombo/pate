@@ -278,11 +278,11 @@ const RegisterUserDetails = ({
                             className='register-user-component__register-button'
                             onClick={handleSubmitClick}
                         >
-                            REGISTER
+                            SIGN-UP
                         </button>
                     </div>
                     <div className='register-user-page__offer-confirm-box'>
-                        Have you registered and need to confirm your account?
+                        Have you signed-up and need to confirm your account?
                         <Link
                             className='register-user-page__confirmation-link'
                             to='/confirmUser/0'
