@@ -14,13 +14,14 @@ import Modal from '../../components/modals/wrapper.modal';
 import ConfirmDelete from '../../components/modals/serve-event/serve-event-confirm-delete.modal';
 import Spinner from '../../components/spinner/Spinner';
 import RegistrationItem from '../../components/registration-serve-list-item/registrationServeListItem.component';
+import EventGraphics from '../../components/event-graphics/event-graphics.component';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import { loadRally } from '../../redux/pate/pate.actions';
 import {
     loadEventRegistrations,
     clearEventRegistrations,
 } from '../../redux/registrations/registrations.actions';
-import EventGraphics from '../../components/event-graphics/event-graphics.component';
+
 import {
     updateStateRepRally,
     removeRallyFromRallyList,
@@ -562,8 +563,56 @@ const Serve = ({
         setStateProv(newValue);
     };
     const handleGraphicDelete = (fileObject) => {
-        console.log('fileObject:\n', fileObject);
-        alert('DELETING GRAPHIC');
+        //   NEED SPINNER
+        setSpinner();
+        // 1. remove file from S3
+        Storage.remove(fileObject.fileLocation)
+            .then((resp) => {
+                // 2. remove DDB
+                fetch(
+                    'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/events',
+                    {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            operation: 'updateEventGraphic',
+                            payload: {
+                                uid: eventID,
+                                value: '',
+                            },
+                        }),
+                        headers: {
+                            'Content-type': 'application/json; charset=UTF-8',
+                        },
+                    }
+                )
+                    .then((response) => {
+                        if (response.status === 200) {
+                            console.log('SUCCESS UPDATING DATABASE');
+                            console.log('NOW LETS UPDATE REDUX');
+                            // 3. remove from redux
+                            //   ------------------------------
+                            //   need to update redux with file
+                            //   ------------------------------
+                            // let updatedRally = pateSystem?.rally;
+                            // updatedRally.graphic = fileObject.name;
+                            // updateStateRepRally(updatedRally);
+                        } else {
+                            console.log('FAILURE UPDATING DATABASE');
+                        }
+                        clearSpinner();
+                    })
+                    .catch((err) => {
+                        console.error(
+                            'ERROR WHILE UPDATING EVENT GRAPHIC IN DB'
+                        );
+                        alert('Error deleting from DB');
+                    });
+                // clearSpinner();
+            })
+            .catch((err) => {
+                console.error('>>> ERROR DELETING FROM S3 <<<\n', err);
+            });
+        // clearSpinner();
     };
     const handleGraphicChange = (fileObject) => {
         console.log('Image Change:', fileObject);
