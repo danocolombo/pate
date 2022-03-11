@@ -1,0 +1,39 @@
+.event-graphics__section-header {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: black;
+    text-align: center;
+    padding: 10px 0 0 0;
+}
+.event-graphics__graphic-section {
+    border: black solid 1px;
+}
+event-graphics__graphic-preview {
+    border: black solid 1px;
+}
+.event-graphics__wrapper {
+    margin: auto;
+    width: 90%;
+    height: 1.5rem;
+    padding-top: 1px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.event-graphics__file-name {
+    float: left;
+}
+.event-graphics__delete-icon {
+    float: right;
+}
+.event-graphics__graphic-file-control {
+    border: black solid 1px;
+}
+.event-graphics__file-input-control {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+    // color: red;
+}
+.event-graphics__trash-can {
+    color: red;
+}

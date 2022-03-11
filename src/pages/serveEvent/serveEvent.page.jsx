@@ -20,6 +20,7 @@ import {
     loadEventRegistrations,
     clearEventRegistrations,
 } from '../../redux/registrations/registrations.actions';
+import EventGraphics from '../../components/event-graphics/event-graphics.component';
 import {
     updateStateRepRally,
     removeRallyFromRallyList,
@@ -58,9 +59,9 @@ const Serve = ({
     const [eventDate, setEventDate] = useState('');
     const [eventStart, setEventStart] = useState('');
     const [eventEnd, setEventEnd] = useState('');
-    const [graphicFileName, setGraphicFileName] = useState('');
-    const [graphicLocation, setGraphicLocation] = useState('');
-    const [graphicFileObj, setGraphicFileObj] = useState();
+    const [graphicFileName, setGraphicFileName] = useState(null);
+    const [graphicLocation, setGraphicLocation] = useState(null);
+    const [graphicFileObj, setGraphicFileObj] = useState(null);
     const [isApproved, setApproved] = useState(false);
 
     const [contactName, setContactName] = useState('');
@@ -484,53 +485,7 @@ const Serve = ({
             }
         }
     };
-    // const loadRegistrations = async () => {
-    //     //---------------------------------------------------
-    //     //this function gets the registratoins for an event
-    //     //and loads the instances into redux
-    //     //---------------------------------------------------
-    //     // {
-    //     //     "operation": "getRegistrationsForEvent",
-    //     //     "payload": {
-    //     //       "eid": "65ff55fb33fe4c0447b086188f2e9b1f"
-    //     //     }
-    //     // }
-    //     async function getEventRegistrations() {
-    //         try {
-    //             fetch(
-    //                 'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/registrations',
-    //                 {
-    //                     method: 'POST',
-    //                     body: JSON.stringify({
-    //                         operation: 'getRegistrationsForEvent',
-    //                         payload: {
-    //                             eid: match?.params?.id,
-    //                         },
-    //                     }),
-    //                     headers: {
-    //                         'Content-type': 'application/json; charset=UTF-8',
-    //                     },
-    //                 }
-    //             )
-    //                 .then((response) => response.json())
-    //                 .then((data) => {
-    //                     const util = require('util');
-    //                     console.log(
-    //                         'registrations-data:\n' +
-    //                             util.inspect(data.body, {
-    //                                 showHidden: false,
-    //                                 depth: null,
-    //                             })
-    //                     );
-    //                     loadEventRegistrations(data?.body?.Items);
-    //                 });
-    //         } catch (error) {
-    //             clearSpinner();
-    //             console.log('Error fetching registrations \n' + error);
-    //         }
-    //     }
-    //     await getEventRegistrations();
-    // };
+
     const handleSubmitClick = async (event) => {
         event.preventDefault();
         setSpinner();
@@ -560,48 +515,7 @@ const Serve = ({
         newRally.meal.deadline = mealDeadline;
         newRally.registrations = registrationCount;
         newRally.attendees = attendeeCount;
-        //=======================================
-        // check if we need to load new graphics
-        // --------------------------------------
-        // if graphicFileObj is null, there is
-        // no file to upload, keep the original.
-        // Otherwise, load and record file name.
-        //========================================
-        if (graphicFileObj?.name) {
-            const previousGraphicFile = pateSystem?.rally?.graphic;
 
-            // we have a new graphic to upload...
-            let tmpStr = 'events/' + eventID + graphicFileObj.name;
-            // setGraphicLocation(tmpStr);
-            const { key } = await Storage.put(tmpStr, graphicFileObj, {
-                contentType: 'image/*',
-            });
-
-            //=================================
-            // if new file name, need to delete
-            // the old file name from S3
-            //=================================
-            if (graphicFileObj.name !== previousGraphicFile) {
-                //delete the old file
-                if (previousGraphicFile !== 'tbd.png') {
-                    let fileToDelete =
-                        'events/' + eventID + previousGraphicFile;
-                    try {
-                        await Storage.remove(fileToDelete);
-                    } catch (error) {
-                        console.log('ERROR: we failed to remove the old file');
-                    }
-                }
-            }
-            //=================================
-            // need to save new file name
-            //=================================
-            newRally.graphic = graphicFileObj.name;
-        } else {
-            //no file selected for upload, keep
-            // the current value
-            newRally.graphic = graphicFileName;
-        }
         // let DANOTEST = true;
         // if (DANOTEST) return;
         //now update redux for future use.
@@ -646,6 +560,70 @@ const Serve = ({
     const handleStateChange = ({ newValue }) => {
         console.log('stateProv:', newValue);
         setStateProv(newValue);
+    };
+    const handleGraphicDelete = (fileObject) => {
+        console.log('fileObject:\n', fileObject);
+        alert('DELETING GRAPHIC');
+    };
+    const handleGraphicChange = (fileObject) => {
+        console.log('Image Change:', fileObject);
+        //   -------------------------------------
+        //   load the graphic to s3
+        //   -------------------------------------
+        if (fileObject?.name) {
+            const previousGraphicFile = pateSystem?.rally?.graphic;
+
+            // we have a new graphic to upload...
+            let tmpStr = 'events/' + eventID + fileObject.name;
+            // setGraphicLocation(tmpStr);
+            Storage.put(tmpStr, fileObject, {
+                contentType: 'image/*',
+            })
+                .then((response) => {
+                    console.log('we got key: ', response);
+                })
+                .catch((err) => {
+                    console.log('we got error:', err);
+                });
+
+            // const { key } = await Storage.put(tmpStr, fileObject, {
+            //     contentType: 'image/*',
+            // });
+
+            //=================================
+            // if new file name, need to delete
+            // the old file name from S3
+            //=================================
+            if (previousGraphicFile) {
+                if (fileObject.name !== previousGraphicFile) {
+                    //delete the old file
+                    if (previousGraphicFile !== 'tbd.png') {
+                        let fileToDelete =
+                            'events/' + eventID + previousGraphicFile;
+
+                        Storage.remove(fileToDelete)
+                            .then((resp) => {
+                                console.log('old file removed');
+                            })
+                            .catch((err) => {
+                                console.log('error deleting file:\n', err);
+                            });
+                    }
+                }
+            }
+            //   ------------------------------
+            //   need to update redux with file
+            //   ------------------------------
+            let updatedRally = pateSystem?.rally;
+            updatedRally.graphic = fileObject.name;
+            updateStateRepRally(updatedRally);
+            //   =============================
+            //   update state
+            //   =============================
+            setGraphicFileName(fileObject?.name);
+            setGraphicLocation(fileObject?.location);
+            setGraphicFileObj(fileObject);
+        }
     };
     const handleChange = (e) => {
         // let value = null;
@@ -1134,39 +1112,15 @@ const Serve = ({
                                 />
                             </div>
                         </div>
-
-                        <>
-                            <div className='serveevent-page__section-header'>
-                                Graphic File
-                            </div>
-                            <div className='serveevent-page__graphic-section'>
-                                <div className='serveevent-page__graphic-preview'>
-                                    {graphicLocation && (
-                                        <AmplifyS3Image
-                                            style={{ '--width': '100%' }}
-                                            imgKey={graphicLocation}
-                                        />
-                                    )}
-                                    {graphicFileName}
-                                </div>
-
-                                <div className='serveevent-page__graphic-file-control'>
-                                    <div>
-                                        <input
-                                            type='file'
-                                            accept='image/*'
-                                            id='graphicFile'
-                                            name='graphicFile'
-                                            onChange={(e) =>
-                                                setGraphicFileObj(
-                                                    e.target.files[0]
-                                                )
-                                            }
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                        </>
+                        {graphicFileName && (
+                            <EventGraphics
+                                gLoc={graphicLocation}
+                                gFName={graphicFileName}
+                                // gFObj={graphicFileObj}
+                                onChange={handleGraphicChange}
+                                onDelete={handleGraphicDelete}
+                            />
+                        )}
 
                         <div className='serveevent-page__section-header'>
                             Tally Information
