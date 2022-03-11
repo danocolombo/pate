@@ -567,6 +567,8 @@ const Serve = ({
     };
     const handleGraphicChange = (fileObject) => {
         console.log('Image Change:', fileObject);
+        setGraphicFileName(fileObject?.name);
+
         //   -------------------------------------
         //   load the graphic to s3
         //   -------------------------------------
@@ -1112,15 +1114,14 @@ const Serve = ({
                                 />
                             </div>
                         </div>
-                        {graphicFileName && (
-                            <EventGraphics
-                                gLoc={graphicLocation}
-                                gFName={graphicFileName}
-                                // gFObj={graphicFileObj}
-                                onChange={handleGraphicChange}
-                                onDelete={handleGraphicDelete}
-                            />
-                        )}
+
+                        <EventGraphics
+                            gLoc={graphicLocation}
+                            gFName={graphicFileName}
+                            // gFObj={graphicFileObj}
+                            onChange={handleGraphicChange}
+                            onDelete={handleGraphicDelete}
+                        />
 
                         <div className='serveevent-page__section-header'>
                             Tally Information

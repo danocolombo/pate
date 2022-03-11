@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AmplifyS3Image } from '@aws-amplify/ui-react';
 import { IoTrash } from 'react-icons/io5';
@@ -11,29 +11,35 @@ const EventGraphics = ({ gLoc, gFName, onChange, onDelete }) => {
         <>
             <div className='event-graphics__section-header'>Graphic File</div>
             <div className='event-graphics__graphic-section'>
-                <div className='event-graphics__graphic-preview'>
-                    {gLoc && (
-                        <AmplifyS3Image
-                            style={{ '--width': '100%' }}
-                            imgKey={gLoc}
-                        />
-                    )}
-                </div>
-                <div className='event-graphics__wrapper'>
-                    <div className='event-graphics__file-name'>{gFName}</div>
-                    <div className='event-graphics__delete-icon'>
-                        <Link
-                            onClick={() => {
-                                onDelete({
-                                    fileLocation: gLoc,
-                                    fileName: gFName,
-                                });
-                            }}
-                        >
-                            <IoTrash className='event-graphics__trash-can' />
-                        </Link>
+                {gFName && (
+                    <div className='event-graphics__graphic-preview'>
+                        {gLoc && (
+                            <AmplifyS3Image
+                                style={{ '--width': '100%' }}
+                                imgKey={gLoc}
+                            />
+                        )}
                     </div>
-                </div>
+                )}
+                {gFName && (
+                    <div className='event-graphics__wrapper'>
+                        <div className='event-graphics__file-name'>
+                            {gFName}
+                        </div>
+                        <div className='event-graphics__delete-icon'>
+                            <Link
+                                onClick={() => {
+                                    onDelete({
+                                        fileLocation: gLoc,
+                                        fileName: gFName,
+                                    });
+                                }}
+                            >
+                                <IoTrash className='event-graphics__trash-can' />
+                            </Link>
+                        </div>
+                    </div>
+                )}
                 <div className='event-graphics__graphic-file-control'>
                     <div>
                         <input

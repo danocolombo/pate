@@ -18,6 +18,7 @@ event-graphics__graphic-preview {
     padding-top: 1px;
     padding-left: 10px;
     padding-right: 10px;
+    // border: black solid 1px;
 }
 .event-graphics__file-name {
     float: left;
@@ -26,13 +27,13 @@ event-graphics__graphic-preview {
     float: right;
 }
 .event-graphics__graphic-file-control {
-    border: black solid 1px;
+    border-top: black solid 1px;
 }
 .event-graphics__file-input-control {
     margin-top: 5px;
     margin-bottom: 5px;
     margin-left: 5px;
-    // color: red;
+    // opacity: 0;
 }
 .event-graphics__trash-can {
     color: red;
