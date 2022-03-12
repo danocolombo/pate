@@ -8,7 +8,6 @@ const INITIAL_STATE = {
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
-    console.log('____________IN userReducer: ' + action.type);
     if (action.type === 'UPDATE_USER') {
         const util = require('util');
         console.log(

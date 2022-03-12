@@ -123,8 +123,6 @@ const SignIn = ({
             //generic cleanup
             await clearTempRegistration();
             //let user know if they need to complete registration
-            console.log('REGISTERED: ' + userIsRegistered);
-            !userIsRegistered ? console.log('NOPE') : console.log('YEP');
 
             clearSpinner();
             userIsRegistered ? history.push('/') : history.push('/profile');

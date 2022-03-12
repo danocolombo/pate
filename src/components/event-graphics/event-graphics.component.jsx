@@ -28,6 +28,7 @@ const EventGraphics = ({ gLoc, gFName, onChange, onDelete }) => {
                         </div>
                         <div className='event-graphics__delete-icon'>
                             <Link
+                                to=''
                                 onClick={() => {
                                     onDelete({
                                         fileLocation: gLoc,

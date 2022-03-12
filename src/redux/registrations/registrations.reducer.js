@@ -51,7 +51,6 @@ const registrationsReducer = (state = INITIAL_STATE, action) => {
                 tempRegistration: null,
             };
         case RegistrationsActionTypes.LOAD_EVENT_REGISTRATIONS:
-            console.log('in....');
             return {
                 ...state,
                 eventRegistrations: action.payload,

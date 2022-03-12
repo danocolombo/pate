@@ -47,7 +47,7 @@ const Serve = ({
     pate,
 }) => {
     let eventID = match?.params?.id;
-    console.log('serveEvent: ' + eventID);
+
     const [modalDeleteConfirmIsVisible, setModalDeleteConfirmIsVisible] =
         useState(false);
     const refApprovalCheckbox = useRef(null);
@@ -119,8 +119,6 @@ const Serve = ({
 
     const getEventRegistrations = (eid) => {
         try {
-            console.log('@@@@@@@@@@@@@@@@@@@@@@@@@');
-            console.log('getEventRegistrations :: eid (' + eid + ')');
             try {
                 fetch(
                     'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/registrations',
