@@ -3,9 +3,14 @@ import { Link } from 'react-router-dom';
 import { AmplifyS3Image } from '@aws-amplify/ui-react';
 import { IoTrash } from 'react-icons/io5';
 import './events-graphics.styles.scss';
-const EventGraphics = ({ gLoc, gFName, onChange, onDelete }) => {
+const EventGraphics = ({ gLoc, gFName, onChange, onDelete, testMe }) => {
     const handleFileChange = (e) => {
         onChange(e.target.files[0]);
+    };
+    const handleDelete = (e) => {
+        const theObject = {};
+        theObject.name = gFName;
+        onDelete(theObject);
     };
     return (
         <>
@@ -26,7 +31,7 @@ const EventGraphics = ({ gLoc, gFName, onChange, onDelete }) => {
                         <div className='event-graphics__file-name'>
                             {gFName}
                         </div>
-                        <div className='event-graphics__delete-icon'>
+                        {/* <div className='event-graphics__delete-icon'>
                             <Link
                                 to=''
                                 onClick={() => {
@@ -38,9 +43,16 @@ const EventGraphics = ({ gLoc, gFName, onChange, onDelete }) => {
                             >
                                 <IoTrash className='event-graphics__trash-can' />
                             </Link>
+                        </div> */}
+                        <div className='event-graphics__delete-icon'>
+                            <IoTrash
+                                classname='event-graphics__trash-can'
+                                onClick={handleDelete}
+                            />
                         </div>
                     </div>
                 )}
+
                 <div className='event-graphics__graphic-file-control'>
                     <div>
                         <input

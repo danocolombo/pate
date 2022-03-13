@@ -560,11 +560,15 @@ const Serve = ({
         console.log('stateProv:', newValue);
         setStateProv(newValue);
     };
+
+    const handleTest = ({ fileObject }) => {
+        alert('Yahoo!!');
+    };
     const handleGraphicDelete = (fileObject) => {
-        //   NEED SPINNER
         setSpinner();
         // 1. remove file from S3
-        Storage.remove(fileObject.fileLocation)
+        const fullFileName = 'events/' + eventID + fileObject?.name;
+        Storage.remove(fullFileName)
             .then((resp) => {
                 // 2. remove DDB
                 fetch(
@@ -610,6 +614,8 @@ const Serve = ({
             .catch((err) => {
                 console.error('>>> ERROR DELETING FROM S3 <<<\n', err);
             });
+
+        console.log('MADE IT TO END OF FUNCTION');
         // clearSpinner();
     };
     const handleGraphicChange = (fileObject) => {
@@ -670,6 +676,8 @@ const Serve = ({
             //   update state
             //   =============================
             setGraphicFileName(fileObject?.name);
+            tmpStr = 'events/' + eventID + fileObject?.name;
+            fileObject.location = tmpStr;
             setGraphicLocation(fileObject?.location);
             setGraphicFileObj(fileObject);
         }
@@ -1168,6 +1176,7 @@ const Serve = ({
                             // gFObj={graphicFileObj}
                             onChange={handleGraphicChange}
                             onDelete={handleGraphicDelete}
+                            testMe={handleTest}
                         />
 
                         <div className='serveevent-page__section-header'>
