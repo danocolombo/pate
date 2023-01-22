@@ -117,15 +117,13 @@ const Serve = ({
 
   const getEventRegistrations = (eid) => {
     try {
-      console.log("@@@@@@@@@@@@@@@@@@@@@@@@@");
-      console.log("getEventRegistrations :: eid (" + eid + ")");
       try {
         fetch(
           "https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/registrations",
           {
             method: "POST",
             body: JSON.stringify({
-              operation: "getRegistrationsForEventOrdered",
+              operation: "getEventRegistrations",
               payload: {
                 eid: eid,
               },
@@ -137,15 +135,7 @@ const Serve = ({
         )
           .then((response) => response.json())
           .then((data) => {
-            // const util = require('util');
-            // console.log(
-            //     'registrations-data:\n' +
-            //         util.inspect(data.body, {
-            //             showHidden: false,
-            //             depth: null,
-            //         })
-            // );
-            loadEventRegistrations(data?.body?.Items);
+            loadEventRegistrations(data);
           });
       } catch (error) {
         console.log("Error fetching registrations \n" + error);
