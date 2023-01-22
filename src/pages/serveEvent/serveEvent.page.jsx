@@ -79,7 +79,7 @@ const Serve = ({
   const [mealDeadline, setMealDeadline] = useState("");
   const [attendeeCount, setAttendeeCount] = useState(0);
   const [registrationCount, setRegistrationCount] = useState(0);
-
+  const [displayRegistrations, setDisplayRegistrations] = useState([]);
   const history = useHistory();
   const STATUS_VALUE = [
     "Draft",
@@ -135,7 +135,9 @@ const Serve = ({
         )
           .then((response) => response.json())
           .then((data) => {
-            loadEventRegistrations(data);
+            loadEventRegistrations(data.body);
+            // setDisplayRegistrations(data.body);
+            // console.log("SEP:140-->data:\n", data.body);
           });
       } catch (error) {
         console.log("Error fetching registrations \n" + error);
@@ -448,7 +450,6 @@ const Serve = ({
             setMealMessage(rallyEvent?.meal?.message);
             setMealDeadline(rallyEvent?.meal?.deadline);
             setAttendeeCount(rallyEvent?.attendees);
-            setRegistrationCount(rallyEvent?.registrations);
           }
         });
       }
@@ -1146,7 +1147,7 @@ const Serve = ({
                   REGISTRATIONS
                 </div>
                 <div className="serveevent-page__registration-data-box">
-                  {registrations?.eventRegistrations ? (
+                  {registrations?.eventRegistrations?.length > 0 ? (
                     registrations.eventRegistrations.map((rege) => (
                       <RegistrationItem key={rege.uid} regItem={rege} />
                     ))
