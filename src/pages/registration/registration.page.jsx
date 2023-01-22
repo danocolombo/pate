@@ -24,6 +24,7 @@ import { loadRally } from "../../redux/pate/pate.actions";
 import { setSpinner, clearSpinner } from "../../redux/pate/pate.actions";
 import { setAlert } from "../../redux/alert/alert.action";
 import "./registration.styles.scss";
+import classNames from "classnames";
 const EventRegistration = ({
   setSpinner,
   clearSpinner,
@@ -253,7 +254,19 @@ const EventRegistration = ({
         let newHour = parseInt(eTime[0]) - 12;
         endTime = newHour.toString() + ":" + eTime[1];
       }
-      let returnValue = startTime + " - " + endTime;
+      let sap = "";
+      let eap = "";
+      if (sTime[0] < 12) {
+        sap = "AM";
+      } else {
+        sap = "PM";
+      }
+      if (eTime[0] < 12) {
+        eap = "AM";
+      } else {
+        eap = "PM";
+      }
+      let returnValue = `${startTime}${sap}-${endTime}${eap}`;
       return returnValue;
     } else {
       return null;
@@ -911,12 +924,36 @@ const EventRegistration = ({
           </div>
           {madeMealDeadline() ? (
             <div className="registration-page__meal-box">
-              <p className="registration-page__meal-message">
-                This particular event offers a "free" lunch at 12 noon, please
-                indicate how many will attend the lunch.
-              </p>
-              <p>Start time: {pateSystem?.rally?.meal?.startTime}</p>
-              <p>Cost: $ {mealCostValue(pateSystem?.rally?.meal?.cost)}</p>
+              <div className="registration-page__meal-details-container">
+                <div className="registration-page__meal-row">
+                  <div className="registration-page__meal-cell">
+                    <p className="registration-page__meal-message">
+                      This event offers a meal at a different time. Please
+                      indicate how many will attend.
+                    </p>
+                  </div>
+                </div>
+                <div className="registration-page__meal-row">
+                  <div className="registration-page__meal-cell">
+                    <p>Serving time: {pateSystem?.rally?.meal?.startTime}</p>
+                  </div>
+                </div>
+                <div className="registration-page__meal-row">
+                  <div className="registration-page__meal-cell">
+                    <p>
+                      Cost: $ {mealCostValue(pateSystem?.rally?.meal?.cost)}
+                    </p>
+                  </div>
+                </div>
+                {pateSystem?.rally?.meal?.message && (
+                  <div className="registration-page__meal-row">
+                    <div className="registration-page__meal-cell">
+                      <p>{pateSystem?.rally?.meal?.message}</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+
               <div className="registration-page__meal-input-line">
                 <div className="registration-page__meal-input-label">
                   Meal Guests
