@@ -7,7 +7,7 @@ import {
 } from '../../include/api_headers';
 
 import './events.styles.scss';
-import EventListing from '../../components/event-listing/event-listing.component';
+import RallyList from '../../components/rally-list';
 import Header from '../../components/header/header.component';
 import EventsMarquee from '../../components/events-marquee/events-marquee.component';
 // import EventsMarquee2 from '../../components/events-marquee/events-marquee2.component';
@@ -52,7 +52,6 @@ class Events extends React.Component {
                 <Header />
                 <div className='events-marquee-compoment__events-wrapper'>
                     <div className='events-marquee-component__events-box'>
-                        
                         <div className='events-page__events-box2'>
                             {this.state.plans.length > 0 ? (
                                 this.state.plans.map((plan) =>
@@ -62,6 +61,7 @@ class Events extends React.Component {
                                             <div className='events-marquee-component__page-title'>
                                                 Upcoming P8 Rallies
                                             </div>
+                                            <RallyList />
                                             <EventMarquee2
                                                 event={plan}
                                                 key={plan.uid}
