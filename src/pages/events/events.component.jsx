@@ -7,7 +7,7 @@ import {
 } from '../../include/api_headers';
 
 import './events.styles.scss';
-import RallyList from '../../components/rally-list';
+// import RallyList from '../../components/rally-list';
 import Header from '../../components/header/header.component';
 import EventsMarquee from '../../components/events-marquee/events-marquee.component';
 // import EventsMarquee2 from '../../components/events-marquee/events-marquee2.component';
@@ -26,6 +26,7 @@ class Events extends React.Component {
         };
     }
     async componentDidMount() {
+        //  ORIGINAL REQUEST
         await fetch(
             'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/events',
             {
@@ -61,7 +62,7 @@ class Events extends React.Component {
                                             <div className='events-marquee-component__page-title'>
                                                 Upcoming P8 Rallies
                                             </div>
-                                            <RallyList />
+                                            {/* <RallyList /> */}
                                             <EventMarquee2
                                                 event={plan}
                                                 key={plan.uid}

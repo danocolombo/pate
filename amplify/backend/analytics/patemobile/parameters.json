@@ -1,0 +1,21 @@
+{
+    "appName": "patemobile",
+    "roleName": "pinpointLambdaRoleaf0efc6c",
+    "cloudformationPolicyName": "cloudformationPolicyaf0efc6c",
+    "cloudWatchPolicyName": "cloudWatchPolicyaf0efc6c",
+    "pinpointPolicyName": "pinpointPolicyaf0efc6c",
+    "authPolicyName": "pinpoint_amplify_af0efc6c",
+    "unauthPolicyName": "pinpoint_amplify_af0efc6c",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    }
+}
