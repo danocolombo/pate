@@ -13,6 +13,7 @@ import Modal from '../../components/modals/wrapper.modal';
 import ResetPassword from '../../components/modals/auth/reset-password.modal';
 import Modal2 from '../../components/modals/wrapper.modal';
 import CheckEmailModal from '../../components/modals/auth/check-email.modal';
+import { getGQLProfile, getDDBProfile } from '../../providers/profile.provider';
 import { printObject } from '../../utils/helpers';
 //----- actions needed -------
 import {
@@ -108,6 +109,8 @@ const SignIn = ({
 
             let currentUserInfo = {};
             let currentSession = {};
+            let gProfile = {};
+            let dProfile = {};
             await Auth.currentUserInfo().then((u) => {
                 currentUserInfo = u;
             });
@@ -122,55 +125,10 @@ const SignIn = ({
             // printObject('SP:121-->currentUserInfo:\n', currentUserInfo);
             // printObject('SP:122-->currentSession:\n', currentSession);
             // printObject('SP:123-->sub: ', currentUserInfo?.attributes?.sub);
-            async function getGQLProfile() {
-                try {
-                    // const gqlProfileData = await API.graphql({
-                    //     query: queries.getProfileBySub,
-                    //     variables: {
-                    //         id: currentUserInfo?.attributes?.sub,
-                    //     },
-                    // });
-                    const variables = {
-                        id: currentUserInfo?.attributes?.sub,
-                    };
-                    API.graphql(
-                        graphqlOperation(queries.getProfileBySub, variables)
-                    )
-                        .then((gqlProfile) => {
-                            //*  This will be an array, need to get [0]
-                            if (gqlProfile?.data?.listUsers?.items.length > 0) {
-                                printObject(
-                                    'SP:143-->gqlProfile: ',
-                                    gqlProfile?.data?.listUsers?.items[0]
-                                );
-                                //*  we have data save it to redux
-                                // userProfile =
-                                //     gqlProfile.data.listUsers.items[0];
-                            } else {
-                                printObject(
-                                    'SP:150-->no info...\n',
-                                    gqlProfile
-                                );
-                                //* we did NOT get profile, blank out object in redux
-                                //userProfile = {};
-                            }
-                        })
-                        .catch((error) => {
-                            printObject(
-                                'SP:156--> error getting profile from graphql',
-                                error
-                            );
-                            //* make profile entry clean, even on error
-                            // userProfile = {};
-                        });
-                } catch (error) {
-                    printObject('SP:164->>error getting gqlProfile:\n', error);
-                }
-            }
-            console.log('GOING');
-            getGQLProfile();
-            console.log('DONE');
-
+            const gp = await getGQLProfile(currentUserInfo.attributes.sub);
+            const dp = await getDDBProfile(currentUserInfo.attributes.sub);
+            printObject('SP:133==>gp:\n', gp);
+            printObject('SP:134==>dp:\n', dp);
             const userIsRegistered = await saveUser(
                 currentUserInfo,
                 currentSession
