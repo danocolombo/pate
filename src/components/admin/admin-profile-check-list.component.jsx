@@ -5,10 +5,40 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { compose } from 'redux';
-import { Link } from 'react-router-dom';
-
+import { API } from 'aws-amplify';
+import * as mutations from '../../graphql/mutations';
 import './admin-registered-users.style.scss';
-const RegisteredDetails = ({ user, pate, clearTmpUser }) => {
+import { printObject } from '../../utils/helpers';
+const ProfileDetails = ({ user, pate, clearTmpUser }) => {
+    const handleClick = async () => {
+        console.log('Clicked: ', user.firstName);
+        printObject('APCLC:14==>user:\n', user);
+
+        try {
+            const userDef = {
+                sub: user.uid,
+                username: user?.username || '',
+                firstName: user?.firstName || '',
+                lastName: user?.lastName || '',
+                email: user?.email || '',
+                phone: user?.phone || '',
+                divisionDefaultUsersId: 'fffedde6-5d5a-46f0-a3ac-882a350edc64',
+                // street: user?.residence?.street || '',
+                // city: user?.residence?.city || '',
+                // stateProv: user?.residence?.stateProv || '',
+                // postalCode: parseInt(user?.residence?.postalCode) || null,
+            };
+            printObject('APCLC:31==>userDef:\n', userDef);
+
+            const results = await API.graphql({
+                query: mutations.createUser,
+                variables: { input: userDef },
+            });
+            console.log('APCLC:37-->results:\n', results);
+        } catch (error) {
+            console.log('APCLC:39-->error:', error);
+        }
+    };
     useEffect(() => {}, []);
     return (
         <>
@@ -20,8 +50,8 @@ const RegisteredDetails = ({ user, pate, clearTmpUser }) => {
                             : 'reg-user-list-component__unreg-link-wrapper'
                     }
                 >
-                    <Link
-                        to={`/userdetails/${user.uid}`}
+                    <div
+                        onClick={handleClick}
                         className='reg-user-list-component__detail-link'
                     >
                         {user.firstName ? (
@@ -46,7 +76,7 @@ const RegisteredDetails = ({ user, pate, clearTmpUser }) => {
                                 [GQL]
                             </span>
                         ) : null}
-                    </Link>
+                    </div>
                 </div>
             </div>
         </>
@@ -67,4 +97,4 @@ export default compose(
         // clearTmpUser,
         mapDispatchToProps,
     })
-)(RegisteredDetails);
+)(ProfileDetails);

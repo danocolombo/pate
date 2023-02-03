@@ -2360,6 +2360,46 @@ export const createUser = /* GraphQL */ `
         }
     }
 `;
+export const createGQLProfile = /* GraphQL */ `
+    mutation CreateUserProfile(
+        $input: CreateProfileInput!
+        $condition: ModelUserConditionInput
+    ) {
+        createUser(input: $input) {
+            userId: id
+        }
+    }
+`;
+export const WAScreateGQLProfile = /* GraphQL */ `
+    mutation CreateProfile(
+        $input: CreateProfileInput!
+        $condition: ModelUserConditionInput
+    ) {
+        createUser(
+            input: {
+                sub: $sub
+                username: $username
+                firstName: $firstName
+                lastName: $lastName
+                email: $email
+                phone: $phone
+                divisionDefaultUsersId: $divisionDefaultUsersId
+            }
+        ) {
+            userId: id
+        }
+        createResidence(
+            input: {
+                street: $street
+                city: $city
+                stateProv: $stateProv
+                postalCode: $postalCode
+            }
+        ) {
+            residenceId: id
+        }
+    }
+`;
 export const updateUser = /* GraphQL */ `
     mutation UpdateUser(
         $input: UpdateUserInput!
@@ -2475,6 +2515,11 @@ export const updateUser = /* GraphQL */ `
         }
     }
 `;
+
+export const createProfile = /* GraphQL */ `
+    mutation($data1: )
+`;
+
 export const deleteUser = /* GraphQL */ `
     mutation DeleteUser(
         $input: DeleteUserInput!

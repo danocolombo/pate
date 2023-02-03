@@ -8,45 +8,50 @@ const AdminMenu = () => {
                 <div className='admin-component__page-title'>
                     ADMIN FEATURES
                 </div>
-                
-                    <div className='admin-component__row-center'>
-                        <div className='admin-component__link-wrapper'>
+
+                <div className='admin-component__row-center'>
+                    <div className='admin-component__link-wrapper'>
                         <Link
                             to='/administer/registeredusers'
                             className='admin-component__option-link'
                         >
                             Users
                         </Link>
-                        </div>
                     </div>
-                    <div className='admin-component__row-center'>
-                        State Reps
-                    </div>
-                    <div className='admin-component__row-center'>
-                        State Leads
-                    </div>
-                    <div className='admin-component__row-center'>Events</div>
-                    <div className='admin-component__row-center'>
-                        <div className='admin-component__link-wrapper'>
+                </div>
+                <div className='admin-component__row-center'>State Reps</div>
+                <div className='admin-component__row-center'>State Leads</div>
+                <div className='admin-component__row-center'>Events</div>
+                <div className='admin-component__row-center'>
+                    <div className='admin-component__link-wrapper'>
                         <Link
                             to='/administer/showImage'
                             className='admin-component__option-link'
                         >
                             Show S3 Image
                         </Link>
-                        </div>
                     </div>
-                    <div className='admin-component__row-center'>
-                        <div className='admin-component__link-wrapper'>
+                </div>
+                <div className='admin-component__row-center'>
+                    <div className='admin-component__link-wrapper'>
                         <Link
                             to='/administer/storage'
                             className='admin-component__option-link'
                         >
                             Storage
                         </Link>
-                        </div>
                     </div>
-                
+                </div>
+                <div className='admin-component__row-center'>
+                    <div className='admin-component__link-wrapper'>
+                        <Link
+                            to='/administer/createProfiles'
+                            className='admin-component__option-link'
+                        >
+                            Create User Profiles
+                        </Link>
+                    </div>
+                </div>
             </div>
         </div>
     );

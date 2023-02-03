@@ -13,7 +13,6 @@ import Modal from '../../components/modals/wrapper.modal';
 import ResetPassword from '../../components/modals/auth/reset-password.modal';
 import Modal2 from '../../components/modals/wrapper.modal';
 import CheckEmailModal from '../../components/modals/auth/check-email.modal';
-import { getGQLProfile, getDDBProfile } from '../../providers/profile.provider';
 import { printObject } from '../../utils/helpers';
 //----- actions needed -------
 import {
@@ -122,13 +121,7 @@ const SignIn = ({
             //    **********************************************
             //    Now get the profile information from graphql
             //    **********************************************
-            // printObject('SP:121-->currentUserInfo:\n', currentUserInfo);
-            // printObject('SP:122-->currentSession:\n', currentSession);
-            // printObject('SP:123-->sub: ', currentUserInfo?.attributes?.sub);
-            const gp = await getGQLProfile(currentUserInfo.attributes.sub);
-            const dp = await getDDBProfile(currentUserInfo.attributes.sub);
-            printObject('SP:133==>gp:\n', gp);
-            printObject('SP:134==>dp:\n', dp);
+
             const userIsRegistered = await saveUser(
                 currentUserInfo,
                 currentSession
@@ -212,7 +205,18 @@ const SignIn = ({
     };
     const saveUser = async (userInfo, userSession) => {
         //get p8user data...
-
+        //* check if there is graphql profile
+        const variables = {
+            id: userInfo?.attributes?.sub,
+        };
+        try {
+            const gqlProfile = await API.graphql(
+                graphqlOperation(queries.getProfileBySub, variables)
+            );
+            printObject('SP:216-->gqlProfile:\n', gqlProfile);
+        } catch (error) {
+            printObject('SP:218-->error gettng graphql data');
+        }
         let dbUser = {};
         try {
             await fetch(
@@ -233,6 +237,25 @@ const SignIn = ({
                 .then((response) => response.json())
                 .then((data) => {
                     dbUser = data?.body?.Items[0];
+                    const data1 = {
+                        sub: dbUser?.uid,
+                        firstName: dbUser?.firstName || '',
+                        lastName: dbUser?.lastName || '',
+                        email: dbUser?.phone || '',
+                        phone: dbUser?.phone || '',
+                    };
+                    const data2 = {
+                        street: dbUser?.residence?.street || '',
+                        city: dbUser?.residence?.city || '',
+                        stateProv: dbUser?.residence?.stateProv || '',
+                        postalCode: dbUser?.residence?.postalCode,
+                    };
+                    const data3 = {
+                        role: dbUser?.role,
+                    };
+                    printObject('data1:\n', data1);
+                    printObject('data2:\n', data2);
+                    printObject('data3:\n', data3);
                 });
         } catch (error) {
             clearSpinner();
@@ -356,6 +379,7 @@ const SignIn = ({
                 break;
         }
     };
+
     const handleResetPasswordRequest = async (uName) => {
         setModalIsVisible(false);
         // alert('USER WANTS TO CHANGE PASSWORD:' + uName);

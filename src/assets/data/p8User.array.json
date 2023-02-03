@@ -1,0 +1,3172 @@
+{
+    "statusCode": 200,
+    "body": {
+        "Items": [
+            {
+                "affiliate": {
+                    "name": "Pleasant Grove ",
+                    "stateProv": "GA",
+                    "city": "Powder Springs "
+                },
+                "lastName": "Crutchfield",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Lithia Springs",
+                    "street": "226 Oak Hill Court",
+                    "postalCode": "30122"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "davidcrutchfield@rocketmail.com",
+                "phone": "6784275184",
+                "uid": "796f73ff-a755-4f3c-b559-d0b0ec6006c2",
+                "church": {
+                    "name": "Pleasant Grove ",
+                    "stateProv": "GA",
+                    "city": "Powder Springs "
+                },
+                "firstName": "David",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Crossview Church",
+                    "stateProv": "GA",
+                    "city": "Marietta"
+                },
+                "lastName": "Cilluffo",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Marietta",
+                    "street": "2307 Milstead Circle NE",
+                    "postalCode": "30066"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "salcrossviewcr@gmail.com",
+                "phone": "6784857644",
+                "uid": "28470ec4-6e59-4563-ba06-c47b8728dfbf",
+                "church": {
+                    "name": "Crossview Church",
+                    "stateProv": "GA",
+                    "city": "Marietta"
+                },
+                "firstName": "Sal",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "House of Hope Atlanta",
+                    "stateProv": "GA",
+                    "city": "Decatur"
+                },
+                "lastName": "Williams",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Ellenwood",
+                    "street": "3948 Compton Pointe ",
+                    "postalCode": "30294"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "blwilliams678@yahoo.com",
+                "phone": "",
+                "uid": "eba8ac3a-fecf-4b90-99ad-7c9582ba31ee",
+                "church": {
+                    "name": "House of Hope Atlanta",
+                    "stateProv": "GA",
+                    "city": "Decatur"
+                },
+                "firstName": "Betty",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Calvary Chapel Blue Ridge ",
+                    "stateProv": "GA",
+                    "city": "Blue Ridge "
+                },
+                "lastName": "Jacobs",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Blue Ridge",
+                    "street": "41 Little Canoe Run",
+                    "postalCode": "30513"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "denaj44@yahoo.com",
+                "phone": "9545932254",
+                "uid": "e7781755-70cf-4e65-88c3-49e654a2add5",
+                "church": {
+                    "name": "Calvary Chapel Blue Ridge ",
+                    "stateProv": "GA",
+                    "city": "Blue Ridge "
+                },
+                "firstName": "Dena",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Phyllis Steinborn",
+                    "stateProv": "GA",
+                    "city": "Athens"
+                },
+                "lastName": "Steinborn",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Athens",
+                    "street": "125 Timberlane Drive",
+                    "postalCode": "30606"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "phyllissteinborn@gmail.com",
+                "phone": "7062072396",
+                "uid": "6321cc56-20c0-485b-8848-a72acba4708a",
+                "church": {
+                    "name": "Phyllis Steinborn",
+                    "stateProv": "GA",
+                    "city": "Athens"
+                },
+                "firstName": "Phyllis",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Crossroadsjc ",
+                    "stateProv": "GA",
+                    "city": "Jefferson"
+                },
+                "lastName": "Trammell ",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Jefferson",
+                    "street": "428 Summit chase dr",
+                    "postalCode": "30549"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "dontrammell123@gmail.com",
+                "phone": "6787616335",
+                "uid": "f7396dc2-7a20-40a1-b573-dc089fab4d4c",
+                "church": {
+                    "name": "Crossroadsjc ",
+                    "stateProv": "GA",
+                    "city": "Jefferson"
+                },
+                "firstName": "Donald",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Celebrate Recovery Blue Ridge ",
+                    "stateProv": "Ga",
+                    "city": "Blue Ridge "
+                },
+                "lastName": "Martin ",
+                "residence": {
+                    "stateProv": "Ga",
+                    "city": "Blue Ridge ",
+                    "street": "2688 Chestnut Gap Rd ",
+                    "postalCode": "30513"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "cheryl.r.martin1977@gmail.com",
+                "phone": "7068890398",
+                "uid": "96c11119-790c-4508-a70e-222a2c312073",
+                "church": {
+                    "name": "Celebrate Recovery Blue Ridge ",
+                    "stateProv": "Ga",
+                    "city": "Blue Ridge "
+                },
+                "firstName": "Cheryl ",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Crossview ",
+                    "stateProv": "GA",
+                    "city": "Marietta"
+                },
+                "lastName": "Hogle",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Marietta",
+                    "street": "2956 Croftwood Trail ",
+                    "postalCode": "30964"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "smhogle@gmail.com",
+                "phone": "7707222275",
+                "uid": "a068b6a2-4685-44f5-bd51-6909d4212634",
+                "church": {
+                    "name": "Crossview ",
+                    "stateProv": "GA",
+                    "city": "Marietta"
+                },
+                "firstName": "Sam",
+                "isLoggedIn": true
+            },
+            {
+                "role": "rep",
+                "lastName": "Rep",
+                "residence": {
+                    "stateProv": "",
+                    "city": "",
+                    "street": "",
+                    "postalCode": ""
+                },
+                "affiliate": {
+                    "name": "",
+                    "stateProv": "",
+                    "city": ""
+                },
+                "profile": true,
+                "affiliations": {
+                    "options": [
+                        {
+                            "label": "FEO Testing",
+                            "role": "rep",
+                            "region": "us#east#south",
+                            "value": "FEO"
+                        },
+                        {
+                            "region": "us#east#south",
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "label": "FEO Testing",
+                        "role": "rep",
+                        "region": "us#east#south",
+                        "value": "FEO"
+                    }
+                },
+                "username": "ttalrep",
+                "email": "danocolombo@gmail.com",
+                "uid": "bcb80eb3-2c35-44cd-8e05-baa288498e8e",
+                "phone": "",
+                "firstName": "Al"
+            },
+            {
+                "affiliate": {
+                    "name": "Community Bible Church",
+                    "stateProv": "GA",
+                    "city": "Stockbridge"
+                },
+                "lastName": "Pilate",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Atlanta",
+                    "street": "P. O. Box 44514",
+                    "postalCode": "30336"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "sispilate@yahoo.com",
+                "phone": "4045389462",
+                "uid": "370d18f4-d53f-424b-9bd4-d154c9379f05",
+                "church": {
+                    "name": "Community Bible Church",
+                    "stateProv": "GA",
+                    "city": "Stockbridge"
+                },
+                "firstName": "Millicent",
+                "isLoggedIn": true
+            },
+            {
+                "role": "rep",
+                "affiliate": {
+                    "name": "Wynnbrook Church",
+                    "stateProv": "GA",
+                    "role": "rep"
+                },
+                "lastName": "Colombo",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Columbus",
+                    "street": "2304 Leah Drive",
+                    "postalCode": "31909"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies",
+                        "role": "rep"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "danocolombo@gmail.com",
+                "phone": "7066042494",
+                "uid": "c45d9046-7667-45db-8c16-60071821ba25",
+                "firstName": "Dano",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Discover Point Church",
+                    "stateProv": "GA",
+                    "city": "Conyers"
+                },
+                "lastName": "Myers",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Covington ",
+                    "street": "230 Willow Shoals Dr",
+                    "postalCode": "30016"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "hotrod4God@gmail.com",
+                "phone": "7705085529",
+                "uid": "9876b08d-60da-41c6-9630-736dd72c066b",
+                "church": {
+                    "name": "Discover Point Church",
+                    "stateProv": "GA",
+                    "city": "Conyers"
+                },
+                "firstName": "Rod",
+                "isLoggedIn": true
+            },
+            {
+                "lastName": "Twining",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Warner Robins",
+                    "street": "227 Fairways Drive",
+                    "postalCode": "31088"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies",
+                            "role": "rep"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies",
+                        "role": "rep"
+                    }
+                },
+                "email": "midgacrguy@gmail.com",
+                "uid": "59627610-4469-4a16-bbbe-4837098de13f",
+                "church": {
+                    "name": "Sacred Heart Church",
+                    "stateProv": "GA",
+                    "city": "Warner Robins"
+                },
+                "firstName": "Boomer",
+                "role": "rep",
+                "affiliate": {
+                    "name": "Sacred Heart Church",
+                    "stateProv": "GA",
+                    "city": "Warner Robins"
+                },
+                "region": "us#east#south#ga",
+                "stateRep": "TT",
+                "phone": "4783359428",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Calvary cgapel",
+                    "stateProv": "GA",
+                    "city": "Blue ridge"
+                },
+                "lastName": "Riccitiello",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Mccaysville",
+                    "street": "60 second st",
+                    "postalCode": "30555"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "riccitiellojoseph@gmail.com",
+                "phone": "7064551874",
+                "uid": "7b6c33aa-dd5a-4068-9167-56e75d8a071e",
+                "church": {
+                    "name": "Calvary cgapel",
+                    "stateProv": "GA",
+                    "city": "Blue ridge"
+                },
+                "firstName": "Jiseph",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "First Baptist Church ",
+                    "stateProv": "GA",
+                    "city": "Tifton "
+                },
+                "lastName": "Taylor ",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Tifton ",
+                    "street": "2617 Davis Ave",
+                    "postalCode": "31794"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "royandjoytaylor@hotmail.com",
+                "phone": "2295201335",
+                "uid": "f2e83db1-e892-492b-aaee-7ba90000aae3",
+                "church": {
+                    "name": "First Baptist Church ",
+                    "stateProv": "GA",
+                    "city": "Tifton "
+                },
+                "firstName": "Roy",
+                "isLoggedIn": true
+            },
+            {
+                "lastName": "Account",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Petaluma",
+                    "street": "1624 Joan Dr",
+                    "postalCode": "94952"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "label": "CR P8 Rallies",
+                            "role": "guest",
+                            "region": "us#east#south#ga",
+                            "value": "CRP8"
+                        },
+                        {
+                            "label": "FES Testing",
+                            "role": "rep",
+                            "region": "us#test#south#tt",
+                            "value": "FEO"
+                        }
+                    ],
+                    "active": {
+                        "label": "FES Testing",
+                        "role": "rep",
+                        "region": "us#east#south",
+                        "value": "FEO"
+                    }
+                },
+                "email": "danocolombo@gmail.com",
+                "registrationSegregation": true,
+                "uid": "6b5f1019-0776-42e2-8cce-d7a2fc8bb93e",
+                "firstName": "TTRep",
+                "role": "guest",
+                "affiliate": {
+                    "name": "St. Vincent",
+                    "stateProv": "GA",
+                    "city": "Petaluma"
+                },
+                "username": "ttrep",
+                "region": "us#east#south",
+                "phone": "",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Sacred Heart Catholic Church",
+                    "stateProv": "GA",
+                    "city": "Warner Robins"
+                },
+                "lastName": "White",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Perry",
+                    "street": "204 Addison Lane",
+                    "postalCode": "31069"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "tnmnwhite@yahoo.com",
+                "phone": "9546431474",
+                "uid": "7e45f11d-8123-471f-92e6-b4301b8cec06",
+                "church": {
+                    "name": "Sacred Heart Catholic Church",
+                    "stateProv": "GA",
+                    "city": "Warner Robins"
+                },
+                "firstName": "Nadine",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Celebrate Recovery Calhoun",
+                    "stateProv": "GA",
+                    "city": "Calhoun "
+                },
+                "lastName": "Gass",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Sugar Valley ",
+                    "street": "PO Box 390",
+                    "postalCode": "30746"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "Dennis@cityofrefugecalhoun.org",
+                "phone": "4045137234",
+                "uid": "d949dc93-36f1-4856-be1f-5ce882d70a99",
+                "church": {
+                    "name": "Celebrate Recovery Calhoun",
+                    "stateProv": "GA",
+                    "city": "Calhoun "
+                },
+                "firstName": "Dennis ",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "House of Hope Atlanta",
+                    "stateProv": "GA",
+                    "city": "Decatur"
+                },
+                "lastName": "Williams",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Ellenwood",
+                    "street": "3948 Compton Pointe ",
+                    "postalCode": "30294"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "Blwilliams678@yahoo.com",
+                "phone": "",
+                "uid": "7370558d-abde-410b-a444-260fe63f1a33",
+                "church": {
+                    "name": "House of Hope Atlanta",
+                    "stateProv": "GA",
+                    "city": "Decatur"
+                },
+                "firstName": "Betty",
+                "isLoggedIn": true
+            },
+            {
+                "lastName": "Coleman",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "HIRAM",
+                    "street": "153 LONDON LANE, HIRAM GA 30141",
+                    "postalCode": "30141"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "email": "crrepcoleman@gmail.com",
+                "uid": "0a28050e-5639-4756-86de-6564dfe50b93",
+                "church": {
+                    "name": "Grove",
+                    "stateProv": "GA",
+                    "city": "HIRAM"
+                },
+                "firstName": "Ronald",
+                "role": "rep",
+                "affiliate": {
+                    "name": "Grove",
+                    "stateProv": "GA",
+                    "city": "HIRAM"
+                },
+                "region": "us#central#central#co",
+                "stateRep": "GA",
+                "phone": "6782235129",
+                "isLoggedIn": true
+            },
+            {
+                "lastName": "SMITH",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "NEWNAN",
+                    "street": "6 TURNER ST",
+                    "postalCode": "30263"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies",
+                            "role": "rep"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies",
+                        "role": "rep"
+                    }
+                },
+                "email": "RSMITHCRREP@GMAIL.COM",
+                "uid": "bb3aa10a-0956-41ba-bcba-51e9ffd80985",
+                "church": {
+                    "name": "SouthCrest Church ",
+                    "stateProv": "GA",
+                    "city": "NEWNAN"
+                },
+                "firstName": "ROBIN",
+                "role": "rep",
+                "affiliate": {
+                    "name": "SouthCrest Church ",
+                    "stateProv": "GA",
+                    "city": "NEWNAN"
+                },
+                "region": "us#east#south#ga",
+                "stateRep": "GA",
+                "phone": "4045634444",
+                "stateLead": "GA",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Center Point ",
+                    "stateProv": "GA",
+                    "city": "Griffin"
+                },
+                "lastName": "Miller",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Fayetteville",
+                    "street": "124 Morris Drive",
+                    "postalCode": "30215"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "melvinmiller1000@comcast.net",
+                "phone": "4043452338",
+                "uid": "f0322c6a-5e1d-473b-a5e5-5180884e82f3",
+                "church": {
+                    "name": "Center Point ",
+                    "stateProv": "GA",
+                    "city": "Griffin"
+                },
+                "firstName": "Melvin",
+                "isLoggedIn": true
+            },
+            {
+                "lastName": "Grant",
+                "residence": {
+                    "stateProv": "GA ",
+                    "city": "Columbus ",
+                    "street": "2405 Amos Street",
+                    "postalCode": "31906"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies",
+                            "role": "rep"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies",
+                        "role": "rep"
+                    }
+                },
+                "email": "crreppatrick@gmail.com",
+                "uid": "20cde349-ecfe-4314-beb0-6e718d451ed3",
+                "church": {
+                    "name": "Christ Community Church ",
+                    "stateProv": "GA ",
+                    "city": "Columbus "
+                },
+                "firstName": "Patrick",
+                "role": "rep",
+                "affiliate": {
+                    "name": "Christ Community Church ",
+                    "stateProv": "Georgia ",
+                    "city": "Columbus "
+                },
+                "region": "us#east#south#ga",
+                "stateRep": "GA ",
+                "phone": "7066150514"
+            },
+            {
+                "affiliate": {
+                    "name": "Peace Baptist Church",
+                    "stateProv": "Georgia",
+                    "city": "Decatur"
+                },
+                "lastName": "Grant",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Decatur",
+                    "street": "4118 Emerald North Drive",
+                    "postalCode": "30035"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "jra1962@msn.com",
+                "phone": "",
+                "uid": "f8117575-3bf0-47de-99a0-7e87cf43ca9c",
+                "church": {
+                    "name": "Peace Baptist Church",
+                    "stateProv": "GA",
+                    "city": "Decatur"
+                },
+                "firstName": "Judi",
+                "isLoggedIn": true
+            },
+            {
+                "userAffiliates": [
+                    {
+                        "name": "Fortson Guru",
+                        "stateProv": "GA",
+                        "city": "Columbus",
+                        "value": "FEO"
+                    },
+                    {
+                        "name": "Wynnbrook",
+                        "stateProv": "GA",
+                        "city": "Columbus",
+                        "value": "CRP8"
+                    }
+                ],
+                "lastName": "Account",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Hilton Heights",
+                    "street": "1 Main St.",
+                    "postalCode": "12347"
+                },
+                "profile": true,
+                "affiliations": {
+                    "options": [
+                        {
+                            "label": "CR P8 Rallies",
+                            "role": "lead",
+                            "region": "us#east#south#ga",
+                            "value": "CRP8"
+                        },
+                        {
+                            "label": "FEO Testing",
+                            "role": "lead",
+                            "region": "us#east#south#ga",
+                            "value": "FEO"
+                        }
+                    ],
+                    "active": {
+                        "label": "FEO Testing",
+                        "role": "lead",
+                        "divisionId": "271a8cbb-15b4-4f90-ba9f-a5d348206493",
+                        "region": "us#east#south",
+                        "value": "FEO"
+                    }
+                },
+                "email": "Ttlead@gmail.com",
+                "uid": "3a9ede0a-7951-474c-9e6e-e0437613e50f",
+                "registrationSegregation": true,
+                "firstName": "TTLead",
+                "role": "lead",
+                "affiliate": {
+                    "name": "Wynnbrook",
+                    "stateProv": "GA",
+                    "city": "Columbus"
+                },
+                "username": "ttlead",
+                "region": "us#east#south",
+                "stateRep": "GA",
+                "stateLead": "GA",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "CROSSVIEW ",
+                    "stateProv": "GA",
+                    "city": "Marietta "
+                },
+                "lastName": "Lynn",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Marietta ",
+                    "street": "PO Box 674535",
+                    "postalCode": "30006"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "Kristiedoc27@yahoo.com",
+                "phone": "949338110",
+                "uid": "d76693f9-a36d-4dd5-b50b-9127b29834d5",
+                "church": {
+                    "name": "CROSSVIEW ",
+                    "stateProv": "GA",
+                    "city": "Marietta "
+                },
+                "firstName": "Kristie ",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Cross Bridge Community Church ",
+                    "stateProv": "GA",
+                    "city": "Dawsonville "
+                },
+                "lastName": "Samples ",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Dawsonville ",
+                    "street": "76 Turner Ridge Drive ",
+                    "postalCode": "30534"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "g0g0daddyo49@gmail.com",
+                "phone": "6789946851",
+                "uid": "98724152-daad-440f-90e2-922c8e4e01b7",
+                "church": {
+                    "name": "Cross Bridge Community Church ",
+                    "stateProv": "GA",
+                    "city": "Dawsonville "
+                },
+                "firstName": "Linda",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Michelle Gilder/First Baptist Church Tifton",
+                    "stateProv": "GA",
+                    "city": "TIFTON"
+                },
+                "lastName": "Gilder",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "TIFTON",
+                    "street": "404 Love Ave",
+                    "postalCode": "31794"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "Mgilder@fbctifton.org",
+                "phone": "2293260164",
+                "uid": "377557fb-4e64-4249-b388-d2e2b2ca6dda",
+                "church": {
+                    "name": "Michelle Gilder/First Baptist Church Tifton",
+                    "stateProv": "GA",
+                    "city": "TIFTON"
+                },
+                "firstName": "Michelle",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Ivan Terry Samples",
+                    "stateProv": "GA",
+                    "city": "Cross Bridge Community Church "
+                },
+                "lastName": "Samples",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Dawsonville",
+                    "street": "76 Turner Ridge Drive",
+                    "postalCode": "30534"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "its1953z@gmail.com",
+                "phone": "6788582443",
+                "uid": "7b777d4c-3712-408d-8740-0395d737ce10",
+                "church": {
+                    "name": "Ivan Terry Samples",
+                    "stateProv": "GA",
+                    "city": "Cross Bridge Community Church "
+                },
+                "firstName": "Ivan",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "City of Refuge Calhoun ",
+                    "stateProv": "GA",
+                    "city": "Calhoun "
+                },
+                "lastName": "White",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Calhoun ",
+                    "street": "106 Alton Drive ",
+                    "postalCode": "30701"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "Maia@cityofrefugecalhoun.org",
+                "phone": "7062639078",
+                "uid": "248888ec-4017-4344-ac1e-b54d061e06d2",
+                "church": {
+                    "name": "City of Refuge Calhoun ",
+                    "stateProv": "GA",
+                    "city": "Calhoun "
+                },
+                "firstName": "Maia ",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Jamie M Corley",
+                    "stateProv": "GA",
+                    "city": "Covington "
+                },
+                "lastName": "Corley",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Oxford",
+                    "street": "240 Greenwood Cr",
+                    "postalCode": "30054"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "jamie@eastridge.church",
+                "phone": "7708910125",
+                "uid": "64c653ec-9cee-432d-9efb-7927a0241b81",
+                "church": {
+                    "name": "Jamie M Corley",
+                    "stateProv": "GA",
+                    "city": "Covington "
+                },
+                "firstName": "Jamie",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Harverst Rain International Church",
+                    "stateProv": "Ga",
+                    "city": "Fairburn"
+                },
+                "lastName": "Fields",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Fayetteville",
+                    "street": "175 Forest Hall Pl",
+                    "postalCode": "30214"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "gfields34@sbcglobal.net",
+                "phone": "5103632590",
+                "uid": "b44b5451-3f94-440f-a5d8-9a156d0b6d80",
+                "church": {
+                    "name": "Harverst Rain International Church",
+                    "stateProv": "Ga",
+                    "city": "Fairburn"
+                },
+                "firstName": "Gary",
+                "isLoggedIn": true
+            },
+            {
+                "lastName": "Account",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Tim-buk-tu",
+                    "street": "123 Lost Lane",
+                    "postalCode": "31904"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "email": "fortsonguru@gmail.com",
+                "uid": "9b380f22-40e3-4fe3-8b52-2d6fa3b66217",
+                "church": {
+                    "name": "New Beginnings",
+                    "stateProv": "TT",
+                    "city": "Tim-buk-tu"
+                },
+                "firstName": "Guest",
+                "role": "guest",
+                "affiliate": {
+                    "name": "New Beginnings",
+                    "stateProv": "TT",
+                    "city": "Tim-buk-tu"
+                },
+                "region": "us#test#south#tt",
+                "phone": "(123) 456-7890",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Praise Tabernacle ",
+                    "stateProv": "GA",
+                    "city": "Powder Springs"
+                },
+                "lastName": "Ward",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Hiram ",
+                    "street": "144 Poole Bend Path",
+                    "postalCode": "30141"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "merryturnerward@gmail.com",
+                "phone": "4043122991",
+                "uid": "cdc51456-c239-4866-a2c1-a593adce0650",
+                "church": {
+                    "name": "Praise Tabernacle ",
+                    "stateProv": "GA",
+                    "city": "Powder Springs"
+                },
+                "firstName": "Merry",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Crossover ",
+                    "stateProv": "Ga",
+                    "city": "Cleveland "
+                },
+                "lastName": "Hale",
+                "residence": {
+                    "stateProv": "Ga",
+                    "city": "Gainesville ",
+                    "street": "5158 young rd",
+                    "postalCode": "30506"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "mistyoung@gmail.com",
+                "phone": "7706171077",
+                "uid": "5305f2a1-7948-426f-ab3e-f91290052318",
+                "church": {
+                    "name": "Crossover ",
+                    "stateProv": "Ga",
+                    "city": "Cleveland "
+                },
+                "firstName": "Misty",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "CrossView Church",
+                    "stateProv": "GA",
+                    "city": "Marietta"
+                },
+                "lastName": "Underwood",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "KENNESAW",
+                    "street": "2420 KIRK LANE NW",
+                    "postalCode": "30152"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "wunderwoodfence@gmail.com",
+                "phone": "7708850390",
+                "uid": "3895aa80-96ad-40b0-8595-83f9bada3518",
+                "church": {
+                    "name": "CrossView Church",
+                    "stateProv": "GA",
+                    "city": "Marietta"
+                },
+                "firstName": "Will",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Denver J Polly",
+                    "stateProv": "GA",
+                    "city": "Jasper"
+                },
+                "lastName": "Polly",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Jasper",
+                    "street": "200 villa rd unit 103 #21037",
+                    "postalCode": "30143"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "djpolly.awesome@gmail.com",
+                "phone": "7016516391",
+                "uid": "2225a16d-eb94-4d0d-a9a2-877fc4752b80",
+                "church": {
+                    "name": "Denver J Polly",
+                    "stateProv": "GA",
+                    "city": "Jasper"
+                },
+                "firstName": "Denver",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Crossbridge Community Church",
+                    "stateProv": "GA",
+                    "city": "Dawsonville"
+                },
+                "lastName": "Wood",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Cumming",
+                    "street": "4915 McCoy Circle",
+                    "postalCode": "30040"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "kaylafaith92@ymail.com",
+                "phone": "4045391886",
+                "uid": "96300530-0040-4bda-96e1-557fdf1828f9",
+                "church": {
+                    "name": "Crossbridge Community Church",
+                    "stateProv": "GA",
+                    "city": "Dawsonville"
+                },
+                "firstName": "Kayla",
+                "isLoggedIn": true
+            },
+            {
+                "lastName": "Guru",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Columbus",
+                    "street": "2304 Leah Dr",
+                    "postalCode": "31909"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "email": "fortsonguru@gmail.com",
+                "uid": "dab7ca09-95c5-4a39-8301-2683e768f181",
+                "church": {
+                    "name": "Home Church",
+                    "stateProv": "GA",
+                    "city": "Columbus"
+                },
+                "firstName": "Fortson",
+                "role": "lead",
+                "affiliate": {
+                    "name": "Home Church",
+                    "stateProv": "GA",
+                    "city": "Columbus"
+                },
+                "region": "us#east#south#ga",
+                "stateRep": "GA",
+                "phone": "7066042494",
+                "stateLead": "GA",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Riverstone ",
+                    "stateProv": "GA",
+                    "city": "Buford"
+                },
+                "lastName": "Bosi",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Flowery Branch ",
+                    "street": "5526 Mulberry Preserve Dr",
+                    "postalCode": "30542"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "bosi02@comcast.net",
+                "phone": "4046940564",
+                "uid": "5bb61d02-aa9d-485f-bb89-46aac7e0d60a",
+                "church": {
+                    "name": "Riverstone ",
+                    "stateProv": "GA",
+                    "city": "Buford"
+                },
+                "firstName": "Kevin ",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Pleasant Grove ",
+                    "stateProv": "GA",
+                    "city": "Powder Springs "
+                },
+                "lastName": "Crutchfield",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Lithia Springs",
+                    "street": "226 Oak Hill Court",
+                    "postalCode": "30122"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "regina_crutchfield@yahoo.com",
+                "phone": "6785767855",
+                "uid": "c41a7121-bfe2-43b3-8034-759da9ff60af",
+                "church": {
+                    "name": "Pleasant Grove ",
+                    "stateProv": "GA",
+                    "city": "Powder Springs "
+                },
+                "firstName": "Gina",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Relevant Church CR",
+                    "stateProv": "GA",
+                    "city": "Locust Grove"
+                },
+                "lastName": "Myers",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Covington ",
+                    "street": "230 Willow Shoals Dr",
+                    "postalCode": "30016"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "hotrod4God@gmail.com",
+                "phone": "7705085529",
+                "uid": "9f359905-3b8f-457b-87a8-5014156d144e",
+                "church": {
+                    "name": "Relevant Church CR",
+                    "stateProv": "GA",
+                    "city": "Locust Grove"
+                },
+                "firstName": "Rodney",
+                "isLoggedIn": true
+            },
+            {
+                "lastName": "Colombo",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Columbus",
+                    "street": "2304 Leah Dr",
+                    "postalCode": "31909"
+                },
+                "profile": true,
+                "affiliations": {
+                    "options": [
+                        {
+                            "label": "CR P8 Rallies",
+                            "role": "lead",
+                            "region": "us#east#south#ga",
+                            "value": "CRP8"
+                        },
+                        {
+                            "label": "FEO Testing",
+                            "role": "guest",
+                            "region": "us#test#south#tt",
+                            "value": "FEO"
+                        }
+                    ],
+                    "active": {
+                        "label": "CR P8 Rallies",
+                        "role": "lead",
+                        "region": "us#east#south",
+                        "value": "CRP8"
+                    }
+                },
+                "email": "gacrleader@gmail.com",
+                "uid": "b3f192ff-7dbf-4dae-a46d-ef7b0662f70d",
+                "firstName": "Dano",
+                "role": "guest",
+                "affiliate": {
+                    "name": "Wynnbrook Baptist Church",
+                    "stateProv": "GA",
+                    "city": "Columbus"
+                },
+                "username": "gacrleader",
+                "region": "us#east#south#ga",
+                "phone": "7066042494",
+                "stateLead": "GA",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "",
+                    "stateProv": "",
+                    "city": ""
+                },
+                "lastName": "Trandell",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Blairsville,",
+                    "street": "2899 Owltown Rd",
+                    "postalCode": "30512"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "janicectrandell@gmail.com",
+                "phone": "",
+                "uid": "5c78f480-82a6-4992-8dac-ae9b85e88833",
+                "firstName": "Janice",
+                "isLoggedIn": true
+            },
+            {
+                "lastName": "Two",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Columbus",
+                    "street": "2304 Leah Drive, 2304",
+                    "postalCode": "31909"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        },
+                        {
+                            "label": "FES Testing",
+                            "role": "guest",
+                            "region": "us#test#south#tt",
+                            "value": "FEO"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies",
+                        "role": "guest"
+                    }
+                },
+                "email": "danocolombo@gmail.com",
+                "uid": "a33445b6-b76b-4f38-82b4-d116830bc618",
+                "church": {
+                    "name": "Jonesbury Church",
+                    "stateProv": "TT",
+                    "city": "123 Main St"
+                },
+                "firstName": "Rep",
+                "role": "guest",
+                "affiliate": {
+                    "name": "Jonesbury Church",
+                    "stateProv": "TT",
+                    "city": "123 Main St"
+                },
+                "region": "us#east#south#tt",
+                "phone": "7066042494",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "",
+                    "stateProv": "",
+                    "city": ""
+                },
+                "lastName": "Director",
+                "residence": {
+                    "stateProv": "TN",
+                    "city": "Henderson",
+                    "street": "12l Wagon Wheel Way",
+                    "postalCode": "37075"
+                },
+                "profile": true,
+                "affiliations": {
+                    "options": [
+                        {
+                            "label": "FEO Testing",
+                            "role": "director",
+                            "region": "us#east#south",
+                            "value": "FEO"
+                        },
+                        {
+                            "label": "CR P8 Rallies",
+                            "role": "director",
+                            "region": "us#east#south",
+                            "value": "CRP8"
+                        }
+                    ],
+                    "active": {
+                        "label": "FEO Testing",
+                        "role": "director",
+                        "region": "us#east#south",
+                        "value": "FEO"
+                    }
+                },
+                "username": "ttsedir",
+                "region": "us#east#south",
+                "email": "danocolombo@gmail.com",
+                "phone": "",
+                "uid": "1129a60b-a1f9-469e-a32e-4ba71ad3ca44",
+                "firstName": "SE"
+            },
+            {
+                "affiliate": {
+                    "name": "Crossview Church",
+                    "stateProv": "GA",
+                    "city": "Marietta"
+                },
+                "lastName": "Bishop",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Kennesaw ",
+                    "street": "298 Castleair Dr. NE",
+                    "postalCode": "30144"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "Trishabishop72@hotmail.com",
+                "phone": "7708208790",
+                "uid": "3fd7c949-0fa7-4b80-8de9-6a91beede22d",
+                "church": {
+                    "name": "Crossview Church",
+                    "stateProv": "GA",
+                    "city": "Marietta"
+                },
+                "firstName": "Trisha",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Carlos Cruz",
+                    "stateProv": "GA",
+                    "city": "Lawrenceville"
+                },
+                "lastName": "Cruz",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Lawrenceville",
+                    "street": "2542 Pepper CT NW",
+                    "postalCode": "30044"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "carlosjcruz@yahoo.com",
+                "phone": "9162141831",
+                "uid": "ad0179c4-0740-4f4f-9d92-6d1610c0acf4",
+                "church": {
+                    "name": "Carlos Cruz",
+                    "stateProv": "GA",
+                    "city": "Lawrenceville"
+                },
+                "firstName": "Carlos",
+                "isLoggedIn": true
+            },
+            {
+                "lastName": "Cuthbertson",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Ellenwood",
+                    "street": "5660 Hearn Road",
+                    "postalCode": "30294"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies",
+                            "role": "rep"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies",
+                        "role": "rep"
+                    }
+                },
+                "email": "mcuthbertsoncrrep@gmail.com",
+                "uid": "0a6e42c6-1b80-464b-a78b-fbddd6d9e5f2",
+                "church": {
+                    "name": "Community Bible Church",
+                    "stateProv": "GA",
+                    "city": "Stockbridge"
+                },
+                "firstName": "Melissa",
+                "role": "rep",
+                "affiliate": {
+                    "name": "Community Bible Church",
+                    "stateProv": "GA",
+                    "city": "Stockbridge"
+                },
+                "region": "us#east#south#ga",
+                "stateRep": "GA",
+                "phone": "4042164200",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Crossview Church ",
+                    "stateProv": "GA",
+                    "city": "Marietta"
+                },
+                "lastName": "Sahawneh",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Marietta",
+                    "street": "1792 Whitehall Ct.NE",
+                    "postalCode": "30066"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "bsahawneh@yahoo.com",
+                "phone": "7708206755",
+                "uid": "bdba535e-f0e6-4e6b-b119-2a74d6e6509c",
+                "church": {
+                    "name": "Crossview Church ",
+                    "stateProv": "GA",
+                    "city": "Marietta"
+                },
+                "firstName": "Basem",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Bryan",
+                    "stateProv": "AL",
+                    "city": "Phenix City"
+                },
+                "lastName": "Donaldson",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Columbus",
+                    "street": "5857 Windsor dr",
+                    "postalCode": "31909"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "bryan.gastaterep@gmail.com",
+                "phone": "7064055162",
+                "uid": "67b183fe-5b38-4778-a170-8f9e3c86299c",
+                "church": {
+                    "name": "Bryan",
+                    "stateProv": "AL",
+                    "city": "Phenix City"
+                },
+                "firstName": "Bryan",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "CrossView Church",
+                    "stateProv": "GA",
+                    "city": "Marietta"
+                },
+                "lastName": "Underwood",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "KENNESAW",
+                    "street": "2420 KIRK LANE NW",
+                    "postalCode": "30152"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "jnunderwood07@gmail.com",
+                "phone": "6783535668",
+                "uid": "c40a33a7-056c-4eaa-89ef-e2955c725d04",
+                "church": {
+                    "name": "CrossView Church",
+                    "stateProv": "GA",
+                    "city": "Marietta"
+                },
+                "firstName": "Jenny",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "First Baptist Church ",
+                    "stateProv": "GA",
+                    "city": "Tifton "
+                },
+                "lastName": "Taylor",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Tifton",
+                    "street": "2617 Davis Ave",
+                    "postalCode": "31794"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "joytaylor123@hotmail.com",
+                "phone": "2294027608",
+                "uid": "1560fa91-73a2-4152-b8da-e1e0d385ccc7",
+                "church": {
+                    "name": "First Baptist Church ",
+                    "stateProv": "GA",
+                    "city": "Tifton "
+                },
+                "firstName": "Joy",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Calvery chapel",
+                    "stateProv": "Ga",
+                    "city": "Blue Ridge"
+                },
+                "lastName": "Dean",
+                "residence": {
+                    "stateProv": "Ga",
+                    "city": "Ellijay",
+                    "street": "989 New Liberty rd",
+                    "postalCode": "30536"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "jayrinplus2@gmail.com",
+                "phone": "4232406988",
+                "uid": "60021ec5-b45b-4d79-a85c-f34b5d199be2",
+                "church": {
+                    "name": "Calvery chapel",
+                    "stateProv": "Ga",
+                    "city": "Blue Ridge"
+                },
+                "firstName": "Jaime",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Michelle S Shadix",
+                    "stateProv": "GA",
+                    "city": "Lithia Springs"
+                },
+                "lastName": "Shadix",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Lithia Springs",
+                    "street": "8877 Northview Dr",
+                    "postalCode": "30122"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "gemini34blue@yahoo.com",
+                "phone": "6785317670",
+                "uid": "036313b3-5527-44de-9f30-6ceae07e6a34",
+                "church": {
+                    "name": "Michelle S Shadix",
+                    "stateProv": "GA",
+                    "city": "Lithia Springs"
+                },
+                "firstName": "Michelle",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Calvery Chapel",
+                    "stateProv": "GA",
+                    "city": "Blue Ridge "
+                },
+                "lastName": "Juengel",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Jasper ",
+                    "street": "278 Mountain Boulevard ",
+                    "postalCode": "30143"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "merrigailj@hotmail.com",
+                "phone": "7703567851",
+                "uid": "ac1f529d-226a-42d4-b38c-6d5bde6b3bf8",
+                "church": {
+                    "name": "Calvery Chapel",
+                    "stateProv": "GA",
+                    "city": "Blue Ridge "
+                },
+                "firstName": "Merrigail",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "House of Hope Atlanta ",
+                    "stateProv": "Georgia ",
+                    "city": "Decatur"
+                },
+                "lastName": "Williams ",
+                "residence": {
+                    "stateProv": "GA ",
+                    "city": "Ellenwood ",
+                    "street": "3948 Compton Pointe ",
+                    "postalCode": "30294"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "blwilliams678@yahoo.com",
+                "phone": "4048383833",
+                "uid": "7a0f68af-7c5d-4b0b-b48d-3d7f2dbb2e3b",
+                "church": {
+                    "name": "House of Hope Atlanta ",
+                    "stateProv": "GA ",
+                    "city": "Decatur"
+                },
+                "firstName": "Betty",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Liberty Baptist church ",
+                    "stateProv": "GA",
+                    "city": "Chatsworth "
+                },
+                "lastName": "Young",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Chatsworth ",
+                    "street": "1349 Norton Bridge Rd",
+                    "postalCode": "30705"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "scottyoung15@yahoo.com",
+                "phone": "7062292487",
+                "uid": "6b9397f5-dad1-40b7-9002-d984f104f115",
+                "church": {
+                    "name": "Liberty Baptist church ",
+                    "stateProv": "GA",
+                    "city": "Chatsworth "
+                },
+                "firstName": "Scott ",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "1st Baptist Church Woodstock",
+                    "stateProv": "GA",
+                    "city": "Woodstock"
+                },
+                "lastName": "Lex",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Roswell",
+                    "street": "11925 Wexford Club Drive",
+                    "postalCode": "30075"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "carrie@earthellc.com",
+                "phone": "4042188305",
+                "uid": "1781d898-7831-46b2-99fa-16548e9d1cb2",
+                "church": {
+                    "name": "1st Baptist Church Woodstock",
+                    "stateProv": "GA",
+                    "city": "Woodstock"
+                },
+                "firstName": "Jim",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Liberty Bapt ",
+                    "stateProv": "GA",
+                    "city": "Chatsworth "
+                },
+                "lastName": "Parker",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Rocky Face ",
+                    "street": "132 Lafayette Road "
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "dannydalton@yahoo.com",
+                "phone": "7066185200",
+                "uid": "cb552da6-7209-479d-a20d-4006d77454cb",
+                "church": {
+                    "name": "Liberty Bapt ",
+                    "stateProv": "GA",
+                    "city": "Chatsworth "
+                },
+                "firstName": "Danny",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Bonnie Bishop",
+                    "stateProv": "GA",
+                    "city": "Ellijay"
+                },
+                "lastName": "Bishop",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Blue Ridge",
+                    "street": "297 Mineral Springs Rd, 210",
+                    "postalCode": "30513"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "babyblues3430@gmail.com",
+                "phone": "7708734498",
+                "uid": "5105bd23-2af7-466f-bf4d-5f7a68bb710c",
+                "church": {
+                    "name": "Bonnie Bishop",
+                    "stateProv": "GA",
+                    "city": "Ellijay"
+                },
+                "firstName": "Bonnie",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "",
+                    "stateProv": "",
+                    "city": ""
+                },
+                "lastName": "Support",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Central City",
+                    "street": "123 Main St.",
+                    "postalCode": "31904"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "username": "apple",
+                "email": "fortsonguru@gmail.com",
+                "phone": "(706) 604-2494",
+                "uid": "b52fd1e3-f710-4916-bcb5-fb76232f930f",
+                "church": {
+                    "name": "",
+                    "stateProv": "",
+                    "city": ""
+                },
+                "firstName": "Apple",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Crossroads Church",
+                    "stateProv": "GA",
+                    "city": "Douglasville"
+                },
+                "lastName": "Ruffner",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Dallas",
+                    "street": "352 Graham Road",
+                    "postalCode": "30132"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "advancedtax2@yahoo.com",
+                "phone": "7703779451",
+                "uid": "49043162-8b2d-4b9e-92ed-cc7b558b1ba9",
+                "church": {
+                    "name": "Crossroads Church",
+                    "stateProv": "GA",
+                    "city": "Douglasville"
+                },
+                "firstName": "Shelly",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Calvary Chapel",
+                    "stateProv": "GA",
+                    "city": "Blue Ridge"
+                },
+                "lastName": "Ramirez",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Blue Ridge",
+                    "street": "365 Meadow Creek Way ",
+                    "postalCode": "30513"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "alldone75@gmail.com",
+                "phone": "",
+                "uid": "b6249603-4847-4e76-81b8-022f49e4009d",
+                "church": {
+                    "name": "Calvary Chapel",
+                    "stateProv": "GA",
+                    "city": "Blue Ridge"
+                },
+                "firstName": "Kathleen",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Calvary Chapel ",
+                    "stateProv": "GA",
+                    "city": "Blue Ridge "
+                },
+                "lastName": "Smiley",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Mccaysville ",
+                    "street": "60 Second St",
+                    "postalCode": "30555"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "brandi30513@gmail.com",
+                "phone": "7068516741",
+                "uid": "8cf01ad5-8ee0-4fc2-8a0f-d0a16482ab0c",
+                "church": {
+                    "name": "Calvary Chapel ",
+                    "stateProv": "GA",
+                    "city": "Blue Ridge "
+                },
+                "firstName": "Brandi",
+                "isLoggedIn": true
+            },
+            {
+                "lastName": "Crouch",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Kennesaw",
+                    "street": "1223 Irma Ct NW",
+                    "postalCode": "30152"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies",
+                            "role": "rep"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies",
+                        "role": "rep"
+                    }
+                },
+                "email": "dean.crouch@gmail.com",
+                "uid": "fcdd975a-7d15-440e-bb1c-65ebfd2bf87c",
+                "church": {
+                    "name": "Burnt Hickory Baptist",
+                    "stateProv": "GA",
+                    "city": "Powder Springs"
+                },
+                "firstName": "Dean",
+                "role": "rep",
+                "affiliate": {
+                    "name": "Burnt Hickory Baptist",
+                    "stateProv": "GA",
+                    "city": "Powder Springs"
+                },
+                "region": "us#east#south#ga",
+                "stateRep": "GA",
+                "phone": "6786429267",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Crossview church ",
+                    "stateProv": "GA",
+                    "city": "Marietta "
+                },
+                "lastName": "Lynn",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Marietta ",
+                    "street": "PO Box 674535",
+                    "postalCode": "30006"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "kristiedoc27@yahoo.com",
+                "phone": "9493381107",
+                "uid": "f532354d-4960-4e22-80b7-7d82446c93ae",
+                "church": {
+                    "name": "Crossview church ",
+                    "stateProv": "GA",
+                    "city": "Marietta "
+                },
+                "firstName": "Kristie ",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Calvary Chapel Blue Ridge",
+                    "stateProv": "Georgia",
+                    "city": "Blue Ridge "
+                },
+                "lastName": "Minton",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Blue Ridge ",
+                    "street": "344 Sky High Drive ",
+                    "postalCode": "30513"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "ddmtn546@cs.com",
+                "phone": "3053046269",
+                "uid": "50e1442f-0e69-4de3-aa34-777792ebe92d",
+                "church": {
+                    "name": "Calvary Chapel Blue Ridge",
+                    "stateProv": "GA",
+                    "city": "Blue Ridge "
+                },
+                "firstName": "Nancy",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "N/A",
+                    "stateProv": "GA",
+                    "city": "Dallas"
+                },
+                "lastName": "Dillard",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Dallas",
+                    "street": "110 Heritage Club Ln",
+                    "postalCode": "30132"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "dm2dillard@yahoo.com",
+                "phone": "6788521031",
+                "uid": "5c101671-fa88-4135-8b16-aa548246f3cd",
+                "church": {
+                    "name": "N/A",
+                    "stateProv": "GA",
+                    "city": "Dallas"
+                },
+                "firstName": "Darryl",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Celebrate  Recovery Kennesaw Influencers Church ",
+                    "stateProv": "GA",
+                    "city": "Kennesaw "
+                },
+                "lastName": "Chivers",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Cartersville ",
+                    "street": "17 Earl Drive SE",
+                    "postalCode": "30121"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "jacksondeborah135@gmail.com",
+                "phone": "7064097008",
+                "uid": "b2da350f-4159-477e-8938-d02f2327f8d6",
+                "church": {
+                    "name": "Celebrate  Recovery Kennesaw Influencers Church ",
+                    "stateProv": "GA",
+                    "city": "Kennesaw "
+                },
+                "firstName": "Deborah ",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "First Baptist",
+                    "stateProv": "GA",
+                    "city": "Wazoo"
+                },
+                "lastName": "Colombo",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Wazoo",
+                    "street": "123 Jones Blvd",
+                    "postalCode": "31999"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "dtcolombo@gmail.com",
+                "phone": "7066042494",
+                "uid": "e3255941-4e87-4323-b22a-5f36b284f1b7",
+                "church": {
+                    "name": "First Baptist",
+                    "stateProv": "GA",
+                    "city": "Wazoo"
+                },
+                "firstName": "Dant",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Influencers Church",
+                    "stateProv": "GA",
+                    "city": "Kennesaw"
+                },
+                "lastName": "Stricklin",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Kennesaw",
+                    "street": "3355 George Busbee Pkwy NW Apt 1610, # 1610",
+                    "postalCode": "30144"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "loopyatl@yahoo.com",
+                "phone": "4705530684",
+                "uid": "96da7d88-68d0-4d18-96c8-8c488482baeb",
+                "church": {
+                    "name": "Influencers Church",
+                    "stateProv": "GA",
+                    "city": "Kennesaw"
+                },
+                "firstName": "Lisa",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Crossview Church",
+                    "stateProv": "GA",
+                    "city": "Marietta"
+                },
+                "lastName": "Baucom",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Marietta",
+                    "street": "1695 Whitlock Rd",
+                    "postalCode": "30066"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "cherylbaucom@yahoo.com",
+                "phone": "7703669378",
+                "uid": "72d0282d-9ad6-4a4d-a327-e0148a492a10",
+                "church": {
+                    "name": "Crossview Church",
+                    "stateProv": "GA",
+                    "city": "Marietta"
+                },
+                "firstName": "Cheryl",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Crossroads Church ",
+                    "stateProv": "GA",
+                    "city": "Douglasville "
+                },
+                "lastName": "Scott",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Douglasville",
+                    "street": "2797 E Whisper Dr",
+                    "postalCode": "30135"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "Stephscott.cr@gmail.com",
+                "phone": "7705728768",
+                "uid": "b1262a4f-242a-44f4-b1e4-97b049194231",
+                "church": {
+                    "name": "Crossroads Church ",
+                    "stateProv": "GA",
+                    "city": "Douglasville "
+                },
+                "firstName": "Stephanie",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Marilyn Alyse Walton",
+                    "stateProv": "AL",
+                    "city": "Atlanta"
+                },
+                "lastName": "C",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "United States",
+                    "street": "4605 Wonder Valley Trl",
+                    "postalCode": "30034"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "alyse1958@gmail.com",
+                "phone": "6784498700",
+                "uid": "8f26d47d-4fe9-4373-b38a-504bb6387ef8",
+                "church": {
+                    "name": "Marilyn Alyse Walton",
+                    "stateProv": "AL",
+                    "city": "Atlanta"
+                },
+                "firstName": "Collin",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Celebrate Recovery Jasper",
+                    "stateProv": "GA",
+                    "city": "Jasper"
+                },
+                "lastName": "McLaughlin",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Jasper",
+                    "street": "617 Crippled Oak Trail ",
+                    "postalCode": "30143"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "erintaylormclaughlin@gmail.com",
+                "phone": "7065022724",
+                "uid": "c4737b01-29bb-46e8-87fc-0c7a3dcf7c05",
+                "church": {
+                    "name": "Celebrate Recovery Jasper",
+                    "stateProv": "GA",
+                    "city": "Jasper"
+                },
+                "firstName": "Erin",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Home Church",
+                    "stateProv": "GA",
+                    "city": "Columbus"
+                },
+                "lastName": "Hood",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Columbus",
+                    "street": "122",
+                    "postalCode": "31909"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        },
+                        {
+                            "label": "FES Testing",
+                            "role": "guest",
+                            "region": "us#test#south#tt",
+                            "value": "FEO"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "danocolombo@gmail.com",
+                "phone": "1111111111",
+                "uid": "90a8fe45-01ab-4758-842b-263a99bc116b",
+                "church": {
+                    "name": "Home Church",
+                    "stateProv": "GA",
+                    "city": "Columbus"
+                },
+                "firstName": "Robin",
+                "isLoggedIn": true
+            },
+            {
+                "lastName": "Colombo",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Columbus",
+                    "street": "2304 Leah Drive",
+                    "postalCode": "31909"
+                },
+                "profile": true,
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        },
+                        {
+                            "label": "FES Testing",
+                            "role": "guest",
+                            "region": "us#test#south#tt",
+                            "value": "FEO"
+                        }
+                    ],
+                    "active": {
+                        "label": "CR P8 Rallies",
+                        "divisionId": "271a8cbb-15b4-4f90-ba9f-a5d348206493",
+                        "region": "us#east#south",
+                        "value": "CRP8"
+                    }
+                },
+                "email": "danocolombo@gmail.com",
+                "uid": "2500b1de-1b8a-4943-9d7f-384783d90400",
+                "firstName": "Dano",
+                "role": "rep",
+                "affiliate": {
+                    "name": "Wynnbrook Church",
+                    "stateProv": "GA",
+                    "city": "Columbus"
+                },
+                "username": "dcolombo",
+                "region": "us#east#south#ga",
+                "stateRep": "GA",
+                "phone": "7066042494",
+                "isLoggedIn": true
+            },
+            {
+                "lastName": "Profile",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Wallow",
+                    "street": "1 Main St.",
+                    "postalCode": "23232"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "email": "Dcolombo@fortson.guru",
+                "uid": "dbe6aee2-89ba-4f5d-8727-22181ef4b440",
+                "church": {
+                    "name": "",
+                    "stateProv": "",
+                    "city": ""
+                },
+                "firstName": "No",
+                "role": "guest",
+                "affiliate": {
+                    "name": "",
+                    "stateProv": "",
+                    "city": ""
+                },
+                "region": "us#test#south#tt",
+                "phone": "(234) 444-4444",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "CFUMC",
+                    "stateProv": "GA",
+                    "city": "Cordele"
+                },
+                "lastName": "Johnson",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Vienna",
+                    "street": "141 Coley Crossing Rd",
+                    "postalCode": "31092"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "tyler9523@hotmail.com",
+                "phone": "2293224665",
+                "uid": "014ac9ef-e9b9-41c4-be12-fddd20b0f9fc",
+                "church": {
+                    "name": "CFUMC",
+                    "stateProv": "GA",
+                    "city": "Cordele"
+                },
+                "firstName": "Clayton",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "City of Refuge Calhoun",
+                    "stateProv": "GA",
+                    "city": "Calhoun "
+                },
+                "lastName": "White ",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Calhoun",
+                    "street": "106 Alton Dr.",
+                    "postalCode": "30701"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "Ccrmaiawhite@gmail.com",
+                "phone": "7062639078",
+                "uid": "934ab103-6b4e-45f7-82d4-5da089b4fd02",
+                "church": {
+                    "name": "City of Refuge Calhoun",
+                    "stateProv": "GA",
+                    "city": "Calhoun "
+                },
+                "firstName": "Maia ",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "NorthPointe ",
+                    "stateProv": "GA",
+                    "city": "Addairsville "
+                },
+                "lastName": "wildman",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Calhoun",
+                    "street": "350 Erica Lane SE",
+                    "postalCode": "30701"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "bwild_in_china@hotmail.com",
+                "phone": "8453816844",
+                "uid": "8922765c-f9fe-47bf-87a7-2c4c20dc2c46",
+                "church": {
+                    "name": "NorthPointe ",
+                    "stateProv": "GA",
+                    "city": "Addairsville "
+                },
+                "firstName": "William",
+                "isLoggedIn": true
+            },
+            {
+                "affiliate": {
+                    "name": "Burt Hickory Baptist Church",
+                    "stateProv": "GA",
+                    "city": "Powder Springs "
+                },
+                "lastName": "Carson",
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Kennesaw ",
+                    "street": "2100 Ellison Lakes Dr",
+                    "postalCode": "30152"
+                },
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "Monicacarson1422@gmail.com",
+                "phone": "4048398876",
+                "uid": "95f436b2-6cde-4d8c-8797-03d8b2a44262",
+                "church": {
+                    "name": "Burt Hickory Baptist Church",
+                    "stateProv": "GA",
+                    "city": "Powder Springs "
+                },
+                "firstName": "Monica ",
+                "isLoggedIn": true
+            }
+        ],
+        "Count": 83,
+        "ScannedCount": 83
+    }
+}
