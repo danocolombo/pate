@@ -53,18 +53,7 @@ export function getToday() {
     const target = yr + '-' + mn + '-' + da;
     return target;
 }
-export function printObject(label, target) {
-    // const util = require('util');
-    const util = require('util');
-    console.log(
-        label,
-        ':  \n' +
-            util.inspect(target, {
-                showHidden: false,
-                depth: null,
-            })
-    );
-}
+
 export const CONFIG = {
     headers: {
         'Content-type': 'application/json; charset=UTF-8',
@@ -169,4 +158,7 @@ export async function desc_sort_raw(a, b) {
 }
 export async function asc_sort_raw(a, b) {
     return a.eventDate - b.eventDate;
+}
+export function printObject(label, target) {
+    console.log(label, JSON.stringify(target, null, 2));
 }

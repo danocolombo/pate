@@ -147,6 +147,62 @@ export const getDivision = /* GraphQL */ `
         }
     }
 `;
+export const getDivisionEventsByDateStatus = /* GraphQL */ `
+    query MyQuery($id: ID!, $eq: String!, $ge: String!) {
+        getDivision(id: $id) {
+            events(filter: { status: { eq: $eq }, eventDate: { ge: $ge } }) {
+                items {
+                    id
+                    name
+                    eventDate
+                    startTime
+                    endTime
+                    status
+                    plannedCount
+                    actualCount
+                    mealPlannedCount
+                    mealActualCount
+                    location {
+                        id
+                        street
+                        city
+                        stateProv
+                        postalCode
+                        latitude
+                        longitude
+                    }
+                    meal {
+                        id
+                        deadline
+                        startTime
+                        cost
+                        message
+                        plannedCount
+                        actualCount
+                    }
+                    contact {
+                        id
+                        firstName
+                        lastName
+                        street
+                        city
+                        stateProv
+                        postalCode
+                        email
+                        phone
+                    }
+                    coordinator {
+                        id
+                        sub
+                        firstName
+                        lastName
+                        username
+                    }
+                }
+            }
+        }
+    }
+`;
 export const getDivisionEvents = /* GraphQL */ `
     query MyQuery($divId: ID!, $startDate: String) {
         getDivision(id: $divId) {
