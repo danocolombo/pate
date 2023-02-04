@@ -3,6 +3,43 @@
     "body": {
         "Items": [
             {
+                "residence": {
+                    "stateProv": "GA",
+                    "city": "Wallow",
+                    "street": "226 ABC",
+                    "postalCode": "30000"
+                },
+                "affiliate": {
+                    "name": "Pleasant Grove ",
+                    "stateProv": "GA",
+                    "city": "Powder Springs "
+                },
+                "lastName": "Man",
+                "affiliations": {
+                    "options": [
+                        {
+                            "value": "CRP8",
+                            "label": "CR P8 Rallies"
+                        }
+                    ],
+                    "active": {
+                        "value": "CRP8",
+                        "label": "CR P8 Rallies"
+                    }
+                },
+                "region": "us#east#south#ga",
+                "email": "manlyman@email.com",
+                "phone": "6784275184",
+                "uid": "abcdefgh-a755-4f3c-b559-d0b012345678",
+                "church": {
+                    "name": "Pleasant Grove ",
+                    "stateProv": "GA",
+                    "city": "Powder Springs "
+                },
+                "firstName": "Manly",
+                "isLoggedIn": true
+            },
+            {
                 "affiliate": {
                     "name": "Pleasant Grove ",
                     "stateProv": "GA",
