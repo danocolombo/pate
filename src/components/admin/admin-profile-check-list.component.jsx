@@ -35,6 +35,7 @@ const ProfileDetails = ({ user, pate, clearTmpUser }) => {
                 variables: { input: userDef },
             });
             console.log('APCLC:37-->results:\n', results);
+            //* now create the residence entry
         } catch (error) {
             console.log('APCLC:39-->error:', error);
         }
