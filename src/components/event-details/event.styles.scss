@@ -8,13 +8,17 @@
     background-color: lightgray;
     color: black;
 }
+.event-details_test{
+    font-size: 3rem;
+
+}
 .event-details__graphic-wrapper {
-    width: 80vw;
+    width: 90vw;
     padding-top: 10px;
     text-align: center;
 }
 .event-details__graphic-image {
-    max-width: 80vw;
+    max-width: 60vw;
     text-align: center;
     // padding-left: 5vw;
 }
@@ -24,7 +28,7 @@
     text-align: center;
 }
 .event-details__church-name {
-    font-size: 1em;
+    font-size: 2em;
     // padding-left: 5vw;
 }
 // .event-details__church-street {
@@ -174,7 +178,7 @@
 //Iphone Series
 @media only screen and (min-width: 320px) and (max-width: 767px) {
     .event-details__church-name {
-        font-size: 1.3em;
+        font-size: 2.3em;
     }
 }
 //IPAD Series

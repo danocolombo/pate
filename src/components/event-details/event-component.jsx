@@ -104,6 +104,7 @@ const EventDetails = ({ theEvent }) => {
                     ) : null}
                 </div>
                 <div className='event-details__church-info'>
+                    <div className='event-details_test'>Testing</div>
                     <div className='event-details__church-name'>
                         {displayThis?.name}
                     </div>
