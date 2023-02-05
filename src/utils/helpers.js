@@ -173,7 +173,7 @@ export function prettyDate(strDate) {
     // console.log(formattedDate); // March 4th, 2023
 }
 export function prettyTime(strTime) {
-    var time = '12:30:00-05:00';
+    // var time = '12:30:00-05:00';
     var hours = parseInt(strTime.substr(0, 2), 10);
     var minutes = strTime.substr(3, 2);
     var suffix = hours >= 12 ? 'pm' : 'am';

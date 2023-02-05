@@ -87,20 +87,22 @@ const EventDetails = ({ theEvent }) => {
             <div className='event-details__wrapper'>
                 <div className='event-details__graphic-wrapper'>
                     {displayThis?.graphic !== 'tbd' ? (
-                        <>
+                        <div>
                             {displayThis?.graphic && (
                                 <div>
                                     <img
                                         src='https://eor-images-202214132-staging.s3.amazonaws.com/public/events/b70c0a49-dfa0-4671-b48d-38d3dcb1de9c/NorthwayChurch.png'
                                         alt='Event '
-                                        style={{
-                                            width: '100%',
-                                            height: 'auto',
-                                        }}
+                                        className='event-details__graphic-image'
+                                        // style={{
+                                        //     width: '75vw',
+
+                                        //     height: 'auto',
+                                        // }}
                                     />
                                 </div>
                             )}
-                        </>
+                        </div>
                     ) : null}
                 </div>
                 <div className='event-details__church-info'>
@@ -116,12 +118,16 @@ const EventDetails = ({ theEvent }) => {
                         {displayThis?.location?.postalCode}
                     </div>
                 </div>
-                <div className='event-details__event-date'>
-                    {prettyDate(displayThis.eventDate)}
-                </div>
-                <div className='event-details__event-time'>
-                    {prettyTime(displayThis.startTime)}
-                </div>
+                {displayThis.eventDate && (
+                    <div className='event-details__event-date'>
+                        {prettyDate(displayThis.eventDate)}
+                    </div>
+                )}
+                {displayThis.startTime && (
+                    <div className='event-details__event-time'>
+                        {prettyTime(displayThis.startTime)}
+                    </div>
+                )}
                 <div className='event-details__event-message'>
                     {displayThis?.message}
                 </div>

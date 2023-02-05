@@ -45,6 +45,7 @@ const UserProfile = ({
             }
             clearIt();
             async function getIt() {
+                //todo-gql   get registration to edit
                 fetch(
                     'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/registrations',
                     {
@@ -79,6 +80,7 @@ const UserProfile = ({
         // redux pate.rally
         try {
             async function fetchEvent() {
+                //todo-gql  get event AGAIN!!!
                 fetch(
                     'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/events',
                     {
