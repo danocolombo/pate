@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
+import { API, graphqlOperation } from 'aws-amplify';
+import * as queries from '../../pateGraphql/queries';
+
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -11,7 +14,7 @@ import { MainFooter } from '../../components/footers/main-footer';
 import Spinner from '../../components/spinner/Spinner';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import { loadRally } from '../../redux/pate/pate.actions';
-//class Events extends React.Component {
+import { printObject } from '../../utils/helpers';
 const Events = ({
     currentUser,
     match,
@@ -20,42 +23,41 @@ const Events = ({
     pateSystem,
     registrations,
 }) => {
-    const [plan, setplan] = useState([]);
+    const [plan, setPlan] = useState({});
 
     useEffect(() => {
         const id = match.params.id;
 
         async function fetchEvent() {
-            fetch(
-                'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/events',
-                {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        operation: 'getEvent',
-                        payload: {
-                            uid: id,
-                        },
-                    }),
-                    headers: {
-                        'Content-type': 'application/json; charset=UTF-8',
-                    },
-                }
-            )
-                .then((response) => response.json())
-                .then((data) => {
-                    // this.setState({ plan: data });
-                    setplan(data);
-                    loadRally(data);
+            const variables = {
+                id: id,
+            };
+            API.graphql(graphqlOperation(queries.getEvent, variables))
+                .then((theEvent) => {
+                    console.log('1.');
+                    if (theEvent?.data?.getEvent) {
+                        console.log('2.');
+                        printObject(
+                            'EP:69-->event: ',
+                            theEvent?.data?.getEvent
+                        );
+                        console.log('3.');
+                        setPlan(theEvent.data.getEvent);
+
+                        console.log('4.');
+                    } else {
+                        console.log('EP:73--> NO EVENTS TO DISPLAY');
+                    }
+                })
+                .catch((error) => {
+                    printObject(
+                        'EP:78--> error getting division events from graphql',
+                        error
+                    );
                 });
         }
         fetchEvent();
     }, []);
-
-    //something like this to check registrations if ths one...
-    // posts: state.posts.map(post =>
-    //     post._id === payload.id ? { ...post, likes: payload.likes } : post
-    //   ),
-
     return plan === null ? (
         <Spinner />
     ) : (
@@ -65,7 +67,7 @@ const Events = ({
                 <EventDetails theEvent={plan} />
                 <div>
                     {currentUser?.isLoggedIn === true ? (
-                        <Link to={`/registration/${plan?.body?.Items[0]?.uid}`}>
+                        <Link to={`/registration/${plan?.id}`}>
                             <button className='registerbutton'>
                                 REGISTER NOW
                             </button>
@@ -95,5 +97,3 @@ export default compose(
     withRouter,
     connect(mapStateToProps, mapDispatchToProps)
 )(Events);
-
-//export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

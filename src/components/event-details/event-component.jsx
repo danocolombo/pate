@@ -1,33 +1,41 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { AmplifyS3Image } from '@aws-amplify/ui-react';
+import { AWS, Storage } from 'aws-amplify';
 import { Link } from 'react-router-dom';
 import './event.styles.scss';
+import { printObject } from '../../utils/helpers';
 //event: { uid, eventDate, startTime, endTime, location },
 const EventDetails = ({ theEvent }) => {
-    const util = require('util');
-
+    // const util = require('util');
+    const [eventGraphicFile, setEventGraphicFile] = useState();
     //get data ready to display
-    const displayThis = theEvent?.body?.Items[0];
+    const displayThis = theEvent;
+
     //-------------------------------------------------------
     // if the graphic file name is available and not tbd.png
     // add the correct path to display from s3
     //-------------------------------------------------------
-    if (displayThis?.graphic) {
-        const testValue = displayThis?.graphic;
-        if (testValue !== 'tbd.png') {
-            if (testValue.length > 0) {
-                //have a value that is not tbd.png
-                //update path and inject eventID
-                let newFileValue =
-                    'events/' + displayThis.uid + displayThis.graphic;
-                displayThis.graphic = newFileValue;
+    useEffect(() => {
+        if (displayThis?.graphic) {
+            printObject('EC:17-->graphic:\n', displayThis.graphic);
+            async function getS3File() {
+                const eventGraphic = await Storage.get(
+                    `events/${displayThis.id}/${displayThis.graphic}`,
+                    {
+                        level: 'public',
+                    }
+                );
+                setEventGraphicFile(
+                    'https://eor-images-202214132-staging.s3.amazonaws.com/public/events/b70c0a49-dfa0-4671-b48d-38d3dcb1de9c/NorthwayChurch.png'
+                );
+                setEventGraphicFile(eventGraphic);
+                // const tmp = `s3://eor-images-202214132-staging/public/events/b70c0a49-dfa0-4671-b48d-38d3dcb1de9c/${displayThis.graphic}`;
+                // setEventGraphicFile(tmp);
             }
+            getS3File();
         }
-    }
-    // console.log(
-    //     'component.dislayThis: \n' +
-    //         util.inspect(displayThis, { showHidden: false, depth: null })
-    // );
+    }, []);
+    useEffect(() => {}, []);
     const displayDate = () => {
         // format the date and return it
         //the new formatted date coming in will look like this...
@@ -81,10 +89,16 @@ const EventDetails = ({ theEvent }) => {
                     {displayThis?.graphic !== 'tbd' ? (
                         <>
                             {displayThis?.graphic && (
-                                <AmplifyS3Image
-                                    style={{ '--width': '100%' }}
-                                    imgKey={displayThis?.graphic}
-                                />
+                                <div>
+                                    <img
+                                        src='https://eor-images-202214132-staging.s3.amazonaws.com/public/events/b70c0a49-dfa0-4671-b48d-38d3dcb1de9c/NorthwayChurch.png'
+                                        alt='Event '
+                                        style={{
+                                            width: '100%',
+                                            height: 'auto',
+                                        }}
+                                    />
+                                </div>
                             )}
                         </>
                     ) : null}
@@ -101,9 +115,11 @@ const EventDetails = ({ theEvent }) => {
                         {displayThis?.postalCode}
                     </div>
                 </div>
-                <div className='event-details__event-date'>{displayDate()}</div>
+                <div className='event-details__event-date'>
+                    {displayThis.eventDate}
+                </div>
                 <div className='event-details__event-time'>
-                    {displayTimes()}
+                    {displayThis.startTime}
                 </div>
                 <div className='event-details__event-message'>
                     {displayThis?.message}

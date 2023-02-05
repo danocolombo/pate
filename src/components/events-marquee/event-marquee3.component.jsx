@@ -1,7 +1,7 @@
 import React from 'react';
 import StyledLink from '../../components/custom-link/custom-link-yellow.component';
 import './events-marquee.styles.scss';
-import { printObject } from '../../utils/helpers';
+import { printObject, prettyDate } from '../../utils/helpers';
 const EventMarquee3 = ({ event }) => {
     printObject('EM3C:8-->event:\n', event);
     const mo = {
@@ -34,10 +34,7 @@ const EventMarquee3 = ({ event }) => {
             <div className='events-marquee-component__events-box'>
                 <div className='events-marquee-component__event-box'>
                     <div className='events-marquee-component__event-date'>
-                        <h3>
-                            {month2Display(event.eventDate)}&nbsp;
-                            {day2Display(event.eventDate)}
-                        </h3>
+                        <h3>{prettyDate(event.eventDate)}</h3>
                     </div>
                     <div className='events-marquee-component__event-church-name'>
                         {event.name}

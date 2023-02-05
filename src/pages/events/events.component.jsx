@@ -76,7 +76,7 @@ class Events extends React.Component {
             })
             .catch((error) => {
                 printObject(
-                    'L:69--> error getting division events from graphql',
+                    'L--> error getting division events from graphql',
                     error
                 );
             });
