@@ -3,7 +3,7 @@ import { AmplifyS3Image } from '@aws-amplify/ui-react';
 import { AWS, Storage } from 'aws-amplify';
 import { Link } from 'react-router-dom';
 import './event.styles.scss';
-import { printObject } from '../../utils/helpers';
+import { printObject, prettyDate, prettyTime } from '../../utils/helpers';
 //event: { uid, eventDate, startTime, endTime, location },
 const EventDetails = ({ theEvent }) => {
     // const util = require('util');
@@ -104,23 +104,23 @@ const EventDetails = ({ theEvent }) => {
                     ) : null}
                 </div>
                 <div className='event-details__church-info'>
-                    <div className='event-details_test'>Testing</div>
-                    <div className='event-details__church-name'>
+                    <div className='event-details_church-name'>
                         {displayThis?.name}
                     </div>
-                    <div className='event-details__church-street'>
-                        {displayThis?.street}
+                    <div className='event-details__church-address'>
+                        {displayThis?.location?.street}
                     </div>
-                    <div className='event-details__city-state-postal'>
-                        {displayThis?.city},{displayThis?.stateProv}&nbsp;
-                        {displayThis?.postalCode}
+                    <div className='event-details__church-address'>
+                        {displayThis?.location?.city},
+                        {displayThis?.location?.stateProv}&nbsp;
+                        {displayThis?.location?.postalCode}
                     </div>
                 </div>
                 <div className='event-details__event-date'>
-                    {displayThis.eventDate}
+                    {prettyDate(displayThis.eventDate)}
                 </div>
                 <div className='event-details__event-time'>
-                    {displayThis.startTime}
+                    {prettyTime(displayThis.startTime)}
                 </div>
                 <div className='event-details__event-message'>
                     {displayThis?.message}
