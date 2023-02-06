@@ -4,7 +4,6 @@ import { printObject } from '../utils/helpers';
 import { wait } from '@testing-library/react';
 
 export async function createNewGQLProfile(payload) {
-    printObject('PGP:4-->payload:\n', payload);
     try {
         const residenceInput = {
             id: payload.residence.id,
@@ -40,23 +39,32 @@ export async function createNewGQLProfile(payload) {
         }
 
         const ResResults = await API.graphql({
-            query: mutations.createResidence,
+            query: mutations.createNewProfileResidence,
             variables: { input: residenceInput },
         });
         await wait2Seconds();
         const UseResults = await API.graphql({
-            query: mutations.createUser,
+            query: mutations.createNewProfileUser,
             variables: { input: userInput },
         });
 
         await wait2Seconds();
         const AffResults = await API.graphql({
-            query: mutations.createAffiliation,
+            query: mutations.createNewProfileAffiliation,
             variables: { input: affiliationInput },
         });
+
+        const newCreatedProfile = {
+            ...UseResults.data.createUser,
+            residence: ResResults.data.createResidence,
+            registrations: { items: [] },
+            affiliations: AffResults.data.createAffiliation,
+            events: { items: [] },
+        };
+
         let returnValue = {
             status: 200,
-            data: { res: ResResults, use: UseResults, aff: AffResults },
+            data: newCreatedProfile,
         };
         return returnValue;
     } catch (e) {

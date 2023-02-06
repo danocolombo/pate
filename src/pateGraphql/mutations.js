@@ -447,6 +447,20 @@ export const createAffiliation = /* GraphQL */ `
         }
     }
 `;
+export const createNewProfileAffiliation = /* GraphQL */ `
+    mutation CreateAffiliation(
+        $input: CreateAffiliationInput!
+        $condition: ModelAffiliationConditionInput
+    ) {
+        createAffiliation(input: $input, condition: $condition) {
+            id
+            role
+            status
+            divisionAffiliationsId
+            userAffiliationsId
+        }
+    }
+`;
 export const updateAffiliation = /* GraphQL */ `
     mutation UpdateAffiliation(
         $input: UpdateAffiliationInput!
@@ -2177,6 +2191,22 @@ export const createResidence = /* GraphQL */ `
         }
     }
 `;
+export const createNewProfileResidence = /* GraphQL */ `
+    mutation CreateResidence(
+        $input: CreateResidenceInput!
+        $condition: ModelResidenceConditionInput
+    ) {
+        createResidence(input: $input, condition: $condition) {
+            id
+            street
+            city
+            stateProv
+            postalCode
+            latitude
+            longitude
+        }
+    }
+`;
 export const updateResidence = /* GraphQL */ `
     mutation UpdateResidence(
         $input: UpdateResidenceInput!
@@ -2355,6 +2385,28 @@ export const createUser = /* GraphQL */ `
             }
             createdAt
             updatedAt
+            divisionDefaultUsersId
+            residenceResidentsId
+        }
+    }
+`;
+export const createNewProfileUser = /* GraphQL */ `
+    mutation CreateUser(
+        $input: CreateUserInput!
+        $condition: ModelUserConditionInput
+    ) {
+        createUser(input: $input, condition: $condition) {
+            id
+            sub
+            firstName
+            lastName
+            username
+            email
+            phone
+            defaultDivision {
+                id
+                code
+            }
             divisionDefaultUsersId
             residenceResidentsId
         }

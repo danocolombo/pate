@@ -110,7 +110,8 @@ const SignIn = ({
 
             let currentUserInfo = {};
             let currentSession = {};
-            let gProfile = {};
+            let graphQLProfile = {};
+            let newProfile = {};
             let dProfile = {};
             await Auth.currentUserInfo().then((u) => {
                 currentUserInfo = u;
@@ -127,11 +128,9 @@ const SignIn = ({
                 currentUserInfo?.attributes.sub
             );
             if (gqlProfile.status === 200) {
-                gProfile = gqlProfile.data;
+                graphQLProfile = gqlProfile.data;
                 printObject('SIP:130-->gProfile:\n', gqlProfile.data);
-            }
-            let DANO = true;
-            if (DANO) {
+            } else {
                 //todo-gql make DDB profile call optional
                 //      MAKE THIS THE ELSE ABOVE, ONLY IF NO GRAPHQL
                 //  *******************************************
@@ -155,8 +154,7 @@ const SignIn = ({
                     latitude: '',
                     longitude: '',
                 };
-                printObject('SIP:158-->currentUserInfo:\n', currentUserInfo);
-                printObject('SIP:159-->currentSessionInfo:\n', currentSession);
+
                 const userObject = {
                     id: userUniqueID,
                     sub: currentUserInfo?.attributes.sub,
@@ -177,36 +175,37 @@ const SignIn = ({
                         'fffedde6-5d5a-46f0-a3ac-882a350edc64',
                     userAffiliationsId: userUniqueID,
                 };
-                printObject('SIP:161-->residenceObject:\n', residenceObject);
-                printObject('SIP:162-->userObject:\n', userObject);
-                printObject(
-                    'SIP:163-->affiliationObject:\n',
-                    affiliationObject
-                );
+
                 const multiMutate = {
                     residence: residenceObject,
                     user: userObject,
                     affiliation: affiliationObject,
                 };
                 const creationResults = await createNewGQLProfile(multiMutate);
-                printObject('creationResults:\n', creationResults);
+                graphQLProfile = creationResults.data;
+                // console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&');
+                // printObject('SIP:195-->creationResults:\n', creationResults);
+                // console.log('################################');
+                console.log('DONE CREATING NEW USER');
             }
+            //      SET CURRENT USER = graphqQLProfile
+            await setCurrentUser(graphQLProfile);
 
-            const userIsRegistered = await saveUser(
-                currentUserInfo,
-                currentSession
-            );
+            // const userIsRegistered = await saveUser(
+            //     currentUserInfo,
+            //     currentSession
+            // );
             await getRegistrations(currentUserInfo?.attributes.sub);
 
             //console.log("SIP:123-->currentUserInfo:", currentUserInfo);
             //generic cleanup
             await clearTempRegistration();
             //let user know if they need to complete registration
-            console.log('REGISTERED: ' + userIsRegistered);
-            !userIsRegistered ? console.log('NOPE') : console.log('YEP');
 
             clearSpinner();
-            userIsRegistered ? history.push('/') : history.push('/profile');
+            //todo-gql  NEED TO DETERMINE WHAT THIS LOOKS LIKE FOR NEW USER
+            // userIsRegistered ? history.push('/') : history.push('/profile');
+            history.push('/');
         } catch (error) {
             switch (error) {
                 case 'No current user':
@@ -272,6 +271,9 @@ const SignIn = ({
             }
         }
         await getUserReg();
+    };
+    const composeUser = async (graphqlProfile, userInfo, userSession) => {
+        await setCurrentUser(graphqlProfile);
     };
     const saveUser = async (userInfo, userSession) => {
         //get p8user data...
