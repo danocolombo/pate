@@ -13,7 +13,7 @@ import Modal from '../../components/modals/wrapper.modal';
 import ResetPassword from '../../components/modals/auth/reset-password.modal';
 import Modal2 from '../../components/modals/wrapper.modal';
 import CheckEmailModal from '../../components/modals/auth/check-email.modal';
-import { printObject } from '../../utils/helpers';
+import { printObject, createAWSUniqueID } from '../../utils/helpers';
 //----- actions needed -------
 import {
     loadRegistrations,
@@ -22,7 +22,9 @@ import {
 import { setCurrentUser } from '../../redux/user/user.actions';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import { setAlert } from '../../redux/alert/alert.action';
+import { createNewGQLProfile } from '../../pateGraphql/pateGraphql.provider';
 import './signin.styles.scss';
+import { getGQLProfile, getDDBProfile } from '../../providers/profile.provider';
 
 const SignIn = ({
     onSignIn,
@@ -119,8 +121,76 @@ const SignIn = ({
             // we will get true if user is registered or false if not
 
             //    **********************************************
-            //    Now get the profile information from graphql
+            //    get the profile information from graphql
             //    **********************************************
+            const gqlProfile = await getGQLProfile(
+                currentUserInfo?.attributes.sub
+            );
+            if (gqlProfile.status === 200) {
+                gProfile = gqlProfile.data;
+                printObject('SIP:130-->gProfile:\n', gqlProfile.data);
+            }
+            let DANO = true;
+            if (DANO) {
+                //todo-gql make DDB profile call optional
+                //      MAKE THIS THE ELSE ABOVE, ONLY IF NO GRAPHQL
+                //  *******************************************
+                //      get Dynamo Profile - if necessary
+                //  *******************************************
+                const oldProfile = await getDDBProfile(
+                    currentUserInfo?.attributes?.sub
+                );
+                printObject('SIP:140-->oldProfile:\n', oldProfile);
+                //===========================================
+                let residenceUniqueID = createAWSUniqueID();
+                let userUniqueID = createAWSUniqueID();
+                let affiliationUniqueID = createAWSUniqueID();
+                // create residence object
+                const residenceObject = {
+                    id: residenceUniqueID,
+                    street: oldProfile?.data?.residence?.street || '',
+                    city: oldProfile?.data?.residence?.city || '',
+                    stateProv: oldProfile?.data?.residence?.stateProv || '',
+                    postalCode: oldProfile?.data?.residence?.postalCode,
+                    latitude: '',
+                    longitude: '',
+                };
+                printObject('SIP:158-->currentUserInfo:\n', currentUserInfo);
+                printObject('SIP:159-->currentSessionInfo:\n', currentSession);
+                const userObject = {
+                    id: userUniqueID,
+                    sub: currentUserInfo?.attributes.sub,
+                    username: currentUserInfo.username,
+                    firstName: oldProfile?.data?.firstName || '',
+                    lastName: oldProfile?.data?.lastName || '',
+                    email: oldProfile?.data?.email || '',
+                    phone: oldProfile?.data?.phone || '',
+                    divisionDefaultUsersId:
+                        'fffedde6-5d5a-46f0-a3ac-882a350edc64',
+                    residenceResidentsId: residenceUniqueID,
+                };
+                const affiliationObject = {
+                    id: affiliationUniqueID,
+                    role: oldProfile?.data?.role,
+                    status: 'active',
+                    divisionAffiliationsId:
+                        'fffedde6-5d5a-46f0-a3ac-882a350edc64',
+                    userAffiliationsId: userUniqueID,
+                };
+                printObject('SIP:161-->residenceObject:\n', residenceObject);
+                printObject('SIP:162-->userObject:\n', userObject);
+                printObject(
+                    'SIP:163-->affiliationObject:\n',
+                    affiliationObject
+                );
+                const multiMutate = {
+                    residence: residenceObject,
+                    user: userObject,
+                    affiliation: affiliationObject,
+                };
+                const creationResults = await createNewGQLProfile(multiMutate);
+                printObject('creationResults:\n', creationResults);
+            }
 
             const userIsRegistered = await saveUser(
                 currentUserInfo,
@@ -237,25 +307,6 @@ const SignIn = ({
                 .then((response) => response.json())
                 .then((data) => {
                     dbUser = data?.body?.Items[0];
-                    const data1 = {
-                        sub: dbUser?.uid,
-                        firstName: dbUser?.firstName || '',
-                        lastName: dbUser?.lastName || '',
-                        email: dbUser?.phone || '',
-                        phone: dbUser?.phone || '',
-                    };
-                    const data2 = {
-                        street: dbUser?.residence?.street || '',
-                        city: dbUser?.residence?.city || '',
-                        stateProv: dbUser?.residence?.stateProv || '',
-                        postalCode: dbUser?.residence?.postalCode,
-                    };
-                    const data3 = {
-                        role: dbUser?.role,
-                    };
-                    printObject('data1:\n', data1);
-                    printObject('data2:\n', data2);
-                    printObject('data3:\n', data3);
                 });
         } catch (error) {
             clearSpinner();

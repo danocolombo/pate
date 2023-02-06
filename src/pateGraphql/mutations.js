@@ -2360,6 +2360,67 @@ export const createUser = /* GraphQL */ `
         }
     }
 `;
+export const createNewProfile = /* GraphQL */ `
+    mutation MultiMutation($input: CreateNewProfile!) {
+        createResidence(
+            input: {
+                id: $id
+                street: $street
+                city: $city
+                stateProv: $stateProv
+                postalCode: $postalCode
+                latitude: $latitude
+                longitude: $longitude
+            }
+        ) {
+            id
+            street
+            city
+            stateProv
+            postalCode
+            latitude
+            longitude
+        }
+        createUser(
+            input: {
+                id: $id1
+                sub: $sub
+                username: $username
+                firstName: $firstName
+                lastName: $lastName
+                email: $email
+                phone: $phone
+                divisionDefaultUsersId: $divisionDefaultUsersId
+                residenceResidentsId: $residenceResidentsId
+            }
+        ) {
+            id
+            sub
+            username
+            firstName
+            lastName
+            email
+            phone
+            divisionDefaultUsersId
+            residenceResidentsId
+        }
+        createAffiliation(
+            input: {
+                id: $id2
+                role: $role
+                status: $status
+                divisionAffiliationsId: $divisionAffiliationsId
+                userAffiliationsId: $userAffiliationsId
+            }
+        ) {
+            id
+            role
+            status
+            divisionAffiliationsId
+            userAffiliationsId
+        }
+    }
+`;
 export const createGQLProfile = /* GraphQL */ `
     mutation CreateUserProfile(
         $input: CreateProfileInput!

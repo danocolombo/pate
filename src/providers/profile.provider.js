@@ -13,7 +13,19 @@ export const getGQLProfile = async (sub) => {
         const gqlProfile = await API.graphql(
             graphqlOperation(queries.getProfileBySub, variables)
         );
-        return { status: 200, data: gqlProfile };
+        let returnValue = {};
+        if (gqlProfile?.data?.listUsers?.items[0]) {
+            returnValue = {
+                status: 200,
+                data: gqlProfile?.data?.listUsers?.items[0],
+            };
+        } else {
+            returnValue = {
+                status: 404,
+                data: {},
+            };
+        }
+        return returnValue;
     } catch (error) {
         return { status: 400, data: error, line: 28 };
     }
@@ -21,58 +33,36 @@ export const getGQLProfile = async (sub) => {
 
 export const getDDBProfile = async (sub) => {
     try {
-        async function getDBData() {
-            const response = await fetch(
-                'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/users',
-                {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        operation: 'getUser',
-                        payload: {
-                            uid: sub,
-                        },
-                    }),
-                    headers: {
-                        'Content-type': 'application/json; charset=UTF-8',
+        let returnValue = {};
+        await fetch(
+            'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/users',
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    operation: 'getUser',
+                    payload: {
+                        uid: sub,
                     },
+                }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            }
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                if (data?.body?.Items[0]) {
+                    returnValue = { status: 200, data: data?.body?.Items[0] };
+                } else {
+                    returnValue = { status: 404, data: {} };
                 }
-            );
-            return response;
-        }
-        const values = await getDBData();
-        printObject('PP:43=->values:\n', values);
-        //* define userData
-        /*          
-            sub,
-            firstName,
-            lastName,
-            email,
-            phone
-        */
-        return { status: 200, response: values };
-        // const data1 = {
-        //     sub: response.uid,
-        //     firstName: response.firstName || '',
-        //     lastName: response.lastName || '',
-        //     email: response.email || '',
-        //     phone: response.phone || '',
-        // };
-        // const data2 = {
-        //     street: response?.residence?.street || '',
-        //     city: response?.residence?.city || '',
-        //     stateProv: response?.residence?.stateProv || '',
-        //     postalCode: response?.residence?.postalCode || '',
-        // };
-        // const data3 = {
-        //     role: response?.role || '',
-        // };
-        // return { status: 200, data1: data1, data2: data2, data3: data3 };
+            });
+        return returnValue;
     } catch (error) {
         return {
             status: 400,
             data: error,
-            line: 54,
-            endPoint: process.env.REACT_APP_PATE_API,
+            line: 84,
         };
     }
 };

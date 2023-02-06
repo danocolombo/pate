@@ -181,3 +181,26 @@ export function prettyTime(strTime) {
     let returnValue = hours + ':' + minutes + suffix;
     return returnValue;
 }
+export function createAWSUniqueID() {
+    // this returns a unique value for use as AWS ID
+    // example:  eca1dda7-f6d3-4b0c-8c5d-716da1cafaa8
+    function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+    }
+    return (
+        s4() +
+        s4() +
+        '-' +
+        s4() +
+        '-' +
+        s4() +
+        '-' +
+        s4() +
+        '-' +
+        s4() +
+        s4() +
+        s4()
+    );
+}
