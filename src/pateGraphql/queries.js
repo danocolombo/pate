@@ -262,6 +262,62 @@ export const getDivisionEvents = /* GraphQL */ `
         }
     }
 `;
+export const getAllDivisionEvents = /* GraphQL */ `
+    query MyQuery($divId: ID!) {
+        getDivision(id: $divId) {
+            code
+            events(sortDirection: ASC) {
+                items {
+                    id
+                    name
+                    eventCompKey
+                    eventDate
+                    startTime
+                    endTime
+                    status
+                    message
+                    graphic
+                    plannedCount
+                    actualCount
+                    mealPlannedCount
+                    mealActualCount
+                    meal {
+                        id
+                        message
+                        deadline
+                        cost
+                        startTime
+                        plannedCount
+                        actualCount
+                    }
+                    location {
+                        id
+                        street
+                        city
+                        stateProv
+                        postalCode
+                        latitude
+                        longitude
+                    }
+                    contact {
+                        id
+                        firstName
+                        lastName
+                        phone
+                        email
+                    }
+                    coordinator {
+                        id
+                        firstName
+                        lastName
+                        email
+                        phone
+                    }
+                }
+            }
+        }
+    }
+`;
 export const listDivisions = /* GraphQL */ `
     query ListDivisions(
         $filter: ModelDivisionFilterInput
@@ -472,6 +528,7 @@ export const getProfileBySub = /* GraphQL */ `
                         id
                         role
                         status
+                        divisionAffiliationsId
                     }
                 }
                 defaultDivision {

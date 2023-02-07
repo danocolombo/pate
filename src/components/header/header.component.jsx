@@ -60,7 +60,7 @@ const Header = ({
                     {currentUser?.isLoggedIn ? (
                         <>
                             {' '}
-                            {currentUser?.login === 'guru' ? (
+                            {currentUser?.username === 'guru' ? (
                                 <div className='header__nav-item'>
                                     <Link
                                         to='/admin'
@@ -73,7 +73,9 @@ const Header = ({
                                     </Link>
                                 </div>
                             ) : null}
-                            {currentUser?.stateRep || currentUser?.stateLead ? (
+                            {currentUser?.role === 'rep' ||
+                            currentUser?.role === 'lead' ||
+                            currentUser?.role === 'director' ? (
                                 <div className='header__nav-item'>
                                     <Link
                                         to='/serve'

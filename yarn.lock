@@ -7364,6 +7364,11 @@
     "no-case" "^3.0.4"
     "tslib" "^2.0.3"
 
+"dot-env@^0.0.1":
+  "integrity" "sha512-SajHtzm3v7yjMH8DW9xY+4i7Zv/cN3aMtLVy0mRMuZu8L9qRCR7CNqcl4KBbG27e5Up4BpSlEyPXXLNbSAe2DQ=="
+  "resolved" "https://registry.npmjs.org/dot-env/-/dot-env-0.0.1.tgz"
+  "version" "0.0.1"
+
 "dot-prop@^5.2.0":
   "integrity" "sha512-QM8q3zDe58hqUqjraQOmzZ1LIH9SWQJTlEKCH4kJ2oQvLZk7RbQXvtDM2XEq3fwkV9CCvvH4LA0AV+ogFsBM2Q=="
   "resolved" "https://registry.npmjs.org/dot-prop/-/dot-prop-5.3.0.tgz"

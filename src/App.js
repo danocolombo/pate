@@ -34,7 +34,7 @@ import Leroy from './pages/junkyard/junkyard';
 //AMPLIFY INTEGRATION
 //----------------------
 // import { withAuthenticator } from '@aws-amplify/ui-react';
-
+require('dotenv').config();
 function App() {
     return (
         <>

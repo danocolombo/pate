@@ -131,8 +131,6 @@ const SignIn = ({
                 graphQLProfile = gqlProfile.data;
                 printObject('SIP:130-->gProfile:\n', gqlProfile.data);
             } else {
-                //todo-gql make DDB profile call optional
-                //      MAKE THIS THE ELSE ABOVE, ONLY IF NO GRAPHQL
                 //  *******************************************
                 //      get Dynamo Profile - if necessary
                 //  *******************************************
@@ -188,9 +186,32 @@ const SignIn = ({
                 // console.log('################################');
                 console.log('DONE CREATING NEW USER');
             }
+            //      DETERMINE USER ROLE FOR CLIENT
+            async function setUserRoleValue() {
+                const thisAffiliationId =
+                    'fffedde6-5d5a-46f0-a3ac-882a350edc64';
+                const p8RallyAffiliation =
+                    graphQLProfile.affiliations.items.filter(
+                        (a) => a.divisionAffiliationsId === thisAffiliationId
+                    );
+                if (p8RallyAffiliation) {
+                    let role = '';
+                    if (p8RallyAffiliation[0].status === 'active') {
+                        // use the affiliation role
+                        role = p8RallyAffiliation[0].role;
+                    } else {
+                        // set as guest
+                        role = 'guest';
+                    }
+                    graphQLProfile = { ...graphQLProfile, role: role };
+                }
+                console.log('thisAffiliationId:', thisAffiliationId);
+                console.log('p8RallyAffiliation:', p8RallyAffiliation);
+            }
+            setUserRoleValue();
             //      SET CURRENT USER = graphqQLProfile
+            graphQLProfile = { ...graphQLProfile, isLoggedIn: true };
             await setCurrentUser(graphQLProfile);
-
             // const userIsRegistered = await saveUser(
             //     currentUserInfo,
             //     currentSession
