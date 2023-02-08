@@ -34,7 +34,8 @@ const CreateProfiles = () => {
                 let loaded = gData.find((gd) => gd.sub === ddb.uid);
                 if (loaded) {
                     console.log('DONE: ', ddb.firstName);
-                    let tmp = { ...ddb, gqlProfile: true };
+
+                    let tmp = { ...ddb, gqlProfile: true, gd: loaded };
                     newArray.push(tmp);
                 } else {
                     newArray.push(ddb);

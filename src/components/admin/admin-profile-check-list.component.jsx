@@ -8,90 +8,71 @@ import { compose } from 'redux';
 import { API } from 'aws-amplify';
 import * as mutations from '../../graphql/mutations';
 import './admin-registered-users.style.scss';
-import { printObject } from '../../utils/helpers';
+import { createNewGQLProfile } from '../../pateGraphql/pateGraphql.provider';
+import { updateLegacyAsMigrated } from '../../providers/profile.provider';
+import { printObject, createAWSUniqueID } from '../../utils/helpers';
 const ProfileDetails = ({ user, pate, clearTmpUser }) => {
-    async function stall(ms) {
-        return new Promise((resolve) => {
-            setTimeout(resolve, ms);
-        });
-    }
     const handleClick = async () => {
         console.log('Clicked: ', user.firstName);
         printObject('APCLC:14==>DDBuser:\n', user);
-
-        try {
-            //*     create the residence entry
-            // first check if there is any residence to add...
-            let residence = false;
-            if (user?.residence?.street.length > 0) {
-                residence = true;
-            } else if (user?.residence?.city.length > 0) {
-                residence = true;
-            } else if (user?.residence?.stateProv.length > 0) {
-                residence = true;
-            } else if (user?.residence?.postalCode.length > 0) {
-                residence = true;
-            } else if (user?.residence?.latitude?.length > 0) {
-                residence = true;
-            } else if (user?.residence?.longitude?.length > 0) {
-                residence = true;
-            }
-            let residenceId = '';
-            if (residence === true) {
-                const resDef = {
-                    street: user?.residence?.street || '',
-                    city: user?.residence?.city || '',
-                    stateProv: user?.residence?.stateProv || '',
-                    postalCode: parseInt(user?.residence?.postalCode) || null,
-                };
-                printObject('APCLC:25==>resDef:\n', resDef);
-
-                const resResults = await API.graphql({
-                    query: mutations.createResidence,
-                    variables: { input: resDef },
-                });
-                console.log('APCLC:48-->resResults:\n', resResults);
-                residenceId = resResults.data.createResidence.id;
-                //      STALL 1 second to prevent throttling
-                await stall(1000);
-            }
-            //      createUser
-            const userDef = {
-                sub: user.uid,
-                username: user?.username || '',
-                firstName: user?.firstName || '',
-                lastName: user?.lastName || '',
-                email: user?.email || '',
-                phone: user?.phone || '',
-                residenceResidentsId: residenceId,
-                divisionDefaultUsersId: 'fffedde6-5d5a-46f0-a3ac-882a350edc64',
-            };
-            printObject('APCLC:62==>userDef:\n', userDef);
-            const userResults = await API.graphql({
-                query: mutations.createUser,
-                variables: { input: userDef },
-            });
-            console.log('APCLC:68-->userResults:\n', userResults);
-            const userRefId = userResults.data.createUser.id;
-            //      STALL 1 second to prevent throttling
-            await stall(3000);
-            //      createAffiliation
-            const affDef = {
-                role: user?.role || 'guest',
-                status: 'active',
-                userAffiliationsId: userRefId,
-                divisionAffiliationsId: 'fffedde6-5d5a-46f0-a3ac-882a350edc64',
-            };
-            printObject('APCLC:77==>affDef:\n', affDef);
-            const affResults = await API.graphql({
-                query: mutations.createAffiliation,
-                variables: { input: affDef },
-            });
-            console.log('APCLC:83-->affResults:\n', affResults);
-        } catch (error) {
-            console.log('APCLC:85-->error:', error);
+        let DANO = false;
+        if (DANO) {
+            return;
         }
+        //------------------------------------------
+        // need to determine the role and status for
+        //  CRP8 from Affiliations.options
+        //------------------------------------------
+        let derivedRole = '';
+        if (user?.role) {
+            derivedRole = user.role;
+        } else {
+            derivedRole = 'guest';
+        }
+        //===========================================
+        let residenceUniqueID = createAWSUniqueID();
+        let userUniqueID = createAWSUniqueID();
+        let affiliationUniqueID = createAWSUniqueID();
+        // create residence object
+        const residenceObject = {
+            id: residenceUniqueID,
+            street: user.residence?.street || '',
+            city: user.residence?.city || '',
+            stateProv: user.residence?.stateProv || '',
+            postalCode: user.residence?.postalCode,
+            latitude: '',
+            longitude: '',
+        };
+        const userObject = {
+            id: userUniqueID,
+            sub: user.uid,
+            username: user.username || '',
+            firstName: user.firstName || '',
+            lastName: user?.lastName || '',
+            email: user?.email || '',
+            phone: user?.phone || '',
+            divisionDefaultUsersId: 'fffedde6-5d5a-46f0-a3ac-882a350edc64',
+            residenceResidentsId: residenceUniqueID,
+        };
+        const affiliationObject = {
+            id: affiliationUniqueID,
+            role: derivedRole,
+            status: 'active',
+            divisionAffiliationsId: 'fffedde6-5d5a-46f0-a3ac-882a350edc64',
+            userAffiliationsId: userUniqueID,
+        };
+        const multiMutate = {
+            residence: residenceObject,
+            user: userObject,
+            affiliation: affiliationObject,
+        };
+        const creationResults = await createNewGQLProfile(multiMutate);
+        printObject('APCLC:70==>creationResults:\n', creationResults);
+        let newFinalizedProfile = creationResults.data;
+        await updateLegacyAsMigrated(userObject.sub, userObject.id);
+        printObject('APCLC:73-->resultant profile:\n', multiMutate);
     };
+
     useEffect(() => {}, []);
     return (
         <>
