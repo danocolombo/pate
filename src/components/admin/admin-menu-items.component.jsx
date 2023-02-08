@@ -45,6 +45,16 @@ const AdminMenu = () => {
                 <div className='admin-component__row-center'>
                     <div className='admin-component__link-wrapper'>
                         <Link
+                            to='/administer/migrateEvents'
+                            className='admin-component__option-link'
+                        >
+                            Migrate Events
+                        </Link>
+                    </div>
+                </div>
+                <div className='admin-component__row-center'>
+                    <div className='admin-component__link-wrapper'>
+                        <Link
                             to='/administer/createProfiles'
                             className='admin-component__option-link'
                         >
