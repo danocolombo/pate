@@ -23,20 +23,18 @@ const UserProfile = ({
     clearSpinner,
 }) => {
     const history = useHistory();
-    const [
-        isCompleteProfileModalVisible,
-        setIsCompleteProfileModalVisible,
-    ] = useState(false);
+    const [isCompleteProfileModalVisible, setIsCompleteProfileModalVisible] =
+        useState(false);
     useEffect(() => {
         if (!currentUser.isLoggedIn) {
             history.push('/');
         }
-        if (!currentUser?.residence?.city) {
+        if (!currentUser?.residence) {
             setIsCompleteProfileModalVisible(true);
         } else {
             setIsCompleteProfileModalVisible(false);
         }
-        getRegistrations();
+        // getRegistrations();
     }, []);
     //=======================================
     // get the latest registration updates
@@ -86,7 +84,7 @@ const UserProfile = ({
                 {/*<PersonalProfile />*/}
                 {/*<div className='profile-page__'>YOUR REGISTRATIONS</div>*/}
 
-                <UserRegistrationOverview />
+                {/* <UserRegistrationOverview /> */}
             </div>
             <MainFooter />
             <ModalWrapper isOpened={isCompleteProfileModalVisible}>

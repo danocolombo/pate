@@ -8,5 +8,5 @@
     "amplify/backend/amplify-meta.json": true,
     "amplify/backend/awscloudformation": true
   },
-  "window.zoomLevel": 2
+  "window.zoomLevel": 1.7
 }

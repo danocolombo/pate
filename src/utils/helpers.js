@@ -182,6 +182,10 @@ export async function asc_sort_raw(a, b) {
 export function printObject(label, target) {
     console.log(label, JSON.stringify(target, null, 2));
 }
+export async function AWSTimetoLegacyTime(awsTime) {
+    const simplifiedTime = awsTime.split(':').slice(0, 2).join('');
+    return simplifiedTime;
+}
 export function prettyDate(strDate) {
     //const dateStr = '2023-03-04';
     const date = new Date(strDate);

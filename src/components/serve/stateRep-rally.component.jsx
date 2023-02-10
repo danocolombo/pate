@@ -1,28 +1,27 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { prettyDate } from '../../utils/helpers';
 import './serve.styles.scss';
 const StateRepRally = ({ rally }) => {
     const dateToDisplay = () => {
-        if (rally.eventDate === '30000101') {
-            return 'TBD';
-        }
-        let em = parseInt(rally.eventDate.substring(4, 6));
-        let ed = parseInt(rally.eventDate.substring(6, 8));
-        let eventDate = em + '/' + ed;
-        return eventDate;
+        return rally.eventDate;
+        //return eventDate;
     };
     return (
         <div className='serve-component__rally-list-item'>
             <div className='serve-component__link-wrapper'>
                 <Link
-                    to={`/serveevent/${rally.uid}`}
+                    to={`/serveevent/${rally.id}`}
                     className='serve-component__rally-link'
                 >
                     <div className='serve-component__rally-date'>
-                        {dateToDisplay()}
+                        {prettyDate(rally.eventDate)}
+                    </div>
+                    <div className='serve-component__rally-name'>
+                        {rally.name}
                     </div>
                     <div className='serve-component__rally-location'>
-                        {rally.name}, {rally.city}
+                        {rally.location.city}, {rally.location.stateProv}
                     </div>
                 </Link>
             </div>

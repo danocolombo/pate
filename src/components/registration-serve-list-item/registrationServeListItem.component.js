@@ -11,7 +11,7 @@ const RegistrationItem = ({ regItem, eventID }) => {
                         {regItem.registrar.lastName}
                     </div>
                     <div className='registration-list-item__numbers'>
-                        {regItem.attendeeCount} /{regItem?.mealCount}
+                        {regItem.attendanceCount} /{regItem?.mealCount}
                     </div>
                 </div>
             </Link>

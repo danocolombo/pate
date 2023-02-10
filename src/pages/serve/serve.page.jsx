@@ -41,14 +41,21 @@ const Serve = ({
         if (!currentUser?.isLoggedIn) history.push('/');
         //get the usersRallies
         async function reps() {
-            getMyRallies();
+            getRepRallies();
         }
         reps();
 
-        //if current user is a state lead, get state rallies
-        if (currentUser?.stateLead) {
-            getStateRallies();
+        if (currentUser.role === 'lead') {
+            async function leads() {
+                getLeadRallies();
+            }
+            leads();
         }
+
+        // //if current user is a state lead, get state rallies
+        // if (currentUser?.stateLead) {
+        //     getStateRallies();
+        // }
     }, []);
 
     useEffect(() => {
@@ -83,10 +90,78 @@ const Serve = ({
                     );
                 });
         }
-        getDivisionEvents();
+        //getDivisionEvents();
     }, []);
     useEffect(() => {}, [pateSystem.showSpinner]);
-
+    const getRepRallies = async () => {
+        // =======================
+        // get all Events for current division for user.
+        //0ebefcdf-9fd2-4702-a1e7-76bcf90d9b68 = currentUser.id
+        const variables = {
+            divisionId: 'fffedde6-5d5a-46f0-a3ac-882a350edc64',
+            coordinatorId: currentUser.id,
+        };
+        API.graphql(graphqlOperation(queries.getRepRallies, variables))
+            .then((repRallies) => {
+                if (
+                    repRallies?.data?.listDivisions?.items[0].events.items
+                        .length > 0
+                ) {
+                    printObject(
+                        'SP:102-->repRallies: ',
+                        repRallies?.data?.listDivisions?.items[0].events.items
+                    );
+                    loadRallies(
+                        repRallies?.data?.listDivisions?.items[0].events.items
+                    );
+                } else {
+                    console.log('SP:107--> NO EVENTS TO DISPLAY');
+                }
+            })
+            .catch((error) => {
+                printObject(
+                    'SP:112--> error getting rep rallies from graphql',
+                    error
+                );
+            });
+    };
+    const getLeadRallies = async () => {
+        // =======================
+        // get all Events for current division, then filter by stateProv
+        // resulting in only the rallies for rally.location.stateProv === currentUser.residence.stateProv
+        //0ebefcdf-9fd2-4702-a1e7-76bcf90d9b68 = currentUser.id
+        const variables = {
+            id: 'fffedde6-5d5a-46f0-a3ac-882a350edc64',
+        };
+        API.graphql(graphqlOperation(queries.getAllDivisionEvents2, variables))
+            .then((allRallyResponse) => {
+                if (
+                    allRallyResponse?.data?.getDivision?.events.items.length > 0
+                ) {
+                    // now loop through getting the ones for the lead
+                    const allRallies =
+                        allRallyResponse?.data?.getDivision?.events.items;
+                    let leadRallyArray = [];
+                    allRallies.forEach((r) => {
+                        if (
+                            r.location.stateProv ===
+                            currentUser.residence.stateProv
+                        ) {
+                            leadRallyArray.push(r);
+                        }
+                    });
+                    loadLeadDoneRallies(leadRallyArray);
+                } else {
+                    console.log('SP:107--> NO EVENTS TO DISPLAY');
+                }
+            })
+            .catch((error) => {
+                printObject(
+                    'SP:112--> error getting rep rallies from graphql',
+                    error
+                );
+            });
+    };
     const getMyRallies = async () => {
         //this gets the current rallies for the user and loads it in redux
         let repData = {};
@@ -195,7 +270,7 @@ const Serve = ({
                         </div>
                         <StateRep />
 
-                        {currentUser?.stateLead ? (
+                        {currentUser?.role === 'lead' ? (
                             <>
                                 <StateLead />
                             </>

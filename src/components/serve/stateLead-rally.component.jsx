@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import EventListDate from '../ui/dates/serve-date.component';
 import './serve.styles.scss';
 const StateRallyList = ({ rally }) => {
     const dateToDisplay = () => {
@@ -11,10 +12,10 @@ const StateRallyList = ({ rally }) => {
         let eventDate = em + '/' + ed;
         return eventDate;
     };
-    const coordinatorFirstName = () => {
-        const arrayOfName = rally.coordinator.name.split(' ');
-        return arrayOfName[0];
-    };
+    // const coordinatorFirstName = () => {
+    //     const arrayOfName = rally.coordinator.name.split(' ');
+    //     return arrayOfName[0];
+    // };
     return (
         <div className='serve-component__link-wrapper'>
             <Link
@@ -22,14 +23,19 @@ const StateRallyList = ({ rally }) => {
                 className='serve-component__rally-link'
             >
                 <div className='serve-component-lead__rally-list-item'>
-                    <div className='serve-component-lead__rally-date'>
-                        {dateToDisplay()}
-                    </div>
-                    <div className='serve-component-lead__rally-location'>
-                        {rally.name} -
-                    </div>
-                    <div className='serve-lead-component-lead__rep-name'>
-                        ({coordinatorFirstName()})
+                    <EventListDate date={rally.eventDate} />
+                    <div style={{ flexGrow: 1, backgroundColor: 'lightblue' }}>
+                        <div className='serve-component-list__church-name'>
+                            {rally.name}
+                        </div>
+                        <div className='serve-component-list__church-location'>
+                            {rally?.location?.city},{' '}
+                            {rally?.location?.stateProv}
+                        </div>
+                        <div className='serve-component-list__coordinator'>
+                            ({rally?.coordinator?.firstName}{' '}
+                            {rally?.coordinator?.lastName})
+                        </div>
                     </div>
                 </div>
             </Link>

@@ -147,6 +147,96 @@ export const getDivision = /* GraphQL */ `
         }
     }
 `;
+//      getRepRallies
+export const getRepRallies = /* GraphQL */ `
+    query MyQuery($divisionId: ID!, $coordinatorId: ID!) {
+        listDivisions(filter: { id: { eq: $divisionId } }) {
+            items {
+                events(filter: { userEventsId: { eq: $coordinatorId } }) {
+                    items {
+                        id
+                        eventDate
+                        startTime
+                        endTime
+                        status
+                        name
+                        location {
+                            street
+                            city
+                            stateProv
+                            postalCode
+                        }
+                        coordinator {
+                            id
+                            firstName
+                            lastName
+                        }
+                    }
+                }
+            }
+        }
+    }
+`;
+//      DONE WITH GETREPRALLIES
+//      GET DIVISION RALLIES
+
+export const getAllDivisionEvents2 = /* GraphQL */ `
+    query MyQuery($id: ID!) {
+        getDivision(id: $id) {
+            events {
+                items {
+                    id
+                    name
+                    eventDate
+                    startTime
+                    endTime
+                    status
+                    plannedCount
+                    actualCount
+                    mealPlannedCount
+                    mealActualCount
+                    location {
+                        id
+                        street
+                        city
+                        stateProv
+                        postalCode
+                        latitude
+                        longitude
+                    }
+                    meal {
+                        id
+                        deadline
+                        startTime
+                        cost
+                        message
+                        plannedCount
+                        actualCount
+                    }
+                    contact {
+                        id
+                        firstName
+                        lastName
+                        street
+                        city
+                        stateProv
+                        postalCode
+                        email
+                        phone
+                    }
+                    coordinator {
+                        id
+                        sub
+                        firstName
+                        lastName
+                        username
+                    }
+                }
+            }
+        }
+    }
+`;
+//      GET ACTIVE DIVISION RALLIES
 export const getDivisionEventsByDateStatus = /* GraphQL */ `
     query MyQuery($id: ID!, $eq: String!, $ge: String!) {
         getDivision(id: $id) {
@@ -704,6 +794,88 @@ export const getCoordinatorEvents2 = /* GraphQL */ `
                     lastName
                     phone
                     email
+                }
+            }
+        }
+    }
+`;
+export const getEventDetails = /* GraphQL */ `
+    query GetEvent($id: ID!) {
+        getEvent(id: $id) {
+            id
+            status
+            name
+            eventDate
+            startTime
+            endTime
+            graphic
+            message
+            actualCount
+            plannedCount
+            mealActualCount
+            mealPlannedCount
+            location {
+                id
+                street
+                city
+                stateProv
+                postalCode
+                latitude
+                longitude
+            }
+            contact {
+                id
+                firstName
+                lastName
+                email
+                phone
+                street
+                city
+                stateProv
+                postalCode
+            }
+            meal {
+                id
+                message
+                cost
+                deadline
+                startTime
+                plannedCount
+                actualCount
+            }
+            coordinator {
+                id
+                firstName
+                lastName
+                email
+                phone
+            }
+            division {
+                id
+                code
+                organization {
+                    id
+                    code
+                }
+            }
+            registrations {
+                items {
+                    id
+                    attendanceCount
+                    mealCount
+                    registrar {
+                        id
+                        firstName
+                        lastName
+                        email
+                        phone
+                        residence {
+                            street
+                            city
+                            stateProv
+                            postalCode
+                        }
+                    }
                 }
             }
         }

@@ -6,3 +6,25 @@ export const EVENt_STATUS = Object.freeze({
     PENDING: 'Pending',
     APPROVED: 'Approved',
 });
+
+export const MONTHS = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+];
+export const STATUS_VALUE = [
+    'draft',
+    'review',
+    'cancelled',
+    'approved',
+    'done',
+];

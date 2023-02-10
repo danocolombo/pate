@@ -75,6 +75,7 @@ const Header = ({
                             ) : null}
                             {currentUser?.role === 'rep' ||
                             currentUser?.role === 'lead' ||
+                            currentUser?.role === 'guru' ||
                             currentUser?.role === 'director' ? (
                                 <div className='header__nav-item'>
                                     <Link
