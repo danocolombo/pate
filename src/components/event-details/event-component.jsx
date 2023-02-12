@@ -94,11 +94,9 @@ const EventDetails = ({ theEvent }) => {
                                         src='https://eor-images-202214132-staging.s3.amazonaws.com/public/events/b70c0a49-dfa0-4671-b48d-38d3dcb1de9c/NorthwayChurch.png'
                                         alt='Event '
                                         className='event-details__graphic-image'
-                                        // style={{
-                                        //     width: '75vw',
-
-                                        //     height: 'auto',
-                                        // }}
+                                        style={{
+                                            width: '100%',
+                                        }}
                                     />
                                 </div>
                             )}

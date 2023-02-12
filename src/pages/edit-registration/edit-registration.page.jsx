@@ -28,8 +28,9 @@ const UserProfile = ({
     const history = useHistory();
     let theRegistration = {};
     const registrationReference = match.params.rid;
+    const registrationId = match.params.id;
     const rallyReference = match.params.eid;
-    const regInfo = registrations.tempRegistration;
+    //const regInfo = registrations.tempRegistration;
     useEffect(() => {
         if (!currentUser.isLoggedIn) {
             history.push('/');

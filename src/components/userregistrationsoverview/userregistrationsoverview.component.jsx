@@ -5,7 +5,7 @@ import { IoTrash } from 'react-icons/io5';
 import StyledLink from '../../components/custom-link/custom-link-white.component';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import { removeRegistration } from '../../redux/registrations/registrations.actions';
-
+import EventListDate from '../ui/dates/serve-date.component';
 import './userregistrationsoverview.styles.scss';
 const UserRegistrationOverview = ({
     currentUser,
@@ -100,27 +100,26 @@ const UserRegistrationOverview = ({
                 <div className='user-reg-overview__section-header'>
                     YOUR REGISTRATIONS
                 </div>
-                {registrations
-                    ? registrations.map((reg) => (
+                {currentUser.registrations.items
+                    ? currentUser.registrations.items.map((reg) => (
                           <>
                               <div className='user-reg-flex__event-wrapper'>
-                                  <div className='user-reg-flex__date'>
-                                      <StyledLink
-                                          style={{
-                                              textDecoration: 'none',
-                                              color: 'blue',
-                                          }}
-                                          to={`/editregistration/${reg.eid}/${reg.uid}`}
-                                      >
-                                          {dateToDisplay(reg.eventDate)}
-                                      </StyledLink>
-                                  </div>
-
+                                  <StyledLink
+                                      style={{
+                                          textDecoration: 'none',
+                                          color: 'blue',
+                                      }}
+                                      to={`/editregistration/${reg.eid}/${reg.uid}`}
+                                  >
+                                      <EventListDate
+                                          date={reg.event.eventDate}
+                                      />
+                                  </StyledLink>
                                   <div className='user-reg-flex__location'>
-                                      {reg?.location.name}
+                                      {reg?.event?.name}
                                       <br />
-                                      {reg?.location?.city},{' '}
-                                      {reg?.location?.stateProv}
+                                      {reg?.event?.location?.city},{' '}
+                                      {reg?.event.location.stateProv}
                                   </div>
 
                                   {reg.registrar?.firstName !==

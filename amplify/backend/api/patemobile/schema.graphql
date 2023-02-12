@@ -25,6 +25,7 @@ type Division @model {
     events: [Event] @hasMany
     affiliations: [Affiliation] @hasMany
     defaultUsers: [User] @hasMany
+    memberships: [Membership] @hasMany
 }
 type Affiliation @model {
     id: ID!
@@ -117,4 +118,15 @@ type User @model {
     events: [Event] @hasMany
     registrations: [Registration] @hasMany
     affiliations: [Affiliation] @hasMany
+    memberships: [Membership] @hasMany
+}
+type Membership @model {
+    id: ID!
+    name: String!
+    street: String
+    city: String
+    stateProv: String
+    postalCode: Int
+    member: User @belongsTo
+    division: Division @belongsTo
 }

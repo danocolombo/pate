@@ -29,6 +29,12 @@
       },
       "storage": {
         "s3eorimages2022": {}
+      },
+      "analytics": {
+        "patemobile": {}
+      },
+      "api": {
+        "patemobile": {}
       }
     }
   }

@@ -594,6 +594,7 @@ export const getProfileBySub = /* GraphQL */ `
                 email
                 phone
                 residence {
+                    id
                     street
                     city
                     stateProv
@@ -602,6 +603,8 @@ export const getProfileBySub = /* GraphQL */ `
                 registrations {
                     items {
                         id
+                        attendanceCount
+                        mealCount
                         event {
                             id
                             name
@@ -624,6 +627,23 @@ export const getProfileBySub = /* GraphQL */ `
                 defaultDivision {
                     id
                     code
+                }
+                memberships {
+                    items {
+                        id
+                        name
+                        street
+                        city
+                        stateProv
+                        postalCode
+                        division {
+                            id
+                            code
+                            organization {
+                                code
+                            }
+                        }
+                    }
                 }
                 events {
                     items {
@@ -1048,6 +1068,103 @@ export const getEvent = /* GraphQL */ `
             }
             createdAt
             updatedAt
+            divisionEventsId
+            eventLocationEventsId
+            eventContactEventsId
+            userEventsId
+            eventMealId
+        }
+    }
+`;
+export const getEventDetailsNoRegistrations = /* GraphQL */ `
+    query GetEvent($id: ID!) {
+        getEvent(id: $id) {
+            id
+            eventDate
+            eventCompKey
+            division {
+                id
+                code
+                divCompKey
+                organization {
+                    id
+                    appName
+                    available
+                    category
+                    code
+                    description
+                    exposure
+                    label
+                    name
+                    title
+                    value
+                    createdAt
+                    updatedAt
+                }
+                organizationDivisionsId
+            }
+            coordinator {
+                id
+                sub
+                username
+                firstName
+                lastName
+                email
+                phone
+                residence {
+                    id
+                    street
+                    city
+                    stateProv
+                    postalCode
+                    latitude
+                    longitude
+                    createdAt
+                    updatedAt
+                }
+                divisionDefaultUsersId
+                residenceResidentsId
+            }
+            status
+            plannedCount
+            actualCount
+            mealPlannedCount
+            mealActualCount
+            startTime
+            endTime
+            message
+            name
+            graphic
+            location {
+                id
+                street
+                city
+                stateProv
+                postalCode
+                latitude
+                longitude
+            }
+            contact {
+                id
+                firstName
+                lastName
+                email
+                phone
+                street
+                city
+                stateProv
+                postalCode
+            }
+            meal {
+                id
+                deadline
+                cost
+                plannedCount
+                actualCount
+                startTime
+                message
+                mealEventId
+            }
             divisionEventsId
             eventLocationEventsId
             eventContactEventsId

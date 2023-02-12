@@ -11,6 +11,7 @@ import Administer from './pages/admin/admin-feature-page';
 
 import UserDetails from './pages/admin/admin-user-details.page.jsx';
 // import RegisteredUserDetails from './pages/admin/admin-registered-user-details.page';
+import RegistrationProcess from './pages/registration/registration-process.page';
 import Events from './pages/events/events.component';
 import Profile from './pages/profile/profile.page';
 import SignIn from './pages/signin/signin.page';
@@ -80,7 +81,17 @@ function App() {
                     />
                     <Route
                         exact
-                        path='/editregistration/:eid/:rid'
+                        path='/registrationprocess'
+                        component={RegistrationProcess}
+                    />
+                    <Route
+                        exact
+                        path='/editregistrationOLD/:eid/:rid'
+                        component={EditRegistration}
+                    />
+                    <Route
+                        exact
+                        path='/editregistration/:id'
                         component={EditRegistration}
                     />
                     <Route exact path='/event/:id' component={EventDetails} />

@@ -6,6 +6,7 @@ import PhoneInput from 'react-phone-input-2';
 import SelectStateProv from '../../components/state-prov/select-stateProv.component';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import { updateCurrentUser } from '../../redux/user/user.actions';
+import { printObject } from '../../utils/helpers';
 import './profile2.styles.scss';
 const Profile2 = ({
     currentUser,
@@ -30,20 +31,113 @@ const Profile2 = ({
     const [homePostalCode, setHomePostalCode] = useState(
         currentUser?.residence?.postalCode
     );
-    const [churchName, setChurchName] = useState(currentUser?.church?.name);
-    const [churchCity, setChurchCity] = useState(currentUser?.church?.city);
+    const [originalMembership, setOriginalMembership] = useState({});
+    const [membershipId, setMembershipId] = useState('');
+    const [churchName, setChurchName] = useState('');
+    const [churchCity, setChurchCity] = useState('');
     const [churchState, setChurchState] = useState(
         currentUser?.church?.stateProv
     );
     useEffect(() => {
         if (!currentUser.isLoggedIn) history.push('/');
+        async function clarifyMembership() {
+            // need to get membership info based on division
+            console.log('CHECKING...');
+            if (currentUser?.memberships.items.length > 0) {
+                let membership = currentUser.memberships.items.find(
+                    (m) => m.division.id === currentUser.defaultDivision.id
+                );
+                if (membership) {
+                    setOriginalMembership({
+                        id: membership.id,
+                        name: membership.name,
+                        city: membership.city,
+                        stateProv: membership.stateProv,
+                    });
+                    setMembershipId(membership.id);
+                    setChurchName(membership.name);
+                    setChurchCity(membership.city);
+                    setChurchState(membership.stateProv);
+                } else {
+                    console.log(
+                        'PC:52--> MEMBERSHIP NOT FOUND IN MEMBERSHIP ARRAY'
+                    );
+                }
+            } else {
+                console.log('PC:46--> MEMBERSHIPS NOT IDENTIFIED');
+            }
+        }
+        clarifyMembership();
     }, []);
     useEffect(() => {}, [pateSystem.showSpinner]);
 
     const handleSubmitClick = (event) => {
         event.preventDefault();
         setSpinner();
-        // build currentUser object
+        //      ***********************************
+        //      WE HAVE MULTIPLE UPDATES TO MAKE
+        //      1. User
+        //      2. Residence
+        //      3. Memberships
+        //*   ONLY UPDATE IF CHANGES WERE MADE
+        //
+        //*   Build input objects
+        let userInput = {};
+        let residenceInput = {};
+        let membershipInput = {};
+        if (
+            currentUser.firstName !== firstName ||
+            currentUser.lastName !== lastName ||
+            currentUser.email !== email ||
+            currentUser.phone !== phone
+        ) {
+            userInput = {
+                id: currentUser.id,
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                phone: phone,
+            };
+        }
+        if (
+            (currentUser.residence.street !== homeState,
+            currentUser.residence.city !== homeCity,
+            currentUser.residence.stateProv !== homeState,
+            currentUser.residence.postalCode !== homePostalCode)
+        ) {
+            residenceInput = {
+                id: currentUser.residence.id,
+                street: homeStreet,
+                city: homeCity,
+                stateProv: homeState,
+                postalCode: homePostalCode,
+            };
+        }
+        //      make the membership object
+        membershipInput = {
+            id: membershipId,
+            name: churchName,
+            city: churchCity,
+            stateProv: churchState,
+        };
+        //      check if changes were made, if no change, empty array.
+        if (
+            JSON.stringify(membershipInput) !==
+            JSON.stringify(originalMembership)
+        ) {
+            membershipInput = {};
+        }
+        const multiMutate = {
+            user: userInput,
+            residence: residenceInput,
+            membership: membershipInput,
+        };
+        //todo-gql  need to update graphql as needed with multiMutate
+        //todo-gql  need to update currentUser in redux
+        let DANO = true;
+        if (DANO) {
+            return;
+        }
         let coreUser = {
             uid: currentUser.uid,
             isLoggedIn: currentUser.isLoggedIn,
@@ -182,8 +276,6 @@ const Profile2 = ({
             console.log('updateRedux function.............................');
         }
         updateRedux();
-
-        history.push('/');
 
         history.push('/');
         clearSpinner();

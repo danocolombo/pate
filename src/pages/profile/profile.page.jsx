@@ -36,40 +36,7 @@ const UserProfile = ({
         }
         // getRegistrations();
     }, []);
-    //=======================================
-    // get the latest registration updates
-    //=======================================
-    const getRegistrations = async () => {
-        setSpinner();
-        async function getUserReg() {
-            try {
-                fetch(
-                    'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/registrations',
-                    {
-                        method: 'POST',
-                        body: JSON.stringify({
-                            operation: 'getAllUserRegistrations',
-                            payload: {
-                                rid: currentUser?.uid,
-                            },
-                        }),
-                        headers: {
-                            'Content-type': 'application/json; charset=UTF-8',
-                        },
-                    }
-                )
-                    .then((response) => response.json())
-                    .then((data) => {
-                        loadRegistrations(data.body);
-                        clearSpinner();
-                    });
-            } catch (error) {
-                clearSpinner();
-                console.log('Error fetching registrations \n' + error);
-            }
-        }
-        await getUserReg();
-    };
+
     const dismissProfileReminderModal = () => {
         setIsCompleteProfileModalVisible(false);
     };
@@ -83,8 +50,9 @@ const UserProfile = ({
                 <Profile2 />
                 {/*<PersonalProfile />*/}
                 {/*<div className='profile-page__'>YOUR REGISTRATIONS</div>*/}
-
-                {/* <UserRegistrationOverview /> */}
+                {currentUser.registrations.items.length > 0 && (
+                    <UserRegistrationOverview />
+                )}
             </div>
             <MainFooter />
             <ModalWrapper isOpened={isCompleteProfileModalVisible}>

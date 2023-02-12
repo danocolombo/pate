@@ -22,6 +22,7 @@ const Events = ({
     clearSpinner,
     pateSystem,
     registrations,
+    loadRally,
 }) => {
     const [plan, setPlan] = useState({});
 
@@ -32,19 +33,29 @@ const Events = ({
             const variables = {
                 id: id,
             };
-            API.graphql(graphqlOperation(queries.getEvent, variables))
+            API.graphql(
+                graphqlOperation(
+                    queries.getEventDetailsNoRegistrations,
+                    variables
+                )
+            )
                 .then((theEvent) => {
                     console.log('1.');
                     if (theEvent?.data?.getEvent) {
                         console.log('2.');
                         printObject(
-                            'EP:69-->event: ',
+                            'EP:46-->event: ',
                             theEvent?.data?.getEvent
                         );
                         console.log('3.');
                         setPlan(theEvent.data.getEvent);
+                        try {
+                            loadRally(theEvent.data.getEvent);
+                        } catch (err) {
+                            printObject('Error loadRally:\n', err);
+                        }
 
-                        console.log('4.');
+                        console.log('4. done loading event/rally');
                     } else {
                         console.log('EP:73--> NO EVENTS TO DISPLAY');
                     }
