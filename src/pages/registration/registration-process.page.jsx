@@ -395,6 +395,9 @@ const RegistrationProcess = ({
             userRegistrationsId: currentUser.id,
             attendanceCount: registrationInput.attendanceCount,
             mealCount: registrationInput.mealCount,
+            membershipName: currentUser?.memberships?.items[0]?.name || null,
+            membershipCity: currentUser?.memberships?.items[0]?.city || null,
+            membershipStateProv: currentUser?.memberships?.items[0].stateProv || null
         };
         try {
             const createRegistrationResults = await API.graphql({

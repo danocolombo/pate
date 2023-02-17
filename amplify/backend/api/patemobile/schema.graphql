@@ -93,6 +93,11 @@ type Registration @model {
     event: Event @belongsTo
     attendanceCount: Int
     mealCount: Int
+    membershipName: String
+    membershipStreet: String
+    membershipCity: String
+    membershipStateProv: String
+    membershipPostalCode: String
     registrar: User @belongsTo
 }
 type Residence @model {

@@ -606,6 +606,11 @@ export const getProfileBySub = /* GraphQL */ `
                         id
                         attendanceCount
                         mealCount
+                        membershipName
+                        membershipStreet
+                        membershipCity
+                        membershipStateProv
+                        membershipPostalCode
                         event {
                             id
                             name
@@ -893,6 +898,11 @@ export const getEventDetails = /* GraphQL */ `
                     id
                     attendanceCount
                     mealCount
+                    membershipName
+                    membershipStreet
+                    membershipCity
+                    membershipStateProv
+                    membershipPostalCode
                     registrar {
                         id
                         firstName
@@ -1567,6 +1577,11 @@ export const getRegistration = /* GraphQL */ `
             id
             attendanceCount
             mealCount
+            membershipName
+            membershipStreet
+            membershipCity
+            membershipStateProv
+            membershipPostalCode
             event {
                 id
                 eventDate
@@ -1717,6 +1732,11 @@ export const listRegistrations = /* GraphQL */ `
                 }
                 attendanceCount
                 mealCount
+                membershipName
+                membershipStreet
+                membershipCity
+                membershipStateProv
+                membershipPostalCode
                 registrar {
                     id
                     sub
@@ -1881,6 +1901,11 @@ export const getUser = /* GraphQL */ `
                     id
                     attendanceCount
                     mealCount
+                    membershipName
+                    membershipStreet
+                    membershipCity
+                    membershipStateProv
+                    membershipPostalCode
                     createdAt
                     updatedAt
                     eventRegistrationsId
@@ -1960,6 +1985,11 @@ export const getCurrentUser = /* GraphQL */ `
                     id
                     attendanceCount
                     mealCount
+                    membershipName
+                    membershipStreet
+                    membershipCity
+                    membershipStateProv
+                    membershipPostalCode
                     event {
                         id
                     }
@@ -1976,6 +2006,11 @@ export const getCurrentUserRegistrations = /* GraphQL */ `
                 id
                 attendanceCount
                 mealCount
+                membershipName
+                membershipStreet
+                membershipCity
+                membershipStateProv
+                membershipPostalCode
                 event {
                     id
                     eventDate
