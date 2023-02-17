@@ -66,29 +66,7 @@ const Registrar = ({
     );
 
     const history = useHistory();
-    useEffect(() => {}, []);
-    // useEffect(() => {
-    //     async function fetchRegistration() {
-    //         const variables = {
-    //             id: registrationId,
-    //         };
-    //         try {
-    //             const gqlResponse = await API.graphql(
-    //                 graphqlOperation(queries.getRegistration, variables)
-    //             );
-    //             if (gqlResponse.data.getRegistration) {
-    //                 setRegistractionDetails(gqlResponse.data.getRegistration);
-    //                 const details = gqlResponse.data.getRegistration;
-    //                 printObject('RC:86-->details:\n', details);
-    //             }
-    //         } catch (error) {
-    //             printObject('rc:85-->error gettng graphql data');
-    //         }
-    //     }
-    //     fetchRegistration();
 
-    //     areMealsLocked() ? setMealsLocked(true) : setMealsLocked(false);
-    // }, []);
     const handleCancel = (e) => {
         async function purgeTempReg() {
             clearTempRegistration();
@@ -100,68 +78,6 @@ const Registrar = ({
         e.preventDefault();
         setSpinner();
 
-        // await fetch(
-        //     'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/registrations',
-        //     {
-        //         method: 'POST',
-        //         body: JSON.stringify({
-        //             operation: 'deleteRegistration',
-        //             payload: {
-        //                 Key: { uid: theRegistration.event.id },
-        //             },
-        //         }),
-        //         headers: {
-        //             'Content-type': 'application/json; charset=UTF-8',
-        //         },
-        //     }
-        // )
-        //     .then((response) => response.json())
-        //     .then((data) => {
-        //         // const util = require('util');
-        //         // console.log(
-        //         //     'db data returned: \n' +
-        //         //         util.inspect(data, {
-        //         //             showHidden: false,
-        //         //             depth: null,
-        //         //         })
-        //         // );
-        //     });
-        //-------------------------
-        // reduce event numbers.
-        //-------------------------
-        // let eventUpdate = {
-        //     uid: theRegistration.eid,
-        //     adjustments: {
-        //         registrationCount: theRegistration.attendanceCount * -1,
-        //     },
-        // };
-        // const mCount = parseInt(theRegistration.mealCount, 10) * -1;
-        // if (mCount !== 0) {
-        //     eventUpdate.adjustments.mealCount = mCount;
-        // }
-        // await fetch(
-        //     'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/events',
-        //     {
-        //         method: 'POST',
-        //         body: JSON.stringify({
-        //             operation: 'maintainNumbers',
-        //             payload: eventUpdate,
-        //         }),
-        //         headers: {
-        //             'Content-type': 'application/json; charset=UTF-8',
-        //         },
-        //     }
-        // )
-        //     .then((response) => response.json())
-        //     .then((data) => {
-        //         console.log('maintainEventNumbers successful');
-        //     });
-
-        // //remove the redux reference to the event
-        // await removeRegistration(regData.uid);
-        // //??????
-        // // may need to reload stateRep & stateLead redux
-        // //??????
         clearSpinner();
         setShowRegistrationCancelled(true);
     };
