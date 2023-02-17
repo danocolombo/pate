@@ -60,10 +60,6 @@ class Events extends React.Component {
                 if (
                     divisionEvents?.data?.getDivision?.events.items.length > 0
                 ) {
-                    printObject(
-                        'L:63-->events: ',
-                        divisionEvents?.data?.getDivision?.events.items
-                    );
                     // setAvailableRallies(
                     //     divisionEvents.data.getDivision.events.items
                     // );
@@ -91,37 +87,27 @@ class Events extends React.Component {
                 <div className='events-marquee-compoment__events-wrapper'>
                     <div className='events-marquee-component__events-box'>
                         <div className='events-page__events-box2'>
+                            {this.state.plans.length > 0 && (
+                                <div className='events-marquee-component__page-title'>
+                                    Upcoming P8 Rallies
+                                </div>
+                            )}
+
                             {this.state.plans.length > 0 ? (
                                 this.state.plans.map((plan) => (
                                     <>
-                                        {(this.noPlans = false)}
-                                        <div className='events-marquee-component__page-title'>
-                                            Upcoming P8 Rallies
-                                        </div>
-                                        {/* <RallyList /> */}
                                         <EventMarquee3
                                             event={plan}
                                             key={plan.id}
                                         />
-                                        {this.noPlans ? (
-                                            <>
-                                                <img
-                                                    className='events-marquee-component__graphic-image'
-                                                    src='https://pate-images.s3.amazonaws.com/NoEvents.png'
-                                                    alt='No Scheduled Events. Come Back Soon for more info'
-                                                />
-                                            </>
-                                        ) : null}
                                     </>
                                 ))
                             ) : (
-                                <>
-                                    <img
-                                        className='events-page__no-events-image'
-                                        src='https://pate-images.s3.amazonaws.com/NoEvents.png'
-                                        alt='No Scheduled Events. Come Back Soon for more info'
-                                    />
-                                </>
+                                <img
+                                    className='events-page__no-events-image'
+                                    src='https://pate-images.s3.amazonaws.com/NoEvents.png'
+                                    alt='No Scheduled Events. Come Back Soon for more info'
+                                />
                             )}
                         </div>
                     </div>

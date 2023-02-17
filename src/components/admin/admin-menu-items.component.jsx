@@ -62,6 +62,16 @@ const AdminMenu = () => {
                         </Link>
                     </div>
                 </div>
+                <div className='admin-component__row-center'>
+                    <div className='admin-component__link-wrapper'>
+                        <Link
+                            to='/administer/testCode'
+                            className='admin-component__option-link'
+                        >
+                            Test Code
+                        </Link>
+                    </div>
+                </div>
             </div>
         </div>
     );

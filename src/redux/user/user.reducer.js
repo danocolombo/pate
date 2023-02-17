@@ -1,5 +1,8 @@
 import { UserActionTypes } from './user.types';
-
+import {
+    addItemToRegistrations,
+    removeItemFromRegistrations,
+} from './user.utils';
 const INITIAL_STATE = {
     currentUser: {
         loading: true,
@@ -8,7 +11,6 @@ const INITIAL_STATE = {
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
-    console.log('____________IN userReducer: ' + action.type);
     if (action.type === 'UPDATE_USER') {
         const util = require('util');
         console.log(
@@ -23,6 +25,19 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 currentUser: action.payload,
                 loading: false,
+            };
+        case UserActionTypes.ADD_REGISTRATION_TO_CURRENT_USER:
+            return {
+                ...state,
+                currentUser: addItemToRegistrations(state, action.payload),
+            };
+        case UserActionTypes.REMOVE_REGISTRATION_FROM_CURRENT_USER:
+            return {
+                ...state,
+                currentUser: removeItemFromRegistrations(
+                    state.currentUser,
+                    action.payload
+                ),
             };
         case UserActionTypes.LOGIN_SUCCESS:
             return {

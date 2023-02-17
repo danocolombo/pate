@@ -41,6 +41,7 @@ const EventRegistration = ({
     loadRally,
 }) => {
     let id = match.params.id;
+    const [isEditting, setIsEditting] = useState(false);
     const [modalIsVisible, setModalIsVisible] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
     const [showRegistrationSuccess, setShowRegistrationSuccess] =
@@ -73,7 +74,12 @@ const EventRegistration = ({
     const history = useHistory();
     useEffect(() => {
         async function checkIfRegistered() {
-            window.alert('CHECKING IF YOU ARE REGISTERED');
+            const hit = currentUser?.registrations?.items.filter(
+                (r) => r?.event?.id === id
+            );
+            if (hit.length > 0) {
+                setIsEditting(true);
+            }
         }
         async function getTheEvent() {
             const variables = {
@@ -103,7 +109,7 @@ const EventRegistration = ({
         //      get the membership from array for default division
         async function clarifyMembership() {
             // need to get membership info based on division
-            console.log('CHECKING...');
+
             if (currentUser?.memberships.items.length > 0) {
                 let membership = currentUser.memberships.items.find(
                     (m) => m.division.id === currentUser.defaultDivision.id
@@ -906,7 +912,11 @@ const EventRegistration = ({
                             className='registration-page__register-button'
                             onClick={handleRegisterRequest}
                         >
-                            Register
+                            {isEditting ? (
+                                <div>Update</div>
+                            ) : (
+                                <div>Register</div>
+                            )}
                         </button>
                     </div>
                 </div>

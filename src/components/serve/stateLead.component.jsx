@@ -1,16 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import StateRallyList from './stateLead-rally.component';
+import { printObject } from '../../utils/helpers';
 import './serve.styles.scss';
 const StateLead = ({ currentUser, rallies, doneRallies }) => {
     // const [leadRallies, setLeadRallies] = useState([]);
-    useEffect(() =>
+    useEffect(() => {
         //loop through redux rallies and if there is any
         //in the state that this Lead is assigned, load
         //them in the leadRallies array.
         //==============================================
-
-        {}, []);
+        const sortRalliesNow = async () => {
+            async function asc_sort(a, b) {
+                return b.eventDate - a.eventDate;
+            }
+            let displayData = await rallies.sort(asc_sort);
+            printObject('SLC:18=> ordered rallies:\n', displayData);
+        };
+        sortRalliesNow();
+    }, []);
 
     return (
         <>

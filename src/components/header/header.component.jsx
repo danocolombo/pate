@@ -16,6 +16,7 @@ import {
 import { clearRally, clearRegistration } from '../../redux/pate/pate.actions';
 import { clearStateRep } from '../../redux/stateRep/stateRep.actions';
 import { clearStateLead } from '../../redux/stateLead/stateLead.actions';
+import { clearAllPate } from '../../redux/pate/pate.actions';
 
 const Header = ({
     currentUser,
@@ -27,6 +28,7 @@ const Header = ({
     clearRegistration,
     clearStateLead,
     clearStateRep,
+    clearAllPate,
 }) => {
     const history = useHistory();
     const logoutRequest = async () => {
@@ -44,6 +46,7 @@ const Header = ({
             clearRegistration();
             clearStateLead();
             clearStateRep();
+            clearAllPate();
         }
         logoffUser();
         history.push('/');
@@ -140,6 +143,7 @@ const mapDispatchToProps = (dispatch) => ({
     clearRegistration: () => dispatch(clearRegistration()),
     clearStateRep: () => dispatch(clearStateRep()),
     clearStateLead: () => dispatch(clearStateLead()),
+    clearAllPate: () => dispatch(clearAllPate()),
 });
 const mapStateToProps = (state) => ({
     currentUser: state.user.currentUser,

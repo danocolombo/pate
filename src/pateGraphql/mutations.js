@@ -995,6 +995,20 @@ export const updateEvent = /* GraphQL */ `
         }
     }
 `;
+export const updateEventNumbers = /* GraphQL */ `
+    mutation UpdateEvent(
+        $input: UpdateEventInput!
+        $condition: ModelEventConditionInput
+    ) {
+        updateEvent(input: $input, condition: $condition) {
+            id
+            plannedCount
+            actualCount
+            mealPlannedCount
+            mealActualCount
+        }
+    }
+`;
 export const deleteEvent = /* GraphQL */ `
     mutation DeleteEvent(
         $input: DeleteEventInput!

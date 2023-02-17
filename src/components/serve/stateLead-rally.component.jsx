@@ -19,7 +19,7 @@ const StateRallyList = ({ rally }) => {
     return (
         <div className='serve-component__link-wrapper'>
             <Link
-                to={`/serveevent/${rally.uid}`}
+                to={`/serveevent/${rally.id}`}
                 className='serve-component__rally-link'
             >
                 <div className='serve-component-lead__rally-list-item'>

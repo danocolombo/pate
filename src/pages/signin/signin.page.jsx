@@ -128,8 +128,9 @@ const SignIn = ({
                 currentUserInfo?.attributes.sub
             );
             if (gqlProfile.status === 200) {
+                // printObject('SIP:130-->gqlProfile.data:\n', gqlProfile.data);
+
                 graphQLProfile = gqlProfile.data;
-                printObject('SIP:130-->gProfile:\n', gqlProfile.data);
             } else {
                 //  *******************************************
                 //      get Dynamo Profile - if necessary
@@ -216,7 +217,7 @@ const SignIn = ({
             //     currentUserInfo,
             //     currentSession
             // );
-            await getRegistrations(currentUserInfo?.attributes.sub);
+            await getRegistrations(graphQLProfile.id);
 
             //console.log("SIP:123-->currentUserInfo:", currentUserInfo);
             //generic cleanup
@@ -256,42 +257,25 @@ const SignIn = ({
     //         .then((data) => console.log(data))
     //         .catch((err) => console.log(err));
     // };
-    const getRegistrations = async (uid) => {
-        async function getUserReg() {
-            try {
-                fetch(
-                    'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/registrations',
-                    {
-                        method: 'POST',
-                        body: JSON.stringify({
-                            operation: 'getAllUserRegistrations',
-                            payload: {
-                                rid: uid,
-                            },
-                        }),
-                        headers: {
-                            'Content-type': 'application/json; charset=UTF-8',
-                        },
-                    }
-                )
-                    .then((response) => response.json())
-                    .then((data) => {
-                        // const util = require('util');
-                        // console.log(
-                        //     'registrations-data:\n' +
-                        //         util.inspect(data.body, {
-                        //             showHidden: false,
-                        //             depth: null,
-                        //         })
-                        // );
-                        loadRegistrations(data.body);
-                    });
-            } catch (error) {
-                clearSpinner();
-                console.log('Error fetching registrations \n' + error);
+    const getRegistrations = async (id) => {
+        //* need to get the regisrations for the current user.
+        const variables = {
+            id: id,
+        };
+        try {
+            const gqlRegistrations = await API.graphql(
+                graphqlOperation(queries.getCurrentUserRegistrations, variables)
+            );
+            if (gqlRegistrations.data.listRegistrations.items.length > 0)
+                loadRegistrations(
+                    gqlRegistrations.data.listRegistrations.items
+                );
+            else {
+                console.log('SP:272--> no registrations for the user');
             }
+        } catch (error) {
+            printObject('SP:275-->error gettng graphql data');
         }
-        await getUserReg();
     };
     const composeUser = async (graphqlProfile, userInfo, userSession) => {
         await setCurrentUser(graphqlProfile);
@@ -501,69 +485,75 @@ const SignIn = ({
             <Header />
             <div className='signin-page__page-frame'>
                 <div className='signin-page__content-wrapper'>
-                    <div className='signin-page__content-box'>
-                        <div className='signin-page__section-title'>LOGIN</div>
-                        <div className='signin-page__section-box'>
-                            <div className='signin-page__data-line'>
-                                <div className='signin-page__data-label'>
-                                    Username
-                                </div>
-                                <div className='signin-page__data-control'>
-                                    <input
-                                        type='text'
-                                        name='username'
-                                        id='username'
-                                        value={username}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </div>
+                    <form>
+                        <div className='signin-page__content-box'>
+                            <div className='signin-page__section-title'>
+                                LOGIN
                             </div>
-                            <div className='signin-page__data-line'>
-                                <div className='signin-page__data-label'>
-                                    Password
+                            <div className='signin-page__section-box'>
+                                <div className='signin-page__data-line'>
+                                    <div className='signin-page__data-label'>
+                                        Username
+                                    </div>
+                                    <div className='signin-page__data-control'>
+                                        <input
+                                            type='text'
+                                            name='username'
+                                            id='username'
+                                            value={username}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                    </div>
                                 </div>
-                                <div className='signin-page__data-control'>
-                                    <input
-                                        type='password'
-                                        id='password'
-                                        name='password'
-                                        onChange={handleChange}
-                                        value={password}
-                                        required
-                                    />
+                                <div className='signin-page__data-line'>
+                                    <div className='signin-page__data-label'>
+                                        Password
+                                    </div>
+                                    <div className='signin-page__data-control'>
+                                        <input
+                                            type='password'
+                                            id='password'
+                                            name='password'
+                                            onChange={handleChange}
+                                            value={password}
+                                            required
+                                        />
+                                    </div>
                                 </div>
-                            </div>
-                            <div className='signin-page__data-line'>
-                                <div className='signin-page__forgot-offer'>
-                                    <span
-                                        onClick={() => setModalIsVisible(true)}
+                                <div className='signin-page__data-line'>
+                                    <div className='signin-page__forgot-offer'>
+                                        <span
+                                            onClick={() =>
+                                                setModalIsVisible(true)
+                                            }
+                                        >
+                                            Forgot your password?
+                                        </span>
+                                    </div>
+                                </div>
+                                <div className='signin-page__button-wrapper'>
+                                    <CustomButton
+                                        onClick={signIn}
+                                        className='signin-page__signin-button'
                                     >
-                                        Forgot your password?
-                                    </span>
+                                        {' '}
+                                        Sign In{' '}
+                                    </CustomButton>
                                 </div>
-                            </div>
-                            <div className='signin-page__button-wrapper'>
-                                <CustomButton
-                                    onClick={signIn}
-                                    className='signin-page__signin-button'
-                                >
-                                    {' '}
-                                    Sign In{' '}
-                                </CustomButton>
                             </div>
                         </div>
-                    </div>
-                    <div className='signin-page__offer-box'>
-                        Don't have an account?
-                        <Link
-                            className='signin-page__register-link'
-                            to='/register'
-                        >
-                            {' '}
-                            SIGN-UP
-                        </Link>
-                    </div>
+                        <div className='signin-page__offer-box'>
+                            Don't have an account?
+                            <Link
+                                className='signin-page__register-link'
+                                to='/register'
+                            >
+                                {' '}
+                                SIGN-UP
+                            </Link>
+                        </div>
+                    </form>
                 </div>
             </div>
             <MainFooter />

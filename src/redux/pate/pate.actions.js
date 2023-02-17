@@ -14,8 +14,13 @@ export const clearRally = () => ({
     type: PateActionTypes.CLEAR_RALLY,
     payload: null,
 });
+export const clearAllPate = () => ({
+    type: PateActionTypes.CLEAR_ALL_PATE,
+    payload: null,
+});
 export const setPateRallies = (rallies) => ({
     type: PateActionTypes.SET_PATE_RALLIES,
+    payload: rallies,
 });
 export const clearPateRallies = () => ({
     type: PateActionTypes.CLEAR_PATE_RALLIES,

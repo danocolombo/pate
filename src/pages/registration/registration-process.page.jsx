@@ -18,6 +18,10 @@ import Modal from '../../components/modals/wrapper.modal';
 import InputErrors from '../../components/modals/registration/registation-input-error.modal';
 import SuccessModal from '../../components/modals/registration/registration-success.modal';
 import SuccessMessage from '../../components/modals/registration/registration-success-msg.component';
+import {
+    setCurrentUser,
+    addRegistrationToCurrentUser,
+} from '../../redux/user/user.actions';
 import DifferentProfileInfo from '../../components/registrations-modals/registration-modal-different-data.component';
 import NewAttendeeComplete from '../../components/registrations-modals/registration-modal-new-attendee-continue.component';
 import UpdatedRegistered from '../../components/registrations-modals/registration-modal-updated-registered.component';
@@ -25,6 +29,7 @@ import ConfirmEmailChange from '../../components/registrations-modals/registrati
 import Registered from '../../components/registrations-modals/registration-modal-registered.component';
 import InvalidEmail from '../../components/registrations-modals/registration-modal-invalid-email.component';
 import ErrorMessage from '../../components/registrations-modals/registration-modal-error-message.component';
+import Splash from '../../components/registrations-modals/registration-modal-splash.component';
 import { changeCognitoEmail } from '../../providers/aws.provider';
 import {
     printObject,
@@ -33,8 +38,8 @@ import {
     isValidEmail,
 } from '../../utils/helpers';
 import {
-    addRegistration,
     loadTempRegistration,
+    addRegistration,
     clearTempRegistration,
 } from '../../redux/registrations/registrations.actions';
 import { loadRally } from '../../redux/pate/pate.actions';
@@ -50,11 +55,13 @@ const RegistrationProcess = ({
     match,
     pateSystem,
     currentUser,
+    setCurrentUser,
     registrations,
     addRegistration,
     setAlert,
     loadTempRegistration,
     clearTempRegistration,
+    addRegistrationToCurrentUser,
     loadRally,
 }) => {
     //      START OF FUNCTION -------------------
@@ -65,7 +72,7 @@ const RegistrationProcess = ({
     const { registrationInput } = location.state;
     // let multiMutate = match.params.multiMutate;
     printObject('RPP:45-->multMutate:\n', registrationInput);
-    const [modal, setModal] = useState(1);
+    const [modal, setModal] = useState(0);
 
     useEffect(() => {
         async function checkIfCurrentUserRequest() {
@@ -150,31 +157,34 @@ const RegistrationProcess = ({
             ) {
                 setModal(1);
             } else {
-                // ===========================================
-                // registering an authenticated user.
-                // ===========================================
+                //      ===========================================
+                //      registering an authenticated user.
+                //      ===========================================
                 // const eventNumbers = await getEventNumbers();
 
                 // printObject('eventNumbers: ', eventNumbers);
+                //      update Event Numbers
                 const eventUpdated = await updateEventNumbers();
                 if (eventUpdated.statusCode === 200) {
                     console.log('Event numbers updated.');
                 } else {
                     printObject('eventUpdated failure:\n', eventUpdated);
                 }
+                //      update Meal Numbers
                 const mealUpdated = await udpateMealNumbers();
                 if (mealUpdated.statusCode === 200) {
                     console.log('Meal numbers updated.');
                 } else {
                     printObject('mealUpdated failure:\n', mealUpdated);
                 }
+                //   create registration AND addd to REDUX
                 const registeredUser = await registerAuthUser();
                 if (registeredUser.statusCode === 200) {
                     console.log('User registered');
                 } else {
                     printObject('registeredUser failure:\n', registeredUser);
                 }
-                //todoGQL -- need to reload currentUser
+
                 setModal(4);
             }
         }
@@ -392,6 +402,12 @@ const RegistrationProcess = ({
                 variables: { input: inputVariables },
             });
             if (createRegistrationResults.data?.createRegistration != null) {
+                // need to get the event object from pate and save to registration and save
+                // to currentUser Redux.
+                inputVariables.id =
+                    createRegistrationResults?.data?.createRegistration?.id;
+                inputVariables.event = pateSystem.rally;
+                addRegistrationToCurrentUser(inputVariables);
                 return { statusCode: 200, data: 'createRegistration: SUCCESS' };
             } else {
                 return {
@@ -428,11 +444,8 @@ const RegistrationProcess = ({
         <>
             <Header />
             <div>
-                {modal === 1 && (
-                    <DifferentProfileInfo
-                        handleClick={handleFirstModalButtonClick}
-                    />
-                )}
+                {modal === 0 && <Splash />}
+
                 {modal === 2 && (
                     <UpdatedRegistered
                         handleClick={handleFirstModalButtonClick}
@@ -455,6 +468,11 @@ const RegistrationProcess = ({
                 {modal === 6 && (
                     <InvalidEmail handleClick={handleFirstModalButtonClick} />
                 )}
+                {modal === 1 && (
+                    <DifferentProfileInfo
+                        handleClick={handleFirstModalButtonClick}
+                    />
+                )}
                 {modal === 7 && (
                     <ErrorMessage
                         message={errorMessage}
@@ -476,6 +494,9 @@ const mapDispatchToProps = (dispatch) => ({
     loadTempRegistration: (reg) => dispatch(loadTempRegistration(reg)),
     clearTempRegistration: () => dispatch(clearTempRegistration()),
     setAlert: (payload) => dispatch(setAlert(payload)),
+    setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+    addRegistrationToCurrentUser: (registration) =>
+        dispatch(addRegistrationToCurrentUser(registration)),
 });
 const mapStateToProps = (state) => ({
     pateSystem: state.pate,

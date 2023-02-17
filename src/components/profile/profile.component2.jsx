@@ -42,7 +42,6 @@ const Profile2 = ({
         if (!currentUser.isLoggedIn) history.push('/');
         async function clarifyMembership() {
             // need to get membership info based on division
-            console.log('CHECKING...');
             if (currentUser?.memberships.items.length > 0) {
                 let membership = currentUser.memberships.items.find(
                     (m) => m.division.id === currentUser.defaultDivision.id

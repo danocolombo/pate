@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
+import { API, graphqlOperation, input } from 'aws-amplify';
+import * as queries from '../../pateGraphql/queries';
 import { withRouter } from 'react-router';
 import { FaLock } from 'react-icons/fa';
 import { useHistory } from 'react-router-dom';
@@ -14,11 +16,12 @@ import {
     removeRegistration,
 } from '../../redux/registrations/registrations.actions';
 import PhoneInput from 'react-phone-input-2';
+import { printObject } from '../../utils/helpers';
 import SelectStateProv from '../../components/state-prov/select-stateProv.component';
 import './registrar.styles.scss';
 // import { SSL_OP_NETSCAPE_DEMO_CIPHER_CHANGE_BUG } from 'constants';
 const Registrar = ({
-    regData,
+    registration,
     currentUser,
     pateSystem,
     loadTempRegistration,
@@ -27,39 +30,65 @@ const Registrar = ({
     setAlert,
     clearSpinner,
 }) => {
+    printObject('RC:31=->registration:\n', registration);
+
     const [showRegistrationCancelled, setShowRegistrationCancelled] =
         useState(false);
     const [mealsLocked, setMealsLocked] = useState(true);
-    const [attendeeCount, setAttendeeCount] = useState(regData?.attendeeCount);
-    const [mealCount, setMealCount] = useState(
-        regData?.mealCount ? regData.mealCount : 0
+    const [attendeeCount, setAttendeeCount] = useState(
+        registration?.attendanceCount || '0'
     );
-    const [firstName, setFirstName] = useState(regData?.registrar?.firstName);
-    const [lastName, setLastName] = useState(regData?.registrar?.lastName);
-    const [email, setEmail] = useState(regData?.registrar?.email);
-    const [phone, setPhone] = useState(regData?.registrar?.phone);
+    const [mealCount, setMealCount] = useState(
+        registration?.mealCount ? registration.mealCount : 0
+    );
+    const [firstName, setFirstName] = useState(
+        registration?.registrar?.firstName
+    );
+    const [lastName, setLastName] = useState(registration?.registrar?.lastName);
+    const [email, setEmail] = useState(registration?.registrar?.email);
+    const [phone, setPhone] = useState(registration?.registrar?.phone);
     const [homeStreet, setHomeStreet] = useState(
-        regData?.registrar?.residence?.street
+        registration?.registrar?.residence?.street
     );
     const [homeCity, setHomeCity] = useState(
-        regData?.registrar?.residence?.city
+        registration?.registrar?.residence?.city
     );
     const [homeStateProv, setHomeStateProv] = useState(
-        regData?.registrar?.residence?.stateProv
+        registration?.registrar?.residence?.stateProv
     );
     const [homePostalCode, setHomePostalCode] = useState(
-        regData?.registrar?.residence?.postalCode
+        registration?.registrar?.residence?.postalCode
     );
-    const [churchName, setChurchName] = useState(regData?.church?.name);
-    const [churchCity, setChurchCity] = useState(regData?.church?.city);
+    const [churchName, setChurchName] = useState(registration?.church?.name);
+    const [churchCity, setChurchCity] = useState(registration?.church?.city);
     const [churchStateProv, setChurchStateProv] = useState(
-        regData?.church?.stateProv
+        registration?.church?.stateProv
     );
 
     const history = useHistory();
-    useEffect(() => {
-        areMealsLocked() ? setMealsLocked(true) : setMealsLocked(false);
-    }, []);
+    useEffect(() => {}, []);
+    // useEffect(() => {
+    //     async function fetchRegistration() {
+    //         const variables = {
+    //             id: registrationId,
+    //         };
+    //         try {
+    //             const gqlResponse = await API.graphql(
+    //                 graphqlOperation(queries.getRegistration, variables)
+    //             );
+    //             if (gqlResponse.data.getRegistration) {
+    //                 setRegistractionDetails(gqlResponse.data.getRegistration);
+    //                 const details = gqlResponse.data.getRegistration;
+    //                 printObject('RC:86-->details:\n', details);
+    //             }
+    //         } catch (error) {
+    //             printObject('rc:85-->error gettng graphql data');
+    //         }
+    //     }
+    //     fetchRegistration();
+
+    //     areMealsLocked() ? setMealsLocked(true) : setMealsLocked(false);
+    // }, []);
     const handleCancel = (e) => {
         async function purgeTempReg() {
             clearTempRegistration();
@@ -71,68 +100,68 @@ const Registrar = ({
         e.preventDefault();
         setSpinner();
 
-        await fetch(
-            'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/registrations',
-            {
-                method: 'POST',
-                body: JSON.stringify({
-                    operation: 'deleteRegistration',
-                    payload: {
-                        Key: { uid: regData.uid },
-                    },
-                }),
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8',
-                },
-            }
-        )
-            .then((response) => response.json())
-            .then((data) => {
-                // const util = require('util');
-                // console.log(
-                //     'db data returned: \n' +
-                //         util.inspect(data, {
-                //             showHidden: false,
-                //             depth: null,
-                //         })
-                // );
-            });
+        // await fetch(
+        //     'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/registrations',
+        //     {
+        //         method: 'POST',
+        //         body: JSON.stringify({
+        //             operation: 'deleteRegistration',
+        //             payload: {
+        //                 Key: { uid: theRegistration.event.id },
+        //             },
+        //         }),
+        //         headers: {
+        //             'Content-type': 'application/json; charset=UTF-8',
+        //         },
+        //     }
+        // )
+        //     .then((response) => response.json())
+        //     .then((data) => {
+        //         // const util = require('util');
+        //         // console.log(
+        //         //     'db data returned: \n' +
+        //         //         util.inspect(data, {
+        //         //             showHidden: false,
+        //         //             depth: null,
+        //         //         })
+        //         // );
+        //     });
         //-------------------------
         // reduce event numbers.
         //-------------------------
-        let eventUpdate = {
-            uid: regData.eid,
-            adjustments: {
-                registrationCount: regData.attendeeCount * -1,
-            },
-        };
-        const mCount = parseInt(regData.mealCount, 10) * -1;
-        if (mCount !== 0) {
-            eventUpdate.adjustments.mealCount = mCount;
-        }
-        await fetch(
-            'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/events',
-            {
-                method: 'POST',
-                body: JSON.stringify({
-                    operation: 'maintainNumbers',
-                    payload: eventUpdate,
-                }),
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8',
-                },
-            }
-        )
-            .then((response) => response.json())
-            .then((data) => {
-                console.log('maintainEventNumbers successful');
-            });
+        // let eventUpdate = {
+        //     uid: theRegistration.eid,
+        //     adjustments: {
+        //         registrationCount: theRegistration.attendanceCount * -1,
+        //     },
+        // };
+        // const mCount = parseInt(theRegistration.mealCount, 10) * -1;
+        // if (mCount !== 0) {
+        //     eventUpdate.adjustments.mealCount = mCount;
+        // }
+        // await fetch(
+        //     'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/events',
+        //     {
+        //         method: 'POST',
+        //         body: JSON.stringify({
+        //             operation: 'maintainNumbers',
+        //             payload: eventUpdate,
+        //         }),
+        //         headers: {
+        //             'Content-type': 'application/json; charset=UTF-8',
+        //         },
+        //     }
+        // )
+        //     .then((response) => response.json())
+        //     .then((data) => {
+        //         console.log('maintainEventNumbers successful');
+        //     });
 
-        //remove the redux reference to the event
-        await removeRegistration(regData.uid);
-        //??????
-        // may need to reload stateRep & stateLead redux
-        //??????
+        // //remove the redux reference to the event
+        // await removeRegistration(regData.uid);
+        // //??????
+        // // may need to reload stateRep & stateLead redux
+        // //??????
         clearSpinner();
         setShowRegistrationCancelled(true);
     };
@@ -316,7 +345,7 @@ const Registrar = ({
                 body: JSON.stringify({
                     operation: 'updateRegistration',
                     payload: {
-                        Item: regData,
+                        Item: registration,
                     },
                 }),
                 headers: {

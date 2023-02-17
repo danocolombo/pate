@@ -7,6 +7,7 @@ import ShowImage from './showImage';
 import SongExample from './song-example';
 import CreateProfiles from './admin-createProfiles';
 import MigrateEvents from './admin-migrateEvents';
+import TestCode from './admin-test-code';
 import { MainFooter } from '../../components/footers/main-footer';
 import './admin-page.styles.scss';
 const Administer = () => {
@@ -21,6 +22,8 @@ const Administer = () => {
             {option === 'migrateEvents' ? <MigrateEvents /> : null}
 
             {option === 'createProfiles' ? <CreateProfiles /> : null}
+            {option === 'testCode' ? <TestCode /> : null}
+
             <MainFooter />
         </>
     );

@@ -3,7 +3,6 @@ import StyledLink from '../../components/custom-link/custom-link-yellow.componen
 import './events-marquee.styles.scss';
 import { printObject, prettyDate } from '../../utils/helpers';
 const EventMarquee3 = ({ event }) => {
-    printObject('EM3C:8-->event:\n', event);
     const mo = {
         '01': 'JAN',
         '02': 'FEB',

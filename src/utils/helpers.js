@@ -192,6 +192,9 @@ export async function AWSTimetoLegacyTime(awsTime) {
     return simplifiedTime;
 }
 export function prettyDate(strDate) {
+    if (!strDate) {
+        return;
+    }
     //const dateStr = '2023-03-04';
     const date = new Date(strDate);
 
@@ -203,6 +206,9 @@ export function prettyDate(strDate) {
 }
 export function prettyTime(strTime) {
     // var time = '12:30:00-05:00';
+    if (!strTime) {
+        return;
+    }
     var hours = parseInt(strTime.substr(0, 2), 10);
     var minutes = strTime.substr(3, 2);
     var suffix = hours >= 12 ? 'pm' : 'am';

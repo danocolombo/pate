@@ -45,7 +45,11 @@ const Serve = ({
         }
         reps();
 
-        if (currentUser.role === 'lead') {
+        if (
+            currentUser.role === 'lead' ||
+            currentUser.role === 'director' ||
+            currentUser.role === 'guru'
+        ) {
             async function leads() {
                 getLeadRallies();
             }
@@ -111,9 +115,14 @@ const Serve = ({
                         'SP:102-->repRallies: ',
                         repRallies?.data?.listDivisions?.items[0].events.items
                     );
-                    loadRallies(
-                        repRallies?.data?.listDivisions?.items[0].events.items
-                    );
+                    async function sortThem(a, b) {
+                        return b.eventDate - a.eventDate;
+                    }
+                    let unsortedRallies =
+                        repRallies?.data?.listDivisions?.items[0].events.items;
+                    let sortedRallies = unsortedRallies.sort(sortThem);
+
+                    loadRallies(sortedRallies);
                 } else {
                     console.log('SP:107--> NO EVENTS TO DISPLAY');
                 }
@@ -139,18 +148,45 @@ const Serve = ({
                     allRallyResponse?.data?.getDivision?.events.items.length > 0
                 ) {
                     // now loop through getting the ones for the lead
-                    const allRallies =
+
+                    let leadDoneRallyArray = [];
+                    let leadActiveRallyArray = [];
+                    let today = new Date();
+                    let todayString = today.toISOString().substring(0, 10);
+                    let allRallies =
                         allRallyResponse?.data?.getDivision?.events.items;
-                    let leadRallyArray = [];
+                    // SORT RALLIES BY eventData and then stateProv
+                    allRallies.sort(function (a, b) {
+                        let dateA = new Date(a.eventDate);
+                        let dateB = new Date(b.eventDate);
+                        let result = dateB - dateA;
+                        if (result === 0) {
+                            result = a.location.stateProv.localeCompare(
+                                b.location.stateProv
+                            );
+                        }
+                        return result;
+                    });
+                    // save all the rallies to pateSystem.rallies
+                    setPateRallies(allRallies);
                     allRallies.forEach((r) => {
                         if (
                             r.location.stateProv ===
                             currentUser.residence.stateProv
                         ) {
-                            leadRallyArray.push(r);
+                            if (r.eventDate < todayString) {
+                                leadDoneRallyArray.push(r);
+                            } else {
+                                leadActiveRallyArray.push(r);
+                            }
                         }
                     });
-                    loadLeadDoneRallies(leadRallyArray);
+                    if (leadDoneRallyArray.length > 0) {
+                        loadLeadDoneRallies(leadDoneRallyArray);
+                    }
+                    if (leadActiveRallyArray.length > 0) {
+                        loadLeadRallies(leadActiveRallyArray);
+                    }
                 } else {
                     console.log('SP:107--> NO EVENTS TO DISPLAY');
                 }
@@ -270,7 +306,9 @@ const Serve = ({
                         </div>
                         <StateRep />
 
-                        {currentUser?.role === 'lead' ? (
+                        {currentUser?.role === 'lead' ||
+                        currentUser?.role === 'director' ||
+                        currentUser?.role === 'guru' ? (
                             <>
                                 <StateLead />
                             </>
@@ -288,7 +326,7 @@ const mapDispatchToProps = (dispatch) => ({
     loadDoneRallies: (rallies) => dispatch(loadDoneRallies(rallies)),
     loadLeadRallies: (srallies) => dispatch(loadLeadRallies(srallies)),
     loadLeadDoneRallies: (srallies) => dispatch(loadLeadDoneRallies(srallies)),
-    setPateRallies: (rallies) => dispatch(setPateRallies(rallies)),
+    setPateRallies: (allRallies) => dispatch(setPateRallies(allRallies)),
     setSpinner: () => dispatch(setSpinner()),
     clearSpinner: () => dispatch(clearSpinner()),
 });

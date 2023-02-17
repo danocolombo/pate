@@ -16,7 +16,16 @@ const pateReducer = (state = INITIAL_STATE, action = null) => {
                 ...state,
                 showSpinner: true,
             };
-
+        case PateActionTypes.CLEAR_ALL_PATE:
+            return {
+                ...state,
+                showSpinner: false,
+                rally: null,
+                rallies: [],
+                registration: null,
+                users: null,
+                tmpUser: null,
+            };
         case PateActionTypes.CLEAR_SPINNER:
             return {
                 ...state,

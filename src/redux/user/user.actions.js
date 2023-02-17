@@ -13,3 +13,11 @@ export const clearUser = (user) => ({
     type: UserActionTypes.CLEAR_USER,
     payload: user,
 });
+export const addRegistrationToCurrentUser = (user) => ({
+    type: UserActionTypes.ADD_REGISTRATION_TO_CURRENT_USER,
+    payload: user,
+});
+export const removeRegistrationFromCurrentUser = (user) => ({
+    type: UserActionTypes.REMOVE_REGISTRATION_FROM_CURRENT_USER,
+    payload: user,
+});
