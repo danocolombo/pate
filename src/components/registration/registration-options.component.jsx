@@ -143,7 +143,7 @@ function RegistrationOptions({
         if (!city) {
             return 'City is required';
         }
-        if (street.length < 2 || street.length > 50) {
+        if (city.length < 2 || city.length > 50) {
             return 'length 10-50 characters';
         }
         return '';
@@ -152,7 +152,7 @@ function RegistrationOptions({
         if (!stateProv) {
             return 'State is required';
         }
-        if (street.length < 2 || street.length > 2) {
+        if (stateProv.length < 2 || stateProv.length > 2) {
             return '2 characters only';
         }
         return '';

@@ -12,6 +12,7 @@ import ProfileNotification from '../../components/modals/profile-reminder/profil
 import Header from '../../components/header/header.component';
 import { MainFooter } from '../../components/footers/main-footer';
 import Profile2 from '../../components/profile/profile.component2';
+import Profile3 from '../../components/profile/profile.component3';
 import PersonalProfile from '../../components/profile/profile.component';
 import UserRegistrationOverview from '../../components/userregistrationsoverview/userregistrationsoverview.component';
 import { loadRegistrations } from '../../redux/registrations/registrations.actions';
@@ -47,7 +48,7 @@ const UserProfile = ({
 
             <div className='profilepagewrapper'>
                 {/*<div className='pageheader'>PERSONAL PROFILE</div>*/}
-                <Profile2 />
+                <Profile3 />
                 {/*<PersonalProfile />*/}
                 {/*<div className='profile-page__'>YOUR REGISTRATIONS</div>*/}
                 {currentUser.registrations.items.length > 0 && (
