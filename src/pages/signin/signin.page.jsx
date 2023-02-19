@@ -211,7 +211,12 @@ const SignIn = ({
             }
             setUserRoleValue();
             //      SET CURRENT USER = graphqQLProfile
-            graphQLProfile = { ...graphQLProfile, isLoggedIn: true };
+            graphQLProfile = {
+                ...graphQLProfile,
+                isLoggedIn: true,
+                authUserInfo: currentUserInfo,
+                authSession: currentSession,
+            };
             await setCurrentUser(graphQLProfile);
             // const userIsRegistered = await saveUser(
             //     currentUserInfo,

@@ -196,6 +196,8 @@ const RegistrationProcess = ({
         console.log('buttonType:', buttonType);
         if (buttonType === 'update_register') {
             //      user has elected to update profile and register
+            printObject('____currentUser_____:\n', currentUser);
+            printObject('____registrationInput____:\n', registrationInput);
             if (emailChanged === false) {
                 const registeredResults = await registerAuthUser();
                 if (!registeredResults) {
@@ -203,6 +205,130 @@ const RegistrationProcess = ({
                     setErrorMessage('Error registering');
                     setModal(7);
                 } else {
+                    // at this point user has updated their profile info and wants to register
+                    //generic object testing funciton
+                    async function checkIfObjectsAreSame(obj1, obj2) {
+                        for (let key in obj1) {
+                            if (obj1[key] !== obj2[key]) {
+                                return false;
+                            }
+                        }
+                        return true;
+                    }
+                    //*  1. update gqlUser profile
+                    //  build the user model w/o id to check against currentUser values
+                    let updatedUser = {
+                        firstName: registrationInput.firstName,
+                        lastName: registrationInput.lastName,
+                        phone: registrationInput.phone,
+                    };
+                    let cuValues = {
+                        firstName: currentUser.firstName,
+                        lastName: currentUser.lastName,
+                        phone: currentUser.phone,
+                    };
+                    let skipPersonalInfo = await checkIfObjectsAreSame(
+                        updatedUser,
+                        cuValues
+                    );
+                    if (skipPersonalInfo) {
+                        // no cheange, set to null
+                        updatedUser = null;
+                    } else {
+                        //going to update, add id.
+                        updatedUser.id = currentUser.id;
+                    }
+                    //*  check Residence
+                    let updatedResidence = {
+                        ...registrationInput.residence,
+                        id: currentUser.residence.id,
+                    };
+                    let skipResidenceInfo = await checkIfObjectsAreSame(
+                        updatedResidence,
+                        currentUser.residence
+                    );
+                    if (skipResidenceInfo) {
+                        updatedResidence = null;
+                    }
+                    //*  check the membership data
+                    let updatedMembership = {
+                        name: registrationInput.membership.name,
+                        city: registrationInput.membership.city,
+                        stateProv: registrationInput.membership.stateProv,
+                    };
+                    let skipMembershipInfo = await checkIfObjectsAreSame(
+                        updatedMembership,
+                        currentUser.memberships.items[0]
+                    );
+                    if (skipMembershipInfo) {
+                        updatedMembership = null;
+                    }
+                    //      create registration for the user
+                    const regVariables = {
+                        eventRegistrationsId: registrationInput.eventId,
+                        userRegistrationsId: currentUser.id,
+                        attendanceCount: registrationInput?.attendanceCount,
+                        mealCount: registrationInput?.mealCount,
+                        membershipName:
+                            registrationInput?.membership?.name || null,
+                        membershipCity:
+                            registrationInput?.membership?.city || null,
+                        membershipStateProv:
+                            registrationInput?.membership?.stateProv || null,
+                    };
+                    //* CALL COMMON REGISTRATION METHOD
+                    let newRegistrationResponse = await createNewRegistration(
+                        regVariables
+                    );
+                    if (newRegistrationResponse) {
+                        console.log('registration successful');
+                    } else {
+                        console.log('registration falied.');
+                    }
+
+                    const eventUpdated = await updateEventNumbers();
+                    if (eventUpdated.statusCode === 200) {
+                        console.log('Event numbers updated.');
+                    } else {
+                        printObject('eventUpdated failure:\n', eventUpdated);
+                    }
+                    //      update Meal Numbers
+                    const mealUpdated = await udpateMealNumbers();
+                    if (mealUpdated.statusCode === 200) {
+                        console.log('Meal numbers updated.');
+                    } else {
+                        printObject('mealUpdated failure:\n', mealUpdated);
+                    }
+                    //   create registration AND addd to REDUX
+                    const registeredUser = await registerAuthUser();
+                    if (registeredUser.statusCode === 200) {
+                        console.log('User registered');
+                    } else {
+                        printObject(
+                            'registeredUser failure:\n',
+                            registeredUser
+                        );
+                    }
+                    const inputVariables = {
+                        eventRegistrationsId: registrationInput.eventId,
+                        userRegistrationsId: currentUser.id,
+                        attendanceCount: registrationInput.attendanceCount,
+                        mealCount: registrationInput.mealCount,
+                        membershipName:
+                            currentUser?.memberships?.items[0]?.name || null,
+                        membershipCity:
+                            currentUser?.memberships?.items[0]?.city || null,
+                        membershipStateProv:
+                            currentUser?.memberships?.items[0].stateProv ||
+                            null,
+                    };
+                    //* CALL COMMON REGISTRATION METHOD
+                    let registrationRequestResults =
+                        await createNewRegistration(inputVariables);
+
+                    //*  2. update currentUser REDUX
+                    //*  3. register with new values
+
                     setModal(2);
                 }
             } else {
@@ -388,29 +514,19 @@ const RegistrationProcess = ({
             //todo-gql --- need to also update gqlUser values
         }
     };
-    const registerAuthUser = async () => {
-        // this is going to register a authenticated user.
-        const inputVariables = {
-            eventRegistrationsId: registrationInput.eventId,
-            userRegistrationsId: currentUser.id,
-            attendanceCount: registrationInput.attendanceCount,
-            mealCount: registrationInput.mealCount,
-            membershipName: currentUser?.memberships?.items[0]?.name || null,
-            membershipCity: currentUser?.memberships?.items[0]?.city || null,
-            membershipStateProv: currentUser?.memberships?.items[0].stateProv || null
-        };
+    const createNewRegistration = async (registrationRequest) => {
         try {
             const createRegistrationResults = await API.graphql({
                 query: mutations.createRegistration,
-                variables: { input: inputVariables },
+                variables: { input: registrationRequest },
             });
             if (createRegistrationResults.data?.createRegistration != null) {
                 // need to get the event object from pate and save to registration and save
                 // to currentUser Redux.
-                inputVariables.id =
+                registrationRequest.id =
                     createRegistrationResults?.data?.createRegistration?.id;
-                inputVariables.event = pateSystem.rally;
-                addRegistrationToCurrentUser(inputVariables);
+                registrationRequest.event = pateSystem.rally;
+                addRegistrationToCurrentUser(registrationRequest);
                 return { statusCode: 200, data: 'createRegistration: SUCCESS' };
             } else {
                 return {
@@ -426,6 +542,24 @@ const RegistrationProcess = ({
                 error: err,
             };
         }
+    };
+    const registerAuthUser = async () => {
+        // this is going to register a authenticated user.
+        const inputVariables = {
+            eventRegistrationsId: registrationInput.eventId,
+            userRegistrationsId: currentUser.id,
+            attendanceCount: registrationInput.attendanceCount,
+            mealCount: registrationInput.mealCount,
+            membershipName: currentUser?.memberships?.items[0]?.name || null,
+            membershipCity: currentUser?.memberships?.items[0]?.city || null,
+            membershipStateProv:
+                currentUser?.memberships?.items[0].stateProv || null,
+        };
+        //* CALL COMMON REGISTRATION METHOD
+        let registrationRequestResults = await createNewRegistration(
+            inputVariables
+        );
+        return registrationRequestResults;
     };
     const updateUserProfile = async () => {
         // this is used when the user is logged in and updated their info
@@ -448,7 +582,11 @@ const RegistrationProcess = ({
             <Header />
             <div>
                 {modal === 0 && <Splash />}
-
+                {modal === 1 && (
+                    <DifferentProfileInfo
+                        handleClick={handleFirstModalButtonClick}
+                    />
+                )}
                 {modal === 2 && (
                     <UpdatedRegistered
                         handleClick={handleFirstModalButtonClick}
@@ -459,7 +597,6 @@ const RegistrationProcess = ({
                         handleClick={handleFirstModalButtonClick}
                     />
                 )}
-
                 {modal === 4 && (
                     <Registered handleClick={handleFirstModalButtonClick} />
                 )}
@@ -470,11 +607,6 @@ const RegistrationProcess = ({
                 )}
                 {modal === 6 && (
                     <InvalidEmail handleClick={handleFirstModalButtonClick} />
-                )}
-                {modal === 1 && (
-                    <DifferentProfileInfo
-                        handleClick={handleFirstModalButtonClick}
-                    />
                 )}
                 {modal === 7 && (
                     <ErrorMessage

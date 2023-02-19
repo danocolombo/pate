@@ -623,6 +623,9 @@ export const getProfileBySub = /* GraphQL */ `
                                 city
                                 stateProv
                             }
+                            meal {
+                                id
+                            }
                         }
                         registrar {
                             id

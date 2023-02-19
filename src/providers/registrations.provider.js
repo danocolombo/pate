@@ -99,7 +99,7 @@ export const deleteRegistrationProvider = async (theReg) => {
                 query: mutations.updateMeal,
                 variables: { input: inputVariables },
             });
-            if (newMealNumbers?.data?.deleteRegistration?.id) {
+            if (newMealNumbers?.data?.updateMeal?.updatedAt) {
                 return {
                     statusCode: 200,
                     data: 'meal numbers updated...',

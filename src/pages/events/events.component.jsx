@@ -9,6 +9,7 @@ import { API, graphqlOperation } from 'aws-amplify';
 import * as queries from '../../pateGraphql/queries';
 import './events.styles.scss';
 // import RallyList from '../../components/rally-list';
+import { Box, Typography } from '@mui/material';
 import Header from '../../components/header/header.component';
 import EventsMarquee from '../../components/events-marquee/events-marquee.component';
 // import EventsMarquee2 from '../../components/events-marquee/events-marquee2.component';
@@ -16,6 +17,7 @@ import { MainFooter } from '../../components/footers/main-footer';
 import Spinner from '../../components/spinner/Spinner';
 // import EventMarquee2 from '../../components/events-marquee/event-marquee2.component';
 import EventMarquee3 from '../../components/events-marquee/event-marquee3.component';
+import EventMarquee4 from '../../components/events-marquee/event-marquee4.component';
 import { printObject } from '../../utils/helpers';
 class Events extends React.Component {
     constructor() {
@@ -26,28 +28,11 @@ class Events extends React.Component {
             cnt: 0,
             loading: true,
             noPlans: true,
+            multiplier: 1,
         };
     }
 
     async componentDidMount() {
-        //  ORIGINAL REQUEST
-        // await fetch(
-        //     'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/events',
-        //     {
-        //         method: 'POST',
-        //         body: JSON.stringify({
-        //             operation: 'getAllActiveApprovedEvents',
-        //         }),
-        //         headers: {
-        //             'Content-type': 'application/json; charset=UTF-8',
-        //         },
-        //     }
-        // )
-        //     .then((response) => response.json())
-        //     .then((data) => {
-        //         this.setState({ plans: data.body });
-        //     });
-
         const variables = {
             id: 'fffedde6-5d5a-46f0-a3ac-882a350edc64',
             eq: 'approved',
@@ -84,34 +69,51 @@ class Events extends React.Component {
         ) : (
             <>
                 <Header />
-                <div className='events-marquee-compoment__events-wrapper'>
-                    <div className='events-marquee-component__events-box'>
-                        <div className='events-page__events-box2'>
-                            {this.state.plans.length > 0 && (
-                                <div className='events-marquee-component__page-title'>
-                                    Upcoming P8 Rallies
-                                </div>
-                            )}
-
-                            {this.state.plans.length > 0 ? (
-                                this.state.plans.map((plan) => (
-                                    <>
-                                        <EventMarquee3
-                                            event={plan}
-                                            key={plan.id}
-                                        />
-                                    </>
-                                ))
-                            ) : (
-                                <img
-                                    className='events-page__no-events-image'
-                                    src='https://pate-images.s3.amazonaws.com/NoEvents.png'
-                                    alt='No Scheduled Events. Come Back Soon for more info'
+                <Box
+                    className='MyBox-root'
+                    sx={{
+                        position: 'relative',
+                        background:
+                            'linear-gradient(to bottom, #384ea3, #ced8e8)',
+                        borderRadius: 2,
+                        minHeight: `${20 * this.state.multiplier}px`,
+                        marginTop: 2,
+                        marginBottom: 2,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'top',
+                        alignContent: 'center',
+                        maxWidth: 400,
+                        width: '100%',
+                        margin: '0 auto',
+                    }}
+                >
+                    <Typography
+                        variant='h5'
+                        align='center'
+                        marginTop='10px'
+                        color='white'
+                    >
+                        Upcoming Events
+                    </Typography>
+                    {this.state.plans.length > 0 ? (
+                        this.state.plans.map((plan, index) => (
+                            <>
+                                <EventMarquee4
+                                    event={plan}
+                                    index={index}
+                                    key={plan.id}
                                 />
-                            )}
-                        </div>
-                    </div>
-                </div>
+                            </>
+                        ))
+                    ) : (
+                        <img
+                            className='events-page__no-events-image'
+                            src='https://pate-images.s3.amazonaws.com/NoEvents.png'
+                            alt='No Scheduled Events. Come Back Soon for more info'
+                        />
+                    )}
+                </Box>
                 <MainFooter />
             </>
         );

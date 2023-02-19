@@ -40,14 +40,14 @@ const Events = ({
                 )
             )
                 .then((theEvent) => {
-                    console.log('1.');
+                    // console.log('1.');
                     if (theEvent?.data?.getEvent) {
-                        console.log('2.');
-                        printObject(
-                            'EP:46-->event: ',
-                            theEvent?.data?.getEvent
-                        );
-                        console.log('3.');
+                        // console.log('2.');
+                        // printObject(
+                        //     'EP:46-->event: ',
+                        //     theEvent?.data?.getEvent
+                        // );
+                        // console.log('3.');
                         setPlan(theEvent.data.getEvent);
                         try {
                             loadRally(theEvent.data.getEvent);
@@ -55,7 +55,7 @@ const Events = ({
                             printObject('Error loadRally:\n', err);
                         }
 
-                        console.log('4. done loading event/rally');
+                        // console.log('4. done loading event/rally');
                     } else {
                         console.log('EP:73--> NO EVENTS TO DISPLAY');
                     }
@@ -76,19 +76,6 @@ const Events = ({
             <Header />
             <div className='eventwrapper'>
                 <EventDetails theEvent={plan} />
-                <div>
-                    {currentUser?.isLoggedIn === true ? (
-                        <Link to={`/registration/${plan?.id}`}>
-                            <button className='registerbutton'>
-                                REGISTER NOW
-                            </button>
-                        </Link>
-                    ) : (
-                        <Link to={`/signin`}>
-                            <button className='registerbutton'>SIGN-IN</button>
-                        </Link>
-                    )}
-                </div>
             </div>
             <MainFooter />
         </>

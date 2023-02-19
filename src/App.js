@@ -22,6 +22,7 @@ import PrivatePage from './pages/privatePage/privatePage';
 import EventDetails from './pages/event/event.page';
 import EventRegistration from './pages/registration/registration.page';
 import FAQ from './pages/faq/faq.page';
+import RegistrationControllerPage from './pages/registration/registration-controller-page';
 import Serve from './pages/serve/serve.page';
 import ServeEvent from './pages/serveEvent/serveEvent.page';
 import NewEvent from './pages/newEvent/newEvent.page';
@@ -77,8 +78,14 @@ function App() {
                     <Route
                         exact
                         path='/registration/:id'
+                        component={RegistrationControllerPage}
+                    />
+                    <Route
+                        exact
+                        path='/registrationOLD/:id'
                         component={EventRegistration}
                     />
+
                     <Route
                         exact
                         path='/registrationprocess'
