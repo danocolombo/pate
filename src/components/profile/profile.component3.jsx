@@ -40,59 +40,143 @@ const Profile3 = ({
     const [emailError, setEmailError] = useState('');
     const [phone, setPhone] = useState(currentUser?.phone);
     const [phoneError, setPhoneError] = useState('');
-    const [homeStreet, setHomeStreet] = useState(
-        currentUser?.residence?.street
+    const [street, setStreet] = useState(currentUser?.residence?.street);
+    const [streetError, setStreetError] = useState('');
+    const [city, setCity] = useState(currentUser?.residence?.city);
+    const [cityError, setCityError] = useState('');
+    const [stateProv, setStateProv] = useState(
+        currentUser?.residence?.stateProv || ''
     );
-    const [homeStreetError, setHomeStreetError] = useState('');
-    const [homeCity, setHomeCity] = useState(currentUser?.residence?.city);
-    const [homeCityError, setHomeCityError] = useState('');
-    const [homeStateProv, setHomeStateProv] = useState(
-        currentUser?.residence?.stateProv
-    );
-    const [homePostalCode, setHomePostalCode] = useState(
+    const [postalCode, setPostalCode] = useState(
         currentUser?.residence?.postalCode
     );
-    const [homePostalCodeError, setHomePostalCodeError] = useState('');
+    const [postalCodeError, setPostalCodeError] = useState('');
     const [originalMembership, setOriginalMembership] = useState({});
-    const [membershipId, setMembershipId] = useState('');
-    const [churchName, setChurchName] = useState('');
-    const [churchNameError, setChurchNameError] = useState('');
-    const [churchCity, setChurchCity] = useState('');
-    const [churchCityError, setChurchCityError] = useState('');
-    const [churchStateProv, setChurchStateProv] = useState('');
+    const [membershipId, setMembershipId] = useState(
+        currentUser?.memberships?.items[0].id || ''
+    );
+    const [membershipName, setMembershipName] = useState(
+        currentUser?.memberships?.items[0].name || ''
+    );
+    const [membershipNameError, setMembershipNameError] = useState('');
+    const [membershipCity, setMembershipCity] = useState(
+        currentUser?.memberships?.items[0].city || ''
+    );
+    const [membershipCityError, setMembershipCityError] = useState('');
+    const [membershipStateProv, setMembershipStateProv] = useState(
+        currentUser?.memberships?.items[0]?.stateProv || ''
+    );
     useEffect(() => {
         if (!currentUser.isLoggedIn) history.push('/');
         async function clarifyMembership() {
             // need to get membership info based on division
-            if (currentUser?.memberships.items.length > 0) {
-                let membership = currentUser.memberships.items.find(
-                    (m) => m.division.id === currentUser.defaultDivision.id
-                );
-                if (membership) {
-                    printObject('PC:72-->membership:\n', membership);
-                    setOriginalMembership({
-                        id: membership.id,
-                        name: membership.name,
-                        city: membership.city,
-                        stateProv: membership.stateProv,
-                    });
-                    setMembershipId(membership.id);
-                    setChurchName(membership.name);
-                    setChurchCity(membership.city);
-                    setChurchStateProv(membership.stateProv);
-                } else {
-                    console.log(
-                        'PC:52--> MEMBERSHIP NOT FOUND IN MEMBERSHIP ARRAY'
-                    );
-                }
-            } else {
-                console.log('PC:46--> MEMBERSHIPS NOT IDENTIFIED');
-            }
+            // if (currentUser?.memberships.items.length > 0) {
+            //     let membership = currentUser.memberships.items.find(
+            //         (m) => m.division.id === currentUser.defaultDivision.id
+            //     );
+            //     if (membership) {
+            //         setOriginalMembership({
+            //             id: membership.id,
+            //             name: membership.name,
+            //             city: membership.city,
+            //             stateProv: membership.stateProv,
+            //         });
+            //         setMembershipId(membership.id);
+            //         setChurchName(membership.name);
+            //         setChurchCity(membership.city);
+            //         setChurchStateProv(membership.stateProv);
+            //     } else {
+            //         console.log(
+            //             'PC:52--> MEMBERSHIP NOT FOUND IN MEMBERSHIP ARRAY'
+            //         );
+            //     }
+            // } else {
+            //     console.log('PC:46--> MEMBERSHIPS NOT IDENTIFIED');
+            // }
         }
         clarifyMembership();
     }, []);
     useEffect(() => {}, [pateSystem.showSpinner]);
 
+    const validateFirstName = (firstName) => {
+        if (!firstName) {
+            return 'First name is required';
+        }
+        const emailRegex = /^[A-Za-z]{2,15}$/;
+        if (!emailRegex.test(firstName)) {
+            return '2-15 characters only';
+        }
+        return '';
+    };
+    const validateLastName = (lastName) => {
+        if (!lastName) {
+            return 'Last name is required';
+        }
+        const emailRegex = /^[a-zA-Z]{2,19}\d?$/;
+        if (!emailRegex.test(lastName)) {
+            return '2-19 characters (optional number)';
+        }
+        return '';
+    };
+    const validateStreet = (street) => {
+        if (!street) {
+            return 'Street is required';
+        }
+        const emailRegex = /^[a-zA-Z\d\s\#]{2,19}$/;
+        if (!emailRegex.test(street)) {
+            return '2-19 characters (optional number)';
+        }
+        return '';
+    };
+    const validateCity = (city) => {
+        if (!city) {
+            return 'City is required';
+        }
+        const emailRegex = /^[A-Za-z]{2,15}$/;
+        if (!emailRegex.test(city)) {
+            return '2-15 characters only';
+        }
+        return '';
+    };
+    const validatePostalCode = (postalCode) => {
+        const emailRegex = / ^\d{5}$/;
+        if (!emailRegex.test(postalCode)) {
+            return '5 digit number';
+        }
+
+        return '';
+    };
+    const validateEmail = (email) => {
+        if (!email) {
+            return 'Email is required';
+        }
+        const emailRegex = /^[\w.%+-]+@[\w.-]+\.[A-Za-z]{2,}$/;
+        if (!emailRegex.test(email)) {
+            return 'Email address not supported';
+        }
+
+        return '';
+    };
+    const validatePhone = (phone) => {
+        const regex = /\d{10}/;
+        console.log('length:', phone.length);
+        if (regex.test(phone) || phone.length === 0) {
+            return '';
+        }
+        return true;
+    };
+    const validateMembershipName = (membershipName) => {
+        if (membershipName.length > 50) {
+            return 'max length 50 characters';
+        }
+        return '';
+    };
+    const validateMembershipCity = (membershipCity) => {
+        if (membershipCity.length > 25) {
+            return 'max length 25 characters';
+        }
+        return '';
+    };
     const handleSubmitClick = (event) => {
         event.preventDefault();
         setSpinner();
@@ -122,42 +206,54 @@ const Profile3 = ({
             };
         }
         if (
-            (currentUser.residence.street !== homeStreet,
-            currentUser.residence.city !== homeCity,
-            currentUser.residence.stateProv !== homeStateProv,
-            currentUser.residence.postalCode !== homePostalCode)
+            currentUser.residence.street !== street ||
+            currentUser.residence.city !== city ||
+            currentUser.residence.stateProv !== stateProv ||
+            currentUser.residence.postalCode !== postalCode
         ) {
             residenceInput = {
                 id: currentUser.residence.id,
-                street: homeStreet,
-                city: homeCity,
-                stateProv: homeStateProv,
-                postalCode: homePostalCode,
+                street: street,
+                city: city,
+                stateProv: stateProv,
+                postalCode: postalCode,
             };
         }
         //      make the membership object
-        membershipInput = {
-            id: membershipId,
-            name: churchName,
-            city: churchCity,
-            stateProv: churchStateProv,
-        };
-        //      check if changes were made, if no change, empty array.
         if (
-            JSON.stringify(membershipInput) !==
-            JSON.stringify(originalMembership)
+            currentUser?.memberships?.items[0]?.name !== membershipName ||
+            currentUser?.memberships?.items[0]?.city !== membershipCity ||
+            currentUser?.memberships?.items[0]?.stateProv !==
+                membershipStateProv
         ) {
-            membershipInput = {};
+            membershipInput = {
+                id: membershipId,
+                name: membershipName,
+                city: membershipCity,
+                stateProv: membershipStateProv,
+            };
         }
+
         const multiMutate = {
             user: userInput,
             residence: residenceInput,
             membership: membershipInput,
         };
+        printObject('PC:157-->multiMutate:\n', multiMutate);
         //todo-gql  need to update graphql as needed with multiMutate
         //todo-gql  need to update currentUser in redux
         let DANO = true;
         if (DANO) {
+            if (multiMutate?.user?.id) {
+                console.log('update user');
+            }
+            if (multiMutate?.residence?.id) {
+                console.log('update residence');
+            }
+            if (multiMutate?.membership?.id) {
+                console.log('update membership');
+            }
+
             return;
         }
         let coreUser = {
@@ -187,42 +283,42 @@ const Profile3 = ({
 
         //section for address....
         let residence = {};
-        if (homeStreet || homeCity || homeStateProv || homePostalCode) {
+        if (street || city || stateProv || postalCode) {
             // let address = {};
             // profileUpdate.address = {};
-            if (homeStreet !== undefined && homeStreet !== '') {
-                residence.street = homeStreet;
+            if (street !== undefined && street !== '') {
+                residence.street = street;
             }
-            if (homeCity !== undefined && homeCity !== '') {
-                residence.city = homeCity;
+            if (city !== undefined && city !== '') {
+                residence.city = city;
             }
-            var homeStateProv = document.getElementById('homeStateProv');
-            residence.stateProv = homeStateProv.value;
-            // if (homeState !== undefined && homeState !== '') {
-            //     residence.stateProv = homeState;
-            // }
-            if (homePostalCode !== undefined && homePostalCode !== '') {
-                residence.postalCode = homePostalCode;
+            if (stateProv !== undefined && stateProv !== '') {
+                residence.stateProv = stateProv;
+            }
+
+            if (postalCode !== undefined && postalCode !== '') {
+                residence.postalCode = postalCode;
             }
             // profileUpdate.address = address;
         }
 
         //church values are optional, so we want to send empty string if undefined
-        let church = {};
-        if (churchName || churchCity || churchStateProv) {
+        let membership = {};
+        if (membershipName || membershipCity || membershipStateProv) {
             // let church = {};
             // profileUpdate.church = {};
-            if (churchName !== undefined && churchName !== '') {
-                church.name = churchName;
+            if (membershipName !== undefined && membershipName !== '') {
+                membership.name = membershipName;
             }
-            if (churchCity !== undefined && churchCity !== '') {
-                church.city = churchCity;
+            if (membershipCity !== undefined && membershipCity !== '') {
+                membership.city = membershipCity;
             }
-            var churchStateProv = document.getElementById('churchStateProv');
-            church.stateProv = churchStateProv.value;
-            // if (churchState !== undefined && churchState !== '')
-            //     church.stateProv = churchState;
-            // profileUpdate.church = church;
+            if (
+                membershipStateProv !== undefined &&
+                membershipStateProv !== ''
+            ) {
+                membership.stateProv = membershipStateProv;
+            }
         }
 
         //profileUpdate.dateUpdated = '2021-03-18T09:09';
@@ -250,8 +346,8 @@ const Profile3 = ({
         ) {
             newCurrentUser = { ...newCurrentUser, residence };
         }
-        if (church?.name || church?.city || church?.stateProv) {
-            newCurrentUser = { ...newCurrentUser, church };
+        if (membership?.name || membership?.city || membership?.stateProv) {
+            newCurrentUser = { ...newCurrentUser, membership };
         }
         //======================================
         // 1. update database
@@ -302,125 +398,15 @@ const Profile3 = ({
         history.push('/');
         clearSpinner();
     };
-    const handleHomeStateChange = ({ newValue }) => {
-        console.log('stateProv:', newValue);
-        setHomeStateProv(newValue);
-    };
-    const handleChurchStateChange = ({ newValue }) => {
-        setChurchStateProv(newValue);
-    };
-
-    const handleChange = (e) => {
-        const { value, name } = e.target;
-        switch (name) {
-            case 'firstName':
-                setFirstName(value);
-                break;
-            case 'lastName':
-                setLastName(value);
-                break;
-            case 'email':
-                setEmail(value);
-                break;
-            case 'phone':
-                setPhone(value);
-                break;
-            case 'homeStreet':
-                setHomeStreet(value);
-                break;
-            case 'homeCity':
-                setHomeCity(value);
-                break;
-            // case 'homeState':
-            //     setHomeState(value);
-            //     break;
-            case 'homePostalCode':
-                setHomePostalCode(value);
-                break;
-            case 'churchName':
-                setChurchName(value);
-                break;
-            case 'churchCity':
-                setChurchCity(value);
-                break;
-            // case 'churchState':
-            //     setChurchState(value);
-            //     break;
-            default:
-                break;
-        }
-    };
-    const validateFirstName = (firstName) => {
-        if (!firstName) {
-            return 'First name is required';
-        }
-        if (firstName.length < 2 || firstName.length > 15) {
-            return 'length 2-15 characters';
-        }
-        return '';
-    };
-    const validateLastName = (lastName) => {
-        if (!lastName) {
-            return 'Last name is required';
-        }
-        if (lastName.length < 2 || lastName.length > 15) {
-            return 'length 2-15 characters';
-        }
-        return '';
-    };
-    const validateStreet = (homeStreet) => {
-        if (!homeStreet) {
-            return 'Street is required';
-        }
-        if (homeStreet.length < 2 || homeStreet.length > 50) {
-            return 'length 10-50 characters';
-        }
-        return '';
-    };
-    const validateCity = (homeCity) => {
-        if (!homeCity) {
-            return 'City is required';
-        }
-        if (homeCity.length < 2 || homeCity.length > 50) {
-            return 'length 10-50 characters';
-        }
-        return '';
-    };
-    const validatePostalCode = (homePostalCode) => {
-        if (!homePostalCode) {
-            return 'Postal code is required';
-        }
-        return '';
-    };
-    const validateEmail = (email) => {
-        if (!email) {
-            return 'Email is required';
-        }
-        const emailRegex = /^[\w.%+-]+@[\w.-]+\.[A-Za-z]{2,}$/;
-        if (!emailRegex.test(email)) {
-            return 'Email address not supported';
-        }
-
-        return '';
-    };
-    const validatePhone = (phone) => {
-        if (!phone) {
-            return 'Phone is required';
-        }
-        return '';
-    };
-    const validateChurchName = (churchName) => {
-        if (churchName.length > 50) {
-            return 'max length 50 characters';
-        }
-        return '';
-    };
-    const validateChurchCity = (churchCity) => {
-        if (churchCity.length > 25) {
-            return 'max length 50 characters';
-        }
-        return '';
-    };
+    const noUpdate =
+        firstNameError ||
+        lastNameError ||
+        streetError ||
+        phoneError ||
+        postalCodeError ||
+        phoneError ||
+        membershipNameError ||
+        membershipCityError;
     return (
         <>
             <Box
@@ -482,7 +468,7 @@ const Profile3 = ({
                                                 borderRadius: 1, // sets the border radius
                                             },
                                         }}
-                                        Inputlabelprops={{
+                                        InputLabelProps={{
                                             shrink: true,
                                             style: { paddingBottom: '0px' },
                                         }}
@@ -519,7 +505,7 @@ const Profile3 = ({
                                                 borderRadius: 1, // sets the border radius
                                             },
                                         }}
-                                        Inputlabelprops={{
+                                        InputLabelProps={{
                                             shrink: true,
                                             style: { paddingBottom: '0px' },
                                         }}
@@ -535,7 +521,7 @@ const Profile3 = ({
                                     />
                                 </Stack>
                             </Stack>
-                            <Stack direction='row' spacing={1}>
+                            {/* <Stack direction='row' spacing={1}>
                                 <TextField
                                     label='Email'
                                     type='email'
@@ -570,8 +556,60 @@ const Profile3 = ({
                                     error={emailError !== ''}
                                     helperText={emailError}
                                 />
+                            </Stack> */}
+
+                            <Stack
+                                direction='column'
+                                spacing={1}
+                                align='center'
+                            >
+                                <PhoneInput
+                                    onlyCountries={['us']}
+                                    country='us'
+                                    autocomplete='off' // or "new-password"
+                                    autofill='off'
+                                    style={{
+                                        margin: 0,
+                                        padding: 0,
+                                        fontSize: 14,
+                                        color: 'black',
+                                    }}
+                                    placeholder=''
+                                    disableCountryCode
+                                    disableDropdown
+                                    value={phone}
+                                    onChange={(contactPhone) => {
+                                        setPhone(contactPhone);
+                                        setPhoneError(
+                                            validatePhone(contactPhone)
+                                        );
+                                    }}
+                                    inputStyle={{
+                                        fontSize: '20px',
+                                        color: 'black',
+                                    }}
+                                    inputProps={{
+                                        padding: 0,
+                                        fontSize: 24,
+                                        name: 'Cell',
+                                        margin: 0,
+                                        required: true,
+                                        placeholder: '(xxx) xxx-xxxx',
+                                    }}
+                                />
+                                {phoneError && (
+                                    <span
+                                        style={{
+                                            color: 'red',
+                                            fontSize: 12,
+                                            fontWeight: 'bold',
+                                        }}
+                                    >
+                                        Valid phone required.
+                                    </span>
+                                )}
                             </Stack>
-                            <Stack direction='row' spacing={1}>
+                            {/* <Stack direction='row' spacing={1}>
                                 <TextField
                                     label='Phone'
                                     type='phone'
@@ -586,7 +624,7 @@ const Profile3 = ({
                                             padding: '0px',
                                             margin: '0px',
                                             fontWeight: '200',
-                                            fontSize: '1.2rem',
+                                            fontSize: '1.5rem',
                                         },
                                         sx: {
                                             bgcolor: '#f5f5f5', // sets the fill color
@@ -606,7 +644,7 @@ const Profile3 = ({
                                     error={phoneError !== ''}
                                     helperText={phoneError}
                                 />
-                            </Stack>
+                            </Stack> */}
                             <div className='profilehomesection'>
                                 Home Address
                             </div>
@@ -634,15 +672,15 @@ const Profile3 = ({
                                         shrink: true,
                                         style: { paddingBottom: '0px' },
                                     }}
-                                    value={homeStreet}
+                                    value={street}
                                     onChange={(e) => {
-                                        setHomeStreet(e.target.value);
-                                        setHomeStreetError(
+                                        setStreet(e.target.value);
+                                        setStreetError(
                                             validateStreet(e.target.value)
                                         );
                                     }}
-                                    error={homeStreetError !== ''}
-                                    helperText={homeStreetError}
+                                    error={streetError !== ''}
+                                    helperText={streetError}
                                 />
                             </Stack>
                             <Stack direction='row' spacing={1}>
@@ -669,15 +707,15 @@ const Profile3 = ({
                                         style: { paddingBottom: '0px' },
                                     }}
                                     className={classes.input}
-                                    value={homeCity}
+                                    value={city}
                                     onChange={(e) => {
-                                        setHomeCity(e.target.value);
-                                        setHomeCityError(
+                                        setCity(e.target.value);
+                                        setCityError(
                                             validateCity(e.target.value)
                                         );
                                     }}
-                                    error={homeCityError !== ''}
-                                    helperText={homeCityError}
+                                    error={cityError !== ''}
+                                    helperText={cityError}
                                 />
                             </Stack>
                             <Stack direction='row' spacing={1}>
@@ -693,7 +731,11 @@ const Profile3 = ({
                                                 borderRadius: 1, // sets the border radius
                                             },
                                         }}
-                                        value={homeStateProv}
+                                        value={stateProv}
+                                        onChange={(event) => {
+                                            console.log(event.target.value); // Add this line to check the selected value
+                                            setStateProv(event.target.value);
+                                        }}
                                     >
                                         {US_STATES.map((state) => (
                                             <MenuItem
@@ -712,7 +754,7 @@ const Profile3 = ({
                                         size='small'
                                         margin='dense'
                                         className={classes.input}
-                                        value={homePostalCode}
+                                        value={postalCode}
                                         InputProps={{
                                             style: {
                                                 padding: '0px',
@@ -733,15 +775,15 @@ const Profile3 = ({
                                             },
                                         }}
                                         onChange={(e) => {
-                                            setHomePostalCode(e.target.value);
-                                            setHomePostalCodeError(
+                                            setPostalCode(e.target.value);
+                                            setPostalCodeError(
                                                 validatePostalCode(
                                                     e.target.value
                                                 )
                                             );
                                         }}
-                                        error={homePostalCodeError !== ''}
-                                        helperText={homePostalCodeError}
+                                        error={postalCodeError !== ''}
+                                        helperText={postalCodeError}
                                     />
                                 </Stack>
                             </Stack>
@@ -773,15 +815,17 @@ const Profile3 = ({
                                         shrink: true,
                                         style: { paddingBottom: '0px' },
                                     }}
-                                    value={churchName}
+                                    value={membershipName}
                                     onChange={(e) => {
-                                        setChurchName(e.target.value);
-                                        setChurchNameError(
-                                            validateChurchName(e.target.value)
+                                        setMembershipName(e.target.value);
+                                        setMembershipNameError(
+                                            validateMembershipName(
+                                                e.target.value
+                                            )
                                         );
                                     }}
-                                    error={churchNameError !== ''}
-                                    helperText={churchNameError}
+                                    error={membershipNameError !== ''}
+                                    helperText={membershipNameError}
                                 />
                             </Stack>
                             <Stack direction='row' spacing={1}>
@@ -808,15 +852,17 @@ const Profile3 = ({
                                         shrink: true,
                                         style: { paddingBottom: '0px' },
                                     }}
-                                    value={churchCity}
+                                    value={membershipCity}
                                     onChange={(e) => {
-                                        setChurchCity(e.target.value);
-                                        setChurchCityError(
-                                            validateChurchCity(e.target.value)
+                                        setMembershipCity(e.target.value);
+                                        setMembershipCityError(
+                                            validateMembershipCity(
+                                                e.target.value
+                                            )
                                         );
                                     }}
-                                    error={churchCityError !== ''}
-                                    helperText={churchCityError}
+                                    error={membershipCityError !== ''}
+                                    helperText={membershipCityError}
                                 />
                             </Stack>
                             <Stack>
@@ -831,7 +877,13 @@ const Profile3 = ({
                                             borderRadius: 1, // sets the border radius
                                         },
                                     }}
-                                    value={churchStateProv}
+                                    value={membershipStateProv}
+                                    onChange={(event) => {
+                                        console.log(event.target.value); // Add this line to check the selected value
+                                        setMembershipStateProv(
+                                            event.target.value
+                                        );
+                                    }}
                                 >
                                     {US_STATES.map((state) => (
                                         <MenuItem
@@ -847,6 +899,7 @@ const Profile3 = ({
                             <div className='profile-component__button-wrapper'>
                                 <button
                                     className='profile-component__update-button'
+                                    disabled={noUpdate}
                                     onClick={handleSubmitClick}
                                 >
                                     UPDATE

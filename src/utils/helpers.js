@@ -39,7 +39,7 @@ export async function getUniqueId() {
     );
     return digest;
 }
-export function getToday() {
+export async function getToday() {
     var d = new Date();
     //- this was in the function originally, but it does not give today
     // d.setDate(d.getDate() - 1); // date - one

@@ -18,7 +18,7 @@ import Spinner from '../../components/spinner/Spinner';
 // import EventMarquee2 from '../../components/events-marquee/event-marquee2.component';
 import EventMarquee3 from '../../components/events-marquee/event-marquee3.component';
 import EventMarquee4 from '../../components/events-marquee/event-marquee4.component';
-import { printObject } from '../../utils/helpers';
+import { getToday, printObject } from '../../utils/helpers';
 class Events extends React.Component {
     constructor() {
         super();
@@ -33,10 +33,11 @@ class Events extends React.Component {
     }
 
     async componentDidMount() {
+        const tday = await getToday();
         const variables = {
             id: 'fffedde6-5d5a-46f0-a3ac-882a350edc64',
             eq: 'approved',
-            ge: '2023-01-28',
+            ge: tday,
         };
         API.graphql(
             graphqlOperation(queries.getDivisionEventsByDateStatus, variables)
