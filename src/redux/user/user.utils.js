@@ -32,6 +32,45 @@ export const removeItemFromRegistrations = (
 export const updateCurrentUserPersonalInfo = (state, payload) => {
     const existing = state.currentUser;
     const newUser = { ...existing, ...payload };
-    printObject('newUser:\n', newUser);
     return newUser;
+};
+//----------------------------------------
+// update street, city, stateProv and postalCode
+//----------------------------------------
+export const updateCurrentUserResidenceInfo = (state, payload) => {
+    const existing = state.currentUser;
+    const residence = payload;
+    const newUser = { ...existing, residence };
+    return newUser;
+};
+//----------------------------------------
+// update membership name, city, stateProv
+//----------------------------------------
+export const updateCurrentUserMembershipInfo = (state, payload) => {
+    // currentUser.memberships is an array. We only maintain 0
+    // currentUser.memberships.items[0]
+    printObject('mmmmmmmmmmmmmm\n', state);
+    printObject('^^^^^^^^^^^^^^\n', payload);
+    console.log('^^^^^^^^^^^^^^^^^^^^^^^^^');
+
+    const updatedItem = {
+        ...state.currentUser.memberships.items[0],
+        ...payload,
+    };
+    const updatedItems = [
+        updatedItem,
+        ...state.currentUser.memberships.items.slice(1),
+    ];
+
+    const updatedState = {
+        ...state,
+        currentUser: {
+            ...state.currentUser,
+            memberships: {
+                ...state.currentUser.memberships,
+                items: updatedItems,
+            },
+        },
+    };
+    return updatedState.currentUser;
 };

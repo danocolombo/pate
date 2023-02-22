@@ -2762,3 +2762,17 @@ export const deleteUser = /* GraphQL */ `
         }
     }
 `;
+export const updateMembership = /* GraphQL */ `
+  mutation UpdateMembership(
+    $input: UpdateMembershipInput!
+    $condition: ModelMembershipConditionInput
+  ) {
+    updateMembership(input: $input, condition: $condition) {
+      id
+      name
+      street
+      city
+      stateProv
+      postalCode
+    }
+`;

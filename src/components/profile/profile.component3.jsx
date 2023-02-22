@@ -16,10 +16,16 @@ import Spinner from '../../components/spinner/Spinner';
 import PhoneInput from 'react-phone-input-2';
 import SelectStateProv from '../../components/state-prov/select-stateProv.component';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
-import { updateGQLUserPersonalInfo } from '../../providers/profile.provider';
+import {
+    updateGQLUserPersonalInfo,
+    updateGQLUserResidenceInfo,
+    updateGQLUserMembershipInfo,
+} from '../../providers/profile.provider';
 import {
     updateCurrentUser,
     updateUserPersonalInfo,
+    updateUserResidenceInfo,
+    updateUserMembershipInfo,
 } from '../../redux/user/user.actions';
 import { printObject } from '../../utils/helpers';
 import { US_STATES } from '../../constants/pate';
@@ -30,6 +36,8 @@ const Profile3 = ({
     setSpinner,
     updateCurrentUser,
     updateUserPersonalInfo,
+    updateUserResidenceInfo,
+    updateUserMembershipInfo,
     clearSpinner,
     pateSystem,
 }) => {
@@ -100,7 +108,7 @@ const Profile3 = ({
         if (!street) {
             return 'Street is required';
         }
-        const emailRegex = /^[a-zA-Z\d\s\#]{2,50}$/;
+        const emailRegex = /^[a-zA-Z\d\s.#]{2,50}$/;
         if (!emailRegex.test(street)) {
             return '2-50 characters (optional number)';
         }
@@ -233,7 +241,6 @@ const Profile3 = ({
                             phone: multiMutate.user.phone,
                         });
                         if (reduxResponse) {
-                            printObject('PC:236==>REDUX SUCCESS\n', results);
                             returnValue = {
                                 status: 200,
                                 data: reduxResponse,
@@ -252,10 +259,59 @@ const Profile3 = ({
                     });
             }
             if (multiMutate?.residence?.id) {
-                console.log('update residence');
+                let returnValue = {};
+                updateGQLUserResidenceInfo(multiMutate.residence)
+                    .then((results) => {
+                        const reduxResponse = updateUserResidenceInfo({
+                            street: multiMutate.residence.street,
+                            city: multiMutate.residence.city,
+                            stateProv: multiMutate.residence.stateProv,
+                            postalCode: multiMutate.residence.postalCode,
+                        });
+                        if (reduxResponse) {
+                            returnValue = {
+                                status: 200,
+                                data: reduxResponse,
+                            };
+                        } else {
+                            printObject(
+                                'PP:275-->error updating REDUX:\n',
+                                reduxResponse
+                            );
+                        }
+                        console.log('profile updated');
+                    })
+
+                    .catch((e) => {
+                        console.log(e);
+                    });
             }
             if (multiMutate?.membership?.id) {
-                console.log('update membership');
+                let returnValue = {};
+                updateGQLUserMembershipInfo(multiMutate.membership)
+                    .then((results) => {
+                        const reduxResponse = updateUserMembershipInfo({
+                            name: multiMutate.membership.name,
+                            city: multiMutate.membership.city,
+                            stateProv: multiMutate.membership.stateProv,
+                        });
+                        if (reduxResponse) {
+                            returnValue = {
+                                status: 200,
+                                data: reduxResponse,
+                            };
+                        } else {
+                            printObject(
+                                'PP:303-->error updating REDUX:\n',
+                                reduxResponse
+                            );
+                        }
+                        console.log('profile updated');
+                    })
+
+                    .catch((e) => {
+                        console.log(e);
+                    });
             }
 
             return;
@@ -911,6 +967,10 @@ const mapDispatchToProps = (dispatch) => ({
     setSpinner: () => dispatch(setSpinner()),
     updateUserPerosnalInfo: (personalInfo) =>
         dispatch(updateUserPersonalInfo(personalInfo)),
+    updateUserResidenceInfo: (personalInfo) =>
+        dispatch(updateUserResidenceInfo(personalInfo)),
+    updateUserMembershipInfo: (personalInfo) =>
+        dispatch(updateUserMembershipInfo(personalInfo)),
     clearSpinner: () => dispatch(clearSpinner()),
 });
 const mapStateToProps = (state) => ({
@@ -922,5 +982,7 @@ export default connect(mapStateToProps, {
     clearSpinner,
     updateCurrentUser,
     updateUserPersonalInfo,
+    updateUserResidenceInfo,
+    updateUserMembershipInfo,
     mapDispatchToProps,
 })(Profile3);

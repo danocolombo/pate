@@ -3,6 +3,8 @@ import {
     addItemToRegistrations,
     removeItemFromRegistrations,
     updateCurrentUserPersonalInfo,
+    updateCurrentUserResidenceInfo,
+    updateCurrentUserMembershipInfo,
 } from './user.utils';
 const INITIAL_STATE = {
     currentUser: {
@@ -63,6 +65,24 @@ const userReducer = (state = INITIAL_STATE, action) => {
                     action.payload
                 ),
             };
+
+        case UserActionTypes.UPDATE_USER_RESIDENCE_INFO:
+            return {
+                ...state,
+                currentUser: updateCurrentUserResidenceInfo(
+                    state,
+                    action.payload
+                ),
+            };
+        case UserActionTypes.UPDATE_USER_MEMBERSHIP_INFO:
+            return {
+                ...state,
+                currentUser: updateCurrentUserMembershipInfo(
+                    state,
+                    action.payload
+                ),
+            };
+
         case UserActionTypes.CLEAR_USER:
             return {
                 ...state,

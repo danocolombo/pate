@@ -169,3 +169,80 @@ export const updateGQLUserPersonalInfo = async (profileInfo) => {
         return { status: 400, data: error, line: 28 };
     }
 };
+export const updateGQLUserResidenceInfo = async (profileInfo) => {
+    if (!profileInfo) {
+        return {
+            status: 400,
+            data: 'updateGQLUserResidenceInfo: profileInfo is required',
+        };
+    }
+    const inputVariables = {
+        id: profileInfo.id,
+        street: profileInfo.street,
+        city: profileInfo.city,
+        stateProv: profileInfo.stateProv,
+        postalCode: profileInfo.postalCode,
+    };
+    try {
+        let returnValue = {};
+        const updateUserResults = await API.graphql({
+            query: mutations.updateResidence,
+            variables: { input: inputVariables },
+        });
+        if (updateUserResults?.data?.updateResidence?.id) {
+            //==========================================
+            // update REDUX
+            //==========================================
+            returnValue = {
+                status: 200,
+                data: updateUserResults?.data?.updateResidence,
+            };
+        } else {
+            returnValue = {
+                status: 404,
+                data: {},
+            };
+        }
+        return returnValue;
+    } catch (error) {
+        return { status: 400, data: error, line: 28 };
+    }
+};
+export const updateGQLUserMembershipInfo = async (profileInfo) => {
+    if (!profileInfo) {
+        return {
+            status: 400,
+            data: 'updateGQLUserMembershipInfo: profileInfo is required',
+        };
+    }
+    const inputVariables = {
+        id: profileInfo.id,
+        name: profileInfo.name,
+        city: profileInfo.city,
+        stateProv: profileInfo.stateProv,
+    };
+    try {
+        let returnValue = {};
+        const updateUserResults = await API.graphql({
+            query: mutations.updateMembership,
+            variables: { input: inputVariables },
+        });
+        if (updateUserResults?.data?.updateMembershp?.id) {
+            //==========================================
+            // update REDUX
+            //==========================================
+            returnValue = {
+                status: 200,
+                data: updateUserResults?.data?.updateMembershp,
+            };
+        } else {
+            returnValue = {
+                status: 404,
+                data: {},
+            };
+        }
+        return returnValue;
+    } catch (error) {
+        return { status: 400, data: error, line: 28 };
+    }
+};
