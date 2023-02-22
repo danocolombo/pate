@@ -1,6 +1,7 @@
 import { API, graphqlOperation } from 'aws-amplify';
 import * as queries from '../pateGraphql/queries';
 import * as mutations from '../pateGraphql/mutations';
+import * as coreMutations from '../graphql/mutations';
 import { printObject } from '../utils/helpers';
 export const updateLegacyAsMigrated = async (dynamoId, graphqlId) => {
     async function updateTheUserRecord() {
@@ -221,10 +222,11 @@ export const updateGQLUserMembershipInfo = async (profileInfo) => {
         city: profileInfo.city,
         stateProv: profileInfo.stateProv,
     };
+    printObject('inputVariables:\n', inputVariables);
     try {
         let returnValue = {};
         const updateUserResults = await API.graphql({
-            query: mutations.updateMembership,
+            query: coreMutations.updateMembership,
             variables: { input: inputVariables },
         });
         if (updateUserResults?.data?.updateMembershp?.id) {

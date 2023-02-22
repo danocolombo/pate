@@ -13,6 +13,8 @@ import {
 } from '@mui/material';
 import { alpha } from '@mui/system';
 import Spinner from '../../components/spinner/Spinner';
+import ProfileUpdateNotification from '../../components/modals/profile-edit/profile-update-success.modal';
+import ModalWrapper from '../../components/modals/wrapper.modal';
 import PhoneInput from 'react-phone-input-2';
 import SelectStateProv from '../../components/state-prov/select-stateProv.component';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
@@ -79,6 +81,7 @@ const Profile3 = ({
     const [membershipStateProv, setMembershipStateProv] = useState(
         currentUser?.memberships?.items[0]?.stateProv || ''
     );
+    const [isProfileUpdated, setIsProfileUpdated] = useState(false);
     useEffect(() => {
         if (!currentUser?.authSession?.idToken?.jwtToken) history.push('/');
     }, []);
@@ -290,30 +293,37 @@ const Profile3 = ({
                 let returnValue = {};
                 updateGQLUserMembershipInfo(multiMutate.membership)
                     .then((results) => {
-                        const reduxResponse = updateUserMembershipInfo({
-                            name: multiMutate.membership.name,
-                            city: multiMutate.membership.city,
-                            stateProv: multiMutate.membership.stateProv,
-                        });
-                        if (reduxResponse) {
-                            returnValue = {
-                                status: 200,
-                                data: reduxResponse,
-                            };
+                        if (results?.data?.updateMembership?.id) {
+                            const reduxResponse = updateUserMembershipInfo({
+                                name: multiMutate.membership.name,
+                                city: multiMutate.membership.city,
+                                stateProv: multiMutate.membership.stateProv,
+                            });
+                            if (reduxResponse) {
+                                returnValue = {
+                                    status: 200,
+                                    data: reduxResponse,
+                                };
+                            } else {
+                                printObject(
+                                    'PP:303-->error updating REDUX:\n',
+                                    reduxResponse
+                                );
+                            }
+                            console.log('profile updated');
                         } else {
-                            printObject(
-                                'PP:303-->error updating REDUX:\n',
-                                reduxResponse
-                            );
+                            //error updating gql
+                            printObject('PC3:316-->error', results);
                         }
-                        console.log('profile updated');
                     })
 
                     .catch((e) => {
                         console.log(e);
                     });
             }
-
+            //      ==================================
+            //      updates complete. notify and move to /
+            setIsProfileUpdated(true);
             return;
         }
         let coreUser = {
@@ -457,6 +467,10 @@ const Profile3 = ({
 
         history.push('/');
         clearSpinner();
+    };
+    const handleUpdateConfirmationClick = () => {
+        setIsProfileUpdated(false);
+        history.push('/');
     };
     const noUpdate =
         firstNameError ||
@@ -959,6 +973,11 @@ const Profile3 = ({
                     </CardContent>
                 </Card>
             </Box>
+            <ModalWrapper isOpened={isProfileUpdated}>
+                <ProfileUpdateNotification
+                    onClose={() => handleUpdateConfirmationClick()}
+                />
+            </ModalWrapper>
         </>
     );
 };

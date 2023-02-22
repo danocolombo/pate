@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+
 import {
     Card,
     CardContent,
@@ -12,9 +13,16 @@ import {
     CardHeader,
     TextField,
     Button,
+    Popper,
+    Icon,
+    InputLabel,
+    InputAdornment,
+    IconButton,
     Grid,
 } from '@mui/material';
+import { MdAnnouncement } from 'react-icons/md';
 import { API, graphqlOperation } from 'aws-amplify';
+import PhoneInput from 'react-phone-input-2';
 import * as queries from '../../pateGraphql/queries';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import { updateCurrentUser } from '../../redux/user/user.actions';
@@ -45,11 +53,12 @@ function RegistrationOptions({
     const [city, setCity] = useState('');
     const [cityError, setCityError] = useState('');
     const [stateProv, setStateProv] = useState('');
-    const [stateProvError, setStateProvError] = useState('');
     const [postalCode, setPostalCode] = useState('');
     const [postalCodeError, setPostalCodeError] = useState('');
     const [membershipName, setMembershipName] = useState('');
+    const [membershipNameError, setMembershipNameError] = useState('');
     const [membershipCity, setMembershipCity] = useState('');
+    const [membershipCityError, setMembershipCityError] = useState('');
     const [membershipStateProv, setMembershipStateProv] = useState('');
 
     const [attendance, setAttendance] = useState(0);
@@ -57,32 +66,7 @@ function RegistrationOptions({
     const [meal, setMeal] = useState(0);
     const [mealError, setMealError] = useState('');
     const [event, setEvent] = useState({});
-    const handleSubmit = () => {
-        // Handle the submission here with the attendance and meal values
-        setSpinner();
-        const registrationInput = {
-            eventId: eventId,
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            phone: phone,
-            residence: {
-                street: street,
-                city: city,
-                stateProv: stateProv,
-                postalCode: postalCode,
-            },
-            membership: {
-                name: currentUser?.memberships?.items[0]?.name || '',
-                city: currentUser?.memberships?.items[0]?.city || '',
-                stateProv: currentUser?.memberships?.items[0]?.stateProv || '',
-            },
-            attendanceCount: parseInt(attendance),
-            mealCount: parseInt(meal),
-        };
-        printObject('ROC:75==>registrationInput:\n', registrationInput);
-        clearSpinner();
-    };
+    const [anchorEl, setAnchorEl] = useState(null);
     useEffect(() => {
         if (!currentUser?.authSession?.idToken?.jwtToken) history.push('/');
         async function getEvent() {
@@ -175,10 +159,12 @@ function RegistrationOptions({
         return '';
     };
     const validatePhone = (phone) => {
-        if (!phone) {
-            return 'Phone is required';
+        const regex = /\d{10}/;
+        console.log('length:', phone.length);
+        if (regex.test(phone) || phone.length === 0) {
+            return '';
         }
-        return '';
+        return true;
     };
     const validateAttendance = (attendance) => {
         if (!attendance) {
@@ -204,17 +190,73 @@ function RegistrationOptions({
         }
         return '';
     };
+    const validateMembershipName = (membershipName) => {
+        if (membershipName.length > 50) {
+            return 'max length 50 characters';
+        }
+        if (membershipName.length > 0 && membershipName.length < 5) {
+            return 'ninimum length 5 characters';
+        }
+        if (membershipName.length === 0) {
+            setMembershipCity('');
+        }
+        return '';
+    };
+    const validateMembershipCity = (membershipCity) => {
+        if (membershipCity.length > 25) {
+            return 'max length 25 characters';
+        }
+        if (membershipCity.length > 0 && membershipCity.length < 3) {
+            return 'minimum length 3 characters';
+        }
+        if (membershipCity.length < 1 && membershipName.length > 0) {
+            return 'city required when providing church name';
+        }
+        return '';
+    };
+    const handleEmailInfoClick = (event) => {
+        setAnchorEl(anchorEl ? null : event.currentTarget);
+    };
+    const open = Boolean(anchorEl);
     if (!event) {
         return <div>LOADING...</div>;
     }
+
+    const handleSubmit = () => {
+        // Handle the submission here with the attendance and meal values
+        setSpinner();
+        const registrationInput = {
+            eventId: eventId,
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            phone: phone,
+            residence: {
+                street: street,
+                city: city,
+                stateProv: stateProv,
+                postalCode: postalCode,
+            },
+            membership: {
+                name: currentUser?.memberships?.items[0]?.name || '',
+                city: currentUser?.memberships?.items[0]?.city || '',
+                stateProv: currentUser?.memberships?.items[0]?.stateProv || '',
+            },
+            attendanceCount: parseInt(attendance),
+            mealCount: parseInt(meal),
+        };
+        printObject('ROC:75==>registrationInput:\n', registrationInput);
+        clearSpinner();
+    };
     const hasErrors =
         firstNameError !== '' ||
         lastNameError !== '' ||
         streetError !== '' ||
         cityError !== '' ||
-        stateProvError !== '' ||
         postalCodeError !== '' ||
         attendanceError !== '' ||
+        membershipNameError !== '' ||
+        membershipCityError !== '' ||
         mealError !== '' ||
         attendance < 1;
     const viewOnly =
@@ -429,7 +471,14 @@ function RegistrationOptions({
 
                 <Stack direction='row' spacing={1}>
                     <TextField
-                        label='Email'
+                        label={
+                            <InputLabel>
+                                Registration Email
+                                <IconButton onClick={handleEmailInfoClick}>
+                                    <Icon />
+                                </IconButton>
+                            </InputLabel>
+                        }
                         type='email'
                         variant='outlined'
                         size='small'
@@ -438,6 +487,13 @@ function RegistrationOptions({
                         className={classes.input}
                         value={email}
                         InputProps={{
+                            endAdornment: (
+                                <InputAdornment position='end'>
+                                    <IconButton onClick={handleEmailInfoClick}>
+                                        <MdAnnouncement />
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
                             style: {
                                 padding: '0px',
                                 margin: '0px',
@@ -456,36 +512,63 @@ function RegistrationOptions({
                         error={emailError !== ''}
                         helperText={emailError}
                     />
+                    <Popper
+                        open={open}
+                        anchorEl={anchorEl}
+                        sx={{ backgroundColor: 'yellow' }}
+                    >
+                        <Typography>Registration Only</Typography>
+                    </Popper>
                 </Stack>
-                <Stack direction='row' spacing={1}>
-                    <TextField
-                        label='Phone'
-                        type='phone'
-                        variant='outlined'
-                        size='small'
-                        margin='dense'
-                        fullWidth
-                        className={classes.input}
+                <Stack
+                    direction='column'
+                    spacing={1}
+                    align='center'
+                    sx={{ marginTop: 1, marginBottom: 1 }}
+                >
+                    <PhoneInput
+                        onlyCountries={['us']}
+                        country='us'
+                        autocomplete='off' // or "new-password"
+                        autofill='off'
+                        style={{
+                            margin: 0,
+                            padding: 0,
+                            fontSize: 14,
+                            color: 'black',
+                        }}
+                        placeholder=''
+                        disableCountryCode
+                        disableDropdown
                         value={phone}
-                        InputProps={{
-                            style: {
-                                padding: '0px',
-                                margin: '0px',
-                                fontWeight: '200',
-                                fontSize: '1.2rem',
-                            },
+                        onChange={(contactPhone) => {
+                            setPhone(contactPhone);
+                            setPhoneError(validatePhone(contactPhone));
                         }}
-                        inputlabelprops={{
-                            shrink: true,
-                            style: { paddingBottom: '5px' },
+                        inputStyle={{
+                            fontSize: '20px',
+                            color: 'black',
                         }}
-                        onChange={(e) => {
-                            setPhone(e.target.value);
-                            setPhoneError(validatePhone(e.target.value));
+                        inputProps={{
+                            padding: 0,
+                            fontSize: 24,
+                            name: 'Cell',
+                            margin: 0,
+                            required: true,
+                            placeholder: '(xxx) xxx-xxxx',
                         }}
-                        error={phoneError !== ''}
-                        helperText={phoneError}
                     />
+                    {phoneError && (
+                        <span
+                            style={{
+                                color: 'red',
+                                fontSize: 12,
+                                fontWeight: 'bold',
+                            }}
+                        >
+                            Valid phone required.
+                        </span>
+                    )}
                 </Stack>
                 <Stack>
                     <Box
@@ -501,7 +584,7 @@ function RegistrationOptions({
                     >
                         <Stack direction='column' spacing={1}>
                             <TextField
-                                label='CR Church'
+                                label='Church Name'
                                 variant='outlined'
                                 size='small'
                                 margin='dense'
@@ -513,6 +596,10 @@ function RegistrationOptions({
                                         margin: '0px',
                                         fontWeight: '200',
                                         fontSize: '1.2rem',
+                                    },
+                                    sx: {
+                                        bgcolor: '#f5f5f5', // sets the fill color
+                                        borderRadius: 1, // sets the border radius
                                     },
                                 }}
                                 inputlabelprops={{
@@ -521,12 +608,24 @@ function RegistrationOptions({
                                 }}
                                 value={membershipName}
                                 onChange={(e) => {
-                                    setMembershipName(e.target.value);
+                                    const capitalizedStr = e.target.value
+                                        .split(' ')
+                                        .map(
+                                            (word) =>
+                                                word.charAt(0).toUpperCase() +
+                                                word.slice(1).toLowerCase()
+                                        )
+                                        .join(' ');
+                                    setMembershipName(capitalizedStr);
+                                    setMembershipNameError(
+                                        validateMembershipName(e.target.value)
+                                    );
                                 }}
-                                helperText='Where is your CR?'
+                                error={membershipNameError !== ''}
+                                helperText={membershipNameError}
                             />
                             <TextField
-                                label='City'
+                                label='Church City'
                                 variant='outlined'
                                 size='small'
                                 margin='dense'
@@ -539,6 +638,10 @@ function RegistrationOptions({
                                         fontWeight: '200',
                                         fontSize: '1.2rem',
                                     },
+                                    sx: {
+                                        bgcolor: '#f5f5f5', // sets the fill color
+                                        borderRadius: 1, // sets the border radius
+                                    },
                                 }}
                                 inputlabelprops={{
                                     shrink: true,
@@ -546,8 +649,21 @@ function RegistrationOptions({
                                 }}
                                 value={membershipCity}
                                 onChange={(e) => {
-                                    setMembershipCity(e.target.value);
+                                    const capitalizedStr = e.target.value
+                                        .split(' ')
+                                        .map(
+                                            (word) =>
+                                                word.charAt(0).toUpperCase() +
+                                                word.slice(1).toLowerCase()
+                                        )
+                                        .join(' ');
+                                    setMembershipCity(capitalizedStr);
+                                    setMembershipCityError(
+                                        validateMembershipCity(e.target.value)
+                                    );
                                 }}
+                                error={membershipCityError !== ''}
+                                helperText={membershipCityError}
                             />
                             <TextField
                                 label='State/Providence'
