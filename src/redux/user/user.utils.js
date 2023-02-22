@@ -26,3 +26,12 @@ export const removeItemFromRegistrations = (
     };
     return newUser;
 };
+//----------------------------------------
+// update firstName, lastName and phone
+//----------------------------------------
+export const updateCurrentUserPersonalInfo = (state, payload) => {
+    const existing = state.currentUser;
+    const newUser = { ...existing, ...payload };
+    printObject('newUser:\n', newUser);
+    return newUser;
+};

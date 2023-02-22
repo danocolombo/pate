@@ -16,7 +16,11 @@ import Spinner from '../../components/spinner/Spinner';
 import PhoneInput from 'react-phone-input-2';
 import SelectStateProv from '../../components/state-prov/select-stateProv.component';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
-import { updateCurrentUser } from '../../redux/user/user.actions';
+import { updateGQLUserPersonalInfo } from '../../providers/profile.provider';
+import {
+    updateCurrentUser,
+    updateUserPersonalInfo,
+} from '../../redux/user/user.actions';
 import { printObject } from '../../utils/helpers';
 import { US_STATES } from '../../constants/pate';
 import useStyles from './profile.styles';
@@ -25,6 +29,7 @@ const Profile3 = ({
     currentUser,
     setSpinner,
     updateCurrentUser,
+    updateUserPersonalInfo,
     clearSpinner,
     pateSystem,
 }) => {
@@ -67,34 +72,7 @@ const Profile3 = ({
         currentUser?.memberships?.items[0]?.stateProv || ''
     );
     useEffect(() => {
-        if (!currentUser.isLoggedIn) history.push('/');
-        async function clarifyMembership() {
-            // need to get membership info based on division
-            // if (currentUser?.memberships.items.length > 0) {
-            //     let membership = currentUser.memberships.items.find(
-            //         (m) => m.division.id === currentUser.defaultDivision.id
-            //     );
-            //     if (membership) {
-            //         setOriginalMembership({
-            //             id: membership.id,
-            //             name: membership.name,
-            //             city: membership.city,
-            //             stateProv: membership.stateProv,
-            //         });
-            //         setMembershipId(membership.id);
-            //         setChurchName(membership.name);
-            //         setChurchCity(membership.city);
-            //         setChurchStateProv(membership.stateProv);
-            //     } else {
-            //         console.log(
-            //             'PC:52--> MEMBERSHIP NOT FOUND IN MEMBERSHIP ARRAY'
-            //         );
-            //     }
-            // } else {
-            //     console.log('PC:46--> MEMBERSHIPS NOT IDENTIFIED');
-            // }
-        }
-        clarifyMembership();
+        if (!currentUser?.authSession?.idToken?.jwtToken) history.push('/');
     }, []);
     useEffect(() => {}, [pateSystem.showSpinner]);
 
@@ -122,9 +100,9 @@ const Profile3 = ({
         if (!street) {
             return 'Street is required';
         }
-        const emailRegex = /^[a-zA-Z\d\s\#]{2,19}$/;
+        const emailRegex = /^[a-zA-Z\d\s\#]{2,50}$/;
         if (!emailRegex.test(street)) {
-            return '2-19 characters (optional number)';
+            return '2-50 characters (optional number)';
         }
         return '';
     };
@@ -139,7 +117,8 @@ const Profile3 = ({
         return '';
     };
     const validatePostalCode = (postalCode) => {
-        const emailRegex = / ^\d{5}$/;
+        const emailRegex = /^\d{5}$/;
+
         if (!emailRegex.test(postalCode)) {
             return '5 digit number';
         }
@@ -245,7 +224,32 @@ const Profile3 = ({
         let DANO = true;
         if (DANO) {
             if (multiMutate?.user?.id) {
-                console.log('update user');
+                let returnValue = {};
+                updateGQLUserPersonalInfo(multiMutate.user)
+                    .then((results) => {
+                        const reduxResponse = updateUserPersonalInfo({
+                            firstName: multiMutate.user.firstName,
+                            lastName: multiMutate.user.lastName,
+                            phone: multiMutate.user.phone,
+                        });
+                        if (reduxResponse) {
+                            printObject('PC:236==>REDUX SUCCESS\n', results);
+                            returnValue = {
+                                status: 200,
+                                data: reduxResponse,
+                            };
+                        } else {
+                            printObject(
+                                'PP:174-->error updating REDUX:\n',
+                                reduxResponse
+                            );
+                        }
+                        console.log('profile updated');
+                    })
+
+                    .catch((e) => {
+                        console.log(e);
+                    });
             }
             if (multiMutate?.residence?.id) {
                 console.log('update residence');
@@ -462,6 +466,7 @@ const Profile3 = ({
                                                 margin: '0px',
                                                 fontWeight: '200',
                                                 fontSize: '1.2rem',
+                                                textTransform: 'none',
                                             },
                                             sx: {
                                                 bgcolor: '#f5f5f5', // sets the fill color
@@ -474,7 +479,14 @@ const Profile3 = ({
                                         }}
                                         value={firstName}
                                         onChange={(e) => {
-                                            setFirstName(e.target.value);
+                                            setFirstName(
+                                                e.target.value
+                                                    .charAt(0)
+                                                    .toUpperCase() +
+                                                    e.target.value
+                                                        .slice(1)
+                                                        .toLowerCase()
+                                            );
                                             setFirstNameError(
                                                 validateFirstName(
                                                     e.target.value
@@ -499,6 +511,7 @@ const Profile3 = ({
                                                 margin: '0px',
                                                 fontWeight: '200',
                                                 fontSize: '1.2rem',
+                                                textTransform: 'none',
                                             },
                                             sx: {
                                                 bgcolor: '#f5f5f5', // sets the fill color
@@ -511,7 +524,14 @@ const Profile3 = ({
                                         }}
                                         value={lastName}
                                         onChange={(e) => {
-                                            setLastName(e.target.value);
+                                            setLastName(
+                                                e.target.value
+                                                    .charAt(0)
+                                                    .toUpperCase() +
+                                                    e.target.value
+                                                        .slice(1)
+                                                        .toLowerCase()
+                                            );
                                             setLastNameError(
                                                 validateLastName(e.target.value)
                                             );
@@ -521,43 +541,6 @@ const Profile3 = ({
                                     />
                                 </Stack>
                             </Stack>
-                            {/* <Stack direction='row' spacing={1}>
-                                <TextField
-                                    label='Email'
-                                    type='email'
-                                    variant='outlined'
-                                    size='small'
-                                    margin='dense'
-                                    fullWidth
-                                    className={classes.input}
-                                    value={email}
-                                    InputProps={{
-                                        style: {
-                                            padding: '0px',
-                                            margin: '0px',
-                                            fontWeight: '200',
-                                            fontSize: '1.2rem',
-                                        },
-                                        sx: {
-                                            bgcolor: '#f5f5f5', // sets the fill color
-                                            borderRadius: 1, // sets the border radius
-                                        },
-                                    }}
-                                    inputlabelprops={{
-                                        shrink: true,
-                                        style: { paddingBottom: '5px' },
-                                    }}
-                                    onChange={(e) => {
-                                        setEmail(e.target.value);
-                                        setEmailError(
-                                            validateEmail(e.target.value)
-                                        );
-                                    }}
-                                    error={emailError !== ''}
-                                    helperText={emailError}
-                                />
-                            </Stack> */}
-
                             <Stack
                                 direction='column'
                                 spacing={1}
@@ -609,42 +592,6 @@ const Profile3 = ({
                                     </span>
                                 )}
                             </Stack>
-                            {/* <Stack direction='row' spacing={1}>
-                                <TextField
-                                    label='Phone'
-                                    type='phone'
-                                    variant='outlined'
-                                    size='small'
-                                    margin='dense'
-                                    fullWidth
-                                    className={classes.input}
-                                    value={phone}
-                                    InputProps={{
-                                        style: {
-                                            padding: '0px',
-                                            margin: '0px',
-                                            fontWeight: '200',
-                                            fontSize: '1.5rem',
-                                        },
-                                        sx: {
-                                            bgcolor: '#f5f5f5', // sets the fill color
-                                            borderRadius: 1, // sets the border radius
-                                        },
-                                    }}
-                                    inputlabelprops={{
-                                        shrink: true,
-                                        style: { paddingBottom: '5px' },
-                                    }}
-                                    onChange={(e) => {
-                                        setPhone(e.target.value);
-                                        setPhoneError(
-                                            validatePhone(e.target.value)
-                                        );
-                                    }}
-                                    error={phoneError !== ''}
-                                    helperText={phoneError}
-                                />
-                            </Stack> */}
                             <div className='profilehomesection'>
                                 Home Address
                             </div>
@@ -662,6 +609,7 @@ const Profile3 = ({
                                             margin: '0px',
                                             fontWeight: '200',
                                             fontSize: '1.2rem',
+                                            textTransform: 'none',
                                         },
                                         sx: {
                                             bgcolor: '#f5f5f5', // sets the fill color
@@ -674,7 +622,17 @@ const Profile3 = ({
                                     }}
                                     value={street}
                                     onChange={(e) => {
-                                        setStreet(e.target.value);
+                                        const capitalizedStr = e.target.value
+                                            .split(' ')
+                                            .map(
+                                                (word) =>
+                                                    word
+                                                        .charAt(0)
+                                                        .toUpperCase() +
+                                                    word.slice(1).toLowerCase()
+                                            )
+                                            .join(' ');
+                                        setStreet(capitalizedStr);
                                         setStreetError(
                                             validateStreet(e.target.value)
                                         );
@@ -709,7 +667,17 @@ const Profile3 = ({
                                     className={classes.input}
                                     value={city}
                                     onChange={(e) => {
-                                        setCity(e.target.value);
+                                        const capitalizedStr = e.target.value
+                                            .split(' ')
+                                            .map(
+                                                (word) =>
+                                                    word
+                                                        .charAt(0)
+                                                        .toUpperCase() +
+                                                    word.slice(1).toLowerCase()
+                                            )
+                                            .join(' ');
+                                        setCity(capitalizedStr);
                                         setCityError(
                                             validateCity(e.target.value)
                                         );
@@ -753,6 +721,7 @@ const Profile3 = ({
                                         variant='outlined'
                                         size='small'
                                         margin='dense'
+                                        maxLength={5}
                                         className={classes.input}
                                         value={postalCode}
                                         InputProps={{
@@ -775,10 +744,15 @@ const Profile3 = ({
                                             },
                                         }}
                                         onChange={(e) => {
-                                            setPostalCode(e.target.value);
+                                            setPostalCode(
+                                                e.target.value.substring(0, 5)
+                                            );
                                             setPostalCodeError(
                                                 validatePostalCode(
-                                                    e.target.value
+                                                    e.target.value.substring(
+                                                        0,
+                                                        5
+                                                    )
                                                 )
                                             );
                                         }}
@@ -817,7 +791,17 @@ const Profile3 = ({
                                     }}
                                     value={membershipName}
                                     onChange={(e) => {
-                                        setMembershipName(e.target.value);
+                                        const capitalizedStr = e.target.value
+                                            .split(' ')
+                                            .map(
+                                                (word) =>
+                                                    word
+                                                        .charAt(0)
+                                                        .toUpperCase() +
+                                                    word.slice(1).toLowerCase()
+                                            )
+                                            .join(' ');
+                                        setMembershipName(capitalizedStr);
                                         setMembershipNameError(
                                             validateMembershipName(
                                                 e.target.value
@@ -854,7 +838,17 @@ const Profile3 = ({
                                     }}
                                     value={membershipCity}
                                     onChange={(e) => {
-                                        setMembershipCity(e.target.value);
+                                        const capitalizedStr = e.target.value
+                                            .split(' ')
+                                            .map(
+                                                (word) =>
+                                                    word
+                                                        .charAt(0)
+                                                        .toUpperCase() +
+                                                    word.slice(1).toLowerCase()
+                                            )
+                                            .join(' ');
+                                        setMembershipCity(capitalizedStr);
                                         setMembershipCityError(
                                             validateMembershipCity(
                                                 e.target.value
@@ -915,6 +909,8 @@ const Profile3 = ({
 const mapDispatchToProps = (dispatch) => ({
     updateCurrentUser: (user) => dispatch(updateCurrentUser(user)),
     setSpinner: () => dispatch(setSpinner()),
+    updateUserPerosnalInfo: (personalInfo) =>
+        dispatch(updateUserPersonalInfo(personalInfo)),
     clearSpinner: () => dispatch(clearSpinner()),
 });
 const mapStateToProps = (state) => ({
@@ -925,5 +921,6 @@ export default connect(mapStateToProps, {
     setSpinner,
     clearSpinner,
     updateCurrentUser,
+    updateUserPersonalInfo,
     mapDispatchToProps,
 })(Profile3);

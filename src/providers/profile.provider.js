@@ -1,5 +1,6 @@
 import { API, graphqlOperation } from 'aws-amplify';
 import * as queries from '../pateGraphql/queries';
+import * as mutations from '../pateGraphql/mutations';
 import { printObject } from '../utils/helpers';
 export const updateLegacyAsMigrated = async (dynamoId, graphqlId) => {
     async function updateTheUserRecord() {
@@ -131,5 +132,40 @@ export const getDDBProfile = async (sub) => {
             data: error,
             line: 84,
         };
+    }
+};
+export const updateGQLUserPersonalInfo = async (profileInfo) => {
+    if (!profileInfo) {
+        return { status: 400, data: 'profileInfo is required' };
+    }
+    const inputVariables = {
+        id: profileInfo.id,
+        firstName: profileInfo.firstName,
+        lastName: profileInfo.lastName,
+        phone: profileInfo.phone,
+    };
+    try {
+        let returnValue = {};
+        const updateUserResults = await API.graphql({
+            query: mutations.updateUser,
+            variables: { input: inputVariables },
+        });
+        if (updateUserResults?.data?.updateUser?.id) {
+            //==========================================
+            // update REDUX
+            //==========================================
+            returnValue = {
+                status: 200,
+                data: updateUserResults?.data?.updateUser,
+            };
+        } else {
+            returnValue = {
+                status: 404,
+                data: {},
+            };
+        }
+        return returnValue;
+    } catch (error) {
+        return { status: 400, data: error, line: 28 };
     }
 };

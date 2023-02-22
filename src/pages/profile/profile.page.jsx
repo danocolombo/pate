@@ -27,9 +27,8 @@ const UserProfile = ({
     const [isCompleteProfileModalVisible, setIsCompleteProfileModalVisible] =
         useState(false);
     useEffect(() => {
-        if (!currentUser.isLoggedIn) {
-            history.push('/');
-        }
+        if (!currentUser?.authSession?.idToken?.jwtToken) history.push('/');
+
         if (!currentUser?.residence) {
             setIsCompleteProfileModalVisible(true);
         } else {
@@ -42,12 +41,16 @@ const UserProfile = ({
         setIsCompleteProfileModalVisible(false);
     };
     // render() {
+    if (!currentUser?.authSession?.idToken?.jwtToken) {
+        return 'loading';
+    }
     return (
         <>
             <Header />
 
             <div className='profilepagewrapper'>
                 {/*<div className='pageheader'>PERSONAL PROFILE</div>*/}
+
                 <Profile3 />
                 {/*<PersonalProfile />*/}
                 {/*<div className='profile-page__'>YOUR REGISTRATIONS</div>*/}

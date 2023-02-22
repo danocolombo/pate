@@ -2,6 +2,7 @@ import { UserActionTypes } from './user.types';
 import {
     addItemToRegistrations,
     removeItemFromRegistrations,
+    updateCurrentUserPersonalInfo,
 } from './user.utils';
 const INITIAL_STATE = {
     currentUser: {
@@ -53,6 +54,14 @@ const userReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 currentUser: action.payload,
+            };
+        case UserActionTypes.UPDATE_USER_PERSONAL_INFO:
+            return {
+                ...state,
+                currentUser: updateCurrentUserPersonalInfo(
+                    state,
+                    action.payload
+                ),
             };
         case UserActionTypes.CLEAR_USER:
             return {
