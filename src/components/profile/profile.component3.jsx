@@ -91,8 +91,8 @@ const Profile3 = ({
         if (!firstName) {
             return 'First name is required';
         }
-        const emailRegex = /^[A-Za-z]{2,15}$/;
-        if (!emailRegex.test(firstName)) {
+        const testRegex = /^[A-Za-z]{2,15}$/;
+        if (!testRegex.test(firstName)) {
             return '2-15 characters only';
         }
         return '';
@@ -101,8 +101,8 @@ const Profile3 = ({
         if (!lastName) {
             return 'Last name is required';
         }
-        const emailRegex = /^[a-zA-Z]{2,19}\d?$/;
-        if (!emailRegex.test(lastName)) {
+        const testRegex = /^[a-zA-Z-]{2,19}\d?$/;
+        if (!testRegex.test(lastName)) {
             return '2-19 characters (optional number)';
         }
         return '';
@@ -111,8 +111,8 @@ const Profile3 = ({
         if (!street) {
             return 'Street is required';
         }
-        const emailRegex = /^[a-zA-Z\d\s.#]{2,50}$/;
-        if (!emailRegex.test(street)) {
+        const testRegex = /^[a-zA-Z\d\s.#-]{2,50}$/;
+        if (!testRegex.test(street)) {
             return '2-50 characters (optional number)';
         }
         return '';
@@ -121,32 +121,32 @@ const Profile3 = ({
         if (!city) {
             return 'City is required';
         }
-        const emailRegex = /^[A-Za-z]{2,15}$/;
-        if (!emailRegex.test(city)) {
-            return '2-15 characters only';
+        const testRegex = /^[A-Za-z-]{2,25}$/;
+        if (!testRegex.test(city)) {
+            return '2-25 characters only';
         }
         return '';
     };
     const validatePostalCode = (postalCode) => {
-        const emailRegex = /^\d{5}$/;
+        const testRegex = /^\d{5}$/;
 
-        if (!emailRegex.test(postalCode)) {
+        if (!testRegex.test(postalCode)) {
             return '5 digit number';
         }
 
         return '';
     };
-    const validateEmail = (email) => {
-        if (!email) {
-            return 'Email is required';
-        }
-        const emailRegex = /^[\w.%+-]+@[\w.-]+\.[A-Za-z]{2,}$/;
-        if (!emailRegex.test(email)) {
-            return 'Email address not supported';
-        }
+    // const validateEmail = (email) => {
+    //     if (!email) {
+    //         return 'Email is required';
+    //     }
+    //     const emailRegex = /^[\w.%+-]+@[\w.-]+\.[A-Za-z]{2,}$/;
+    //     if (!emailRegex.test(email)) {
+    //         return 'Email address not supported';
+    //     }
 
-        return '';
-    };
+    //     return '';
+    // };
     const validatePhone = (phone) => {
         const regex = /\d{10}/;
         console.log('length:', phone.length);
@@ -159,11 +159,29 @@ const Profile3 = ({
         if (membershipName.length > 50) {
             return 'max length 50 characters';
         }
+        if (membershipName.length > 0 && membershipName.length < 5) {
+            return 'minimum length 5 characters';
+        }
+        if (membershipName.length > 4) {
+            const testRegex = /^[a-zA-Z\s-]{5,50}\d?$/;
+            if (!testRegex.test(membershipName)) {
+                return 'letters and numbers only';
+            }
+        }
+        if (membershipName.length === 0) {
+            setMembershipCity('');
+        }
         return '';
     };
     const validateMembershipCity = (membershipCity) => {
         if (membershipCity.length > 25) {
             return 'max length 25 characters';
+        }
+        if (membershipCity.length > 0 && membershipCity.length < 3) {
+            return 'minimum length 3 characters';
+        }
+        if (membershipCity.length < 1 && membershipName.length > 0) {
+            return 'city required when providing church name';
         }
         return '';
     };

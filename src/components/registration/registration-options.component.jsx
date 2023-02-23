@@ -100,8 +100,9 @@ function RegistrationOptions({
         if (!firstName) {
             return 'First name is required';
         }
-        if (firstName.length < 2 || firstName.length > 15) {
-            return 'length 2-15 characters';
+        const testRegex = /^[A-Za-z]{2,15}$/;
+        if (!testRegex.test(firstName)) {
+            return '2-15 characters only';
         }
         return '';
     };
@@ -109,8 +110,9 @@ function RegistrationOptions({
         if (!lastName) {
             return 'Last name is required';
         }
-        if (lastName.length < 2 || lastName.length > 15) {
-            return 'length 2-15 characters';
+        const testRegex = /^[a-zA-Z-]{2,19}\d?$/;
+        if (!testRegex.test(lastName)) {
+            return '2-19 characters (optional number)';
         }
         return '';
     };
@@ -118,8 +120,9 @@ function RegistrationOptions({
         if (!street) {
             return 'Street is required';
         }
-        if (street.length < 2 || street.length > 50) {
-            return 'length 10-50 characters';
+        const testRegex = /^[a-zA-Z\d\s.#-]{2,50}$/;
+        if (!testRegex.test(street)) {
+            return '2-50 characters (optional number)';
         }
         return '';
     };
@@ -127,24 +130,20 @@ function RegistrationOptions({
         if (!city) {
             return 'City is required';
         }
-        if (city.length < 2 || city.length > 50) {
-            return 'length 10-50 characters';
+        const testRegex = /^[A-Za-z\s-]{2,25}$/;
+        if (!testRegex.test(city)) {
+            return '2-25 characters only';
         }
         return '';
     };
-    const validateStateProv = (stateProv) => {
-        if (!stateProv) {
-            return 'State is required';
-        }
-        if (stateProv.length < 2 || stateProv.length > 2) {
-            return '2 characters only';
-        }
-        return '';
-    };
+
     const validatePostalCode = (postalCode) => {
-        if (!postalCode) {
-            return 'Postal code is required';
+        const testRegex = /^\d{5}$/;
+
+        if (!testRegex.test(postalCode)) {
+            return '5 digit number';
         }
+
         return '';
     };
     const validateEmail = (email) => {
@@ -179,14 +178,11 @@ function RegistrationOptions({
         return '';
     };
     const validateMeal = (meal) => {
-        if (!meal) {
-            return 'Meal is required';
-        }
         if (parseInt(meal) > parseInt(attendance)) {
             setMeal(attendance);
         }
         if (parseInt(meal) > parseInt(attendance)) {
-            return 'Meal cannot be greater than attendance';
+            return 'meal <= attendance';
         }
         return '';
     };
@@ -195,7 +191,13 @@ function RegistrationOptions({
             return 'max length 50 characters';
         }
         if (membershipName.length > 0 && membershipName.length < 5) {
-            return 'ninimum length 5 characters';
+            return 'minimum length 5 characters';
+        }
+        if (membershipName.length > 4) {
+            const testRegex = /^[a-zA-Z\s-]{5,50}\d?$/;
+            if (!testRegex.test(membershipName)) {
+                return 'letters and numbers only';
+            }
         }
         if (membershipName.length === 0) {
             setMembershipCity('');
@@ -225,7 +227,7 @@ function RegistrationOptions({
     const handleSubmit = () => {
         // Handle the submission here with the attendance and meal values
         setSpinner();
-        const registrationInput = {
+        const inputValues = {
             eventId: eventId,
             firstName: firstName,
             lastName: lastName,
@@ -237,14 +239,26 @@ function RegistrationOptions({
                 stateProv: stateProv,
                 postalCode: postalCode,
             },
-            membership: {
-                name: currentUser?.memberships?.items[0]?.name || '',
-                city: currentUser?.memberships?.items[0]?.city || '',
-                stateProv: currentUser?.memberships?.items[0]?.stateProv || '',
-            },
             attendanceCount: parseInt(attendance),
             mealCount: parseInt(meal),
         };
+        // membership information is not required. But only provide membership.stateProv
+        // if there is name and city
+        let membership = {};
+        if (membershipName && membershipCity) {
+            membership = {
+                name: membershipName,
+                city: membershipCity,
+                stateProv: membershipStateProv,
+            };
+        } else {
+            membership = {
+                name: '',
+                city: '',
+                stateProv: '',
+            };
+        }
+        const registrationInput = { ...inputValues, membership };
         printObject('ROC:75==>registrationInput:\n', registrationInput);
         clearSpinner();
     };
@@ -254,6 +268,7 @@ function RegistrationOptions({
         streetError !== '' ||
         cityError !== '' ||
         postalCodeError !== '' ||
+        emailError !== '' ||
         attendanceError !== '' ||
         membershipNameError !== '' ||
         membershipCityError !== '' ||
@@ -311,6 +326,10 @@ function RegistrationOptions({
                                         fontWeight: '200',
                                         fontSize: '1.2rem',
                                     },
+                                    sx: {
+                                        bgcolor: '#f5f5f5', // sets the fill color
+                                        borderRadius: 1, // sets the border radius
+                                    },
                                 }}
                                 Inputlabelprops={{
                                     shrink: true,
@@ -341,6 +360,10 @@ function RegistrationOptions({
                                         margin: '0px',
                                         fontWeight: '200',
                                         fontSize: '1.2rem',
+                                    },
+                                    sx: {
+                                        bgcolor: '#f5f5f5', // sets the fill color
+                                        borderRadius: 1, // sets the border radius
                                     },
                                 }}
                                 Inputlabelprops={{
@@ -375,6 +398,10 @@ function RegistrationOptions({
                                 fontWeight: '200',
                                 fontSize: '1.2rem',
                             },
+                            sx: {
+                                bgcolor: '#f5f5f5', // sets the fill color
+                                borderRadius: 1, // sets the border radius
+                            },
                         }}
                         inputlabelprops={{
                             shrink: true,
@@ -402,6 +429,10 @@ function RegistrationOptions({
                                 margin: '0px',
                                 fontWeight: '200',
                                 fontSize: '1.2rem',
+                            },
+                            sx: {
+                                bgcolor: '#f5f5f5', // sets the fill color
+                                borderRadius: 1, // sets the border radius
                             },
                         }}
                         inputlabelprops={{
@@ -440,6 +471,7 @@ function RegistrationOptions({
                             variant='outlined'
                             size='small'
                             margin='dense'
+                            maxLength={5}
                             className={classes.input}
                             value={postalCode}
                             InputProps={{
@@ -448,6 +480,10 @@ function RegistrationOptions({
                                     margin: '0px',
                                     fontWeight: '200',
                                     fontSize: '1.2rem',
+                                },
+                                sx: {
+                                    bgcolor: '#f5f5f5', // sets the fill color
+                                    borderRadius: 1, // sets the border radius
                                 },
                             }}
                             InputLabelProps={{
@@ -458,9 +494,11 @@ function RegistrationOptions({
                                 },
                             }}
                             onChange={(e) => {
-                                setPostalCode(e.target.value);
+                                setPostalCode(e.target.value.substring(0, 5));
                                 setPostalCodeError(
-                                    validatePostalCode(e.target.value)
+                                    validatePostalCode(
+                                        e.target.value.substring(0, 5)
+                                    )
                                 );
                             }}
                             error={postalCodeError !== ''}
@@ -499,6 +537,10 @@ function RegistrationOptions({
                                 margin: '0px',
                                 fontWeight: '200',
                                 fontSize: '1.2rem',
+                            },
+                            sx: {
+                                bgcolor: '#f5f5f5', // sets the fill color
+                                borderRadius: 1, // sets the border radius
                             },
                         }}
                         inputlabelprops={{
@@ -749,14 +791,21 @@ function RegistrationOptions({
                             error={mealError !== ''}
                             helperText={mealError}
                         >
-                            {NUMBER_SELECT_OPTIONS_0_10.map((option) => (
-                                <MenuItem
-                                    key={option.value}
-                                    value={option.value}
-                                >
-                                    {option.value}
-                                </MenuItem>
-                            ))}
+                            {NUMBER_SELECT_OPTIONS_0_10.map((option) => {
+                                if (
+                                    parseInt(option.value) <=
+                                    parseInt(attendance)
+                                ) {
+                                    return (
+                                        <MenuItem
+                                            key={option.value}
+                                            value={option.value}
+                                        >
+                                            {option.value}
+                                        </MenuItem>
+                                    );
+                                }
+                            })}
                         </TextField>
                     </Stack>
                 </Stack>
