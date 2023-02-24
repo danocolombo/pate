@@ -90,6 +90,15 @@ type Meal @model {
 }
 type Registration @model {
     id: ID!
+    attendeeId: String
+    attendeeFirstName: String
+    attendeeLastName: String
+    attendeeStreet: String
+    attendeeCity: String
+    attendeeStateProv: String
+    attendeePostalCode: Int
+    attendeeEmail: String
+    attendeePhone: String
     event: Event @belongsTo
     attendanceCount: Int
     mealCount: Int
@@ -97,7 +106,7 @@ type Registration @model {
     membershipStreet: String
     membershipCity: String
     membershipStateProv: String
-    membershipPostalCode: String
+    membershipPostalCode: Int
     registrar: User @belongsTo
 }
 type Residence @model {
