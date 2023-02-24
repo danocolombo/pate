@@ -31,6 +31,7 @@ import ModalWrapper from '../../components/modals/wrapper.modal';
 import ContactChangedModal from '../../components/modals/registration/registration-contact-changed.modal';
 import RegistrationCompleteModal from '../modals/registration/registration-complete.modal';
 import RegistrationGuestCompleteModal from '../modals/registration/registration-guest-complete.modal';
+import ProfileRequiredToRegister from '../modals/registration/registration-profile-required.modal';
 import { US_STATES, NUMBER_SELECT_OPTIONS_0_10 } from '../../constants/pate';
 import {
     createNewRegistration,
@@ -87,8 +88,25 @@ function RegistrationOptions({
         isRegistrationGuestCompleteModalVisible,
         setIsRegistrationGuestCompleteModalVisible,
     ] = useState(false);
+    const [
+        isProfileNotificationModalVisible,
+        setIsProfileNotificationModalVisible,
+    ] = useState(false);
     useEffect(() => {
         if (!currentUser?.authSession?.idToken?.jwtToken) history.push('/');
+        async function confirmProfile() {
+            // check if uesr has profile filled out, if not throw
+            // modal and direct to profile.
+            if (
+                !currentUser.firstName ||
+                !currentUser.lastName ||
+                !currentUser?.residence?.street ||
+                !currentUser?.residence?.city
+            ) {
+                setIsProfileNotificationModalVisible(true);
+            }
+        }
+        confirmProfile();
         async function getEvent() {
             const variables = {
                 id: eventId,
@@ -102,13 +120,19 @@ function RegistrationOptions({
                 setLastName(currentUser.lastName);
                 setStreet(currentUser?.residence?.street);
                 setCity(currentUser?.residence?.city);
-                setStateProv(currentUser?.residence?.stateProv);
+                setStateProv(currentUser?.residence?.stateProv || 'GA');
                 setPostalCode(currentUser?.residence?.postalCode);
-                setMembershipName(currentUser.memberships?.items[0]?.name);
-                setMembershipCity(currentUser.memberships?.items[0]?.city);
-                setMembershipStateProv(
-                    currentUser.memberships?.items[0]?.stateProv
-                );
+                if (currentUser?.memberships.items.length > 0) {
+                    setMembershipName(currentUser.memberships?.items[0]?.name);
+                    setMembershipCity(currentUser.memberships?.items[0]?.city);
+                    setMembershipStateProv(
+                        currentUser.memberships?.items[0]?.stateProv || 'GA'
+                    );
+                } else {
+                    setMembershipName('');
+                    setMembershipCity('');
+                    setMembershipStateProv('GA');
+                }
                 setEmail(currentUser.email);
                 setPhone(currentUser.phone);
             }
@@ -288,6 +312,10 @@ function RegistrationOptions({
         setIsRegistrationCompleteModalVisible(false);
         history.push('/');
     };
+    const handleProfileConfirm = async () => {
+        setIsProfileNotificationModalVisible(false);
+        history.push('/profile');
+    };
     const handleRegistraitonGuestCompleteConfirm = async () => {
         setIsRegistrationGuestCompleteModalVisible(false);
         history.push('/');
@@ -315,7 +343,7 @@ function RegistrationOptions({
             attendeePostalCode: postalCode,
             membershipName: membershipName || '',
             membershipCity: membershipCity || '',
-            membershipStateProv: membershipStateProv || '',
+            membershipStateProv: membershipStateProv,
             attendanceCount: parseInt(attendance),
             mealCount: parseInt(meal),
             userRegistrationsId: currentUser.id,
@@ -511,7 +539,7 @@ function RegistrationOptions({
                                         },
                                         readOnly: blockEdit,
                                     }}
-                                    Inputlabelprops={{
+                                    InputLabelProps={{
                                         shrink: true,
                                         style: { paddingBottom: '0px' },
                                     }}
@@ -547,7 +575,7 @@ function RegistrationOptions({
                                         },
                                         readOnly: blockEdit,
                                     }}
-                                    Inputlabelprops={{
+                                    InputLabelProps={{
                                         shrink: true,
                                         style: { paddingBottom: '0px' },
                                     }}
@@ -572,7 +600,7 @@ function RegistrationOptions({
                             margin='dense'
                             fullWidth
                             className={classes.input}
-                            InputProps={{
+                            inputProps={{
                                 style: {
                                     padding: '0px',
                                     margin: '0px',
@@ -585,7 +613,7 @@ function RegistrationOptions({
                                 },
                                 readOnly: blockEdit,
                             }}
-                            inputlabelprops={{
+                            InputLabelProps={{
                                 shrink: true,
                                 style: { paddingBottom: '0px' },
                             }}
@@ -618,7 +646,7 @@ function RegistrationOptions({
                                 },
                                 readOnly: blockEdit,
                             }}
-                            inputlabelprops={{
+                            InputLabelProps={{
                                 shrink: true,
                                 style: { paddingBottom: '0px' },
                             }}
@@ -640,9 +668,10 @@ function RegistrationOptions({
                                 margin='dense'
                                 select
                                 value={stateProv}
-                                InputProps={{
-                                    readOnly: blockEdit,
-                                }}
+                                InputProps={{ readOnly: blockEdit }}
+                                onChange={(event) =>
+                                    setStateProv(event.target.value)
+                                }
                             >
                                 {US_STATES.map((state) => (
                                     <MenuItem
@@ -914,7 +943,7 @@ function RegistrationOptions({
                                     helperText={membershipCityError}
                                 />
                                 <TextField
-                                    label='State/Providence'
+                                    label='State'
                                     size='small'
                                     margin='dense'
                                     select
@@ -922,6 +951,11 @@ function RegistrationOptions({
                                     InputProps={{
                                         readOnly: blockEdit,
                                     }}
+                                    onChange={(event) =>
+                                        setMembershipStateProv(
+                                            event.target.value
+                                        )
+                                    }
                                 >
                                     {US_STATES.map((state) => (
                                         <MenuItem
@@ -1044,6 +1078,11 @@ function RegistrationOptions({
             <ModalWrapper isOpened={isRegistrationCompleteModalVisible}>
                 <RegistrationCompleteModal
                     handleConfirm={() => handleRegistraitonCompleteConfirm()}
+                />
+            </ModalWrapper>
+            <ModalWrapper isOpened={isProfileNotificationModalVisible}>
+                <ProfileRequiredToRegister
+                    handleConfirm={() => handleProfileConfirm()}
                 />
             </ModalWrapper>
             <ModalWrapper isOpened={isRegistrationGuestCompleteModalVisible}>

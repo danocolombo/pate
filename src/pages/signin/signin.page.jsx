@@ -135,21 +135,36 @@ const SignIn = ({
                 //  *******************************************
                 //      get Dynamo Profile - if necessary
                 //  *******************************************
-                const oldProfile = await getDDBProfile(
+                let oldProfile = await getDDBProfile(
                     currentUserInfo?.attributes?.sub
                 );
+                if (oldProfile.status === 404) {
+                    //********************************************* */
+                    //* There is possibility that this user just signed
+                    //* up and never had legacy profile or access.
+                    //********************************************* */
+                    // set default values to get them started.
+                    oldProfile.data.role = 'guest';
+                    oldProfile.data.status = 'active';
+                    let residence = {
+                        stateProv: 'GA',
+                        postalCode: '30030',
+                    };
+                    oldProfile.data.residence = residence;
+                }
                 printObject('SIP:140-->oldProfile:\n', oldProfile);
                 //===========================================
                 let residenceUniqueID = createAWSUniqueID();
                 let userUniqueID = createAWSUniqueID();
                 let affiliationUniqueID = createAWSUniqueID();
+
                 // create residence object
                 const residenceObject = {
                     id: residenceUniqueID,
                     street: oldProfile?.data?.residence?.street || '',
                     city: oldProfile?.data?.residence?.city || '',
                     stateProv: oldProfile?.data?.residence?.stateProv || '',
-                    postalCode: oldProfile?.data?.residence?.postalCode,
+                    postalCode: oldProfile?.data?.residence?.postalCode || '',
                     latitude: '',
                     longitude: '',
                 };
@@ -160,7 +175,9 @@ const SignIn = ({
                     username: currentUserInfo.username,
                     firstName: oldProfile?.data?.firstName || '',
                     lastName: oldProfile?.data?.lastName || '',
-                    email: oldProfile?.data?.email || '',
+                    email:
+                        oldProfile?.data?.email ||
+                        currentUserInfo.attributes.email,
                     phone: oldProfile?.data?.phone || '',
                     divisionDefaultUsersId:
                         'fffedde6-5d5a-46f0-a3ac-882a350edc64',
@@ -168,7 +185,7 @@ const SignIn = ({
                 };
                 const affiliationObject = {
                     id: affiliationUniqueID,
-                    role: oldProfile?.data?.role,
+                    role: oldProfile?.data?.role || 'guest',
                     status: 'active',
                     divisionAffiliationsId:
                         'fffedde6-5d5a-46f0-a3ac-882a350edc64',

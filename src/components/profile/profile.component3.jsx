@@ -68,14 +68,14 @@ const Profile3 = ({
     const [postalCodeError, setPostalCodeError] = useState('');
     const [originalMembership, setOriginalMembership] = useState({});
     const [membershipId, setMembershipId] = useState(
-        currentUser?.memberships?.items[0].id || ''
+        currentUser?.memberships?.items[0]?.id || ''
     );
     const [membershipName, setMembershipName] = useState(
-        currentUser?.memberships?.items[0].name || ''
+        currentUser?.memberships?.items[0]?.name || ''
     );
     const [membershipNameError, setMembershipNameError] = useState('');
     const [membershipCity, setMembershipCity] = useState(
-        currentUser?.memberships?.items[0].city || ''
+        currentUser?.memberships?.items[0]?.city || ''
     );
     const [membershipCityError, setMembershipCityError] = useState('');
     const [membershipStateProv, setMembershipStateProv] = useState(
