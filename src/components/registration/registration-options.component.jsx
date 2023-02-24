@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, createRef } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
@@ -32,6 +32,11 @@ import ContactChangedModal from '../../components/modals/registration/registrati
 import RegistrationCompleteModal from '../modals/registration/registration-complete.modal';
 import RegistrationGuestCompleteModal from '../modals/registration/registration-guest-complete.modal';
 import { US_STATES, NUMBER_SELECT_OPTIONS_0_10 } from '../../constants/pate';
+import {
+    createNewRegistration,
+    updateEventNumbers,
+    updateMealNumbers,
+} from '../../pateGraphql/pateGraphql.provider';
 import { prettyDate, prettyTime, printObject } from '../../utils/helpers';
 
 function RegistrationOptions({
@@ -242,7 +247,36 @@ function RegistrationOptions({
         return '';
     };
     const handleConfirmGuestRegistrationClick = async () => {
-        const regRequest = await buildRegistration({ incorporated: false });
+        let regRequest = await buildRegistration({ incorporated: false });
+
+        const newRegistrationResults = await createNewRegistration(regRequest);
+        if (newRegistrationResults.statusCode !== 200) {
+            printObject(
+                'createNewRegistration failed:\n',
+                newRegistrationResults
+            );
+        }
+        regRequest.id = newRegistrationResults.data.id;
+        const updatedEventNumbersResults = await updateEventNumbers(
+            regRequest,
+            pateSystem.rally
+        );
+        if (updatedEventNumbersResults.statusCode !== 200) {
+            printObject(
+                'updateEventNumbers failed:\n',
+                updatedEventNumbersResults
+            );
+        }
+        const updatedMealNumbersResults = await updateMealNumbers(
+            regRequest,
+            pateSystem.rally
+        );
+        if (updatedMealNumbersResults.statusCode !== 200) {
+            printObject(
+                'updateMealNumbers failed:\n',
+                updatedMealNumbersResults
+            );
+        }
         printObject('ROC:246==>regRequest:\n', regRequest);
         setIsContactChangeModalVisible(false);
         setIsRegistrationGuestCompleteModalVisible(true);
@@ -269,7 +303,7 @@ function RegistrationOptions({
         console.log('incorporated:', incorporated);
         console.log('type:', typeof incorporated);
         let inputValues = {
-            eventId: eventId,
+            eventRegistrationsId: eventId,
             attendeeId: currentUser.id,
             attendeeFirstName: firstName,
             attendeeLastName: lastName,
@@ -277,7 +311,7 @@ function RegistrationOptions({
             attendeePhone: phone,
             attendeeStreet: street,
             attendeeCity: city,
-            attendeeStaeProv: stateProv,
+            attendeeStateProv: stateProv,
             attendeePostalCode: postalCode,
             membershipName: membershipName || '',
             membershipCity: membershipCity || '',
@@ -291,7 +325,35 @@ function RegistrationOptions({
         }
         return inputValues;
     };
-
+    // const createNewRegistration = async (registrationRequest) => {
+    //     try {
+    //         const createRegistrationResults = await API.graphql({
+    //             query: mutations.createRegistration,
+    //             variables: { input: registrationRequest },
+    //         });
+    //         if (createRegistrationResults.data?.createRegistration != null) {
+    //             // need to get the event object from pate and save to registration and save
+    //             // to currentUser Redux.
+    //             registrationRequest.id =
+    //                 createRegistrationResults?.data?.createRegistration?.id;
+    //             registrationRequest.event = pateSystem.rally;
+    //             addRegistrationToCurrentUser(registrationRequest);
+    //             return { statusCode: 200, data: 'createRegistration: SUCCESS' };
+    //         } else {
+    //             return {
+    //                 statusCode: 400,
+    //                 data: 'createRegistration: ERROR',
+    //                 errorMessage: createRegistrationResults?.errors?.message,
+    //             };
+    //         }
+    //     } catch (err) {
+    //         return {
+    //             statusCode: 400,
+    //             data: 'createRegistration: ERROR',
+    //             error: err,
+    //         };
+    //     }
+    // };
     const handleSubmit = async () => {
         // Handle the submission here with the attendance and meal values
         setSpinner();
@@ -318,9 +380,44 @@ function RegistrationOptions({
             setIsContactChangeModalVisible(true);
             return;
         }
-        //      attendee info is not the currentUser...
-        const regRequest = await buildRegistration({ incorporated: true });
-        printObject('ROC:314==>regRequest:\n', regRequest);
+        //      attendee info is the currentUser...
+        let regRequest = await buildRegistration({ incorporated: true });
+
+        const newRegistrationResults = await createNewRegistration(regRequest);
+        if (newRegistrationResults.statusCode !== 200) {
+            printObject(
+                'createNewRegistration failed:\n',
+                newRegistrationResults
+            );
+        }
+        regRequest.id = newRegistrationResults.data.id;
+        const updatedEventNumbersResults = await updateEventNumbers(
+            regRequest,
+            pateSystem.rally
+        );
+        if (updatedEventNumbersResults.statusCode !== 200) {
+            printObject(
+                'updateEventNumbers failed:\n',
+                updatedEventNumbersResults
+            );
+        }
+        const updatedMealNumbersResults = await updateMealNumbers(
+            regRequest,
+            pateSystem.rally
+        );
+        if (updatedMealNumbersResults.statusCode !== 200) {
+            printObject(
+                'updateMealNumbers failed:\n',
+                updatedMealNumbersResults
+            );
+        }
+
+        if (regRequest.attendeeId !== '0') {
+            console.log('ROC:360==> UPDATE REDUX');
+            printObject('regRequest:\n', regRequest);
+        }
+        console.log('ROC:363==> send email');
+
         setIsRegistrationCompleteModalVisible(true);
 
         //* END=END=END=END=END=END=

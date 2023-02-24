@@ -1,5 +1,6 @@
 import { API } from 'aws-amplify';
 import * as mutations from '../pateGraphql/mutations';
+import * as coreMutations from '../graphql/mutations';
 import { printObject } from '../utils/helpers';
 import { wait } from '@testing-library/react';
 
@@ -181,5 +182,113 @@ export async function createNewGQLEvent(payload) {
     } catch (e) {
         let returnValue = { status: 400, data: 'error', error: e };
         return returnValue;
+    }
+}
+export async function createNewRegistration(regRequest) {
+    try {
+        const createRegistrationResults = await API.graphql({
+            query: mutations.createRegistration,
+            variables: { input: regRequest },
+        });
+        if (createRegistrationResults.data?.createRegistration != null) {
+            // need to get the event object from pate and save to registration and save
+            // to currentUser Redux.
+            regRequest.id =
+                createRegistrationResults?.data?.createRegistration?.id;
+            return {
+                statusCode: 200,
+                data: regRequest,
+                message: 'registration created',
+            };
+        } else {
+            return {
+                statusCode: 400,
+                data: 'createRegistration: ERROR',
+                errorMessage: createRegistrationResults?.errors?.message,
+            };
+        }
+    } catch (e) {
+        let returnValue = { status: 400, data: 'error', error: e };
+        return returnValue;
+    }
+}
+export async function updateEventNumbers(regRequest, rally) {
+    let eValue = +rally.plannedCount;
+    if (isNaN(eValue)) {
+        eValue = 0;
+    }
+    let mValue = +rally.mealPlannedCount;
+    if (isNaN(mValue)) {
+        mValue = 0;
+    }
+    const inputVariables = {
+        id: rally.id,
+        plannedCount: eValue + +regRequest.attendanceCount,
+        actualCount: rally.actualCount,
+        mealPlannedCount: mValue + +regRequest.mealCount,
+        mealActualCount: rally.mealActualCount,
+    };
+    try {
+        const eventResults = await API.graphql({
+            query: mutations.updateEvent,
+            variables: { input: inputVariables },
+        });
+        // printObject('RPP:286-->SUCCESS!!\nEventResults:\n', eventResults);
+        if (eventResults?.data?.updateEvent != null) {
+            return {
+                statusCode: 200,
+                data: eventResults.data.updateEvent,
+                message: 'updateEvent: SUCCESS',
+            };
+        } else {
+            return {
+                statusCode: 400,
+                data: 'updateEvent: ERROR',
+                errorMessage: eventResults?.errors?.message,
+            };
+        }
+    } catch (err) {
+        return { statusCode: 400, data: 'updateEvent: ERROR', error: err };
+    }
+}
+
+export async function updateMealNumbers(regRequest, rally) {
+    try {
+        // updae the Meal numbers
+        let mValue = +rally.mealPlannedCount;
+        if (isNaN(mValue)) {
+            mValue = 0;
+        }
+        const inputVariables = {
+            id: rally.meal.id,
+            plannedCount: mValue + +regRequest.mealCount,
+        };
+        try {
+            const mealResults = await API.graphql({
+                query: mutations.updateMeal,
+                variables: { input: inputVariables },
+            });
+            if (mealResults?.data?.updateMeal != null) {
+                return {
+                    statusCode: 200,
+                    body: mealResults.data.updateMeal,
+                    message: 'updateMeal success',
+                };
+            } else {
+                return {
+                    statusCode: 400,
+                    data: 'updateMeal: ERROR',
+                    errorMessage: mealResults?.errors?.message,
+                };
+            }
+        } catch (err) {
+            return {
+                statusCode: 400,
+                body: 'error doign gql updateMeal',
+                error: err,
+            };
+        }
+    } catch (err) {
+        return { statusCode: 400, data: 'updateEvent: ERROR', error: err };
     }
 }

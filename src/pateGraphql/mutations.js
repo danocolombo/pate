@@ -1763,85 +1763,13 @@ export const createRegistration = /* GraphQL */ `
             id
             event {
                 id
-                eventDate
-                eventCompKey
                 division {
                     id
                     code
-                    divCompKey
-                    createdAt
-                    updatedAt
-                    organizationDivisionsId
-                }
-                registrations {
-                    nextToken
                 }
                 coordinator {
                     id
-                    sub
-                    username
-                    firstName
-                    lastName
-                    email
-                    phone
-                    createdAt
-                    updatedAt
-                    divisionDefaultUsersId
-                    residenceResidentsId
                 }
-                status
-                plannedCount
-                actualCount
-                mealPlannedCount
-                mealActualCount
-                startTime
-                endTime
-                message
-                name
-                graphic
-                location {
-                    id
-                    street
-                    city
-                    stateProv
-                    postalCode
-                    latitude
-                    longitude
-                    createdAt
-                    updatedAt
-                }
-                contact {
-                    id
-                    firstName
-                    lastName
-                    email
-                    phone
-                    street
-                    city
-                    stateProv
-                    postalCode
-                    createdAt
-                    updatedAt
-                }
-                meal {
-                    id
-                    deadline
-                    cost
-                    plannedCount
-                    actualCount
-                    startTime
-                    message
-                    createdAt
-                    updatedAt
-                    mealEventId
-                }
-                createdAt
-                updatedAt
-                divisionEventsId
-                eventLocationEventsId
-                eventContactEventsId
-                userEventsId
-                eventMealId
             }
             attendanceCount
             mealCount
@@ -1853,38 +1781,6 @@ export const createRegistration = /* GraphQL */ `
                 lastName
                 email
                 phone
-                defaultDivision {
-                    id
-                    code
-                    divCompKey
-                    createdAt
-                    updatedAt
-                    organizationDivisionsId
-                }
-                residence {
-                    id
-                    street
-                    city
-                    stateProv
-                    postalCode
-                    latitude
-                    longitude
-                    createdAt
-                    updatedAt
-                }
-                events {
-                    nextToken
-                }
-                registrations {
-                    nextToken
-                }
-                affiliations {
-                    nextToken
-                }
-                createdAt
-                updatedAt
-                divisionDefaultUsersId
-                residenceResidentsId
             }
             createdAt
             updatedAt
