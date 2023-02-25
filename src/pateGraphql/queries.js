@@ -605,6 +605,13 @@ export const getProfileBySub = /* GraphQL */ `
                     items {
                         id
                         attendanceCount
+                        attendeeId
+                        attendeeFirstName
+                        attendeeLastName
+                        attendeeStreet
+                        attendeeCity
+                        attendeeStateProv
+                        attendeePostalCode
                         mealCount
                         membershipName
                         membershipStreet
@@ -900,6 +907,9 @@ export const getEventDetails = /* GraphQL */ `
                 items {
                     id
                     attendanceCount
+                    attendeeId
+                    attendeeFirstName
+                    attendeeLastName
                     mealCount
                     membershipName
                     membershipStreet
@@ -1579,6 +1589,15 @@ export const getRegistration = /* GraphQL */ `
         getRegistration(id: $id) {
             id
             attendanceCount
+            attendeeId
+            attendeeFirstName
+            attendeeLastName
+            attendeeEmail
+            attendeePhone
+            attendeeStreet
+            attendeeCity
+            attendeeStateProv
+            attendeePostalCode
             mealCount
             membershipName
             membershipStreet
@@ -2008,6 +2027,15 @@ export const getCurrentUserRegistrations = /* GraphQL */ `
             items {
                 id
                 attendanceCount
+                attendeeId
+                attendeeFirstName
+                attendeeLastName
+                attendeePhone
+                attendeeEmail
+                attendeeStreet
+                attendeeCity
+                attendeeStateProv
+                attendeePostalCode
                 mealCount
                 membershipName
                 membershipStreet

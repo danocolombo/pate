@@ -18,7 +18,8 @@ import { MainFooter } from '../../components/footers/main-footer';
 import { setPateRallies } from '../../redux/pate/pate.actions';
 import EventInfo from '../../components/event-info/event-info.component';
 import EventDetails from '../../components/event-details/event-component2';
-import Registrar from '../../components/registrar/registrar.component';
+// import Registrar from '../../components/registrar/registrar.component';
+import Registrar from '../../components/registrar/registrar2.component';
 import { printObject } from '../../utils/helpers';
 import { getGQLProfile, getDDBProfile } from '../../providers/profile.provider';
 const UserProfile = ({
@@ -165,10 +166,10 @@ const UserProfile = ({
         <>
             <Header />
             {/*<EventInfo eventInfo={pate.rally} />*/}
-            {theRegistration ? (
+            {/* {theRegistration ? (
                 <EventDetails theRally={theRegistration} />
-            ) : null}
-            {theRegistration ? (
+            ) : null} */}
+            {theRegistration?.id ? (
                 <>
                     <Registrar registration={theRegistration} />
                 </>

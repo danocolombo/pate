@@ -30,7 +30,7 @@ import {
     updateCurrentUser,
     addRegistrationToCurrentUser,
 } from '../../redux/user/user.actions';
-import useStyles from './Registration.styles';
+import useStyles from './registrar.styles';
 import ModalWrapper from '../../components/modals/wrapper.modal';
 import ContactChangedModal from '../../components/modals/registration/registration-contact-changed.modal';
 import RegistrationCompleteModal from '../modals/registration/registration-complete.modal';
@@ -44,7 +44,8 @@ import {
 } from '../../pateGraphql/pateGraphql.provider';
 import { prettyDate, prettyTime, printObject } from '../../utils/helpers';
 
-function RegistrationOptions({
+function Registrar({
+    registration,
     eventId,
     currentUser,
     setSpinner,
@@ -55,30 +56,38 @@ function RegistrationOptions({
 }) {
     const classes = useStyles();
     const history = useHistory();
-    const [firstName, setFirstName] = useState('');
+    const [firstName, setFirstName] = useState(registration.attendeeFirstName);
     const [firstNameError, setFirstNameError] = useState('');
-    const [lastName, setLastName] = useState('');
+    const [lastName, setLastName] = useState(registration.attendeeLastName);
     const [lastNameError, setLastNameError] = useState('');
-    const [email, setEmail] = useState('');
+    const [email, setEmail] = useState(registration.attendeeEmail);
     const [emailError, setEmailError] = useState('');
-    const [phone, setPhone] = useState('');
+    const [phone, setPhone] = useState(registration.attendeePhone);
     const [phoneError, setPhoneError] = useState('');
-    const [street, setStreet] = useState('');
+    const [street, setStreet] = useState(registration.attendeeStreet);
     const [streetError, setStreetError] = useState('');
-    const [city, setCity] = useState('');
+    const [city, setCity] = useState(registration.attendeeCity);
     const [cityError, setCityError] = useState('');
-    const [stateProv, setStateProv] = useState('');
-    const [postalCode, setPostalCode] = useState('');
+    const [stateProv, setStateProv] = useState(registration.attendeeStateProv);
+    const [postalCode, setPostalCode] = useState(
+        registration.attendeePostalCode
+    );
     const [postalCodeError, setPostalCodeError] = useState('');
-    const [membershipName, setMembershipName] = useState('');
+    const [membershipName, setMembershipName] = useState(
+        registration.membershipName
+    );
     const [membershipNameError, setMembershipNameError] = useState('');
-    const [membershipCity, setMembershipCity] = useState('');
+    const [membershipCity, setMembershipCity] = useState(
+        registration.membershipCity
+    );
     const [membershipCityError, setMembershipCityError] = useState('');
-    const [membershipStateProv, setMembershipStateProv] = useState('');
+    const [membershipStateProv, setMembershipStateProv] = useState(
+        registration.membershipStateProv
+    );
 
-    const [attendance, setAttendance] = useState(0);
+    const [attendance, setAttendance] = useState(registration.attendanceCount);
     const [attendanceError, setAttendanceError] = useState('');
-    const [meal, setMeal] = useState(0);
+    const [meal, setMeal] = useState(registration.mealCount);
     const [mealError, setMealError] = useState('');
     const [event, setEvent] = useState({});
     const [blockEdit, setBlockEdit] = useState(true);
@@ -110,51 +119,27 @@ function RegistrationOptions({
             ) {
                 setIsProfileNotificationModalVisible(true);
             }
-        }
-        confirmProfile();
-        async function getEvent() {
-            const variables = {
-                id: eventId,
-            };
-            const eventData = await API.graphql(
-                graphqlOperation(queries.getEvent, variables)
-            );
-            if (eventData.data.getEvent) {
-                setEvent(eventData.data.getEvent);
-                setFirstName(currentUser.firstName);
-                setLastName(currentUser.lastName);
-                setStreet(currentUser?.residence?.street);
-                setCity(currentUser?.residence?.city);
-                setStateProv(currentUser?.residence?.stateProv || 'GA');
-                setPostalCode(currentUser?.residence?.postalCode);
-                if (currentUser?.memberships.items.length > 0) {
-                    setMembershipName(currentUser.memberships?.items[0]?.name);
-                    setMembershipCity(currentUser.memberships?.items[0]?.city);
-                    setMembershipStateProv(
-                        currentUser.memberships?.items[0]?.stateProv || 'GA'
-                    );
-                } else {
-                    setMembershipName('');
-                    setMembershipCity('');
-                    setMembershipStateProv('GA');
-                }
-                setEmail(currentUser.email);
-                setPhone(currentUser.phone);
+            if (registration) {
+                // setREG(registration);
+                // setFirstName(registration.attendeeFirstName);
+                // setLastName(registration.attendeeLastName);
+                // setStreet(registration.attendeeStreet);
+                // setCity(registration.attendeeCity);
+                // setStateProv(registration.attendeeStateProv);
+                // setPostalCode(registration.attendeePostalCode);
+                // setEmail(registration.attendeeEmail);
+                // setPhone(registration.attendeePhone);
+                // setMembershipName(registration.membershipName);
+                // setMembershipCity(registration.membershipCity);
+                // setMembershipStateProv(registration.membershipStateProv);
             }
         }
-        getEvent();
+        confirmProfile();
     }, []);
+
     useEffect(() => {
-        // determine if registrar is edittable...
-        if (
-            currentUser.role === 'rep' ||
-            currentUser.role === 'lead' ||
-            currentUser.role === 'director' ||
-            currentUser.role === 'guru'
-        ) {
-            setBlockEdit(false);
-        }
-    }, []);
+        setFirstName(registration?.attendeeFirstName);
+    }, [registration]);
     const validateFirstName = (firstName) => {
         if (!firstName) {
             return 'First name is required';
@@ -483,18 +468,20 @@ function RegistrationOptions({
                         <Typography variant='h4' className={classes.header}>
                             Event Registration
                         </Typography>
-                        <Typography variant='h6'>{event.name}</Typography>
+                        <Typography variant='h6'>
+                            {registration.event.name}
+                        </Typography>
 
-                        <div>{event?.location?.street}</div>
+                        <div>{registration.event?.location?.street}</div>
                         <div style={{ paddingBottom: '5px' }}>
-                            {event?.location?.city},{' '}
-                            {event?.location?.stateProv}{' '}
-                            {event?.location?.postalCode}
+                            {registration.event?.location?.city},{' '}
+                            {registration.event?.location?.stateProv}{' '}
+                            {registration.event?.location?.postalCode}
                         </div>
                         <div>
-                            {prettyDate(event?.eventDate)}{' '}
-                            {prettyTime(event?.startTime)}-
-                            {prettyTime(event?.endTime)}
+                            {prettyDate(registration.event?.eventDate)}{' '}
+                            {prettyTime(registration.event?.startTime)}-
+                            {prettyTime(registration.event?.endTime)}
                         </div>
                     </Paper>
                 )}
@@ -527,12 +514,12 @@ function RegistrationOptions({
                                         style: { paddingBottom: '0px' },
                                     }}
                                     value={firstName}
-                                    onChange={(e) => {
-                                        setFirstName(e.target.value);
-                                        setFirstNameError(
-                                            validateFirstName(e.target.value)
-                                        );
-                                    }}
+                                    // onChange={(e) => {
+                                    //     setFirstName(e.target.value);
+                                    //     setFirstNameError(
+                                    //         validateFirstName(e.target.value)
+                                    //     );
+                                    // }}
                                     error={firstNameError !== ''}
                                     helperText={firstNameError}
                                 />
@@ -582,8 +569,7 @@ function RegistrationOptions({
                             size='small'
                             margin='dense'
                             fullWidth
-                            className={classes.input}
-                            inputProps={{
+                            InputProps={{
                                 style: {
                                     padding: '0px',
                                     margin: '0px',
@@ -600,6 +586,7 @@ function RegistrationOptions({
                                 shrink: true,
                                 style: { paddingBottom: '0px' },
                             }}
+                            className={classes.input}
                             value={street}
                             onChange={(e) => {
                                 setStreet(e.target.value);
@@ -713,14 +700,7 @@ function RegistrationOptions({
 
                     <Stack direction='row' spacing={1}>
                         <TextField
-                            label={
-                                <InputLabel>
-                                    Registration Email
-                                    <IconButton onClick={handleEmailInfoClick}>
-                                        <Icon />
-                                    </IconButton>
-                                </InputLabel>
-                            }
+                            label='Registration Email'
                             type='email'
                             variant='outlined'
                             size='small'
@@ -729,15 +709,6 @@ function RegistrationOptions({
                             className={classes.input}
                             value={email}
                             InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position='end'>
-                                        <IconButton
-                                            onClick={handleEmailInfoClick}
-                                        >
-                                            <MdAnnouncement />
-                                        </IconButton>
-                                    </InputAdornment>
-                                ),
                                 style: {
                                     padding: '0px',
                                     margin: '0px',
@@ -952,104 +923,118 @@ function RegistrationOptions({
                             </Stack>
                         </Box>
                     </Stack>
-                    <Stack direction='row' spacing={1}>
-                        <Stack>
-                            <TextField
-                                label='Attendees'
-                                type='number'
-                                size='small'
-                                margin='dense'
-                                inputProps={{ max: 10, min: 0 }}
-                                variant='outlined'
-                                select
-                                style={{ width: '100px', marginRight: '16px' }}
-                                value={attendance}
-                                inputlabelprops={{
-                                    shrink: true,
-                                    style: { paddingBottom: '1px' },
-                                }}
-                                inputprops={{
-                                    shrink: true,
-                                    style: {
-                                        padding: '5px',
-                                        marginLeft: '5px',
-                                    },
-                                }}
-                                onChange={(e) => {
-                                    setAttendance(e.target.value);
-                                    setAttendanceError(
-                                        validateAttendance(e.target.value)
+                    <div className='profile-component__button-wrapper'>
+                        <TextField
+                            label='Attendees'
+                            type='number'
+                            size='small'
+                            margin='dense'
+                            inputProps={{ max: 10, min: 0 }}
+                            variant='outlined'
+                            select
+                            style={{ width: '100px', marginRight: '16px' }}
+                            value={attendance}
+                            inputlabelprops={{
+                                shrink: true,
+                                style: { paddingBottom: '1px' },
+                            }}
+                            inputprops={{
+                                shrink: true,
+                                style: {
+                                    padding: '5px',
+                                    marginLeft: '5px',
+                                },
+                            }}
+                            onChange={(e) => {
+                                setAttendance(e.target.value);
+                                setAttendanceError(
+                                    validateAttendance(e.target.value)
+                                );
+                            }}
+                            error={attendanceError !== ''}
+                            helperText={attendanceError}
+                        >
+                            {NUMBER_SELECT_OPTIONS_0_10.map((option) => (
+                                <MenuItem
+                                    key={option.value}
+                                    value={option.value}
+                                >
+                                    {option.value}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+
+                        <TextField
+                            label='Meal'
+                            type='number'
+                            size='small'
+                            margin='dense'
+                            inputProps={{ max: 2, min: 0 }}
+                            variant='outlined'
+                            style={{ width: '80px', marginRight: '16px' }}
+                            value={meal}
+                            select
+                            inputlabelprops={{
+                                shrink: true,
+                                style: { paddingBottom: '1px' },
+                            }}
+                            inputprops={{
+                                shrink: true,
+                                style: {
+                                    padding: '5px',
+                                    marginLeft: '5px',
+                                },
+                            }}
+                            onChange={(e) => {
+                                setMeal(e.target.value);
+                                setMealError(validateMeal(e.target.value));
+                            }}
+                            error={mealError !== ''}
+                            helperText={mealError}
+                        >
+                            {NUMBER_SELECT_OPTIONS_0_10.map((option) => {
+                                if (
+                                    parseInt(option.value) <=
+                                    parseInt(attendance)
+                                ) {
+                                    return (
+                                        <MenuItem
+                                            key={option.value}
+                                            value={option.value}
+                                        >
+                                            {option.value}
+                                        </MenuItem>
                                     );
-                                }}
-                                error={attendanceError !== ''}
-                                helperText={attendanceError}
-                            >
-                                {NUMBER_SELECT_OPTIONS_0_10.map((option) => (
-                                    <MenuItem
-                                        key={option.value}
-                                        value={option.value}
-                                    >
-                                        {option.value}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                        </Stack>
-                        <Stack>
-                            <TextField
-                                label='Meal'
-                                type='number'
-                                size='small'
-                                margin='dense'
-                                inputProps={{ max: 2, min: 0 }}
-                                variant='outlined'
-                                style={{ width: '80px', marginRight: '16px' }}
-                                value={meal}
-                                select
-                                inputlabelprops={{
-                                    shrink: true,
-                                    style: { paddingBottom: '1px' },
-                                }}
-                                inputprops={{
-                                    shrink: true,
-                                    style: {
-                                        padding: '5px',
-                                        marginLeft: '5px',
-                                    },
-                                }}
-                                onChange={(e) => {
-                                    setMeal(e.target.value);
-                                    setMealError(validateMeal(e.target.value));
-                                }}
-                                error={mealError !== ''}
-                                helperText={mealError}
-                            >
-                                {NUMBER_SELECT_OPTIONS_0_10.map((option) => {
-                                    if (
-                                        parseInt(option.value) <=
-                                        parseInt(attendance)
-                                    ) {
-                                        return (
-                                            <MenuItem
-                                                key={option.value}
-                                                value={option.value}
-                                            >
-                                                {option.value}
-                                            </MenuItem>
-                                        );
-                                    }
-                                })}
-                            </TextField>
-                        </Stack>
-                    </Stack>
-                    <Button
-                        variant='contained'
-                        color='primary'
-                        disabled={hasErrors}
-                        className={classes.button}
-                        onClick={handleSubmit}
-                    >
-                        Submit
-                    </Button>
+                                }
+                            })}
+                        </TextField>
+                    </div>
+                    <div className='profile-component__button-wrapper'>
+                        <Button
+                            variant='contained'
+                            color='primary'
+                            disabled={hasErrors}
+                            className={classes.button}
+                            sx={{ marginRight: '10px' }}
+                            onClick={handleSubmit}
+                        >
+                            Update
+                        </Button>
+                        <Button
+                            variant='contained'
+                            color='primary'
+                            disabled={hasErrors}
+                            className={classes.button}
+                            sx={{
+                                backgroundColor: 'yellow',
+                                color: 'black',
+                                marginLeft: '10px',
+                            }}
+                            onClick={handleSubmit}
+                        >
+                            Cancel
+                        </Button>
+                    </div>
                 </CardContent>
             </Card>
             <ModalWrapper isOpened={isContactChangeModalVisible}>
@@ -1093,4 +1078,4 @@ const mapStateToProps = (state) => ({
 export default compose(
     withRouter,
     connect(mapStateToProps, mapDispatchToProps)
-)(RegistrationOptions);
+)(Registrar);

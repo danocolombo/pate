@@ -68,21 +68,39 @@ const UserRegistrationOverview = ({
                     gqlProfile?.data?.listUsers?.items[0]?.registrations?.items
                         .length > 0
                 ) {
-                    setRallies(
-                        gqlProfile.data.listUsers.items[0].registrations.items
+                    // only load them if attendeeId === currentUserId
+                    let userRallies = [];
+                    gqlProfile?.data?.listUsers?.items[0]?.registrations?.items.forEach(
+                        (reg) => {
+                            if (reg.attendeeId === currentUser.id) {
+                                userRallies.push(reg);
+                            }
+                        }
                     );
+                    setRallies(userRallies);
                 }
             } catch (error) {
                 printObject('SP:218-->error gettng graphql data');
             }
         }
         getLatestProfile();
-        // const loadReduxRegistrations = async () => {
-        //     if (currentUser?.registrations?.items.length > 0) {
-        //         setRallies(currentUser.registrations.items);
-        //     }
-        // };
-        //loadReduxRegistrations();
+        //*===========================================
+        // some users can register others for events,
+        // so only display registrations when the user
+        // is the attendee.
+        //*============================================
+        const filterRallies = async () => {
+            let userRallies = [];
+            if (currentUser?.registrations?.items.length > 0) {
+                currentUser?.registrations?.items.forEach((reg) => {
+                    if (reg.attendeeId === currentUser.id) {
+                        userRallies.push(reg);
+                    }
+                });
+            }
+            setRallies(userRallies);
+        };
+        filterRallies();
     }, []);
     return (
         <>

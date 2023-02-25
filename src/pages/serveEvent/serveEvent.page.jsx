@@ -1309,7 +1309,7 @@ const Serve = ({
                                         rallyEvent.registrations.items.map(
                                             (rege) => (
                                                 <RegistrationItem
-                                                    key={rege.iid}
+                                                    key={rege.id}
                                                     regItem={rege}
                                                 />
                                             )
