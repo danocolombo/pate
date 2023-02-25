@@ -8,6 +8,7 @@ import * as queries from '../../pateGraphql/queries';
 import { useHistory } from 'react-router-dom';
 import { compose } from 'redux';
 import { withRouter } from 'react-router';
+import { Stack, TextField, MenuItem } from '@mui/material';
 import PhoneInput from 'react-phone-input-2';
 import SelectStateProv from '../../components/state-prov/select-stateProv.component';
 import Header from '../../components/header/header.component';
@@ -28,7 +29,9 @@ import {
 } from '../../redux/stateRep/stateRep.actions';
 import { STATUS_VALUE } from '../../constants/pate';
 import { printObject, createAWSUniqueID } from '../../utils/helpers';
+import { US_STATES, NUMBER_SELECT_OPTIONS_0_10 } from '../../constants/pate';
 import './serveEvent.styles.scss';
+import useStyles from './serve-event.styles';
 // import { getEventRegistrations } from './server-event.actions';
 const Serve = ({
     setSpinner,
@@ -49,18 +52,23 @@ const Serve = ({
     pate,
 }) => {
     let eventID = match?.params?.id;
-    console.log('serveEvent: ' + eventID);
+
     //***   rallyEvent used to store event to display   */
+    const classes = useStyles();
     const [rallyEvent, setRallyEvent] = useState({});
     const [modalDeleteConfirmIsVisible, setModalDeleteConfirmIsVisible] =
         useState(false);
     const refApprovalCheckbox = useRef(null);
     // const [plan, setPlan] = useState([]);
     const [churchName, setChurchName] = useState('');
+    const [churchNameError, setChurchNameError] = useState('');
     const [street, setStreet] = useState('');
+    const [streetError, setStreetError] = useState('');
     const [city, setCity] = useState('');
+    const [cityError, setCityError] = useState('');
     const [stateProv, setStateProv] = useState('');
     const [postalCode, setPostalCode] = useState('');
+    const [postalCodeError, setPostalCodeError] = useState('');
     const [eventDate, setEventDate] = useState('');
     const [eventStart, setEventStart] = useState('');
     const [eventEnd, setEventEnd] = useState('');
@@ -69,8 +77,12 @@ const Serve = ({
     const [graphicFileObj, setGraphicFileObj] = useState();
     const [isApproved, setApproved] = useState(false);
 
-    const [contactName, setContactName] = useState('');
+    const [contactFirstName, setContactFirstName] = useState('');
+    const [contactFirstNameError, setContactFirstNameError] = useState('');
+    const [contactLastName, setContactLastName] = useState('');
+    const [contactLastNameError, setContactLastNameError] = useState('');
     const [contactEmail, setContactEmail] = useState('');
+    const [contactEmailError, setContactEmailError] = useState('');
     const [contactPhone, setContactPhone] = useState('');
     const [eventStatus, setEventStatus] = useState('');
     const [eventMessage, setEventMessage] = useState('');
@@ -246,7 +258,8 @@ const Serve = ({
         setEventEnd('');
         setGraphicFileName('');
         setApproved('false');
-        setContactName('');
+        setContactFirstName('');
+        setContactLastName('');
         setContactEmail('');
         setContactPhone('');
         setEventStatus('draft');
@@ -289,7 +302,8 @@ const Serve = ({
         //todo-gql --- DO WE USE OR NEED "approved"?
         setApproved(theEvent?.approved === 'approved' ? true : false);
         //todo-gql --- need to update UI to use first and last name for contact
-        setContactName(theEvent?.contact?.firstName);
+        setContactFirstName(theEvent?.contact?.firstName);
+        setContactLastName(theEvent?.contact?.lastName);
         setContactEmail(theEvent?.contact?.email);
         setContactPhone(theEvent?.contact?.phone);
         setEventStatus(theEvent?.status);
@@ -384,7 +398,8 @@ const Serve = ({
                         let tmpStr = 'events/' + eventID + rallyEvent?.graphic;
                         setGraphicLocation(tmpStr);
                         setApproved(rallyEvent?.approved);
-                        setContactName(rallyEvent?.contact?.name);
+                        setContactFirstName(rallyEvent?.contact?.firstName);
+                        setContactLastName(rallyEvent?.contact?.lastName);
                         setContactEmail(rallyEvent?.contact?.email);
                         setContactPhone(rallyEvent?.contact?.phone);
                         setEventStatus(rallyEvent?.status);
@@ -434,7 +449,8 @@ const Serve = ({
                         let tmpStr = 'events/' + eventID + rallyEvent?.graphic;
                         setGraphicLocation(tmpStr);
                         setApproved(rallyEvent?.approved);
-                        setContactName(rallyEvent?.contact?.name);
+                        setContactFirstName(rallyEvent?.contact?.firstName);
+                        setContactLastName(rallyEvent?.contact?.lastName);
                         setContactEmail(rallyEvent?.contact?.email);
                         setContactPhone(rallyEvent?.contact?.phone);
                         setEventStatus(rallyEvent?.status);
@@ -486,7 +502,8 @@ const Serve = ({
                         let tmpStr = 'events/' + eventID + rallyEvent?.graphic;
                         setGraphicLocation(tmpStr);
                         setApproved(rallyEvent?.approved);
-                        setContactName(rallyEvent?.contact?.name);
+                        setContactFirstName(rallyEvent?.contact?.firstName);
+                        setContactLastName(rallyEvent?.contact?.lastName);
                         setContactEmail(rallyEvent?.contact?.email);
                         setContactPhone(rallyEvent?.contact?.phone);
                         setEventStatus(rallyEvent?.status);
@@ -536,7 +553,8 @@ const Serve = ({
                         let tmpStr = 'events/' + eventID + rallyEvent?.graphic;
                         setGraphicLocation(tmpStr);
                         setApproved(rallyEvent?.approved);
-                        setContactName(rallyEvent?.contact?.name);
+                        setContactFirstName(rallyEvent?.contact?.firstName);
+                        setContactLastName(rallyEvent?.contact?.lastName);
                         setContactEmail(rallyEvent?.contact?.email);
                         setContactPhone(rallyEvent?.contact?.phone);
                         setEventStatus(rallyEvent?.status);
@@ -603,6 +621,72 @@ const Serve = ({
     //     }
     //     await getEventRegistrations();
     // };
+    const validateChurchName = (churchName) => {
+        if (churchName.length > 50) {
+            return 'max length 50 characters';
+        }
+        if (churchName.length < 5) {
+            return 'minimum length 5 characters';
+        }
+        if (churchName.length > 4) {
+            const testRegex = /^[a-zA-Z\s-]{5,50}\d?$/;
+            if (!testRegex.test(churchName)) {
+                return 'letters and numbers only';
+            }
+        }
+
+        return '';
+    };
+    const validateStreet = (street) => {
+        if (!street) {
+            return 'Street is required';
+        }
+        const testRegex = /^[a-zA-Z\d\s.#-]{2,50}$/;
+        if (!testRegex.test(street)) {
+            return '2-50 characters (optional number)';
+        }
+        return '';
+    };
+    const validateCity = (city) => {
+        if (!city) {
+            return 'City is required';
+        }
+        const testRegex = /^[A-Za-z\s-]{2,25}$/;
+        if (!testRegex.test(city)) {
+            return '2-25 characters only';
+        }
+        return '';
+    };
+
+    const validatePostalCode = (postalCode) => {
+        const testRegex = /^\d{5}$/;
+
+        if (!testRegex.test(postalCode)) {
+            return '5 digit number';
+        }
+
+        return '';
+    };
+    const validateContactFirstName = (contactFirstName) => {
+        if (!contactFirstName) {
+            return 'First name is required';
+        }
+        const testRegex = /^[A-Za-z]{2,15}$/;
+        if (!testRegex.test(contactFirstName)) {
+            return '2-15 characters only';
+        }
+        return '';
+    };
+    const validateContactLastName = (contactLastName) => {
+        if (!contactLastName) {
+            return 'Last name is required';
+        }
+        const testRegex = /^[a-zA-Z-]{2,19}\d?$/;
+        if (!testRegex.test(contactLastName)) {
+            return '2-19 characters (optional number)';
+        }
+        return '';
+    };
     const handleSubmitClick = async (event) => {
         event.preventDefault();
         setSpinner();
@@ -615,7 +699,8 @@ const Serve = ({
         newRally.city = city;
         newRally.stateProv = stateProv;
         newRally.postalCode = postalCode;
-        newRally.contact.name = contactName;
+        newRally.contact.firstName = contactFirstName;
+        newRally.contact.lastName = contactLastName;
         newRally.contact.phone = contactPhone;
         newRally.contact.email = contactEmail;
         newRally.eventDate = eventDate.replace(/-/g, '');
@@ -773,8 +858,11 @@ const Serve = ({
             case 'eventStatus':
                 setEventStatus(value);
                 break;
-            case 'contactName':
-                setContactName(value);
+            case 'contactFirstName':
+                setContactFirstName(value);
+                break;
+            case 'contactLastName':
+                setContactLastName(value);
                 break;
             case 'contactEmail':
                 setContactEmail(value);
@@ -872,6 +960,7 @@ const Serve = ({
         setModalDeleteConfirmIsVisible(false);
         return;
     };
+    printObject('rallyEvent:\n', rallyEvent);
     return pateSystem.showSpinner ? (
         <Spinner />
     ) : (
@@ -884,95 +973,256 @@ const Serve = ({
                         <div className='serveevent-page__section-header'>
                             Location
                         </div>
-                        <div className='serveevent-page__grid-data-box'>
-                            <div className='serveevent-page__grid-label'>
-                                Church:
-                            </div>
-                            <div className='serveevent-page__grid-control'>
-                                <input
-                                    type='text'
-                                    name='churchName'
-                                    id='churchName'
-                                    value={churchName}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </div>
-                        </div>
-                        <div className='serveevent-page__grid-data-box'>
-                            <div className='serveevent-page__grid-label'>
-                                Street:
-                            </div>
-                            <div className='serveevent-page__grid-control'>
-                                <input
-                                    type='text'
-                                    id='street'
-                                    name='street'
-                                    onChange={handleChange}
-                                    value={street}
-                                    required
-                                />
-                            </div>
-                        </div>
-                        <div className='serveevent-page__grid-data-box'>
-                            <div className='serveevent-page__grid-label'>
-                                City:
-                            </div>
-                            <div className='serveevent-page__grid-control'>
-                                <input
-                                    type='text'
-                                    id='city'
-                                    name='city'
-                                    onChange={handleChange}
-                                    value={city}
-                                    required
-                                />
-                            </div>
-                        </div>
-                        <div className='serveevent-page__grid-data-box'>
-                            <div className='serveevent-page__grid-label'>
-                                State:
-                            </div>
-                            <div className='serveevent-page__grid-control'>
-                                <SelectStateProv
-                                    initialValue={stateProv}
-                                    doChange={handleStateChange}
-                                />
-                            </div>
-                        </div>
-                        <div className='serveevent-page__grid-data-box'>
-                            <div className='serveevent-page__grid-label'>
-                                Postal Code:
-                            </div>
-                            <div className='serveevent-page__grid-control'>
-                                <input
-                                    type='text'
-                                    id='postalCode'
-                                    name='postalCode'
-                                    onChange={handleChange}
+                        <Stack>
+                            <TextField
+                                label='Church Name'
+                                variant='outlined'
+                                size='small'
+                                margin='dense'
+                                fullWidth
+                                className={classes.input}
+                                InputProps={{
+                                    style: {
+                                        padding: '0px',
+                                        margin: '0px',
+                                        fontWeight: '200',
+                                        fontSize: '1.2rem',
+                                    },
+                                    sx: {
+                                        bgcolor: '#f5f5f5', // sets the fill color
+                                        borderRadius: 1, // sets the border radius
+                                    },
+                                }}
+                                inputlabelprops={{
+                                    shrink: true,
+                                    style: { paddingBottom: '0px' },
+                                }}
+                                value={churchName}
+                                onChange={(e) => {
+                                    const capitalizedStr = e.target.value
+                                        .split(' ')
+                                        .map(
+                                            (word) =>
+                                                word.charAt(0).toUpperCase() +
+                                                word.slice(1).toLowerCase()
+                                        )
+                                        .join(' ');
+                                    setChurchName(capitalizedStr);
+                                    setChurchNameError(
+                                        validateChurchName(e.target.value)
+                                    );
+                                }}
+                                error={churchNameError !== ''}
+                                helperText={churchNameError}
+                            />
+                        </Stack>
+                        <Stack>
+                            <TextField
+                                label='Street'
+                                variant='outlined'
+                                size='small'
+                                margin='dense'
+                                fullWidth
+                                InputProps={{
+                                    style: {
+                                        padding: '0px',
+                                        margin: '0px',
+                                        fontWeight: '200',
+                                        fontSize: '1.2rem',
+                                    },
+                                    sx: {
+                                        bgcolor: '#f5f5f5', // sets the fill color
+                                        borderRadius: 1, // sets the border radius
+                                    },
+                                }}
+                                InputLabelProps={{
+                                    shrink: true,
+                                    style: { paddingBottom: '0px' },
+                                }}
+                                className={classes.input}
+                                value={street}
+                                onChange={(e) => {
+                                    setStreet(e.target.value);
+                                    setStreetError(
+                                        validateStreet(e.target.value)
+                                    );
+                                }}
+                                error={streetError !== ''}
+                                helperText={streetError}
+                            />
+                        </Stack>
+                        <Stack direction='row' spacing={1}>
+                            <TextField
+                                label='City'
+                                variant='outlined'
+                                size='small'
+                                margin='dense'
+                                fullWidth
+                                InputProps={{
+                                    style: {
+                                        padding: '0px',
+                                        margin: '0px',
+                                        fontWeight: '200',
+                                        fontSize: '1.2rem',
+                                    },
+                                    sx: {
+                                        bgcolor: '#f5f5f5', // sets the fill color
+                                        borderRadius: 1, // sets the border radius
+                                    },
+                                }}
+                                InputLabelProps={{
+                                    shrink: true,
+                                    style: { paddingBottom: '0px' },
+                                }}
+                                className={classes.input}
+                                value={city}
+                                onChange={(e) => {
+                                    setCity(e.target.value);
+                                    setCityError(validateCity(e.target.value));
+                                }}
+                                error={cityError !== ''}
+                                helperText={cityError}
+                            />
+                        </Stack>
+                        <Stack direction='row' spacing={1}>
+                            <Stack>
+                                <TextField
+                                    label='State/Providence'
+                                    size='small'
+                                    margin='dense'
+                                    select
+                                    value={stateProv}
+                                    onChange={(event) =>
+                                        setStateProv(event.target.value)
+                                    }
+                                >
+                                    {US_STATES.map((state) => (
+                                        <MenuItem
+                                            key={state.value}
+                                            value={state.value}
+                                        >
+                                            {state.label}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            </Stack>
+                            <Stack direction='row' spacing={1}>
+                                <TextField
+                                    label='Postal Code'
+                                    variant='outlined'
+                                    size='small'
+                                    margin='dense'
+                                    maxLength={5}
+                                    className={classes.input}
                                     value={postalCode}
-                                    required
+                                    InputProps={{
+                                        style: {
+                                            padding: '0px',
+                                            margin: '0px',
+                                            fontWeight: '200',
+                                            fontSize: '1.2rem',
+                                        },
+                                        sx: {
+                                            bgcolor: '#f5f5f5', // sets the fill color
+                                            borderRadius: 1, // sets the border radius
+                                        },
+                                    }}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                        style: {
+                                            paddingBottom: '0px',
+                                            fontWeight: 'bold',
+                                        },
+                                    }}
+                                    onChange={(e) => {
+                                        setPostalCode(
+                                            e.target.value.substring(0, 5)
+                                        );
+                                        setPostalCodeError(
+                                            validatePostalCode(
+                                                e.target.value.substring(0, 5)
+                                            )
+                                        );
+                                    }}
+                                    error={postalCodeError !== ''}
+                                    helperText={postalCodeError}
                                 />
-                            </div>
-                        </div>
+                            </Stack>
+                        </Stack>
+
                         <div className='serveevent-page__section-header'>
                             Church Contact
                         </div>
-                        <div className='serveevent-page__grid-data-box'>
-                            <div className='serveevent-page__grid-label'>
-                                Name:
-                            </div>
-                            <div className='serveevent-page__grid-control'>
-                                <input
-                                    type='text'
-                                    id='contactName'
-                                    name='contactName'
-                                    onChange={handleChange}
-                                    value={contactName}
-                                    required
-                                />
-                            </div>
-                        </div>
+                        <Stack>
+                            <TextField
+                                label='First Name'
+                                variant='outlined'
+                                required
+                                size='small'
+                                margin='dense'
+                                className={classes.input}
+                                InputProps={{
+                                    style: {
+                                        padding: '0px',
+                                        margin: '0px',
+                                        fontWeight: '200',
+                                        fontSize: '1.2rem',
+                                    },
+                                    sx: {
+                                        bgcolor: '#f5f5f5', // sets the fill color
+                                        borderRadius: 1, // sets the border radius
+                                    },
+                                }}
+                                InputLabelProps={{
+                                    shrink: true,
+                                    style: { paddingBottom: '0px' },
+                                }}
+                                value={contactFirstName}
+                                onChange={(e) => {
+                                    setContactFirstName(e.target.value);
+                                    setContactFirstNameError(
+                                        validateContactFirstName(e.target.value)
+                                    );
+                                }}
+                                error={contactFirstNameError !== ''}
+                                helperText={contactFirstNameError}
+                            />
+                        </Stack>
+                        <Stack>
+                            <TextField
+                                label='Last Name'
+                                variant='outlined'
+                                required
+                                size='small'
+                                margin='dense'
+                                className={classes.input}
+                                InputProps={{
+                                    style: {
+                                        padding: '0px',
+                                        margin: '0px',
+                                        fontWeight: '200',
+                                        fontSize: '1.2rem',
+                                    },
+                                    sx: {
+                                        bgcolor: '#f5f5f5', // sets the fill color
+                                        borderRadius: 1, // sets the border radius
+                                    },
+                                }}
+                                InputLabelProps={{
+                                    shrink: true,
+                                    style: { paddingBottom: '0px' },
+                                }}
+                                value={contactLastName}
+                                onChange={(e) => {
+                                    setContactLastName(e.target.value);
+                                    setContactLastNameError(
+                                        validateContactLastName(e.target.value)
+                                    );
+                                }}
+                                error={contactLastNameError !== ''}
+                                helperText={contactLastNameError}
+                            />
+                        </Stack>
 
                         <div className='serveevent-page__data-row-phone'>
                             <PhoneInput

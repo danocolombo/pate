@@ -71,51 +71,52 @@ class Events extends React.Component {
         ) : (
             <>
                 <Header />
-                <Box
-                    className='MyBox-root'
-                    sx={{
-                        position: 'relative',
-                        background:
-                            'linear-gradient(to bottom, #384ea3, #ced8e8)',
-                        borderRadius: 2,
-                        minHeight: `${20 * this.state.multiplier}px`,
-                        marginTop: 2,
-                        marginBottom: 2,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'top',
-                        alignContent: 'center',
-                        maxWidth: 400,
-                        width: '100%',
-                        margin: '0 auto',
-                    }}
-                >
-                    <Typography
-                        variant='h5'
-                        align='center'
-                        marginTop='10px'
-                        color='white'
+                <div style={{ marginTop: '10px' }}>
+                    <Box
+                        className='MyBox-root'
+                        sx={{
+                            position: 'relative',
+                            background:
+                                'linear-gradient(to bottom, #384ea3, #ced8e8)',
+                            borderRadius: 2,
+                            minHeight: `${20 * this.state.multiplier}px`,
+                            marginBottom: 2,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'top',
+                            alignContent: 'center',
+                            maxWidth: 400,
+                            width: '100%',
+                            margin: '0 auto',
+                        }}
                     >
-                        Upcoming Events
-                    </Typography>
-                    {this.state.plans.length > 0 ? (
-                        this.state.plans.map((plan, index) => (
-                            <>
-                                <EventMarquee4
-                                    event={plan}
-                                    index={index}
-                                    key={plan.id}
-                                />
-                            </>
-                        ))
-                    ) : (
-                        <img
-                            className='events-page__no-events-image'
-                            src='https://pate-images.s3.amazonaws.com/NoEvents.png'
-                            alt='No Scheduled Events. Come Back Soon for more info'
-                        />
-                    )}
-                </Box>
+                        <Typography
+                            variant='h5'
+                            align='center'
+                            marginTop='5px'
+                            color='white'
+                        >
+                            Upcoming Events
+                        </Typography>
+                        {this.state.plans.length > 0 ? (
+                            this.state.plans.map((plan, index) => (
+                                <>
+                                    <EventMarquee4
+                                        event={plan}
+                                        index={index}
+                                        key={plan.id}
+                                    />
+                                </>
+                            ))
+                        ) : (
+                            <img
+                                className='events-page__no-events-image'
+                                src='https://pate-images.s3.amazonaws.com/NoEvents.png'
+                                alt='No Scheduled Events. Come Back Soon for more info'
+                            />
+                        )}
+                    </Box>
+                </div>
                 <MainFooter />
             </>
         );

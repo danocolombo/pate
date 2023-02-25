@@ -47,13 +47,8 @@ const UserProfile = ({
     return (
         <>
             <Header />
-
             <div className='profilepagewrapper'>
-                {/*<div className='pageheader'>PERSONAL PROFILE</div>*/}
-
                 <Profile3 />
-                {/*<PersonalProfile />*/}
-                {/*<div className='profile-page__'>YOUR REGISTRATIONS</div>*/}
                 {currentUser.registrations.items.length > 0 && (
                     <UserRegistrationOverview />
                 )}

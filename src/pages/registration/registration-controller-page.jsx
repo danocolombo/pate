@@ -9,7 +9,9 @@ const RegistrationControllerPage = ({ match }) => {
     return (
         <>
             <Header />
-            <RegistrationOptions eventId={eventId} />
+            <div style={{ marginTop: '10px' }}>
+                <RegistrationOptions eventId={eventId} />
+            </div>
             <MainFooter />
         </>
     );

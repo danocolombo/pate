@@ -522,7 +522,7 @@ const Profile3 = ({
                 <Typography
                     variant='h5'
                     align='center'
-                    marginTop='10px'
+                    marginTop='0px'
                     color='white'
                 >
                     Personal Profile
@@ -531,7 +531,8 @@ const Profile3 = ({
                     sx={{
                         borderRadius: 2,
                         boxShadow: 8,
-                        margin: '15px',
+                        marginLeft: '15px',
+                        marginRight: '15px',
                         marginBottom: '20px',
                         minWidth: '300px',
                         bgcolor: '#FAFAFA',

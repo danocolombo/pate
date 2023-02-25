@@ -575,6 +575,7 @@ function RegistrationOptions({
                             </Stack>
                         </Stack>
                     </Stack>
+
                     <Stack direction='row' spacing={1}>
                         <TextField
                             label='Street'
@@ -582,8 +583,7 @@ function RegistrationOptions({
                             size='small'
                             margin='dense'
                             fullWidth
-                            className={classes.input}
-                            inputProps={{
+                            InputProps={{
                                 style: {
                                     padding: '0px',
                                     margin: '0px',
@@ -600,6 +600,7 @@ function RegistrationOptions({
                                 shrink: true,
                                 style: { paddingBottom: '0px' },
                             }}
+                            className={classes.input}
                             value={street}
                             onChange={(e) => {
                                 setStreet(e.target.value);
@@ -952,104 +953,115 @@ function RegistrationOptions({
                             </Stack>
                         </Box>
                     </Stack>
-                    <Stack direction='row' spacing={1}>
-                        <Stack>
-                            <TextField
-                                label='Attendees'
-                                type='number'
-                                size='small'
-                                margin='dense'
-                                inputProps={{ max: 10, min: 0 }}
-                                variant='outlined'
-                                select
-                                style={{ width: '100px', marginRight: '16px' }}
-                                value={attendance}
-                                inputlabelprops={{
-                                    shrink: true,
-                                    style: { paddingBottom: '1px' },
-                                }}
-                                inputprops={{
-                                    shrink: true,
-                                    style: {
-                                        padding: '5px',
-                                        marginLeft: '5px',
-                                    },
-                                }}
-                                onChange={(e) => {
-                                    setAttendance(e.target.value);
-                                    setAttendanceError(
-                                        validateAttendance(e.target.value)
+                    <div className={classes.registrationComponentWrapper}>
+                        <TextField
+                            label='Attendees'
+                            type='number'
+                            size='small'
+                            margin='dense'
+                            inputProps={{ max: 10, min: 0 }}
+                            variant='outlined'
+                            select
+                            style={{ width: '100px', marginRight: '16px' }}
+                            value={attendance}
+                            inputlabelprops={{
+                                shrink: true,
+                                style: { paddingBottom: '1px' },
+                            }}
+                            inputprops={{
+                                shrink: true,
+                                style: {
+                                    padding: '5px',
+                                    marginLeft: '5px',
+                                },
+                            }}
+                            onChange={(e) => {
+                                setAttendance(e.target.value);
+                                setAttendanceError(
+                                    validateAttendance(e.target.value)
+                                );
+                            }}
+                            error={attendanceError !== ''}
+                            helperText={attendanceError}
+                        >
+                            {NUMBER_SELECT_OPTIONS_0_10.map((option) => (
+                                <MenuItem
+                                    key={option.value}
+                                    value={option.value}
+                                >
+                                    {option.value}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+
+                        <TextField
+                            label='Meal'
+                            type='number'
+                            size='small'
+                            margin='dense'
+                            inputProps={{ max: 2, min: 0 }}
+                            variant='outlined'
+                            style={{ width: '80px', marginRight: '16px' }}
+                            value={meal}
+                            select
+                            inputlabelprops={{
+                                shrink: true,
+                                style: { paddingBottom: '1px' },
+                            }}
+                            inputprops={{
+                                shrink: true,
+                                style: {
+                                    padding: '5px',
+                                    marginLeft: '5px',
+                                },
+                            }}
+                            onChange={(e) => {
+                                setMeal(e.target.value);
+                                setMealError(validateMeal(e.target.value));
+                            }}
+                            error={mealError !== ''}
+                            helperText={mealError}
+                        >
+                            {NUMBER_SELECT_OPTIONS_0_10.map((option) => {
+                                if (
+                                    parseInt(option.value) <=
+                                    parseInt(attendance)
+                                ) {
+                                    return (
+                                        <MenuItem
+                                            key={option.value}
+                                            value={option.value}
+                                        >
+                                            {option.value}
+                                        </MenuItem>
                                     );
-                                }}
-                                error={attendanceError !== ''}
-                                helperText={attendanceError}
-                            >
-                                {NUMBER_SELECT_OPTIONS_0_10.map((option) => (
-                                    <MenuItem
-                                        key={option.value}
-                                        value={option.value}
-                                    >
-                                        {option.value}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                        </Stack>
-                        <Stack>
-                            <TextField
-                                label='Meal'
-                                type='number'
-                                size='small'
-                                margin='dense'
-                                inputProps={{ max: 2, min: 0 }}
-                                variant='outlined'
-                                style={{ width: '80px', marginRight: '16px' }}
-                                value={meal}
-                                select
-                                inputlabelprops={{
-                                    shrink: true,
-                                    style: { paddingBottom: '1px' },
-                                }}
-                                inputprops={{
-                                    shrink: true,
-                                    style: {
-                                        padding: '5px',
-                                        marginLeft: '5px',
-                                    },
-                                }}
-                                onChange={(e) => {
-                                    setMeal(e.target.value);
-                                    setMealError(validateMeal(e.target.value));
-                                }}
-                                error={mealError !== ''}
-                                helperText={mealError}
-                            >
-                                {NUMBER_SELECT_OPTIONS_0_10.map((option) => {
-                                    if (
-                                        parseInt(option.value) <=
-                                        parseInt(attendance)
-                                    ) {
-                                        return (
-                                            <MenuItem
-                                                key={option.value}
-                                                value={option.value}
-                                            >
-                                                {option.value}
-                                            </MenuItem>
-                                        );
-                                    }
-                                })}
-                            </TextField>
-                        </Stack>
-                    </Stack>
-                    <Button
-                        variant='contained'
-                        color='primary'
-                        disabled={hasErrors}
-                        className={classes.button}
-                        onClick={handleSubmit}
-                    >
-                        Submit
-                    </Button>
+                                }
+                            })}
+                        </TextField>
+                    </div>
+                    <div className={classes.registrationComponentWrapper}>
+                        <Button
+                            variant='contained'
+                            color='primary'
+                            disabled={hasErrors}
+                            className={classes.button}
+                            onClick={handleSubmit}
+                        >
+                            Submit
+                        </Button>
+                        <Button
+                            variant='contained'
+                            sx={{
+                                backgroundColor: 'yellow',
+                                color: 'black',
+                                marginLeft: '10px',
+                            }}
+                            className={classes.button}
+                            onClick={() => history.goBack()}
+                        >
+                            Cancel
+                        </Button>
+                    </div>
                 </CardContent>
             </Card>
             <ModalWrapper isOpened={isContactChangeModalVisible}>

@@ -169,11 +169,13 @@ const UserProfile = ({
             {/* {theRegistration ? (
                 <EventDetails theRally={theRegistration} />
             ) : null} */}
-            {theRegistration?.id ? (
-                <>
-                    <Registrar registration={theRegistration} />
-                </>
-            ) : null}
+            <div style={{ marginTop: '10px' }}>
+                {theRegistration?.id ? (
+                    <>
+                        <Registrar registration={theRegistration} />
+                    </>
+                ) : null}
+            </div>
             <MainFooter />
         </>
     );

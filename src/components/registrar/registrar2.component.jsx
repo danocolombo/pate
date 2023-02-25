@@ -119,27 +119,10 @@ function Registrar({
             ) {
                 setIsProfileNotificationModalVisible(true);
             }
-            if (registration) {
-                // setREG(registration);
-                // setFirstName(registration.attendeeFirstName);
-                // setLastName(registration.attendeeLastName);
-                // setStreet(registration.attendeeStreet);
-                // setCity(registration.attendeeCity);
-                // setStateProv(registration.attendeeStateProv);
-                // setPostalCode(registration.attendeePostalCode);
-                // setEmail(registration.attendeeEmail);
-                // setPhone(registration.attendeePhone);
-                // setMembershipName(registration.membershipName);
-                // setMembershipCity(registration.membershipCity);
-                // setMembershipStateProv(registration.membershipStateProv);
-            }
         }
         confirmProfile();
     }, []);
 
-    useEffect(() => {
-        setFirstName(registration?.attendeeFirstName);
-    }, [registration]);
     const validateFirstName = (firstName) => {
         if (!firstName) {
             return 'First name is required';
@@ -343,35 +326,7 @@ function Registrar({
         }
         return inputValues;
     };
-    // const createNewRegistration = async (registrationRequest) => {
-    //     try {
-    //         const createRegistrationResults = await API.graphql({
-    //             query: mutations.createRegistration,
-    //             variables: { input: registrationRequest },
-    //         });
-    //         if (createRegistrationResults.data?.createRegistration != null) {
-    //             // need to get the event object from pate and save to registration and save
-    //             // to currentUser Redux.
-    //             registrationRequest.id =
-    //                 createRegistrationResults?.data?.createRegistration?.id;
-    //             registrationRequest.event = pateSystem.rally;
-    //             addRegistrationToCurrentUser(registrationRequest);
-    //             return { statusCode: 200, data: 'createRegistration: SUCCESS' };
-    //         } else {
-    //             return {
-    //                 statusCode: 400,
-    //                 data: 'createRegistration: ERROR',
-    //                 errorMessage: createRegistrationResults?.errors?.message,
-    //             };
-    //         }
-    //     } catch (err) {
-    //         return {
-    //             statusCode: 400,
-    //             data: 'createRegistration: ERROR',
-    //             error: err,
-    //         };
-    //     }
-    // };
+
     const handleSubmit = async () => {
         // Handle the submission here with the attendance and meal values
         setSpinner();
@@ -514,12 +469,12 @@ function Registrar({
                                         style: { paddingBottom: '0px' },
                                     }}
                                     value={firstName}
-                                    // onChange={(e) => {
-                                    //     setFirstName(e.target.value);
-                                    //     setFirstNameError(
-                                    //         validateFirstName(e.target.value)
-                                    //     );
-                                    // }}
+                                    onChange={(e) => {
+                                        setFirstName(e.target.value);
+                                        setFirstNameError(
+                                            validateFirstName(e.target.value)
+                                        );
+                                    }}
                                     error={firstNameError !== ''}
                                     helperText={firstNameError}
                                 />
@@ -1022,7 +977,6 @@ function Registrar({
                         </Button>
                         <Button
                             variant='contained'
-                            color='primary'
                             disabled={hasErrors}
                             className={classes.button}
                             sx={{
@@ -1030,7 +984,7 @@ function Registrar({
                                 color: 'black',
                                 marginLeft: '10px',
                             }}
-                            onClick={handleSubmit}
+                            onClick={() => history.goBack()}
                         >
                             Cancel
                         </Button>
