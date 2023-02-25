@@ -10,6 +10,7 @@ import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import { removeRegistration } from '../../redux/registrations/registrations.actions';
 import { removeRegistrationFromCurrentUser } from '../../redux/user/user.actions';
 import EventListDate from '../ui/dates/serve-date.component';
+import '@fortawesome/fontawesome-free/css/all.css';
 import './userregistrationsoverview.styles.scss';
 import { printObject } from '../../utils/helpers';
 import { deleteRegistrationProvider } from '../../providers/registrations.provider';
@@ -99,7 +100,7 @@ const UserRegistrationOverview = ({
                                         <StyledLink
                                             style={{
                                                 textDecoration: 'none',
-                                                color: 'blue',
+                                                color: 'black',
                                             }}
                                             to={`/editregistration/${reg.id}`}
                                         >
@@ -128,7 +129,14 @@ const UserRegistrationOverview = ({
                                                 }}
                                                 to='#'
                                             >
-                                                <IoTrash />
+                                                <i
+                                                    className='fas fa-trash-alt'
+                                                    style={{
+                                                        fontSize: '24px',
+                                                        color: 'red',
+                                                        marginRight: '5px',
+                                                    }}
+                                                ></i>
                                             </Link>
                                         </div>
                                     </div>

@@ -34,6 +34,7 @@ class Events extends React.Component {
 
     async componentDidMount() {
         const tday = await getToday();
+
         const variables = {
             id: 'fffedde6-5d5a-46f0-a3ac-882a350edc64',
             eq: 'approved',

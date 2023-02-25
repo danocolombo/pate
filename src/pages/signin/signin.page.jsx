@@ -48,6 +48,7 @@ const SignIn = ({
     useEffect(() => {}, [pateSystem.showSpinner]);
     const signIn = async () => {
         //display spinner
+        printObject('REACT_APP_PATE_API', process.env.REACT_APP_PATE_API);
         let alertPayload = {};
         setSpinner();
         try {

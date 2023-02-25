@@ -1,7 +1,8 @@
 import { useState, useEffect, createRef } from 'react';
 import { connect } from 'react-redux';
+import { compose } from 'redux';
 import { useHistory } from 'react-router-dom';
-
+import { withRouter } from 'react-router';
 import {
     Card,
     CardContent,
@@ -25,7 +26,10 @@ import { API, graphqlOperation } from 'aws-amplify';
 import PhoneInput from 'react-phone-input-2';
 import * as queries from '../../pateGraphql/queries';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
-import { updateCurrentUser } from '../../redux/user/user.actions';
+import {
+    updateCurrentUser,
+    addRegistrationToCurrentUser,
+} from '../../redux/user/user.actions';
 import useStyles from './Registration.styles';
 import ModalWrapper from '../../components/modals/wrapper.modal';
 import ContactChangedModal from '../../components/modals/registration/registration-contact-changed.modal';
@@ -45,6 +49,7 @@ function RegistrationOptions({
     currentUser,
     setSpinner,
     updateCurrentUser,
+    addRegistrationToCurrentUser,
     clearSpinner,
     pateSystem,
 }) {
@@ -439,11 +444,9 @@ function RegistrationOptions({
                 updatedMealNumbersResults
             );
         }
+        regRequest.event = pateSystem.rally;
+        addRegistrationToCurrentUser(regRequest);
 
-        if (regRequest.attendeeId !== '0') {
-            console.log('ROC:360==> UPDATE REDUX');
-            printObject('regRequest:\n', regRequest);
-        }
         console.log('ROC:363==> send email');
 
         setIsRegistrationCompleteModalVisible(true);
@@ -1099,14 +1102,22 @@ const mapDispatchToProps = (dispatch) => ({
     updateCurrentUser: (user) => dispatch(updateCurrentUser(user)),
     setSpinner: () => dispatch(setSpinner()),
     clearSpinner: () => dispatch(clearSpinner()),
+    addRegistrationToCurrentUser: (registration) =>
+        dispatch(addRegistrationToCurrentUser(registration)),
 });
 const mapStateToProps = (state) => ({
     currentUser: state.user.currentUser,
     pateSystem: state.pate,
 });
-export default connect(mapStateToProps, {
-    setSpinner,
-    clearSpinner,
-    updateCurrentUser,
-    mapDispatchToProps,
-})(RegistrationOptions);
+
+// export default connect(mapStateToProps, {
+//     setSpinner,
+//     clearSpinner,
+//     updateCurrentUser,
+//     mapDispatchToProps,
+// })(RegistrationOptions);
+
+export default compose(
+    withRouter,
+    connect(mapStateToProps, mapDispatchToProps)
+)(RegistrationOptions);

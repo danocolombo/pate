@@ -1,35 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, Stack, Box, Typography, CardContent } from '@mui/material';
 import { alpha } from '@mui/system';
+import { connect } from 'react-redux';
 import StyledLink from '../../components/custom-link/custom-link-yellow.component';
 import './events-marquee.styles.scss';
+import '@fortawesome/fontawesome-free/css/all.css';
 import { printObject, prettyDate } from '../../utils/helpers';
-const EventMarquee3 = ({ event, index }) => {
-    const mo = {
-        '01': 'JAN',
-        '02': 'FEB',
-        '03': 'MAR',
-        '04': 'APR',
-        '05': 'MAY',
-        '06': 'JUN',
-        '07': 'JUL',
-        '08': 'AUG',
-        '09': 'SEP',
-        10: 'OCT',
-        11: 'NOV',
-        12: 'DEC',
-    };
-
-    const month2Display = (d) => {
-        //get the month, the return String
-        let m = d.substring(4, 6);
-        let alpha = mo[m];
-        return alpha;
-    };
-    const day2Display = (d) => {
-        let dom = d.substring(6, 8);
-        return dom;
-    };
+const EventMarquee3 = ({
+    event,
+    index,
+    eventId,
+    currentUser,
+    setSpinner,
+    updateCurrentUser,
+    clearSpinner,
+    pateSystem,
+}) => {
+    const [eventHit, setEventHit] = useState(false);
+    useEffect(() => {
+        //see if the current user is already registred.
+        if (currentUser?.registrations?.items.length > 0) {
+            console.log('we have registrations');
+            const hit = currentUser.registrations.items.find(
+                (r) => r.event.id === event.id
+            );
+            if (hit) {
+                setEventHit(true);
+            }
+        } else {
+            console.log('no registrations');
+        }
+    }, []);
     return (
         <Card
             key={event.eventDate}
@@ -76,6 +77,33 @@ const EventMarquee3 = ({ event, index }) => {
                         {event.location.postalCode}
                     </Typography>
                 </Stack>
+                {eventHit && (
+                    <Stack
+                        direction='column'
+                        alignItems='flex-end'
+                        justifyContent='flex-end'
+                    >
+                        <div
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                fontSize: '14px',
+                                fontWeight: '500',
+                                color: 'green',
+                            }}
+                        >
+                            REGISTERED
+                            <i
+                                className='fas fa-check-circle'
+                                style={{
+                                    fontSize: '24px',
+                                    color: 'green',
+                                    marginLeft: '6px',
+                                }}
+                            ></i>
+                        </div>
+                    </Stack>
+                )}
             </CardContent>
             <Stack
                 direction='row'
@@ -98,4 +126,8 @@ const EventMarquee3 = ({ event, index }) => {
     );
 };
 
-export default EventMarquee3;
+const mapStateToProps = (state) => ({
+    currentUser: state.user.currentUser,
+    pateSystem: state.pate,
+});
+export default connect(mapStateToProps)(EventMarquee3);
