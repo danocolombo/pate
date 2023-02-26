@@ -8,7 +8,23 @@ import * as queries from '../../pateGraphql/queries';
 import { useHistory } from 'react-router-dom';
 import { compose } from 'redux';
 import { withRouter } from 'react-router';
-import { Stack, TextField, MenuItem } from '@mui/material';
+import {
+    Stack,
+    TextField,
+    MenuItem,
+    Select,
+    FormControl,
+    Popper,
+    Typography,
+    TextareaAutosize,
+    Box,
+    Button,
+    IconButton,
+    Icon,
+    InputLabel,
+    InputAdornment,
+} from '@mui/material';
+import { MdAnnouncement } from 'react-icons/md';
 import PhoneInput from 'react-phone-input-2';
 import SelectStateProv from '../../components/state-prov/select-stateProv.component';
 import Header from '../../components/header/header.component';
@@ -16,6 +32,8 @@ import { MainFooter } from '../../components/footers/main-footer';
 import Modal from '../../components/modals/wrapper.modal';
 import ConfirmDelete from '../../components/modals/serve-event/serve-event-confirm-delete.modal';
 import Spinner from '../../components/spinner/Spinner';
+import NumberSpinner from '../../components/ui/numbers/number-spinner.component';
+import EventStatusSelect from '../../components/serve/EventStatusSelect.component';
 import RegistrationItem from '../../components/registration-serve-list-item/registrationServeListItem.component';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import { loadRally } from '../../redux/pate/pate.actions';
@@ -70,6 +88,8 @@ const Serve = ({
     const [postalCode, setPostalCode] = useState('');
     const [postalCodeError, setPostalCodeError] = useState('');
     const [eventDate, setEventDate] = useState('');
+    const [plannedCount, setPlannedCount] = useState('');
+    const [actualCount, setActualCount] = useState('');
     const [eventStart, setEventStart] = useState('');
     const [eventEnd, setEventEnd] = useState('');
     const [graphicFileName, setGraphicFileName] = useState('');
@@ -84,6 +104,7 @@ const Serve = ({
     const [contactEmail, setContactEmail] = useState('');
     const [contactEmailError, setContactEmailError] = useState('');
     const [contactPhone, setContactPhone] = useState('');
+    const [contactPhoneError, setContactPhoneError] = useState('');
     const [eventStatus, setEventStatus] = useState('');
     const [eventMessage, setEventMessage] = useState('');
     const [repName, setRepName] = useState('');
@@ -98,6 +119,7 @@ const Serve = ({
     const [attendeeCount, setAttendeeCount] = useState(0);
     const [registrationCount, setRegistrationCount] = useState(0);
     const [displayRegistrations, setDisplayRegistrations] = useState([]);
+    const [anchorEl, setAnchorEl] = useState(null);
     const history = useHistory();
 
     //const util = require('util');
@@ -687,6 +709,33 @@ const Serve = ({
         }
         return '';
     };
+    const validateContactPhone = (contactPhone) => {
+        const regex = /\d{10}/;
+        if (regex.test(contactPhone) || contactPhone.length === 0) {
+            return '';
+        }
+        return true;
+    };
+    const validateContactEmail = (contactEmail) => {
+        if (!contactEmail) {
+            return 'Email is required';
+        }
+        const emailRegex = /^[\w.%+-]+@[\w.-]+\.[A-Za-z]{2,}$/;
+        if (!emailRegex.test(contactEmail)) {
+            return 'Email address not supported';
+        }
+
+        return '';
+    };
+    const handleValueChange = (newValue) => {
+        setMealsServed(newValue);
+    };
+    function handleEventStatusChange(event) {
+        setEventStatus(event.target.value);
+    }
+    const handleMealCostChange = (event) => {
+        setMealCost(event.target.value);
+    };
     const handleSubmitClick = async (event) => {
         event.preventDefault();
         setSpinner();
@@ -961,6 +1010,10 @@ const Serve = ({
         return;
     };
     printObject('rallyEvent:\n', rallyEvent);
+    const hasErrors =
+        churchNameError !== '' ||
+        contactFirstNameError !== '' ||
+        contactLastNameError !== '';
     return pateSystem.showSpinner ? (
         <Spinner />
     ) : (
@@ -970,361 +1023,20 @@ const Serve = ({
                 <div className='serveevent-page__form-box'>
                     <div className='serveevent-page__header'>EVENT</div>
                     <div className='serveevent-page__data-input-box'>
+                        <Stack>
+                            <EventStatusSelect
+                                value={eventStatus}
+                                onChange={handleEventStatusChange}
+                            />
+                        </Stack>
                         <div className='serveevent-page__section-header'>
                             Location
                         </div>
-                        <Stack>
-                            <TextField
-                                label='Church Name'
-                                variant='outlined'
-                                size='small'
-                                margin='dense'
-                                fullWidth
-                                className={classes.input}
-                                InputProps={{
-                                    style: {
-                                        padding: '0px',
-                                        margin: '0px',
-                                        fontWeight: '200',
-                                        fontSize: '1.2rem',
-                                    },
-                                    sx: {
-                                        bgcolor: '#f5f5f5', // sets the fill color
-                                        borderRadius: 1, // sets the border radius
-                                    },
-                                }}
-                                inputlabelprops={{
-                                    shrink: true,
-                                    style: { paddingBottom: '0px' },
-                                }}
-                                value={churchName}
-                                onChange={(e) => {
-                                    const capitalizedStr = e.target.value
-                                        .split(' ')
-                                        .map(
-                                            (word) =>
-                                                word.charAt(0).toUpperCase() +
-                                                word.slice(1).toLowerCase()
-                                        )
-                                        .join(' ');
-                                    setChurchName(capitalizedStr);
-                                    setChurchNameError(
-                                        validateChurchName(e.target.value)
-                                    );
-                                }}
-                                error={churchNameError !== ''}
-                                helperText={churchNameError}
+                        {/* <div className='serveevent-page__grid-data-box'>
+                            <EventStatusSelect
+                                value={eventStatus}
+                                onChange={handleEventStatusChange}
                             />
-                        </Stack>
-                        <Stack>
-                            <TextField
-                                label='Street'
-                                variant='outlined'
-                                size='small'
-                                margin='dense'
-                                fullWidth
-                                InputProps={{
-                                    style: {
-                                        padding: '0px',
-                                        margin: '0px',
-                                        fontWeight: '200',
-                                        fontSize: '1.2rem',
-                                    },
-                                    sx: {
-                                        bgcolor: '#f5f5f5', // sets the fill color
-                                        borderRadius: 1, // sets the border radius
-                                    },
-                                }}
-                                InputLabelProps={{
-                                    shrink: true,
-                                    style: { paddingBottom: '0px' },
-                                }}
-                                className={classes.input}
-                                value={street}
-                                onChange={(e) => {
-                                    setStreet(e.target.value);
-                                    setStreetError(
-                                        validateStreet(e.target.value)
-                                    );
-                                }}
-                                error={streetError !== ''}
-                                helperText={streetError}
-                            />
-                        </Stack>
-                        <Stack direction='row' spacing={1}>
-                            <TextField
-                                label='City'
-                                variant='outlined'
-                                size='small'
-                                margin='dense'
-                                fullWidth
-                                InputProps={{
-                                    style: {
-                                        padding: '0px',
-                                        margin: '0px',
-                                        fontWeight: '200',
-                                        fontSize: '1.2rem',
-                                    },
-                                    sx: {
-                                        bgcolor: '#f5f5f5', // sets the fill color
-                                        borderRadius: 1, // sets the border radius
-                                    },
-                                }}
-                                InputLabelProps={{
-                                    shrink: true,
-                                    style: { paddingBottom: '0px' },
-                                }}
-                                className={classes.input}
-                                value={city}
-                                onChange={(e) => {
-                                    setCity(e.target.value);
-                                    setCityError(validateCity(e.target.value));
-                                }}
-                                error={cityError !== ''}
-                                helperText={cityError}
-                            />
-                        </Stack>
-                        <Stack direction='row' spacing={1}>
-                            <Stack>
-                                <TextField
-                                    label='State/Providence'
-                                    size='small'
-                                    margin='dense'
-                                    select
-                                    value={stateProv}
-                                    onChange={(event) =>
-                                        setStateProv(event.target.value)
-                                    }
-                                >
-                                    {US_STATES.map((state) => (
-                                        <MenuItem
-                                            key={state.value}
-                                            value={state.value}
-                                        >
-                                            {state.label}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Stack>
-                            <Stack direction='row' spacing={1}>
-                                <TextField
-                                    label='Postal Code'
-                                    variant='outlined'
-                                    size='small'
-                                    margin='dense'
-                                    maxLength={5}
-                                    className={classes.input}
-                                    value={postalCode}
-                                    InputProps={{
-                                        style: {
-                                            padding: '0px',
-                                            margin: '0px',
-                                            fontWeight: '200',
-                                            fontSize: '1.2rem',
-                                        },
-                                        sx: {
-                                            bgcolor: '#f5f5f5', // sets the fill color
-                                            borderRadius: 1, // sets the border radius
-                                        },
-                                    }}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                        style: {
-                                            paddingBottom: '0px',
-                                            fontWeight: 'bold',
-                                        },
-                                    }}
-                                    onChange={(e) => {
-                                        setPostalCode(
-                                            e.target.value.substring(0, 5)
-                                        );
-                                        setPostalCodeError(
-                                            validatePostalCode(
-                                                e.target.value.substring(0, 5)
-                                            )
-                                        );
-                                    }}
-                                    error={postalCodeError !== ''}
-                                    helperText={postalCodeError}
-                                />
-                            </Stack>
-                        </Stack>
-
-                        <div className='serveevent-page__section-header'>
-                            Church Contact
-                        </div>
-                        <Stack>
-                            <TextField
-                                label='First Name'
-                                variant='outlined'
-                                required
-                                size='small'
-                                margin='dense'
-                                className={classes.input}
-                                InputProps={{
-                                    style: {
-                                        padding: '0px',
-                                        margin: '0px',
-                                        fontWeight: '200',
-                                        fontSize: '1.2rem',
-                                    },
-                                    sx: {
-                                        bgcolor: '#f5f5f5', // sets the fill color
-                                        borderRadius: 1, // sets the border radius
-                                    },
-                                }}
-                                InputLabelProps={{
-                                    shrink: true,
-                                    style: { paddingBottom: '0px' },
-                                }}
-                                value={contactFirstName}
-                                onChange={(e) => {
-                                    setContactFirstName(e.target.value);
-                                    setContactFirstNameError(
-                                        validateContactFirstName(e.target.value)
-                                    );
-                                }}
-                                error={contactFirstNameError !== ''}
-                                helperText={contactFirstNameError}
-                            />
-                        </Stack>
-                        <Stack>
-                            <TextField
-                                label='Last Name'
-                                variant='outlined'
-                                required
-                                size='small'
-                                margin='dense'
-                                className={classes.input}
-                                InputProps={{
-                                    style: {
-                                        padding: '0px',
-                                        margin: '0px',
-                                        fontWeight: '200',
-                                        fontSize: '1.2rem',
-                                    },
-                                    sx: {
-                                        bgcolor: '#f5f5f5', // sets the fill color
-                                        borderRadius: 1, // sets the border radius
-                                    },
-                                }}
-                                InputLabelProps={{
-                                    shrink: true,
-                                    style: { paddingBottom: '0px' },
-                                }}
-                                value={contactLastName}
-                                onChange={(e) => {
-                                    setContactLastName(e.target.value);
-                                    setContactLastNameError(
-                                        validateContactLastName(e.target.value)
-                                    );
-                                }}
-                                error={contactLastNameError !== ''}
-                                helperText={contactLastNameError}
-                            />
-                        </Stack>
-
-                        <div className='serveevent-page__data-row-phone'>
-                            <PhoneInput
-                                onlyCountries={['us']}
-                                country='us'
-                                disableCountryCode
-                                disableDropdown
-                                value={contactPhone}
-                                onChange={(contactPhone) =>
-                                    setContactPhone(contactPhone)
-                                }
-                                inputProps={{
-                                    padding: 0,
-                                    name: 'Cell',
-                                    margin: 0,
-                                    required: true,
-                                    placeholder: '(xxx) xxx-xxxx',
-                                }}
-                            />
-                        </div>
-                        <div className='serveevent-page__grid-data-box'>
-                            <div className='serveevent-page__grid-label'>
-                                Email:
-                            </div>
-                            <div className='serveevent-page__grid-control'>
-                                <input
-                                    type='text'
-                                    id='contactEmail'
-                                    name='contactEmail'
-                                    onChange={handleChange}
-                                    value={contactEmail}
-                                    required
-                                />
-                            </div>
-                        </div>
-                        <div className='serveevent-page__section-header'>
-                            Logistics
-                        </div>
-                        <div className='serveevent-page__grid-data-box'>
-                            <div className='serveevent-page__grid-label'>
-                                Date:
-                            </div>
-                            <div className='serveevent-page__grid-control'>
-                                <input
-                                    type='date'
-                                    id='rallyDate'
-                                    name='rallyDate'
-                                    onChange={handleChange}
-                                    value={eventDate}
-                                    required
-                                />
-                            </div>
-                        </div>
-                        <div className='serveevent-page__grid-data-box'>
-                            <div className='serveevent-page__grid-label'>
-                                Start Time:
-                            </div>
-                            <div className='serveevent-page__grid-control'>
-                                <input
-                                    type='time'
-                                    id='eventStart'
-                                    name='eventStart'
-                                    onChange={handleChange}
-                                    value={eventStart}
-                                    required
-                                />
-                            </div>
-                        </div>
-                        <div className='serveevent-page__grid-data-box'>
-                            <div className='serveevent-page__grid-label'>
-                                End Time:
-                            </div>
-                            <div className='serveevent-page__grid-control'>
-                                <input
-                                    type='time'
-                                    id='eventEnd'
-                                    name='eventEnd'
-                                    onChange={handleChange}
-                                    value={eventEnd}
-                                    required
-                                />
-                            </div>
-                        </div>
-                        <div className='serveevent-page__grid-data-box'>
-                            <div className='serveevent-page__grid-label'>
-                                Message:
-                            </div>
-                            <div className='serveevent-page__grid-control'>
-                                <textarea
-                                    rows='4'
-                                    cols='18'
-                                    name='eventMessage'
-                                    id='eventMessage'
-                                    onChange={handleChange}
-                                    value={eventMessage}
-                                ></textarea>
-                            </div>
-                        </div>
-                        <div className='serveevent-page__grid-data-box'>
-                            <div className='serveevent-page__grid-label'>
-                                Approved:
-                            </div>
                             <div className='serveevent-page__grid-control'>
                                 {currentUser?.role === 'lead' ||
                                 currentUser?.role === 'director' ? (
@@ -1362,15 +1074,534 @@ const Serve = ({
                                     </span>
                                 )}
                             </div>
+                        </div> */}
+                        <Box
+                            sx={{
+                                border: '1px solid black',
+                                borderRadius: '5px',
+                                padding: '5px',
+                                marginX: '5px',
+                                maxWidth: 'calc(100%)',
+                                minWidth: 'calc(90%)',
+                                margin: '0 auto',
+                            }}
+                        >
+                            <Stack>
+                                <TextField
+                                    label='Church Name'
+                                    variant='outlined'
+                                    size='small'
+                                    margin='dense'
+                                    fullWidth
+                                    className={classes.input}
+                                    InputProps={{
+                                        style: {
+                                            padding: '0px',
+                                            margin: '0px',
+                                            fontWeight: '200',
+                                            fontSize: '1.2rem',
+                                        },
+                                        sx: {
+                                            bgcolor: '#f5f5f5', // sets the fill color
+                                            borderRadius: 1, // sets the border radius
+                                        },
+                                    }}
+                                    inputlabelprops={{
+                                        shrink: true,
+                                        style: { paddingBottom: '0px' },
+                                    }}
+                                    value={churchName}
+                                    onChange={(e) => {
+                                        const capitalizedStr = e.target.value
+                                            .split(' ')
+                                            .map(
+                                                (word) =>
+                                                    word
+                                                        .charAt(0)
+                                                        .toUpperCase() +
+                                                    word.slice(1).toLowerCase()
+                                            )
+                                            .join(' ');
+                                        setChurchName(capitalizedStr);
+                                        setChurchNameError(
+                                            validateChurchName(e.target.value)
+                                        );
+                                    }}
+                                    error={churchNameError !== ''}
+                                    helperText={churchNameError}
+                                />
+                            </Stack>
+                            <Stack>
+                                <TextField
+                                    label='Street'
+                                    variant='outlined'
+                                    size='small'
+                                    margin='dense'
+                                    fullWidth
+                                    InputProps={{
+                                        style: {
+                                            padding: '0px',
+                                            margin: '0px',
+                                            fontWeight: '200',
+                                            fontSize: '1.2rem',
+                                        },
+                                        sx: {
+                                            bgcolor: '#f5f5f5', // sets the fill color
+                                            borderRadius: 1, // sets the border radius
+                                        },
+                                    }}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                        style: { paddingBottom: '0px' },
+                                    }}
+                                    className={classes.input}
+                                    value={street}
+                                    onChange={(e) => {
+                                        setStreet(e.target.value);
+                                        setStreetError(
+                                            validateStreet(e.target.value)
+                                        );
+                                    }}
+                                    error={streetError !== ''}
+                                    helperText={streetError}
+                                />
+                            </Stack>
+                            <Stack direction='row' spacing={1}>
+                                <TextField
+                                    label='City'
+                                    variant='outlined'
+                                    size='small'
+                                    margin='dense'
+                                    fullWidth
+                                    InputProps={{
+                                        style: {
+                                            padding: '0px',
+                                            margin: '0px',
+                                            fontWeight: '200',
+                                            fontSize: '1.2rem',
+                                        },
+                                        sx: {
+                                            bgcolor: '#f5f5f5', // sets the fill color
+                                            borderRadius: 1, // sets the border radius
+                                        },
+                                    }}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                        style: { paddingBottom: '0px' },
+                                    }}
+                                    className={classes.input}
+                                    value={city}
+                                    onChange={(e) => {
+                                        setCity(e.target.value);
+                                        setCityError(
+                                            validateCity(e.target.value)
+                                        );
+                                    }}
+                                    error={cityError !== ''}
+                                    helperText={cityError}
+                                />
+                            </Stack>
+                            <Stack direction='row' spacing={1}>
+                                <Stack>
+                                    <TextField
+                                        label='State/Providence'
+                                        size='small'
+                                        margin='dense'
+                                        select
+                                        value={stateProv}
+                                        onChange={(event) =>
+                                            setStateProv(event.target.value)
+                                        }
+                                    >
+                                        {US_STATES.map((state) => (
+                                            <MenuItem
+                                                key={state.value}
+                                                value={state.value}
+                                            >
+                                                {state.label}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                                </Stack>
+                                <Stack direction='row' spacing={1}>
+                                    <TextField
+                                        label='Postal Code'
+                                        variant='outlined'
+                                        size='small'
+                                        margin='dense'
+                                        maxLength={5}
+                                        className={classes.input}
+                                        value={postalCode}
+                                        InputProps={{
+                                            style: {
+                                                padding: '0px',
+                                                margin: '0px',
+                                                fontWeight: '200',
+                                                fontSize: '1.2rem',
+                                            },
+                                            sx: {
+                                                bgcolor: '#f5f5f5', // sets the fill color
+                                                borderRadius: 1, // sets the border radius
+                                            },
+                                        }}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                            style: {
+                                                paddingBottom: '0px',
+                                                fontWeight: 'bold',
+                                            },
+                                        }}
+                                        onChange={(e) => {
+                                            setPostalCode(
+                                                e.target.value.substring(0, 5)
+                                            );
+                                            setPostalCodeError(
+                                                validatePostalCode(
+                                                    e.target.value.substring(
+                                                        0,
+                                                        5
+                                                    )
+                                                )
+                                            );
+                                        }}
+                                        error={postalCodeError !== ''}
+                                        helperText={postalCodeError}
+                                    />
+                                </Stack>
+                            </Stack>
+                        </Box>
+                        <div className='serveevent-page__section-header'>
+                            Church Contact
                         </div>
+                        <Box
+                            sx={{
+                                border: '1px solid black',
+                                borderRadius: '5px',
+                                padding: '5px',
+                                marginX: '5px',
+                                maxWidth: 'calc(100%)',
+                                minWidth: 'calc(90%)',
+                                margin: '0 auto',
+                            }}
+                        >
+                            <Stack>
+                                <TextField
+                                    label='First Name'
+                                    variant='outlined'
+                                    required
+                                    size='small'
+                                    margin='dense'
+                                    className={classes.input}
+                                    InputProps={{
+                                        style: {
+                                            padding: '0px',
+                                            margin: '0px',
+                                            fontWeight: '200',
+                                            fontSize: '1.2rem',
+                                        },
+                                        sx: {
+                                            bgcolor: '#f5f5f5', // sets the fill color
+                                            borderRadius: 1, // sets the border radius
+                                        },
+                                    }}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                        style: { paddingBottom: '0px' },
+                                    }}
+                                    value={contactFirstName}
+                                    onChange={(e) => {
+                                        setContactFirstName(e.target.value);
+                                        setContactFirstNameError(
+                                            validateContactFirstName(
+                                                e.target.value
+                                            )
+                                        );
+                                    }}
+                                    error={contactFirstNameError !== ''}
+                                    helperText={contactFirstNameError}
+                                />
+                            </Stack>
+                            <Stack>
+                                <TextField
+                                    label='Last Name'
+                                    variant='outlined'
+                                    required
+                                    size='small'
+                                    margin='dense'
+                                    className={classes.input}
+                                    InputProps={{
+                                        style: {
+                                            padding: '0px',
+                                            margin: '0px',
+                                            fontWeight: '200',
+                                            fontSize: '1.2rem',
+                                        },
+                                        sx: {
+                                            bgcolor: '#f5f5f5', // sets the fill color
+                                            borderRadius: 1, // sets the border radius
+                                        },
+                                    }}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                        style: { paddingBottom: '0px' },
+                                    }}
+                                    value={contactLastName}
+                                    onChange={(e) => {
+                                        setContactLastName(e.target.value);
+                                        setContactLastNameError(
+                                            validateContactLastName(
+                                                e.target.value
+                                            )
+                                        );
+                                    }}
+                                    error={contactLastNameError !== ''}
+                                    helperText={contactLastNameError}
+                                />
+                            </Stack>
+
+                            <Stack
+                                direction='column'
+                                spacing={1}
+                                align='center'
+                                sx={{ marginTop: 1, marginBottom: 1 }}
+                            >
+                                <PhoneInput
+                                    onlyCountries={['us']}
+                                    country='us'
+                                    disableCountryCode
+                                    disableDropdown
+                                    value={contactPhone}
+                                    style={{
+                                        margin: 0,
+                                        padding: 0,
+                                        fontSize: 14,
+                                        color: 'black',
+                                        backgroundColor: '#f5f5f5',
+                                    }}
+                                    onChange={(contactPhone) => {
+                                        setContactPhone(contactPhone);
+                                        setContactPhoneError(
+                                            validateContactPhone(contactPhone)
+                                        );
+                                    }}
+                                    inputStyle={{
+                                        fontSize: '20px',
+                                        color: 'black',
+                                    }}
+                                    inputProps={{
+                                        padding: 0,
+                                        fontSize: 24,
+                                        name: 'Cell',
+                                        margin: 0,
+                                        required: true,
+                                        placeholder: '(xxx) xxx-xxxx',
+                                    }}
+                                />
+                                {contactPhoneError && (
+                                    <span
+                                        style={{
+                                            color: 'red',
+                                            fontSize: 12,
+                                            fontWeight: 'bold',
+                                        }}
+                                    >
+                                        Valid phone required.
+                                    </span>
+                                )}
+                            </Stack>
+                            <Stack direction='row' spacing={1}>
+                                <TextField
+                                    label='Contact Email'
+                                    type='email'
+                                    variant='outlined'
+                                    size='small'
+                                    margin='dense'
+                                    fullWidth
+                                    className={classes.input}
+                                    value={contactEmail}
+                                    InputProps={{
+                                        style: {
+                                            padding: '0px',
+                                            margin: '0px',
+                                            fontWeight: '200',
+                                            fontSize: '1.2rem',
+                                        },
+                                        sx: {
+                                            bgcolor: '#f5f5f5', // sets the fill color
+                                            borderRadius: 1, // sets the border radius
+                                        },
+                                    }}
+                                    inputlabelprops={{
+                                        shrink: true,
+                                        style: { paddingBottom: '5px' },
+                                    }}
+                                    onChange={(e) => {
+                                        setContactEmail(e.target.value);
+                                        setContactEmailError(
+                                            validateContactEmail(e.target.value)
+                                        );
+                                    }}
+                                    error={contactEmailError !== ''}
+                                    helperText={contactEmailError}
+                                />
+                            </Stack>
+                        </Box>
+                        <div className='serveevent-page__section-header'>
+                            Logistics
+                        </div>
+                        <Box
+                            sx={{
+                                border: '1px solid black',
+                                borderRadius: '5px',
+                                padding: '5px',
+                                marginX: '5px',
+                                maxWidth: 'calc(100%)',
+                                minWidth: 'calc(90%)',
+                                margin: '0 auto',
+                            }}
+                        >
+                            <Stack
+                                direction='row'
+                                sx={{
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <div
+                                    style={{
+                                        fontSize: '1.2rem',
+                                        paddingRight: '5px',
+                                    }}
+                                >
+                                    Date:
+                                </div>
+                                <input
+                                    type='date'
+                                    id='rallyDate'
+                                    name='rallyDate'
+                                    onChange={handleChange}
+                                    value={eventDate}
+                                    style={{
+                                        fontSize: '1.2rem',
+                                        maxWidth: '150px',
+                                    }}
+                                    required
+                                />
+                            </Stack>
+                            <Stack
+                                direction='row'
+                                sx={{
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <div
+                                    style={{
+                                        fontSize: '1.2rem',
+                                        paddingRight: '5px',
+                                    }}
+                                >
+                                    Start Time:
+                                </div>
+                                <input
+                                    type='time'
+                                    id='eventStart'
+                                    name='eventStart'
+                                    onChange={handleChange}
+                                    value={eventStart}
+                                    required
+                                    style={{
+                                        fontSize: '1.2rem',
+                                        maxWidth: '150px',
+                                    }}
+                                />
+                            </Stack>
+
+                            <Stack
+                                direction='row'
+                                sx={{
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <div
+                                    style={{
+                                        fontSize: '1.2rem',
+                                        paddingRight: '5px',
+                                    }}
+                                >
+                                    End Time:
+                                </div>
+                                <input
+                                    type='time'
+                                    id='eventEnd'
+                                    name='eventEnd'
+                                    onChange={handleChange}
+                                    value={eventEnd}
+                                    required
+                                    style={{
+                                        fontSize: '1.2rem',
+                                        maxWidth: '150px',
+                                    }}
+                                />
+                            </Stack>
+                            <Stack
+                                direction='column'
+                                alignItems='center'
+                                sx={{ marginTop: '5px' }}
+                            >
+                                <label htmlFor='event-message'>
+                                    Event Message
+                                </label>
+                                <TextareaAutosize
+                                    id='event-message'
+                                    aria-label='Event Message'
+                                    placeholder=''
+                                    minRows={2}
+                                    value={eventMessage}
+                                    onChange={(event) =>
+                                        setEventMessage(event.target.value)
+                                    }
+                                    style={{
+                                        width: '90%',
+                                        backgroundColor: '#f5f5f5',
+                                        padding: '10px',
+                                        margin: '5px',
+                                        fontWeight: '200',
+                                        fontSize: '1.2rem',
+                                    }}
+                                />
+                            </Stack>
+                        </Box>
                         <div className='serveevent-page__section-header'>
                             Meal Details
                         </div>
-                        <div className='serveevent-page__grid-data-box'>
-                            <div className='serveevent-page__grid-label'>
-                                Start Time:
-                            </div>
-                            <div className='serveevent-page__grid-control'>
+                        <Box
+                            sx={{
+                                border: '1px solid black',
+                                borderRadius: '5px',
+                                padding: '5px',
+                                marginX: '5px',
+                                maxWidth: 'calc(100%)',
+                                minWidth: 'calc(90%)',
+                                margin: '0 auto',
+                            }}
+                        >
+                            <Stack
+                                direction='row'
+                                sx={{
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <div
+                                    style={{
+                                        fontSize: '1.2rem',
+                                        paddingRight: '5px',
+                                    }}
+                                >
+                                    Meal Time:
+                                </div>
                                 <input
                                     type='time'
                                     id='mealTime'
@@ -1378,87 +1609,184 @@ const Serve = ({
                                     onChange={handleChange}
                                     value={mealTime}
                                     required
+                                    style={{
+                                        fontSize: '1.2rem',
+                                        maxWidth: '150px',
+                                    }}
                                 />
-                            </div>
-                        </div>
-                        <div className='serveevent-page__grid-data-box'>
-                            <div className='serveevent-page__grid-label'>
-                                Cost:
-                            </div>
-                            <div className='serveevent-page__grid-control'>
-                                <input
-                                    type='text'
-                                    id='mealCost'
-                                    name='mealCost'
-                                    onChange={handleChange}
+                            </Stack>
+                            <Stack
+                                direction='row'
+                                sx={{
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    marginTop: '10px',
+                                }}
+                            >
+                                <TextField
+                                    label='Cost'
                                     value={mealCost}
-                                    required
-                                />
-                            </div>
-                        </div>
-                        <div className='serveevent-page__grid-data-box'>
-                            <div className='serveevent-page__grid-label'>
-                                Planned:
-                            </div>
-                            <div className='serveevent-page__grid-control'>
-                                <input
+                                    onChange={handleMealCostChange}
                                     type='number'
-                                    id='mealCount'
-                                    name='mealCount'
-                                    onChange={handleChange}
+                                    size='small'
+                                    margin='dense'
+                                    step='0.01'
+                                    sx={{
+                                        maxWidth: '100px',
+                                        marginLeft: '10px',
+                                        alignItems: 'center',
+                                        backgroundColor: '#f5f5f5',
+                                        justifyContent: 'center',
+                                        '& input': {
+                                            textAlign: 'center',
+                                        },
+                                    }}
+                                    InputLabelProps={{
+                                        sx: {
+                                            fontSize: '1.2rem',
+                                            padding: '0px',
+                                            margin: '0px',
+                                            '&.Mui-focused': {
+                                                fontSize: '1.2rem',
+                                                color: 'green', // You can change this to any color you like
+                                            },
+                                        },
+                                    }}
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position='start'>
+                                                $
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
+                            </Stack>
+                            <Stack
+                                direction='row'
+                                sx={{
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    marginTop: '2px',
+                                }}
+                            >
+                                <TextField
+                                    label='RSVPs'
                                     value={mealCount}
-                                    readOnly
-                                    required
-                                />
-                            </div>
-                        </div>
-                        <div className='serveevent-page__grid-data-box'>
-                            <div className='serveevent-page__grid-label'>
-                                Served:
-                            </div>
-                            <div className='serveevent-page__grid-control'>
-                                <input
                                     type='number'
-                                    id='mealsServed'
-                                    name='mealsServed'
-                                    onChange={handleChange}
-                                    value={mealsServed}
-                                    required
+                                    size='small'
+                                    margin='dense'
+                                    step='1'
+                                    sx={{
+                                        maxWidth: '120px',
+                                        marginLeft: '10px',
+                                        alignItems: 'center',
+                                        backgroundColor: '#f5f5f5',
+                                        justifyContent: 'center',
+                                        '& input': {
+                                            textAlign: 'center',
+                                        },
+                                    }}
+                                    InputLabelProps={{
+                                        sx: {
+                                            fontSize: '1.2rem',
+                                            padding: '0px',
+                                            margin: '0px',
+                                        },
+                                    }}
                                 />
-                            </div>
-                        </div>
-                        <div className='serveevent-page__grid-data-box'>
-                            <div className='serveevent-page__grid-label'>
-                                Message:
-                            </div>
-                            <div className='serveevent-page__grid-control'>
-                                <textarea
-                                    rows='4'
-                                    cols='18'
-                                    name='mealMessage'
-                                    id='mealMessage'
-                                    onChange={handleChange}
+                                <TextField
+                                    label='Served'
+                                    value={mealsServed}
+                                    type='number'
+                                    size='small'
+                                    margin='dense'
+                                    step='1'
+                                    sx={{
+                                        maxWidth: '120px',
+                                        marginLeft: '10px',
+                                        alignItems: 'center',
+                                        backgroundColor: '#f5f5f5',
+                                        justifyContent: 'center',
+                                        '& input': {
+                                            textAlign: 'center',
+                                        },
+                                    }}
+                                    InputLabelProps={{
+                                        sx: {
+                                            fontSize: '1.2rem',
+                                            padding: '0px',
+                                            margin: '0px',
+                                        },
+                                    }}
+                                />
+                            </Stack>
+                            <Stack
+                                direction='column'
+                                alignItems='center'
+                                sx={{ marginTop: '5px' }}
+                            >
+                                <label htmlFor='meal-message'>
+                                    Meal Message
+                                </label>
+                                <TextareaAutosize
+                                    id='meal-message'
+                                    aria-label='Meal Message'
+                                    placeholder=''
+                                    minRows={2}
                                     value={mealMessage}
-                                ></textarea>
-                            </div>
-                        </div>
-                        <div className='serveevent-page__grid-data-box'>
-                            <div className='serveevent-page__grid-label'>
-                                Deadline:
-                            </div>
-                            <div className='serveevent-page__grid-control'>
+                                    onChange={(event) =>
+                                        setMealMessage(event.target.value)
+                                    }
+                                    style={{
+                                        width: '90%',
+                                        backgroundColor: '#f5f5f5',
+                                        padding: '10px',
+                                        margin: '5px',
+                                        fontWeight: '200',
+                                        fontSize: '1.2rem',
+                                    }}
+                                />
+                            </Stack>
+                            <Stack
+                                direction='row'
+                                sx={{
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <div
+                                    style={{
+                                        fontSize: '1.2rem',
+                                        paddingRight: '5px',
+                                    }}
+                                >
+                                    Date:
+                                </div>
                                 <input
                                     type='date'
                                     id='mealDeadline'
                                     name='mealDeadline'
                                     onChange={handleChange}
                                     value={mealDeadline}
+                                    style={{
+                                        fontSize: '1.2rem',
+                                        maxWidth: '150px',
+                                    }}
                                     required
                                 />
-                            </div>
-                        </div>
-
-                        <>
+                            </Stack>
+                        </Box>
+                        <Box
+                            sx={{
+                                border: '1px solid black',
+                                borderRadius: '5px',
+                                padding: '5px',
+                                marginX: '5px',
+                                maxWidth: 'calc(100%)',
+                                minWidth: 'calc(90%)',
+                                margin: '0 auto',
+                            }}
+                        >
                             <div className='serveevent-page__section-header'>
                                 Graphic File
                             </div>
@@ -1489,61 +1817,116 @@ const Serve = ({
                                     </div>
                                 </div>
                             </div>
-                        </>
+                        </Box>
 
                         <div className='serveevent-page__section-header'>
                             Tally Information
                         </div>
-                        <div className='serveevent-page__grid-data-box'>
-                            <div className='serveevent-page__grid-label'>
-                                Registrations:
-                            </div>
-                            <div className='serveevent-page__grid-control'>
-                                <input
-                                    type='number'
-                                    id='registrations'
-                                    name='registrations'
-                                    onChange={handleChange}
+                        <Box
+                            sx={{
+                                border: '1px solid black',
+                                borderRadius: '5px',
+                                padding: '5px',
+                                marginX: '5px',
+                                maxWidth: 'calc(100%)',
+                                minWidth: 'calc(90%)',
+                                margin: '0 auto',
+                            }}
+                        >
+                            <Stack
+                                direction='row'
+                                sx={{
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    marginTop: '2px',
+                                }}
+                            >
+                                <TextField
+                                    label='Registrations'
                                     value={registrationCount}
-                                    required
-                                    readOnly
-                                />
-                            </div>
-                        </div>
-                        <div className='serveevent-page__grid-data-box'>
-                            <div className='serveevent-page__grid-label'>
-                                Attendees:
-                            </div>
-                            <div className='serveevent-page__grid-control'>
-                                <input
                                     type='number'
-                                    id='attendees'
-                                    name='attendees'
-                                    onChange={handleChange}
-                                    value={attendeeCount}
-                                    required
+                                    size='small'
+                                    margin='dense'
+                                    step='1'
+                                    sx={{
+                                        maxWidth: '120px',
+                                        marginLeft: '10px',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        backgroundColor: '#f5f5f5',
+                                        '& input': {
+                                            textAlign: 'center',
+                                        },
+                                    }}
+                                    InputLabelProps={{
+                                        sx: {
+                                            fontSize: '1.2rem',
+                                            padding: '0px',
+                                            margin: '0px',
+                                        },
+                                    }}
                                 />
-                            </div>
-                        </div>
-                        <div className='serveevent-page__button-wrapper'>
-                            <button
-                                className='serveevent-page__update-button'
+                                <TextField
+                                    label='Attendees'
+                                    value={attendeeCount}
+                                    type='number'
+                                    size='small'
+                                    margin='dense'
+                                    step='1'
+                                    sx={{
+                                        maxWidth: '120px',
+                                        marginLeft: '10px',
+                                        alignItems: 'center',
+                                        backgroundColor: '#f5f5f5',
+                                        justifyContent: 'center',
+                                        '& input': {
+                                            textAlign: 'center',
+                                        },
+                                    }}
+                                    InputLabelProps={{
+                                        sx: {
+                                            fontSize: '1.2rem',
+                                            padding: '0px',
+                                            margin: '0px',
+                                        },
+                                    }}
+                                />
+                            </Stack>
+                        </Box>
+                        <div className={classes.registrationComponentWrapper}>
+                            <Button
+                                variant='contained'
+                                color='primary'
+                                disabled={hasErrors}
+                                className={classes.button}
                                 onClick={handleSubmitClick}
                             >
                                 Update
-                            </button>
-                            <button
-                                className='serveevent-page__cancel-button'
-                                onClick={() => handleCancelClick()}
+                            </Button>
+                            <Button
+                                variant='contained'
+                                sx={{
+                                    backgroundColor: 'yellow',
+                                    color: 'black',
+                                    marginLeft: '10px',
+                                }}
+                                className={classes.button}
+                                onClick={() => history.goBack()}
                             >
                                 Cancel
-                            </button>
-                            <button
-                                className='serveevent-page__delete-button'
+                            </Button>
+                            <Button
+                                variant='contained'
+                                sx={{
+                                    backgroundColor: 'red',
+                                    color: 'white',
+                                    marginLeft: '10px',
+                                }}
+                                className={classes.button}
                                 onClick={() => handleDeleteRequest()}
                             >
                                 Delete
-                            </button>
+                            </Button>
                         </div>
                     </div>
 
