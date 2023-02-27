@@ -5,6 +5,7 @@ import {
     updateCurrentUserPersonalInfo,
     updateCurrentUserResidenceInfo,
     updateCurrentUserMembershipInfo,
+    updateRegistrationAndEventNumbers,
 } from './user.utils';
 const INITIAL_STATE = {
     currentUser: {
@@ -38,6 +39,14 @@ const userReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 currentUser: removeItemFromRegistrations(
+                    state.currentUser,
+                    action.payload
+                ),
+            };
+        case UserActionTypes.UPDATE_REGISTRATION_AND_EVENT_NUMBERS:
+            return {
+                ...state,
+                currentUser: updateRegistrationAndEventNumbers(
                     state.currentUser,
                     action.payload
                 ),

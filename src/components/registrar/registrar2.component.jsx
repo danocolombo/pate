@@ -29,6 +29,7 @@ import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import {
     updateCurrentUser,
     addRegistrationToCurrentUser,
+    updateRegistrationAndEventNumbersForCurrentUser,
 } from '../../redux/user/user.actions';
 import useStyles from './registrar.styles';
 import ModalWrapper from '../../components/modals/wrapper.modal';
@@ -53,6 +54,7 @@ function Registrar({
     setSpinner,
     updateCurrentUser,
     addRegistrationToCurrentUser,
+    updateRegistrationAndEventNumbersForCurrentUser,
     clearSpinner,
     pateSystem,
 }) {
@@ -486,6 +488,8 @@ function Registrar({
             return;
         } else {
             try {
+                let eventAttendance;
+                let eventMeal;
                 let updateRegistrationResults = await API.graphql({
                     query: mutations.updateRegistration,
                     variables: { input: updatedRegistration },
@@ -499,8 +503,8 @@ function Registrar({
                         registration.attendanceCount !==
                             updatedRegistration.attendanceCount
                     ) {
-                        let eventAttendance = registration?.event?.plannedCount;
-                        let eventMeal = registration?.event?.mealPlannedCount;
+                        eventAttendance = registration?.event?.plannedCount;
+                        eventMeal = registration?.event?.mealPlannedCount;
                         const orgAttendance = registration.attendanceCount;
                         const orgMeal = registration.mealCount;
                         let newAttendance = orgAttendance;
@@ -589,6 +593,16 @@ function Registrar({
                 }
                 //*  NEED TO UPDATE THE updateRegistrationResults
                 //*  AND SAVE TO REDUX
+                const payload = {
+                    regId: registration.id,
+                    eventId: registration.event.id,
+                    regAttendance: updatedRegistration.attendanceCount,
+                    regMeal: updatedRegistration.mealCount,
+                    eventAttendance: eventAttendance,
+                    eventMeal: eventMeal,
+                };
+                printObject('R2C:602-->payload:\n', payload);
+                updateRegistrationAndEventNumbersForCurrentUser(payload);
             } catch (err) {
                 printObject('ERROR updating registration\n', err);
             }
@@ -1306,6 +1320,8 @@ const mapDispatchToProps = (dispatch) => ({
     clearSpinner: () => dispatch(clearSpinner()),
     addRegistrationToCurrentUser: (registration) =>
         dispatch(addRegistrationToCurrentUser(registration)),
+    updateRegistrationAndEventNumbersForCurrentUser: (payload) =>
+        dispatch(updateRegistrationAndEventNumbersForCurrentUser(payload)),
 });
 const mapStateToProps = (state) => ({
     currentUser: state.user.currentUser,

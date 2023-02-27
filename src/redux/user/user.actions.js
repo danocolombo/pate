@@ -21,6 +21,10 @@ export const removeRegistrationFromCurrentUser = (user) => ({
     type: UserActionTypes.REMOVE_REGISTRATION_FROM_CURRENT_USER,
     payload: user,
 });
+export const updateRegistrationAndEventNumbersForCurrentUser = (user) => ({
+    type: UserActionTypes.UPDATE_REGISTRATION_AND_EVENT_NUMBERS,
+    payload: user,
+});
 export const updateUserPersonalInfo = (personalInfo) => ({
     type: UserActionTypes.UPDATE_USER_PERSONAL_INFO,
     payload: personalInfo,

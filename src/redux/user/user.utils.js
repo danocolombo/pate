@@ -74,3 +74,50 @@ export const updateCurrentUserMembershipInfo = (state, payload) => {
     };
     return updatedState.currentUser;
 };
+
+//----------------------------------------
+// update currentUser registration(s) when
+// registration numbers change
+//----------------------------------------
+export const updateRegistrationAndEventNumbers = (state, payload) => {
+    /* ===================================================
+        there is array of registrations. Multiple actions
+        needed.
+        1. update the specific registration attendee numbers
+        2. update ALL registrations for an event w/event numbers
+
+        payload {
+            regId
+            eventId
+            regAttendance
+            regMeal
+            eventAttendance
+            eventMeal
+        }
+    ====================================================== */
+    let currentUser = state;
+
+    //update registration numbers
+    //-----------------------------
+    // Find the index of the object with id "1243" in the array
+    const index = currentUser.registrations.items.findIndex(
+        (item) => item.id === payload.regId
+    );
+
+    // If the object with id "1243" exists in the array, update its attendanceCount and mealCount properties
+    if (index !== -1) {
+        currentUser.registrations.items[index].attendanceCount =
+            payload.regAttendance;
+        currentUser.registrations.items[index].mealCount = payload.regMeal;
+    }
+    // update event numbers
+    //=================================
+    // Iterate over the array and update the plannedCount and mealPlannedCount properties for each object where event.id === "12abc"
+    currentUser.registrations.items.forEach((item) => {
+        if (item.event.id === payload.eventId) {
+            item.event.plannedCount = payload.eventAttendance;
+            item.event.mealPlannedCount = payload.eventMeal;
+        }
+    });
+    return currentUser;
+};
