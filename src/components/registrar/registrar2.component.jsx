@@ -2,6 +2,8 @@ import { useState, useEffect, createRef } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { useHistory } from 'react-router-dom';
+import { API } from 'aws-amplify';
+import * as mutations from '../../pateGraphql/mutations';
 import { withRouter } from 'react-router';
 import {
     Card,
@@ -21,10 +23,8 @@ import {
     IconButton,
     Grid,
 } from '@mui/material';
-import { MdAnnouncement } from 'react-icons/md';
-import { API, graphqlOperation } from 'aws-amplify';
 import PhoneInput from 'react-phone-input-2';
-import * as queries from '../../pateGraphql/queries';
+import Spinner from '../spinner/Spinner';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import {
     updateCurrentUser,
@@ -36,6 +36,8 @@ import ContactChangedModal from '../../components/modals/registration/registrati
 import RegistrationCompleteModal from '../modals/registration/registration-complete.modal';
 import RegistrationGuestCompleteModal from '../modals/registration/registration-guest-complete.modal';
 import ProfileRequiredToRegister from '../modals/registration/registration-profile-required.modal';
+import RegistrationExpired from '../modals/registration/registation-expired.modal';
+import RegistrationUpdated from '../modals/registration/registation-updated.modal';
 import { US_STATES, NUMBER_SELECT_OPTIONS_0_10 } from '../../constants/pate';
 import {
     createNewRegistration,
@@ -54,6 +56,7 @@ function Registrar({
     clearSpinner,
     pateSystem,
 }) {
+    //printObject('registration:\n', registration);
     const classes = useStyles();
     const history = useHistory();
     const [firstName, setFirstName] = useState(registration.attendeeFirstName);
@@ -102,10 +105,18 @@ function Registrar({
         isRegistrationGuestCompleteModalVisible,
         setIsRegistrationGuestCompleteModalVisible,
     ] = useState(false);
+
+    const [isUpdateSuccessModalVisible, setIsUpdateSuccessModalVisible] =
+        useState(false);
     const [
         isProfileNotificationModalVisible,
         setIsProfileNotificationModalVisible,
     ] = useState(false);
+    const [
+        isRegistrationExpiredModalVisible,
+        setIsRegistrationExpiredModalVisible,
+    ] = useState();
+    const [showSuccessModal, setShowSuccessModal] = useState();
     useEffect(() => {
         if (!currentUser?.authSession?.idToken?.jwtToken) history.push('/');
         async function confirmProfile() {
@@ -122,7 +133,19 @@ function Registrar({
         }
         confirmProfile();
     }, []);
-
+    useEffect(() => {
+        // only enable updating of regisration if the event date is > than today
+        const today = new Date();
+        const date = new Date(registration.event.eventDate);
+        // const date = new Date('2023-02-10');  // used to check view-only feature
+        if (date.getTime() <= today.getTime()) {
+            setIsRegistrationExpiredModalVisible(true);
+            setBlockEdit(true);
+        } else {
+            setIsRegistrationExpiredModalVisible(false);
+            setBlockEdit(false);
+        }
+    }, []);
     const validateFirstName = (firstName) => {
         if (!firstName) {
             return 'First name is required';
@@ -147,7 +170,9 @@ function Registrar({
         if (!street) {
             return 'Street is required';
         }
-        const testRegex = /^[a-zA-Z\d\s.#-]{2,50}$/;
+        // 2-50 chars, apostrophe with alpha permitted
+        const testRegex =
+            /^(?=.{2,50}$)(?!')[A-Za-z0-9' -]+(?:[ .,!?][A-Za-z0-9' -]+)*\.?$/;
         if (!testRegex.test(street)) {
             return '2-50 characters (optional number)';
         }
@@ -157,7 +182,9 @@ function Registrar({
         if (!city) {
             return 'City is required';
         }
-        const testRegex = /^[A-Za-z\s-]{2,25}$/;
+        // 2-25 chars, apostrophe with alpha permitted
+        const testRegex =
+            /^(?=.{3,25}$)(?!')[A-Za-z0-9' -]+(?:[ .,!?][A-Za-z0-9' -]+)*\.?$/;
         if (!testRegex.test(city)) {
             return '2-25 characters only';
         }
@@ -242,6 +269,10 @@ function Registrar({
             return 'city required when providing church name';
         }
         return '';
+    };
+    const dismissModal = () => {
+        setIsRegistrationExpiredModalVisible(false);
+        setIsUpdateSuccessModalVisible(false);
     };
     const handleConfirmGuestRegistrationClick = async () => {
         let regRequest = await buildRegistration({ incorporated: false });
@@ -328,68 +359,300 @@ function Registrar({
     };
 
     const handleSubmit = async () => {
-        // Handle the submission here with the attendance and meal values
         setSpinner();
         // check if attendee info and currentUser are different
-        const attendeeIsUser = async () => {
-            let same = true;
-            if (
-                firstName !== currentUser.firstName ||
-                lastName !== currentUser.lastName ||
-                street !== currentUser.residence.street ||
-                city !== currentUser.residence.city ||
-                stateProv !== currentUser.residence.stateProv ||
-                postalCode !== currentUser.residence.postalCode ||
-                email !== currentUser.email ||
-                phone !== currentUser.phone
-            ) {
-                same = false;
+        let updatedRegistration = {};
+        const didValuesChange = async () => {
+            // origininal object
+
+            updatedRegistration = {
+                id: registration.id,
+                attendanceCount: attendance,
+                mealCount: meal,
+                attendeeFirstName: firstName,
+                attendeeLastName: lastName,
+                attendeeEmail: email,
+                attendeePhone: phone,
+                attendeeStreet: street,
+                attendeeCity: city,
+                attendeeStateProv: stateProv,
+                attendeePostalCode: postalCode,
+                membershipName: membershipName,
+                membershipCity: membershipCity,
+                membershipStateProv: membershipStateProv,
+            };
+            const changes = async (updatedRegistration) => {
+                // Check attendeeFirstName attribute
+                if (
+                    updatedRegistration.attendeeFirstName !==
+                    registration.attendeeFirstName
+                ) {
+                    return 1;
+                }
+                // Check attendeeLastName attribute
+                if (
+                    updatedRegistration.attendeeLastName !==
+                    registration.attendeeLastName
+                ) {
+                    return 2;
+                }
+                // Check attendeeEmail attribute
+                if (
+                    updatedRegistration.attendeeEmail !==
+                    registration.attendeeEmail
+                ) {
+                    return 3;
+                }
+                // Check attendeePhone attribute
+                if (
+                    updatedRegistration.attendeePhone !==
+                    registration.attendeePhone
+                ) {
+                    return 4;
+                }
+                // Check attendeeStreet attribute
+                if (
+                    updatedRegistration.attendeeStreet !==
+                    registration.attendeeStreet
+                ) {
+                    return 5;
+                }
+                // Check attendeeCity attribute
+                if (
+                    updatedRegistration.attendeeCity !==
+                    registration.attendeeCity
+                ) {
+                    return 6;
+                }
+                // Check attendeeStateProv attribute
+                if (
+                    updatedRegistration.attendeeStateProv !==
+                    registration.attendeeStateProv
+                ) {
+                    return 7;
+                }
+                // Check attendeePostalCode attribute
+                if (
+                    updatedRegistration.attendeePostalCode !==
+                    registration.attendeePostalCode
+                ) {
+                    return 8;
+                }
+                // Check membershipName attribute
+                if (
+                    updatedRegistration.membershipName !==
+                    registration.membershipName
+                ) {
+                    return 9;
+                }
+                // Check membershipCity attribute
+                if (
+                    updatedRegistration.membershipCity !==
+                    registration.membershipCity
+                ) {
+                    return 10;
+                }
+                // Check membershipStateProv attribute
+                if (
+                    updatedRegistration.membershipStateProv !==
+                    registration.membershipStateProv
+                ) {
+                    return 11;
+                }
+                // Check attendanceCount attribute
+                if (
+                    updatedRegistration.attendanceCount !==
+                    registration.attendanceCount
+                ) {
+                    return 12;
+                }
+                // Check mealCount attribute
+                if (updatedRegistration.mealCount !== registration.mealCount) {
+                    return 13;
+                }
+
+                // If no errors were logged, the test passed
+                return 0;
+            };
+            let updateNeeded = await changes(updatedRegistration);
+            if (updateNeeded > 0) {
+                return true;
             }
-            return same;
+            // need to update registration
         };
-        const attendeeEqualsUser = await attendeeIsUser();
-        if (!attendeeEqualsUser) {
+        let updateNeeded = await didValuesChange();
+        if (!updateNeeded) {
             clearSpinner();
-            setIsContactChangeModalVisible(true);
             return;
-        }
-        //      attendee info is the currentUser...
-        let regRequest = await buildRegistration({ incorporated: true });
+        } else {
+            try {
+                let updateRegistrationResults = await API.graphql({
+                    query: mutations.updateRegistration,
+                    variables: { input: updatedRegistration },
+                });
+                if (updateRegistrationResults?.data?.updateRegistration?.id) {
+                    //----------------------------------
+                    // check if numbers....
+                    if (
+                        registration.mealCount !==
+                            updatedRegistration.mealCount ||
+                        registration.attendanceCount !==
+                            updatedRegistration.attendanceCount
+                    ) {
+                        let eventAttendance = registration?.event?.plannedCount;
+                        let eventMeal = registration?.event?.mealPlannedCount;
+                        const orgAttendance = registration.attendanceCount;
+                        const orgMeal = registration.mealCount;
+                        let newAttendance = orgAttendance;
+                        let newMeal = orgMeal;
+                        //* meal check
+                        if (updatedRegistration.mealCount !== orgMeal) {
+                            //* update meal
+                            if (updatedRegistration.mealCount > orgMeal) {
+                                //* increase newMeal
+                                const delta =
+                                    updatedRegistration.mealCount - orgMeal;
+                                newMeal = orgMeal + delta;
+                                eventMeal = eventMeal + delta;
+                            } else {
+                                //* decrease newMeal
+                                const delta =
+                                    orgMeal - updatedRegistration.mealCount;
+                                newMeal = orgMeal - delta;
+                                eventMeal = eventMeal - delta;
+                            }
+                        }
+                        //* attendance check
+                        if (
+                            updatedRegistration.attendanceCount !==
+                            orgAttendance
+                        ) {
+                            //* update attendance
+                            if (
+                                updatedRegistration.attendanceCount >
+                                orgAttendance
+                            ) {
+                                //* increase newAttendance
+                                const delta =
+                                    updatedRegistration.attendanceCount -
+                                    orgAttendance;
+                                newAttendance = orgAttendance + delta;
+                                eventAttendance = eventAttendance + delta;
+                            } else {
+                                //* decrease newAttendance
+                                const delta =
+                                    orgAttendance -
+                                    updatedRegistration.attendanceCount;
+                                newAttendance = orgAttendance - delta;
+                                eventAttendance = eventAttendance - delta;
+                            }
+                        }
+                        try {
+                            const inputVariables = {
+                                id: registration.event.id,
+                                plannedCount: eventAttendance,
+                                mealPlannedCount: eventMeal,
+                            };
+                            const eventResults = await API.graphql({
+                                query: mutations.updateEvent,
+                                variables: { input: inputVariables },
+                            });
+                            if (!eventResults?.data?.updateEvent?.id) {
+                                // if we cannot update event, don't update meal
+                                clearSpinner();
+                                return;
+                            } else {
+                                // event updated now udate the meal
+                                const inputVariables = {
+                                    id: registration.event.meal.id,
+                                    plannedCount: eventMeal,
+                                };
+                                const mealResults = await API.graphql({
+                                    query: mutations.updateMeal,
+                                    variables: { input: inputVariables },
+                                });
+                                if (!mealResults?.data?.updateMeal?.id) {
+                                    // if we cannot update event, don't update meal
+                                    clearSpinner();
+                                    return;
+                                }
+                            }
+                        } catch (error) {
+                            printObject(
+                                'try failure updating numbers in gql\n:',
+                                error
+                            );
+                            clearSpinner();
+                            return;
+                        }
+                    }
+                }
+                //*  NEED TO UPDATE THE updateRegistrationResults
+                //*  AND SAVE TO REDUX
+            } catch (err) {
+                printObject('ERROR updating registration\n', err);
+            }
 
-        const newRegistrationResults = await createNewRegistration(regRequest);
-        if (newRegistrationResults.statusCode !== 200) {
-            printObject(
-                'createNewRegistration failed:\n',
-                newRegistrationResults
-            );
+            clearSpinner();
+            setIsUpdateSuccessModalVisible(true);
         }
-        regRequest.id = newRegistrationResults.data.id;
-        const updatedEventNumbersResults = await updateEventNumbers(
-            regRequest,
-            pateSystem.rally
-        );
-        if (updatedEventNumbersResults.statusCode !== 200) {
-            printObject(
-                'updateEventNumbers failed:\n',
-                updatedEventNumbersResults
-            );
-        }
-        const updatedMealNumbersResults = await updateMealNumbers(
-            regRequest,
-            pateSystem.rally
-        );
-        if (updatedMealNumbersResults.statusCode !== 200) {
-            printObject(
-                'updateMealNumbers failed:\n',
-                updatedMealNumbersResults
-            );
-        }
-        regRequest.event = pateSystem.rally;
-        addRegistrationToCurrentUser(regRequest);
+    };
+    const handleSubmitOLD = async () => {
+        // Handle the submission here with the attendance and meal values
+        setSpinner();
 
-        console.log('ROC:363==> send email');
+        // function compareObjects(obj1, obj2) {
+        //     for (let prop in obj1) {
+        //         if (
+        //             obj1.hasOwnProperty(prop) &&
+        //             obj2.hasOwnProperty(prop)
+        //         ) {
+        //             if (obj1[prop] !== obj2[prop]) {
+        //                 return false;
+        //             }
+        //         } else {
+        //             return false;
+        //         }
+        //     }
+        //     return true;
+        // }
 
-        setIsRegistrationCompleteModalVisible(true);
+        // let regRequest = await buildRegistration({ incorporated: true });
+
+        // const newRegistrationResults = await createNewRegistration(regRequest);
+        // if (newRegistrationResults.statusCode !== 200) {
+        //     printObject(
+        //         'createNewRegistration failed:\n',
+        //         newRegistrationResults
+        //     );
+        // }
+        // regRequest.id = newRegistrationResults.data.id;
+        // const updatedEventNumbersResults = await updateEventNumbers(
+        //     regRequest,
+        //     pateSystem.rally
+        // );
+        // if (updatedEventNumbersResults.statusCode !== 200) {
+        //     printObject(
+        //         'updateEventNumbers failed:\n',
+        //         updatedEventNumbersResults
+        //     );
+        // }
+        // const updatedMealNumbersResults = await updateMealNumbers(
+        //     regRequest,
+        //     pateSystem.rally
+        // );
+        // if (updatedMealNumbersResults.statusCode !== 200) {
+        //     printObject(
+        //         'updateMealNumbers failed:\n',
+        //         updatedMealNumbersResults
+        //     );
+        // }
+        // regRequest.event = pateSystem.rally;
+        // addRegistrationToCurrentUser(regRequest);
+
+        // console.log('ROC:363==> send email');
+
+        // setIsRegistrationCompleteModalVisible(true);
 
         //* END=END=END=END=END=END=
         clearSpinner();
@@ -407,7 +670,9 @@ function Registrar({
         mealError !== '' ||
         attendance < 1;
 
-    return (
+    return pateSystem.showSpinner ? (
+        <Spinner />
+    ) : (
         <>
             <Card className={classes.card}>
                 {event && (
@@ -968,7 +1233,7 @@ function Registrar({
                         <Button
                             variant='contained'
                             color='primary'
-                            disabled={hasErrors}
+                            disabled={hasErrors || blockEdit}
                             className={classes.button}
                             sx={{ marginRight: '10px' }}
                             onClick={handleSubmit}
@@ -983,10 +1248,24 @@ function Registrar({
                                 backgroundColor: 'yellow',
                                 color: 'black',
                                 marginLeft: '10px',
+                                marginRight: '10px',
                             }}
                             onClick={() => history.goBack()}
                         >
-                            Cancel
+                            Back
+                        </Button>
+                        <Button
+                            variant='contained'
+                            disabled={hasErrors}
+                            className={classes.button}
+                            sx={{
+                                backgroundColor: 'red',
+                                color: 'white',
+                                marginLeft: '10px',
+                            }}
+                            onClick={console.log()}
+                        >
+                            Delete
                         </Button>
                     </div>
                 </CardContent>
@@ -1007,12 +1286,16 @@ function Registrar({
                     handleConfirm={() => handleProfileConfirm()}
                 />
             </ModalWrapper>
-            <ModalWrapper isOpened={isRegistrationGuestCompleteModalVisible}>
-                <RegistrationGuestCompleteModal
-                    handleConfirm={() =>
-                        handleRegistraitonGuestCompleteConfirm()
-                    }
-                />
+
+            <ModalWrapper isOpened={isRegistrationExpiredModalVisible}>
+                <RegistrationExpired onClose={() => dismissModal()}>
+                    <p>This registration cannot be changed.</p>
+                </RegistrationExpired>
+            </ModalWrapper>
+            <ModalWrapper isOpened={isUpdateSuccessModalVisible}>
+                <RegistrationUpdated onClose={() => dismissModal()}>
+                    <p></p>
+                </RegistrationUpdated>
             </ModalWrapper>
         </>
     );

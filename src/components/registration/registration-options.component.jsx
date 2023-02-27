@@ -179,7 +179,9 @@ function RegistrationOptions({
         if (!street) {
             return 'Street is required';
         }
-        const testRegex = /^[a-zA-Z\d\s.#-]{2,50}$/;
+        // 2-50 chars, apostrophe with alpha permitted
+        const testRegex =
+            /^(?=.{2,50}$)(?!')[A-Za-z0-9' -]+(?:[ .,!?][A-Za-z0-9' -]+)*\.?$/;
         if (!testRegex.test(street)) {
             return '2-50 characters (optional number)';
         }
@@ -189,7 +191,9 @@ function RegistrationOptions({
         if (!city) {
             return 'City is required';
         }
-        const testRegex = /^[A-Za-z\s-]{2,25}$/;
+        // 2-25 chars, apostrophe with alpha permitted
+        const testRegex =
+            /^(?=.{3,25}$)(?!')[A-Za-z0-9' -]+(?:[ .,!?][A-Za-z0-9' -]+)*\.?$/;
         if (!testRegex.test(city)) {
             return '2-25 characters only';
         }
