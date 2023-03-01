@@ -25,12 +25,15 @@ import {
 } from '@mui/material';
 import PhoneInput from 'react-phone-input-2';
 import Spinner from '../spinner/Spinner';
+import { removeRegistrationFromCurrentUser } from '../../redux/user/user.actions';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import {
     updateCurrentUser,
     addRegistrationToCurrentUser,
     updateRegistrationAndEventNumbersForCurrentUser,
 } from '../../redux/user/user.actions';
+import { removePateRallyRegistration } from '../../redux/pate/pate.actions';
+import { deleteRegistrationProvider } from '../../providers/registrations.provider';
 import useStyles from './registrar.styles';
 import ModalWrapper from '../../components/modals/wrapper.modal';
 import ContactChangedModal from '../../components/modals/registration/registration-contact-changed.modal';
@@ -39,6 +42,7 @@ import RegistrationGuestCompleteModal from '../modals/registration/registration-
 import ProfileRequiredToRegister from '../modals/registration/registration-profile-required.modal';
 import RegistrationExpired from '../modals/registration/registation-expired.modal';
 import RegistrationUpdated from '../modals/registration/registation-updated.modal';
+import NotifyRegistrar from '../modals/registration/registation-delete-notify-registrar.modal';
 import { US_STATES, NUMBER_SELECT_OPTIONS_0_10 } from '../../constants/pate';
 import {
     createNewRegistration,
@@ -55,6 +59,7 @@ function Registrar({
     updateCurrentUser,
     addRegistrationToCurrentUser,
     updateRegistrationAndEventNumbersForCurrentUser,
+    removePateRallyRegistration,
     clearSpinner,
     pateSystem,
 }) {
@@ -103,11 +108,6 @@ function Registrar({
         isRegistrationCompleteModalVisible,
         setIsRegistrationCompleteModalVisible,
     ] = useState(false);
-    const [
-        isRegistrationGuestCompleteModalVisible,
-        setIsRegistrationGuestCompleteModalVisible,
-    ] = useState(false);
-
     const [isUpdateSuccessModalVisible, setIsUpdateSuccessModalVisible] =
         useState(false);
     const [
@@ -118,7 +118,8 @@ function Registrar({
         isRegistrationExpiredModalVisible,
         setIsRegistrationExpiredModalVisible,
     ] = useState();
-    const [showSuccessModal, setShowSuccessModal] = useState();
+    const [isNotifyRegistrarModalVisible, setIsNotifyRegistrarModalVisible] =
+        useState(false);
     useEffect(() => {
         if (!currentUser?.authSession?.idToken?.jwtToken) history.push('/');
         async function confirmProfile() {
@@ -275,91 +276,82 @@ function Registrar({
     const dismissModal = () => {
         setIsRegistrationExpiredModalVisible(false);
         setIsUpdateSuccessModalVisible(false);
+        setIsNotifyRegistrarModalVisible(false);
     };
-    const handleConfirmGuestRegistrationClick = async () => {
-        let regRequest = await buildRegistration({ incorporated: false });
 
-        const newRegistrationResults = await createNewRegistration(regRequest);
-        if (newRegistrationResults.statusCode !== 200) {
-            printObject(
-                'createNewRegistration failed:\n',
-                newRegistrationResults
-            );
-        }
-        regRequest.id = newRegistrationResults.data.id;
-        const updatedEventNumbersResults = await updateEventNumbers(
-            regRequest,
-            pateSystem.rally
-        );
-        if (updatedEventNumbersResults.statusCode !== 200) {
-            printObject(
-                'updateEventNumbers failed:\n',
-                updatedEventNumbersResults
-            );
-        }
-        const updatedMealNumbersResults = await updateMealNumbers(
-            regRequest,
-            pateSystem.rally
-        );
-        if (updatedMealNumbersResults.statusCode !== 200) {
-            printObject(
-                'updateMealNumbers failed:\n',
-                updatedMealNumbersResults
-            );
-        }
-        printObject('ROC:246==>regRequest:\n', regRequest);
-        setIsContactChangeModalVisible(false);
-        setIsRegistrationGuestCompleteModalVisible(true);
-    };
     const handleConfirmCancelClick = async () => {
         setIsContactChangeModalVisible(false);
     };
-    const handleRegistraitonCompleteConfirm = async () => {
-        setIsRegistrationCompleteModalVisible(false);
-        history.push('/');
-    };
-    const handleProfileConfirm = async () => {
-        setIsProfileNotificationModalVisible(false);
-        history.push('/profile');
-    };
-    const handleRegistraitonGuestCompleteConfirm = async () => {
-        setIsRegistrationGuestCompleteModalVisible(false);
-        history.push('/');
-    };
-    const handleEmailInfoClick = (event) => {
-        setAnchorEl(anchorEl ? null : event.currentTarget);
-    };
-    const open = Boolean(anchorEl);
-    if (!event) {
-        return <div>LOADING...</div>;
-    }
-    const buildRegistration = async ({ incorporated }) => {
-        console.log('incorporated:', incorporated);
-        console.log('type:', typeof incorporated);
-        let inputValues = {
-            eventRegistrationsId: eventId,
-            attendeeId: currentUser.id,
-            attendeeFirstName: firstName,
-            attendeeLastName: lastName,
-            attendeeEmail: email,
-            attendeePhone: phone,
-            attendeeStreet: street,
-            attendeeCity: city,
-            attendeeStateProv: stateProv,
-            attendeePostalCode: postalCode,
-            membershipName: membershipName || '',
-            membershipCity: membershipCity || '',
-            membershipStateProv: membershipStateProv,
-            attendanceCount: parseInt(attendance),
-            mealCount: parseInt(meal),
-            userRegistrationsId: currentUser.id,
-        };
-        if (!incorporated) {
-            inputValues.attendeeId = '0';
-        }
-        return inputValues;
+    // const handleRegistraitonCompleteConfirm = async () => {
+    //     setIsRegistrationCompleteModalVisible(false);
+    //     history.push('/');
+    // };
+    // const handleProfileConfirm = async () => {
+    //     setIsProfileNotificationModalVisible(false);
+    //     history.push('/profile');
+    // };
+    // const handleRegistraitonGuestCompleteConfirm = async () => {
+    //     setIsRegistrationGuestCompleteModalVisible(false);
+    //     history.push('/');
+    // };
+    // const handleEmailInfoClick = (event) => {
+    //     setAnchorEl(anchorEl ? null : event.currentTarget);
+    // };
+    // const open = Boolean(anchorEl);
+
+    // const buildRegistration = async ({ incorporated }) => {
+    //     console.log('incorporated:', incorporated);
+    //     console.log('type:', typeof incorporated);
+    //     let inputValues = {
+    //         eventRegistrationsId: eventId,
+    //         attendeeId: currentUser.id,
+    //         attendeeFirstName: firstName,
+    //         attendeeLastName: lastName,
+    //         attendeeEmail: email,
+    //         attendeePhone: phone,
+    //         attendeeStreet: street,
+    //         attendeeCity: city,
+    //         attendeeStateProv: stateProv,
+    //         attendeePostalCode: postalCode,
+    //         membershipName: membershipName || '',
+    //         membershipCity: membershipCity || '',
+    //         membershipStateProv: membershipStateProv,
+    //         attendanceCount: parseInt(attendance),
+    //         mealCount: parseInt(meal),
+    //         userRegistrationsId: currentUser.id,
+    //     };
+    //     if (!incorporated) {
+    //         inputValues.attendeeId = '0';
+    //     }
+    //     return inputValues;
+    // };
+    const handleDelete = async () => {
+        // this is used to delete the registration from the event.
+        // this can be done by r/l/d/g from serve event or
+        // of the registrar from the profille page
+        setIsNotifyRegistrarModalVisible(true);
     };
 
+    const handleDeleteConfirmation = async () => {
+        setSpinner();
+        //      handle all gql updates...
+        const deleteResults = await deleteRegistrationProvider(registration);
+        if (deleteResults.statusCode === 200) {
+            if (currentUser.if === registration.attendeeId) {
+                removeRegistrationFromCurrentUser(registration.id);
+            }
+        }
+        //=====================================
+        //      update REDUX....
+        //  1. reduce pate.rally.plannedCount
+        //  2. recuce pate.rally.plannedMealCount (if applicable)
+        //  3. reduct pate.rally.meal.plannedCount (if applicable);
+        //  4. remove registration from pate.rally.registrations.items[]
+        removePateRallyRegistration(registration);
+        clearSpinner();
+        setIsNotifyRegistrarModalVisible(false);
+        history.goBack();
+    };
     const handleSubmit = async () => {
         setSpinner();
         // check if attendee info and currentUser are different
@@ -601,7 +593,6 @@ function Registrar({
                     eventAttendance: eventAttendance,
                     eventMeal: eventMeal,
                 };
-                printObject('R2C:602-->payload:\n', payload);
                 updateRegistrationAndEventNumbersForCurrentUser(payload);
             } catch (err) {
                 printObject('ERROR updating registration\n', err);
@@ -611,66 +602,7 @@ function Registrar({
             setIsUpdateSuccessModalVisible(true);
         }
     };
-    const handleSubmitOLD = async () => {
-        // Handle the submission here with the attendance and meal values
-        setSpinner();
 
-        // function compareObjects(obj1, obj2) {
-        //     for (let prop in obj1) {
-        //         if (
-        //             obj1.hasOwnProperty(prop) &&
-        //             obj2.hasOwnProperty(prop)
-        //         ) {
-        //             if (obj1[prop] !== obj2[prop]) {
-        //                 return false;
-        //             }
-        //         } else {
-        //             return false;
-        //         }
-        //     }
-        //     return true;
-        // }
-
-        // let regRequest = await buildRegistration({ incorporated: true });
-
-        // const newRegistrationResults = await createNewRegistration(regRequest);
-        // if (newRegistrationResults.statusCode !== 200) {
-        //     printObject(
-        //         'createNewRegistration failed:\n',
-        //         newRegistrationResults
-        //     );
-        // }
-        // regRequest.id = newRegistrationResults.data.id;
-        // const updatedEventNumbersResults = await updateEventNumbers(
-        //     regRequest,
-        //     pateSystem.rally
-        // );
-        // if (updatedEventNumbersResults.statusCode !== 200) {
-        //     printObject(
-        //         'updateEventNumbers failed:\n',
-        //         updatedEventNumbersResults
-        //     );
-        // }
-        // const updatedMealNumbersResults = await updateMealNumbers(
-        //     regRequest,
-        //     pateSystem.rally
-        // );
-        // if (updatedMealNumbersResults.statusCode !== 200) {
-        //     printObject(
-        //         'updateMealNumbers failed:\n',
-        //         updatedMealNumbersResults
-        //     );
-        // }
-        // regRequest.event = pateSystem.rally;
-        // addRegistrationToCurrentUser(regRequest);
-
-        // console.log('ROC:363==> send email');
-
-        // setIsRegistrationCompleteModalVisible(true);
-
-        //* END=END=END=END=END=END=
-        clearSpinner();
-    };
     const hasErrors =
         firstNameError !== '' ||
         lastNameError !== '' ||
@@ -683,7 +615,9 @@ function Registrar({
         membershipCityError !== '' ||
         mealError !== '' ||
         attendance < 1;
-
+    if (!event) {
+        return <Spinner />;
+    }
     return pateSystem.showSpinner ? (
         <Spinner />
     ) : (
@@ -966,13 +900,6 @@ function Registrar({
                             error={emailError !== ''}
                             helperText={emailError}
                         />
-                        <Popper
-                            open={open}
-                            anchorEl={anchorEl}
-                            sx={{ backgroundColor: 'yellow' }}
-                        >
-                            <Typography>Registration Only</Typography>
-                        </Popper>
                     </Stack>
                     <Stack
                         direction='column'
@@ -1270,27 +1197,27 @@ function Registrar({
                         </Button>
                         <Button
                             variant='contained'
-                            disabled={hasErrors}
+                            disabled={hasErrors || blockEdit}
                             className={classes.button}
                             sx={{
                                 backgroundColor: 'red',
                                 color: 'white',
                                 marginLeft: '10px',
                             }}
-                            onClick={console.log()}
+                            onClick={handleDelete}
                         >
                             Delete
                         </Button>
                     </div>
                 </CardContent>
             </Card>
-            <ModalWrapper isOpened={isContactChangeModalVisible}>
+            {/* <ModalWrapper isOpened={isContactChangeModalVisible}>
                 <ContactChangedModal
                     handleChange={() => handleConfirmGuestRegistrationClick()}
                     handleCancel={() => handleConfirmCancelClick()}
                 />
-            </ModalWrapper>
-            <ModalWrapper isOpened={isRegistrationCompleteModalVisible}>
+            </ModalWrapper> */}
+            {/* <ModalWrapper isOpened={isRegistrationCompleteModalVisible}>
                 <RegistrationCompleteModal
                     handleConfirm={() => handleRegistraitonCompleteConfirm()}
                 />
@@ -1299,7 +1226,7 @@ function Registrar({
                 <ProfileRequiredToRegister
                     handleConfirm={() => handleProfileConfirm()}
                 />
-            </ModalWrapper>
+            </ModalWrapper> */}
 
             <ModalWrapper isOpened={isRegistrationExpiredModalVisible}>
                 <RegistrationExpired onClose={() => dismissModal()}>
@@ -1310,6 +1237,18 @@ function Registrar({
                 <RegistrationUpdated onClose={() => dismissModal()}>
                     <p></p>
                 </RegistrationUpdated>
+            </ModalWrapper>
+            <ModalWrapper isOpened={isNotifyRegistrarModalVisible}>
+                <NotifyRegistrar
+                    onCancel={() => dismissModal()}
+                    onConfirm={() => handleDeleteConfirmation()}
+                >
+                    <p>
+                        {firstName} {lastName}
+                    </p>
+                    <p>{email}</p>
+                    <p>{phone}</p>
+                </NotifyRegistrar>
             </ModalWrapper>
         </>
     );
@@ -1322,6 +1261,8 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch(addRegistrationToCurrentUser(registration)),
     updateRegistrationAndEventNumbersForCurrentUser: (payload) =>
         dispatch(updateRegistrationAndEventNumbersForCurrentUser(payload)),
+    removePateRallyRegistration: (payload) =>
+        dispatch(removePateRallyRegistration(payload)),
 });
 const mapStateToProps = (state) => ({
     currentUser: state.user.currentUser,

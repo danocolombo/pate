@@ -36,7 +36,7 @@ const UserRegistrationOverview = ({
         // // const theReg = currentUser.registrations.items.filter(
         // //     (r) => r.id === regId
         // // );
-        const deleteResults = await deleteRegistrationProvider(reg);
+        const deleteResults = await deleteRegistrationProvider(reg.id);
         if (deleteResults.statusCode === 200) {
             //      4. remove from rallies array
 
@@ -104,10 +104,11 @@ const UserRegistrationOverview = ({
     }, []);
     return (
         <>
-            {rallies && (
+            {rallies.length > 0 && (
                 <div className='user-reg-overview__wrapper'>
                     <div className='user-reg-overview__section-header'>
                         YOUR REGISTRATIONS
+                        {rallies.length}
                     </div>
                     {/* currentUser.registrations.items */}
                     {rallies.map(

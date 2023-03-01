@@ -251,250 +251,105 @@ const Profile3 = ({
             residence: residenceInput,
             membership: membershipInput,
         };
-        printObject('PC:157-->multiMutate:\n', multiMutate);
-        //todo-gql  need to update graphql as needed with multiMutate
-        //todo-gql  need to update currentUser in redux
-        let DANO = true;
-        if (DANO) {
-            if (multiMutate?.user?.id) {
-                let returnValue = {};
-                updateGQLUserPersonalInfo(multiMutate.user)
-                    .then((results) => {
-                        const reduxResponse = updateUserPersonalInfo({
-                            firstName: multiMutate.user.firstName,
-                            lastName: multiMutate.user.lastName,
-                            phone: multiMutate.user.phone,
-                        });
-                        if (reduxResponse) {
-                            returnValue = {
-                                status: 200,
-                                data: reduxResponse,
-                            };
-                        } else {
-                            printObject(
-                                'PP:174-->error updating REDUX:\n',
-                                reduxResponse
-                            );
-                        }
-                        console.log('profile updated');
-                    })
 
-                    .catch((e) => {
-                        console.log(e);
+        if (multiMutate?.user?.id) {
+            let returnValue = {};
+            updateGQLUserPersonalInfo(multiMutate.user)
+                .then((results) => {
+                    const reduxResponse = updateUserPersonalInfo({
+                        firstName: multiMutate.user.firstName,
+                        lastName: multiMutate.user.lastName,
+                        phone: multiMutate.user.phone,
                     });
-            }
-            if (multiMutate?.residence?.id) {
-                let returnValue = {};
-                updateGQLUserResidenceInfo(multiMutate.residence)
-                    .then((results) => {
-                        const reduxResponse = updateUserResidenceInfo({
-                            street: multiMutate.residence.street,
-                            city: multiMutate.residence.city,
-                            stateProv: multiMutate.residence.stateProv,
-                            postalCode: multiMutate.residence.postalCode,
-                        });
-                        if (reduxResponse) {
-                            returnValue = {
-                                status: 200,
-                                data: reduxResponse,
-                            };
-                        } else {
-                            printObject(
-                                'PP:275-->error updating REDUX:\n',
-                                reduxResponse
-                            );
-                        }
-                        console.log('profile updated');
-                    })
-
-                    .catch((e) => {
-                        console.log(e);
-                    });
-            }
-            if (multiMutate?.membership?.id) {
-                let returnValue = {};
-                updateGQLUserMembershipInfo(multiMutate.membership)
-                    .then((results) => {
-                        if (results?.data?.updateMembership?.id) {
-                            const reduxResponse = updateUserMembershipInfo({
-                                name: multiMutate.membership.name,
-                                city: multiMutate.membership.city,
-                                stateProv: multiMutate.membership.stateProv,
-                            });
-                            if (reduxResponse) {
-                                returnValue = {
-                                    status: 200,
-                                    data: reduxResponse,
-                                };
-                            } else {
-                                printObject(
-                                    'PP:303-->error updating REDUX:\n',
-                                    reduxResponse
-                                );
-                            }
-                            console.log('profile updated');
-                        } else {
-                            //error updating gql
-                            printObject('PC3:316-->error', results);
-                        }
-                    })
-
-                    .catch((e) => {
-                        console.log(e);
-                    });
-            }
-            //      ==================================
-            //      updates complete. notify and move to /
-            setIsProfileUpdated(true);
-            return;
-        }
-        let coreUser = {
-            uid: currentUser.uid,
-            isLoggedIn: currentUser.isLoggedIn,
-            loading: currentUser.loading,
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            phone: phone,
-        };
-        //need to add stateRep & stateLead if set...
-        if (currentUser?.stateRep) {
-            coreUser.stateRep = currentUser.stateRep;
-        }
-        if (currentUser.stateLead) {
-            coreUser.stateLead = currentUser.stateLead;
-        }
-        //add staterep and or statelead
-        if (currentUser?.stateRep) {
-            coreUser.stateRep = currentUser.stateRep;
-        }
-        //add staterep and or statelead
-        if (currentUser?.stateLead) {
-            coreUser.stateLead = currentUser.stateLead;
-        }
-
-        //section for address....
-        let residence = {};
-        if (street || city || stateProv || postalCode) {
-            // let address = {};
-            // profileUpdate.address = {};
-            if (street !== undefined && street !== '') {
-                residence.street = street;
-            }
-            if (city !== undefined && city !== '') {
-                residence.city = city;
-            }
-            if (stateProv !== undefined && stateProv !== '') {
-                residence.stateProv = stateProv;
-            }
-
-            if (postalCode !== undefined && postalCode !== '') {
-                residence.postalCode = postalCode;
-            }
-            // profileUpdate.address = address;
-        }
-
-        //church values are optional, so we want to send empty string if undefined
-        let membership = {};
-        if (membershipName || membershipCity || membershipStateProv) {
-            // let church = {};
-            // profileUpdate.church = {};
-            if (membershipName !== undefined && membershipName !== '') {
-                membership.name = membershipName;
-            }
-            if (membershipCity !== undefined && membershipCity !== '') {
-                membership.city = membershipCity;
-            }
-            if (
-                membershipStateProv !== undefined &&
-                membershipStateProv !== ''
-            ) {
-                membership.stateProv = membershipStateProv;
-            }
-        }
-
-        //profileUpdate.dateUpdated = '2021-03-18T09:09';
-        // now save the information to the pate db
-        // 1. add the uid to the data to update database.
-        //profileUpdate.uid = currentUser.uid;
-
-        // 2. save the object to the pate db
-        const util = require('util');
-        console.log(
-            'residence \n' +
-                util.inspect(residence, {
-                    showHidden: false,
-                    depth: null,
+                    if (reduxResponse) {
+                        returnValue = {
+                            status: 200,
+                            data: reduxResponse,
+                        };
+                    } else {
+                        printObject(
+                            'PP:174-->error updating REDUX:\n',
+                            reduxResponse
+                        );
+                    }
                 })
-        );
-        let newCurrentUser = {};
-        newCurrentUser = coreUser;
 
-        if (
-            residence?.street ||
-            residence?.city ||
-            residence?.stateProv ||
-            residence?.postalCode
-        ) {
-            newCurrentUser = { ...newCurrentUser, residence };
-        }
-        if (membership?.name || membership?.city || membership?.stateProv) {
-            newCurrentUser = { ...newCurrentUser, membership };
-        }
-        //======================================
-        // 1. update database
-        // 2. add JWt to object
-        // 3. update Redux
-        //======================================
-        //====== 1. update database
-        async function updateDb() {
-            fetch(
-                'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/users',
-                {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        operation: 'updateUser',
-                        payload: {
-                            Item: newCurrentUser,
-                        },
-                    }),
-                    headers: {
-                        'Content-type': 'application/json; charset=UTF-8',
-                    },
-                }
-            )
-                .then((response) => response.json())
-                .then((data) => {
-                    // const util = require('util');
-                    // console.log(
-                    //     'db data returned: \n' +
-                    //         util.inspect(data, {
-                    //             showHidden: false,
-                    //             depth: null,
-                    //         })
-                    // );
+                .catch((e) => {
+                    console.log(e);
                 });
         }
-        //next call is to async the above update
-        updateDb();
+        if (multiMutate?.residence?.id) {
+            let returnValue = {};
+            updateGQLUserResidenceInfo(multiMutate.residence)
+                .then((results) => {
+                    const reduxResponse = updateUserResidenceInfo({
+                        street: multiMutate.residence.street,
+                        city: multiMutate.residence.city,
+                        stateProv: multiMutate.residence.stateProv,
+                        postalCode: multiMutate.residence.postalCode,
+                    });
+                    if (reduxResponse) {
+                        returnValue = {
+                            status: 200,
+                            data: reduxResponse,
+                        };
+                    } else {
+                        printObject(
+                            'PP:275-->error updating REDUX:\n',
+                            reduxResponse
+                        );
+                    }
+                    console.log('profile updated');
+                })
 
-        //====== 2. add JWT to object
-        newCurrentUser.jwt = currentUser.jwt;
-        //====== 3. update redux
-        async function updateRedux() {
-            updateCurrentUser(newCurrentUser);
-            console.log('updateRedux function.............................');
+                .catch((e) => {
+                    console.log(e);
+                });
         }
-        updateRedux();
+        if (multiMutate?.membership?.id) {
+            let returnValue = {};
+            updateGQLUserMembershipInfo(multiMutate.membership)
+                .then((results) => {
+                    if (results?.data?.updateMembership?.id) {
+                        const reduxResponse = updateUserMembershipInfo({
+                            name: multiMutate.membership.name,
+                            city: multiMutate.membership.city,
+                            stateProv: multiMutate.membership.stateProv,
+                        });
+                        if (reduxResponse) {
+                            returnValue = {
+                                status: 200,
+                                data: reduxResponse,
+                            };
+                        } else {
+                            printObject(
+                                'PP:303-->error updating REDUX:\n',
+                                reduxResponse
+                            );
+                        }
+                        console.log('profile updated');
+                    } else {
+                        //error updating gql
+                        printObject('PC3:316-->error', results);
+                    }
+                })
 
-        history.push('/');
+                .catch((e) => {
+                    console.log(e);
+                });
+        }
+        //      ==================================
+        //      updates complete. notify and move to /
         clearSpinner();
+        setIsProfileUpdated(true);
+        return;
     };
     const handleUpdateConfirmationClick = () => {
         setIsProfileUpdated(false);
         history.push('/');
     };
-    const noUpdate =
+    let noUpdate = false;
+    if (
         firstNameError ||
         lastNameError ||
         streetError ||
@@ -502,8 +357,15 @@ const Profile3 = ({
         postalCodeError ||
         phoneError ||
         membershipNameError ||
-        membershipCityError;
-    return (
+        membershipCityError
+    ) {
+        noUpdate = true;
+    } else {
+        noUpdate = false;
+    }
+    return pateSystem.showSpinner ? (
+        <Spinner />
+    ) : (
         <>
             <Box
                 className='MyBox-root'
@@ -984,13 +846,15 @@ const Profile3 = ({
                             </Stack>
 
                             <div className='profile-component__button-wrapper'>
-                                <button
-                                    className='profile-component__update-button'
+                                <Button
+                                    variant='contained'
+                                    color='primary'
                                     disabled={noUpdate}
+                                    className={classes.button}
                                     onClick={handleSubmitClick}
                                 >
-                                    UPDATE
-                                </button>
+                                    Update
+                                </Button>
                             </div>
                         </Stack>
                     </CardContent>

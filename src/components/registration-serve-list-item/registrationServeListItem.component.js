@@ -5,7 +5,7 @@ import { printObject } from '../../utils/helpers';
 const RegistrationItem = ({ regItem, eventID }) => {
     return (
         <>
-            <Link to={`/editregistration/${regItem.eid}/${regItem.uid}`}>
+            <Link to={`/editregistration/${regItem.id}`}>
                 <div className='registration-list-item__data-wrapper'>
                     <div className='registration-list-item__registrar'>
                         {regItem.attendeeFirstName} {regItem.attendeeLastName}

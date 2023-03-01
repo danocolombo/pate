@@ -124,13 +124,14 @@ const Serve = ({
 
     //const util = require('util');
     useEffect(() => {
+        // setSpinner();
         //++++++++++++++++++++++++++++++++++++++++
         // useEffect on load
         //++++++++++++++++++++++++++++++++++++++++
-        console.log('1. ID:  ', createAWSUniqueID());
-        console.log('1. ID:  ', createAWSUniqueID());
-        console.log('1. ID:  ', createAWSUniqueID());
-        console.log('1. ID:  ', createAWSUniqueID());
+        // console.log('1. ID:  ', createAWSUniqueID());
+        // console.log('1. ID:  ', createAWSUniqueID());
+        // console.log('1. ID:  ', createAWSUniqueID());
+        // console.log('1. ID:  ', createAWSUniqueID());
         if (!currentUser.isLoggedIn) history.push('/');
         //get the reference to the current event and load to useState
         if (match?.params?.id) {
@@ -153,6 +154,8 @@ const Serve = ({
                                 setRallyEvent(gqlResponse.data.getEvent);
                                 loadEvent(gqlResponse.data.getEvent)
                                     .then(() => {
+                                        //save to REDUX (pate.rally)
+                                        loadRally(gqlResponse.data.getEvent);
                                         console.log('loadEvent complete');
                                     })
                                     .catch((e) => {
@@ -170,6 +173,7 @@ const Serve = ({
                         });
                 }
                 getEventDetails();
+                loadRally();
                 //todo -- load details into loadEvent()??
                 // loadEvent();
                 // loadRegistrations();
@@ -178,9 +182,8 @@ const Serve = ({
         } else {
             // clearEventRegistrations();
         }
+        // clearSpinner();
     }, []);
-
-    useEffect(() => {}, [pateSystem.showSpinner]);
 
     // const getEventRegistrations = (eid) => {
     //   try {
@@ -310,6 +313,7 @@ const Serve = ({
         // rallyEvent.eventDate = smDate;
         // seave the event to redux
         //load the useState
+        setSpinner();
         setEventDate(theEvent?.eventDate);
         setChurchName(theEvent?.name);
         setStreet(theEvent?.location?.street);
@@ -342,260 +346,261 @@ const Serve = ({
         setMealDeadline(theEvent?.meal?.deadline);
         setAttendeeCount(theEvent?.actualCount);
         setRegistrationCount(theEvent?.plannedCount);
+        clearSpinner();
     };
 
-    const loadEventOLD = async () => {
-        //get the event reference.
-        // if the eventID is not in state.stateRep.rally
-        // or state.stateRep.doneRally,
-        // that means that Lead is viewing. Go to the db
-        // and load into pate.rally
-        //????????????????????????????????????????????????
-        let inRallies = false;
-        let eventType = null;
-        if (rallies.length > 0) {
-            rallies.forEach((rallyEvent) => {
-                if (rallyEvent.uid === eventID) {
-                    // inRallies = true;
-                    eventType = 'future';
-                }
-            });
-        }
-        if (eventID === '0') {
-        }
-        //check doneRallies
-        if (eventType === null && doneRallies.length > 0) {
-            doneRallies.forEach((rallyEvent) => {
-                if (rallyEvent.uid === eventID) {
-                    // inRallies = true;
-                    eventType = 'historical';
-                }
-            });
-        }
-        if (eventType === null && leadRallies.length > 0) {
-            leadRallies.forEach((rallyEvent) => {
-                if (rallyEvent.uid === eventID) {
-                    // inRallies = true;
-                    eventType = 'leadFuture';
-                }
-            });
-        }
-        if (eventType === null && leadDoneRallies.length > 0) {
-            leadDoneRallies.forEach((rallyEvent) => {
-                if (rallyEvent.uid === eventID) {
-                    // inRallies = true;
-                    eventType = 'leadHistorical';
-                }
-            });
-        }
-        if (eventType === 'future' || eventType === 'historical') {
-            if (eventType === 'future') {
-                rallies.forEach((rallyEvent) => {
-                    if (rallyEvent.uid === eventID) {
-                        //-----------------
-                        // convert the eventDate from number to date to display
-                        let ddbDate = rallyEvent.eventDate;
-                        const y = ddbDate.substring(0, 4);
-                        const m = ddbDate.substring(4, 6);
-                        const d = ddbDate.substring(6, 8);
-                        let smDate =
-                            y.toString() +
-                            '-' +
-                            m.toString() +
-                            '-' +
-                            d.toString();
-                        rallyEvent.eventDate = smDate;
-                        // save the event to redux
-                        loadRally(rallyEvent);
-                        //load the useState
-                        setEventDate(rallyEvent?.eventDate);
-                        setChurchName(rallyEvent?.name);
-                        setStreet(rallyEvent?.street);
-                        setCity(rallyEvent?.city);
-                        setStateProv(rallyEvent?.stateProv);
-                        setPostalCode(rallyEvent?.postalCode);
-                        setEventStart(rallyEvent?.startTime);
-                        setEventEnd(rallyEvent?.endTime);
-                        setGraphicFileName(rallyEvent?.graphic);
-                        let tmpStr = 'events/' + eventID + rallyEvent?.graphic;
-                        setGraphicLocation(tmpStr);
-                        setApproved(rallyEvent?.approved);
-                        setContactFirstName(rallyEvent?.contact?.firstName);
-                        setContactLastName(rallyEvent?.contact?.lastName);
-                        setContactEmail(rallyEvent?.contact?.email);
-                        setContactPhone(rallyEvent?.contact?.phone);
-                        setEventStatus(rallyEvent?.status);
-                        setEventMessage(rallyEvent?.message);
-                        setRepName(rallyEvent?.coordinator?.name);
-                        setRepEmail(rallyEvent?.coordinator?.email);
-                        setRepPhone(rallyEvent?.coordinator?.phone);
-                        setMealTime(rallyEvent?.meal?.startTime);
-                        setMealCost(rallyEvent?.meal?.cost);
-                        setMealCount(rallyEvent?.meal?.mealCount);
-                        setMealsServed(rallyEvent?.meal?.mealsServed);
-                        setMealMessage(rallyEvent?.meal?.message);
-                        setMealDeadline(rallyEvent?.meal?.deadline);
-                        setAttendeeCount(rallyEvent?.attendees);
-                        setRegistrationCount(rallyEvent?.registrations);
-                    }
-                });
-            }
-            if (eventType === 'historical') {
-                doneRallies.forEach((rallyEvent) => {
-                    if (rallyEvent.uid === eventID) {
-                        //-----------------
-                        // convert the eventDate from number to date to display
-                        let ddbDate = rallyEvent.eventDate;
-                        const y = ddbDate.substring(0, 4);
-                        const m = ddbDate.substring(4, 6);
-                        const d = ddbDate.substring(6, 8);
-                        let smDate =
-                            y.toString() +
-                            '-' +
-                            m.toString() +
-                            '-' +
-                            d.toString();
-                        rallyEvent.eventDate = smDate;
-                        // save the event to redux
-                        loadRally(rallyEvent);
-                        //load the useState
-                        setEventDate(rallyEvent?.eventDate);
-                        setChurchName(rallyEvent?.name);
-                        setStreet(rallyEvent?.street);
-                        setCity(rallyEvent?.city);
-                        setStateProv(rallyEvent?.stateProv);
-                        setPostalCode(rallyEvent?.postalCode);
-                        setEventStart(rallyEvent?.startTime);
-                        setEventEnd(rallyEvent?.endTime);
-                        setGraphicFileName(rallyEvent?.graphic);
-                        let tmpStr = 'events/' + eventID + rallyEvent?.graphic;
-                        setGraphicLocation(tmpStr);
-                        setApproved(rallyEvent?.approved);
-                        setContactFirstName(rallyEvent?.contact?.firstName);
-                        setContactLastName(rallyEvent?.contact?.lastName);
-                        setContactEmail(rallyEvent?.contact?.email);
-                        setContactPhone(rallyEvent?.contact?.phone);
-                        setEventStatus(rallyEvent?.status);
-                        setEventMessage(rallyEvent?.message);
-                        setRepName(rallyEvent?.coordinator?.name);
-                        setRepEmail(rallyEvent?.coordinator?.email);
-                        setRepPhone(rallyEvent?.coordinator?.phone);
-                        setMealTime(rallyEvent?.meal?.startTime);
-                        setMealCost(rallyEvent?.meal?.cost);
-                        setMealCount(rallyEvent?.meal?.mealCount);
-                        setMealsServed(rallyEvent?.meal?.mealsServed);
-                        setMealMessage(rallyEvent?.meal?.message);
-                        setMealDeadline(rallyEvent?.meal?.deadline);
-                        setAttendeeCount(rallyEvent?.attendees);
-                        setRegistrationCount(rallyEvent?.registrations);
-                    }
-                });
-            }
-        } else {
-            // go get the rally from staterep leadRallies
-            if (eventType === 'leadFuture') {
-                leadRallies.forEach((rallyEvent) => {
-                    if (rallyEvent.uid === eventID) {
-                        //-----------------
-                        // convert the eventDate from number to date to display
-                        let ddbDate = rallyEvent.eventDate;
-                        const y = ddbDate.substring(0, 4);
-                        const m = ddbDate.substring(4, 6);
-                        const d = ddbDate.substring(6, 8);
-                        let smDate =
-                            y.toString() +
-                            '-' +
-                            m.toString() +
-                            '-' +
-                            d.toString();
-                        rallyEvent.eventDate = smDate;
-                        // seave the event to redux
-                        loadRally(rallyEvent);
-                        //load the useState
-                        setEventDate(rallyEvent?.eventDate);
-                        setChurchName(rallyEvent?.name);
-                        setStreet(rallyEvent?.street);
-                        setCity(rallyEvent?.city);
-                        setStateProv(rallyEvent?.stateProv);
-                        setPostalCode(rallyEvent?.postalCode);
-                        setEventStart(rallyEvent?.startTime);
-                        setEventEnd(rallyEvent?.endTime);
-                        setGraphicFileName(rallyEvent?.graphic);
-                        let tmpStr = 'events/' + eventID + rallyEvent?.graphic;
-                        setGraphicLocation(tmpStr);
-                        setApproved(rallyEvent?.approved);
-                        setContactFirstName(rallyEvent?.contact?.firstName);
-                        setContactLastName(rallyEvent?.contact?.lastName);
-                        setContactEmail(rallyEvent?.contact?.email);
-                        setContactPhone(rallyEvent?.contact?.phone);
-                        setEventStatus(rallyEvent?.status);
-                        setEventMessage(rallyEvent?.message);
-                        setRepName(rallyEvent?.coordinator?.name);
-                        setRepEmail(rallyEvent?.coordinator?.email);
-                        setRepPhone(rallyEvent?.coordinator?.phone);
-                        setMealTime(rallyEvent?.meal?.startTime);
-                        setMealCost(rallyEvent?.meal?.cost);
-                        setMealCount(rallyEvent?.meal?.mealCount);
-                        setMealsServed(rallyEvent?.meal?.mealsServed);
-                        setMealMessage(rallyEvent?.meal?.message);
-                        setMealDeadline(rallyEvent?.meal?.deadline);
-                        setAttendeeCount(rallyEvent?.attendees);
-                        setRegistrationCount(rallyEvent?.registrations);
-                    }
-                });
-            }
-            if (eventType === 'leadHistorical') {
-                leadDoneRallies.forEach((rallyEvent) => {
-                    if (rallyEvent.uid === eventID) {
-                        //-----------------
-                        // convert the eventDate from number to date to display
-                        let ddbDate = rallyEvent.eventDate;
-                        const y = ddbDate.substring(0, 4);
-                        const m = ddbDate.substring(4, 6);
-                        const d = ddbDate.substring(6, 8);
-                        let smDate =
-                            y.toString() +
-                            '-' +
-                            m.toString() +
-                            '-' +
-                            d.toString();
-                        rallyEvent.eventDate = smDate;
-                        // seave the event to redux
-                        loadRally(rallyEvent);
-                        //load the useState
-                        setEventDate(rallyEvent?.eventDate);
-                        setChurchName(rallyEvent?.name);
-                        setStreet(rallyEvent?.street);
-                        setCity(rallyEvent?.city);
-                        setStateProv(rallyEvent?.stateProv);
-                        setPostalCode(rallyEvent?.postalCode);
-                        setEventStart(rallyEvent?.startTime);
-                        setEventEnd(rallyEvent?.endTime);
-                        setGraphicFileName(rallyEvent?.graphic);
-                        let tmpStr = 'events/' + eventID + rallyEvent?.graphic;
-                        setGraphicLocation(tmpStr);
-                        setApproved(rallyEvent?.approved);
-                        setContactFirstName(rallyEvent?.contact?.firstName);
-                        setContactLastName(rallyEvent?.contact?.lastName);
-                        setContactEmail(rallyEvent?.contact?.email);
-                        setContactPhone(rallyEvent?.contact?.phone);
-                        setEventStatus(rallyEvent?.status);
-                        setEventMessage(rallyEvent?.message);
-                        setRepName(rallyEvent?.coordinator?.name);
-                        setRepEmail(rallyEvent?.coordinator?.email);
-                        setRepPhone(rallyEvent?.coordinator?.phone);
-                        setMealTime(rallyEvent?.meal?.startTime);
-                        setMealCost(rallyEvent?.meal?.cost);
-                        setMealCount(rallyEvent?.meal?.mealCount);
-                        setMealsServed(rallyEvent?.meal?.mealsServed);
-                        setMealMessage(rallyEvent?.meal?.message);
-                        setMealDeadline(rallyEvent?.meal?.deadline);
-                        setAttendeeCount(rallyEvent?.attendees);
-                    }
-                });
-            }
-        }
-    };
+    // const loadEventOLD = async () => {
+    //     //get the event reference.
+    //     // if the eventID is not in state.stateRep.rally
+    //     // or state.stateRep.doneRally,
+    //     // that means that Lead is viewing. Go to the db
+    //     // and load into pate.rally
+    //     //????????????????????????????????????????????????
+    //     let inRallies = false;
+    //     let eventType = null;
+    //     if (rallies.length > 0) {
+    //         rallies.forEach((rallyEvent) => {
+    //             if (rallyEvent.uid === eventID) {
+    //                 // inRallies = true;
+    //                 eventType = 'future';
+    //             }
+    //         });
+    //     }
+    //     if (eventID === '0') {
+    //     }
+    //     //check doneRallies
+    //     if (eventType === null && doneRallies.length > 0) {
+    //         doneRallies.forEach((rallyEvent) => {
+    //             if (rallyEvent.uid === eventID) {
+    //                 // inRallies = true;
+    //                 eventType = 'historical';
+    //             }
+    //         });
+    //     }
+    //     if (eventType === null && leadRallies.length > 0) {
+    //         leadRallies.forEach((rallyEvent) => {
+    //             if (rallyEvent.uid === eventID) {
+    //                 // inRallies = true;
+    //                 eventType = 'leadFuture';
+    //             }
+    //         });
+    //     }
+    //     if (eventType === null && leadDoneRallies.length > 0) {
+    //         leadDoneRallies.forEach((rallyEvent) => {
+    //             if (rallyEvent.uid === eventID) {
+    //                 // inRallies = true;
+    //                 eventType = 'leadHistorical';
+    //             }
+    //         });
+    //     }
+    //     if (eventType === 'future' || eventType === 'historical') {
+    //         if (eventType === 'future') {
+    //             rallies.forEach((rallyEvent) => {
+    //                 if (rallyEvent.uid === eventID) {
+    //                     //-----------------
+    //                     // convert the eventDate from number to date to display
+    //                     let ddbDate = rallyEvent.eventDate;
+    //                     const y = ddbDate.substring(0, 4);
+    //                     const m = ddbDate.substring(4, 6);
+    //                     const d = ddbDate.substring(6, 8);
+    //                     let smDate =
+    //                         y.toString() +
+    //                         '-' +
+    //                         m.toString() +
+    //                         '-' +
+    //                         d.toString();
+    //                     rallyEvent.eventDate = smDate;
+    //                     // save the event to redux
+    //                     loadRally(rallyEvent);
+    //                     //load the useState
+    //                     setEventDate(rallyEvent?.eventDate);
+    //                     setChurchName(rallyEvent?.name);
+    //                     setStreet(rallyEvent?.street);
+    //                     setCity(rallyEvent?.city);
+    //                     setStateProv(rallyEvent?.stateProv);
+    //                     setPostalCode(rallyEvent?.postalCode);
+    //                     setEventStart(rallyEvent?.startTime);
+    //                     setEventEnd(rallyEvent?.endTime);
+    //                     setGraphicFileName(rallyEvent?.graphic);
+    //                     let tmpStr = 'events/' + eventID + rallyEvent?.graphic;
+    //                     setGraphicLocation(tmpStr);
+    //                     setApproved(rallyEvent?.approved);
+    //                     setContactFirstName(rallyEvent?.contact?.firstName);
+    //                     setContactLastName(rallyEvent?.contact?.lastName);
+    //                     setContactEmail(rallyEvent?.contact?.email);
+    //                     setContactPhone(rallyEvent?.contact?.phone);
+    //                     setEventStatus(rallyEvent?.status);
+    //                     setEventMessage(rallyEvent?.message);
+    //                     setRepName(rallyEvent?.coordinator?.name);
+    //                     setRepEmail(rallyEvent?.coordinator?.email);
+    //                     setRepPhone(rallyEvent?.coordinator?.phone);
+    //                     setMealTime(rallyEvent?.meal?.startTime);
+    //                     setMealCost(rallyEvent?.meal?.cost);
+    //                     setMealCount(rallyEvent?.meal?.mealCount);
+    //                     setMealsServed(rallyEvent?.meal?.mealsServed);
+    //                     setMealMessage(rallyEvent?.meal?.message);
+    //                     setMealDeadline(rallyEvent?.meal?.deadline);
+    //                     setAttendeeCount(rallyEvent?.attendees);
+    //                     setRegistrationCount(rallyEvent?.registrations);
+    //                 }
+    //             });
+    //         }
+    //         if (eventType === 'historical') {
+    //             doneRallies.forEach((rallyEvent) => {
+    //                 if (rallyEvent.uid === eventID) {
+    //                     //-----------------
+    //                     // convert the eventDate from number to date to display
+    //                     let ddbDate = rallyEvent.eventDate;
+    //                     const y = ddbDate.substring(0, 4);
+    //                     const m = ddbDate.substring(4, 6);
+    //                     const d = ddbDate.substring(6, 8);
+    //                     let smDate =
+    //                         y.toString() +
+    //                         '-' +
+    //                         m.toString() +
+    //                         '-' +
+    //                         d.toString();
+    //                     rallyEvent.eventDate = smDate;
+    //                     // save the event to redux
+    //                     loadRally(rallyEvent);
+    //                     //load the useState
+    //                     setEventDate(rallyEvent?.eventDate);
+    //                     setChurchName(rallyEvent?.name);
+    //                     setStreet(rallyEvent?.street);
+    //                     setCity(rallyEvent?.city);
+    //                     setStateProv(rallyEvent?.stateProv);
+    //                     setPostalCode(rallyEvent?.postalCode);
+    //                     setEventStart(rallyEvent?.startTime);
+    //                     setEventEnd(rallyEvent?.endTime);
+    //                     setGraphicFileName(rallyEvent?.graphic);
+    //                     let tmpStr = 'events/' + eventID + rallyEvent?.graphic;
+    //                     setGraphicLocation(tmpStr);
+    //                     setApproved(rallyEvent?.approved);
+    //                     setContactFirstName(rallyEvent?.contact?.firstName);
+    //                     setContactLastName(rallyEvent?.contact?.lastName);
+    //                     setContactEmail(rallyEvent?.contact?.email);
+    //                     setContactPhone(rallyEvent?.contact?.phone);
+    //                     setEventStatus(rallyEvent?.status);
+    //                     setEventMessage(rallyEvent?.message);
+    //                     setRepName(rallyEvent?.coordinator?.name);
+    //                     setRepEmail(rallyEvent?.coordinator?.email);
+    //                     setRepPhone(rallyEvent?.coordinator?.phone);
+    //                     setMealTime(rallyEvent?.meal?.startTime);
+    //                     setMealCost(rallyEvent?.meal?.cost);
+    //                     setMealCount(rallyEvent?.meal?.mealCount);
+    //                     setMealsServed(rallyEvent?.meal?.mealsServed);
+    //                     setMealMessage(rallyEvent?.meal?.message);
+    //                     setMealDeadline(rallyEvent?.meal?.deadline);
+    //                     setAttendeeCount(rallyEvent?.attendees);
+    //                     setRegistrationCount(rallyEvent?.registrations);
+    //                 }
+    //             });
+    //         }
+    //     } else {
+    //         // go get the rally from staterep leadRallies
+    //         if (eventType === 'leadFuture') {
+    //             leadRallies.forEach((rallyEvent) => {
+    //                 if (rallyEvent.uid === eventID) {
+    //                     //-----------------
+    //                     // convert the eventDate from number to date to display
+    //                     let ddbDate = rallyEvent.eventDate;
+    //                     const y = ddbDate.substring(0, 4);
+    //                     const m = ddbDate.substring(4, 6);
+    //                     const d = ddbDate.substring(6, 8);
+    //                     let smDate =
+    //                         y.toString() +
+    //                         '-' +
+    //                         m.toString() +
+    //                         '-' +
+    //                         d.toString();
+    //                     rallyEvent.eventDate = smDate;
+    //                     // seave the event to redux
+    //                     loadRally(rallyEvent);
+    //                     //load the useState
+    //                     setEventDate(rallyEvent?.eventDate);
+    //                     setChurchName(rallyEvent?.name);
+    //                     setStreet(rallyEvent?.street);
+    //                     setCity(rallyEvent?.city);
+    //                     setStateProv(rallyEvent?.stateProv);
+    //                     setPostalCode(rallyEvent?.postalCode);
+    //                     setEventStart(rallyEvent?.startTime);
+    //                     setEventEnd(rallyEvent?.endTime);
+    //                     setGraphicFileName(rallyEvent?.graphic);
+    //                     let tmpStr = 'events/' + eventID + rallyEvent?.graphic;
+    //                     setGraphicLocation(tmpStr);
+    //                     setApproved(rallyEvent?.approved);
+    //                     setContactFirstName(rallyEvent?.contact?.firstName);
+    //                     setContactLastName(rallyEvent?.contact?.lastName);
+    //                     setContactEmail(rallyEvent?.contact?.email);
+    //                     setContactPhone(rallyEvent?.contact?.phone);
+    //                     setEventStatus(rallyEvent?.status);
+    //                     setEventMessage(rallyEvent?.message);
+    //                     setRepName(rallyEvent?.coordinator?.name);
+    //                     setRepEmail(rallyEvent?.coordinator?.email);
+    //                     setRepPhone(rallyEvent?.coordinator?.phone);
+    //                     setMealTime(rallyEvent?.meal?.startTime);
+    //                     setMealCost(rallyEvent?.meal?.cost);
+    //                     setMealCount(rallyEvent?.meal?.mealCount);
+    //                     setMealsServed(rallyEvent?.meal?.mealsServed);
+    //                     setMealMessage(rallyEvent?.meal?.message);
+    //                     setMealDeadline(rallyEvent?.meal?.deadline);
+    //                     setAttendeeCount(rallyEvent?.attendees);
+    //                     setRegistrationCount(rallyEvent?.registrations);
+    //                 }
+    //             });
+    //         }
+    //         if (eventType === 'leadHistorical') {
+    //             leadDoneRallies.forEach((rallyEvent) => {
+    //                 if (rallyEvent.uid === eventID) {
+    //                     //-----------------
+    //                     // convert the eventDate from number to date to display
+    //                     let ddbDate = rallyEvent.eventDate;
+    //                     const y = ddbDate.substring(0, 4);
+    //                     const m = ddbDate.substring(4, 6);
+    //                     const d = ddbDate.substring(6, 8);
+    //                     let smDate =
+    //                         y.toString() +
+    //                         '-' +
+    //                         m.toString() +
+    //                         '-' +
+    //                         d.toString();
+    //                     rallyEvent.eventDate = smDate;
+    //                     // seave the event to redux
+    //                     loadRally(rallyEvent);
+    //                     //load the useState
+    //                     setEventDate(rallyEvent?.eventDate);
+    //                     setChurchName(rallyEvent?.name);
+    //                     setStreet(rallyEvent?.street);
+    //                     setCity(rallyEvent?.city);
+    //                     setStateProv(rallyEvent?.stateProv);
+    //                     setPostalCode(rallyEvent?.postalCode);
+    //                     setEventStart(rallyEvent?.startTime);
+    //                     setEventEnd(rallyEvent?.endTime);
+    //                     setGraphicFileName(rallyEvent?.graphic);
+    //                     let tmpStr = 'events/' + eventID + rallyEvent?.graphic;
+    //                     setGraphicLocation(tmpStr);
+    //                     setApproved(rallyEvent?.approved);
+    //                     setContactFirstName(rallyEvent?.contact?.firstName);
+    //                     setContactLastName(rallyEvent?.contact?.lastName);
+    //                     setContactEmail(rallyEvent?.contact?.email);
+    //                     setContactPhone(rallyEvent?.contact?.phone);
+    //                     setEventStatus(rallyEvent?.status);
+    //                     setEventMessage(rallyEvent?.message);
+    //                     setRepName(rallyEvent?.coordinator?.name);
+    //                     setRepEmail(rallyEvent?.coordinator?.email);
+    //                     setRepPhone(rallyEvent?.coordinator?.phone);
+    //                     setMealTime(rallyEvent?.meal?.startTime);
+    //                     setMealCost(rallyEvent?.meal?.cost);
+    //                     setMealCount(rallyEvent?.meal?.mealCount);
+    //                     setMealsServed(rallyEvent?.meal?.mealsServed);
+    //                     setMealMessage(rallyEvent?.meal?.message);
+    //                     setMealDeadline(rallyEvent?.meal?.deadline);
+    //                     setAttendeeCount(rallyEvent?.attendees);
+    //                 }
+    //             });
+    //         }
+    //     }
+    // };
     // const loadRegistrations = async () => {
     //     //---------------------------------------------------
     //     //this function gets the registratoins for an event
@@ -731,9 +736,9 @@ const Serve = ({
 
         return '';
     };
-    const handleValueChange = (newValue) => {
-        setMealsServed(newValue);
-    };
+    // const handleValueChange = (newValue) => {
+    //     setMealsServed(newValue);
+    // };
     function handleEventStatusChange(event) {
         setEventStatus(event.target.value);
     }
@@ -741,6 +746,7 @@ const Serve = ({
         setMealCost(event.target.value);
     };
     const handleSubmitClick = async (event) => {
+        window.alert('handleSubmitClick not implemented yet');
         event.preventDefault();
         setSpinner();
         //get rally object to update
@@ -853,10 +859,10 @@ const Serve = ({
         clearSpinner();
         history.push('/serve');
     };
-    const handleStateChange = ({ newValue }) => {
-        console.log('stateProv:', newValue);
-        setStateProv(newValue);
-    };
+    // const handleStateChange = ({ newValue }) => {
+    //     console.log('stateProv:', newValue);
+    //     setStateProv(newValue);
+    // };
     const handleChange = (e) => {
         // let value = null;
         // let name = null;
@@ -963,13 +969,15 @@ const Serve = ({
                 break;
         }
     };
-    const handleCancelClick = () => {
-        history.push('/serve');
-    };
+    // const handleCancelClick = () => {
+    //     history.push('/serve');
+    // };
     const handleDeleteRequest = () => {
         setModalDeleteConfirmIsVisible(true);
     };
     const handleDeleteConfirm = () => {
+        window.alert('DELETE NOT IMPLEMENTED YET');
+        return;
         setModalDeleteConfirmIsVisible(false);
         //remove the rally from the database...
         async function updateDb() {

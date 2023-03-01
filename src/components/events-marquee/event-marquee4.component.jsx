@@ -20,7 +20,6 @@ const EventMarquee3 = ({
     useEffect(() => {
         //see if the current user is already registred.
         if (currentUser?.registrations?.items.length > 0) {
-            console.log('we have registrations');
             const hit = currentUser.registrations.items.find(
                 (r) => r.event.id === event.id
             );

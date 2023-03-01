@@ -1,5 +1,8 @@
 import { PateActionTypes } from './pate.types';
-import { updateUserWithProfile } from './pate.utils';
+import {
+    updateUserWithProfile,
+    removeRegistrationFromRally,
+} from './pate.utils';
 const INITIAL_STATE = {
     showSpinner: false,
     rally: null,
@@ -30,6 +33,14 @@ const pateReducer = (state = INITIAL_STATE, action = null) => {
             return {
                 ...state,
                 showSpinner: false,
+            };
+        case PateActionTypes.REMOVE_PATE_RALLY_REGISTRATION:
+            return {
+                ...state,
+                currentUser: removeRegistrationFromRally(
+                    state.currentUser,
+                    action.payload
+                ),
             };
         case PateActionTypes.SET_RALLY:
             return {
