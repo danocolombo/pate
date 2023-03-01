@@ -25,12 +25,12 @@ import {
 } from '@mui/material';
 import PhoneInput from 'react-phone-input-2';
 import Spinner from '../spinner/Spinner';
-import { removeRegistrationFromCurrentUser } from '../../redux/user/user.actions';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import {
     updateCurrentUser,
     addRegistrationToCurrentUser,
     updateRegistrationAndEventNumbersForCurrentUser,
+    removeRegistrationFromCurrentUser,
 } from '../../redux/user/user.actions';
 import { removePateRallyRegistration } from '../../redux/pate/pate.actions';
 import { deleteRegistrationProvider } from '../../providers/registrations.provider';
@@ -60,6 +60,7 @@ function Registrar({
     addRegistrationToCurrentUser,
     updateRegistrationAndEventNumbersForCurrentUser,
     removePateRallyRegistration,
+    removeRegistrationFromCurrentUser,
     clearSpinner,
     pateSystem,
 }) {
@@ -347,7 +348,14 @@ function Registrar({
         //  2. recuce pate.rally.plannedMealCount (if applicable)
         //  3. reduct pate.rally.meal.plannedCount (if applicable);
         //  4. remove registration from pate.rally.registrations.items[]
+        //  5. if registration.attendee.id == currentUser.id, then reduce currentUser.regisrations.items[]
+        //
         removePateRallyRegistration(registration);
+        if (registration.attendeeId === currentUser.id) {
+            //      REDDUCE currentUser info
+            //      remove registration from currentUser.registrations.items
+            removeRegistrationFromCurrentUser(registration.id);
+        }
         clearSpinner();
         setIsNotifyRegistrarModalVisible(false);
         history.goBack();
@@ -1263,6 +1271,8 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch(updateRegistrationAndEventNumbersForCurrentUser(payload)),
     removePateRallyRegistration: (payload) =>
         dispatch(removePateRallyRegistration(payload)),
+    removeRegistrationFromCurrentUser: (payload) =>
+        dispatch(removeRegistrationFromCurrentUser(payload)),
 });
 const mapStateToProps = (state) => ({
     currentUser: state.user.currentUser,

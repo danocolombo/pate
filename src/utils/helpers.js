@@ -40,6 +40,15 @@ export async function getUniqueId() {
     return digest;
 }
 export async function getToday() {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = (today.getMonth() + 1).toString().padStart(2, '0');
+    const day = today.getDate().toString().padStart(2, '0');
+    const todays_date = `${year}-${month}-${day}`;
+
+    return todays_date;
+}
+export async function getTodayOLD_ONE() {
     var d = new Date();
     //- this was in the function originally, but it does not give today
     // d.setDate(d.getDate() - 1); // date - one
