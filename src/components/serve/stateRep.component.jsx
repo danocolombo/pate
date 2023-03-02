@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import StateRepRally from './stateRep-rally.component';
-
+import { Stack, Button } from '@mui/material';
 import './serve.styles.scss';
 const StateRep = ({ currentUser, rallies, doneRallies }) => {
     const history = useHistory();
@@ -33,12 +33,15 @@ const StateRep = ({ currentUser, rallies, doneRallies }) => {
                 </>
             ) : null}
             <div className='serve-component__button-wrapper'>
-                <button
-                    className='serve-component__new-button'
-                    onClick={handleNewRequest}
-                >
-                    Add New Rally
-                </button>
+                <Stack direction='row' justifyContent='center'>
+                    <Button
+                        variant='contained'
+                        onClick={handleNewRequest}
+                        sx={{ backgroundColor: 'primary', margin: 2 }}
+                    >
+                        Add New Rally
+                    </Button>
+                </Stack>
             </div>
         </>
     );
