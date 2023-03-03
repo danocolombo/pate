@@ -50,6 +50,7 @@ import { printObject, createAWSUniqueID } from '../../utils/helpers';
 import { US_STATES, NUMBER_SELECT_OPTIONS_0_10 } from '../../constants/pate';
 import './serveEvent.styles.scss';
 import useStyles from './serve-event.styles';
+import { ChurchSharp } from '@mui/icons-material';
 // import { getEventRegistrations } from './server-event.actions';
 const Serve = ({
     setSpinner,
@@ -794,10 +795,49 @@ const Serve = ({
         return '';
     };
     const validateEventStatus = (statusValue) => {
+        //      =================================================
+        //      validation of status to ensure required fields
+        //      are provided...
         console.log(statusValue);
         if (statusValue === 'review') {
+            let errorFields = [];
             // these are the required fields if trying to send for review
-            return 'The details of the event need to be completed before submitting for review.';
+            if (
+                churchNameError !== '' ||
+                streetError !== '' ||
+                cityError !== '' ||
+                postalCodeError !== ''
+            ) {
+                return 'Please fix errors...';
+            }
+            if (contactFirstName.length < 2) {
+                errorFields.push('Contact First Name');
+            }
+            if (contactLastName.length < 2) {
+                errorFields.push('Contact Last Name');
+            }
+            if (contactLastName.length < 2) {
+                errorFields.push('Contact Last Name');
+            }
+            if (contactPhone.length < 10) {
+                errorFields.push('Contact Phone Number');
+            }
+            if (contactEmail.length < 1) {
+                errorFields.push('Contact email is required');
+            }
+            if (!eventDate) {
+                errorFields.push('Event Date is required');
+            }
+            if (!eventStart) {
+                errorFields.push('Start time is require');
+            }
+            if (!eventEnd) {
+                errorFields.push('End time is require');
+            }
+            if (errorFields.length > 0) {
+                return 'Please complete the form';
+            } else {
+            }
         }
 
         return '';
