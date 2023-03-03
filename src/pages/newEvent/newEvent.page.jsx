@@ -1,5 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { connect } from 'react-redux';
+import { API } from 'aws-amplify';
+import * as mutations from '../../pateGraphql/mutations';
+
 import { useHistory } from 'react-router-dom';
 import { compose } from 'redux';
 import { withRouter } from 'react-router';
@@ -24,6 +27,7 @@ import { US_STATES } from '../../constants/pate';
 import Spinner from '../../components/spinner/Spinner';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import { loadRally } from '../../redux/pate/pate.actions';
+import { createAWSUniqueID, createEventCompKey } from '../../utils/helpers';
 import { updateStateRepRally } from '../../redux/stateRep/stateRep.actions';
 import './newEvent.styles.scss';
 import useStyles from './new-event.styles';
@@ -82,7 +86,9 @@ const Serve = ({
         //++++++++++++++++++++++++++++++++++++++++
         // useEffect on load
         //++++++++++++++++++++++++++++++++++++++++
-        if (!currentUser.isLoggedIn) history.push('/');
+        // if (!currentUser?.authSession?.accessToken?.jwToken) {
+        //     history.push('/');
+        // }
         //get the reference to the current event and load to useState
     }, []);
 
@@ -182,45 +188,189 @@ const Serve = ({
     //    =======================================
     //    handles...
     //    ---------------------------------------
-    const handleAddClick = (event) => {
-        //=====================================
-        // need to make sure required fields
-        // are provided.
-        //=====================================
-        let fieldMessage = {};
-        let okayToProceed = true;
-        if (churchName?.length < 2) {
-            okayToProceed = false;
-            fieldMessage.Church_Name = 'is required';
+    const handleAddClick = async (event) => {
+        //    several actions necessary
+        //    0. generate AWSId for event
+        let eventUniqueID = createAWSUniqueID();
+        let resultantEvent = {};
+        //    1. addEventLocation (use generated event.id as events[0])
+        let eventLocationId = '';
+        let eventLocationError = null;
+        try {
+            const inputVariables = {
+                street: street,
+                city: city,
+                stateProv: stateProv,
+                postalCode: postalCode,
+            };
+            const createEventLocationResults = await API.graphql({
+                query: mutations.createEventLocation,
+                variables: { input: inputVariables },
+            });
+            if (createEventLocationResults?.data?.createEventLocation != null) {
+                eventLocationId =
+                    createEventLocationResults.data.createEventLocation.id;
+            } else {
+                eventLocationError = {
+                    errorCode: 401,
+                    message: 'createEventLocation failure (RPP:212)',
+                    data: createEventLocationResults,
+                };
+            }
+        } catch (error) {
+            eventLocationError = {
+                errorCode: 404,
+                message: 'createEventLocation try/catch failure (RPP:219)',
+                data: error,
+            };
         }
-        if (street?.length < 2) {
-            okayToProceed = false;
-            fieldMessage.Location_Street = 'is required';
+        //    2. addEventContact (use generated event.id as events[0])
+        let eventContactId = '';
+        let eventContactError = null;
+        try {
+            const inputVariables = {
+                firstName: contactFirstName,
+                lastName: contactLastName,
+                email: contactEmail,
+                phone: contactPhone,
+            };
+            const createEventContactResults = await API.graphql({
+                query: mutations.createEventContact,
+                variables: { input: inputVariables },
+            });
+            if (createEventContactResults?.data?.createEventContact != null) {
+                eventContactId =
+                    createEventContactResults.data.createEventContact.id;
+            } else {
+                eventContactError = {
+                    errorCode: 401,
+                    message: 'createEventContact failure (RPP:244)',
+                    data: createEventContactResults,
+                };
+            }
+        } catch (error) {
+            eventContactError = {
+                errorCode: 404,
+                message: 'createEventContact try/catch failure (RPP:251)',
+                data: error,
+            };
         }
-        if (city?.length < 2) {
-            okayToProceed = false;
-            fieldMessage.Location_City = 'is required';
+        //    3. addMeal (use generated event.id as event)
+        let mealId = '';
+        let mealError = null;
+        if (
+            mealTime !== '' ||
+            mealCost !== '' ||
+            mealMessage !== '' ||
+            mealDeadline !== ''
+        ) {
+            try {
+                const inputVariables = {
+                    mealEventId: eventUniqueID,
+                    startTime: mealTime,
+                    deadline: mealDeadline,
+                    cost: mealCost,
+                    actualCount: 0,
+                    plannedCount: 0,
+                    message: mealMessage,
+                };
+                const createMealResults = await API.graphql({
+                    query: mutations.createMeal,
+                    variables: { input: inputVariables },
+                });
+                if (createMealResults?.data?.createMeal != null) {
+                    mealId = createMealResults.data.createMeal.id;
+                } else {
+                    mealError = {
+                        errorCode: 401,
+                        message: 'createMeal failure (RPP:278)',
+                        data: createMealResults,
+                    };
+                }
+            } catch (error) {
+                mealError = {
+                    errorCode: 404,
+                    message: 'createMeal try/catch failure (RPP:285)',
+                    data: error,
+                };
+            }
         }
-        // if (stateProv?.length < 2) {
-        //     okayToProceed = false;
-        //     fieldMessage.Location_State = 'is required';
-        // }
-        if (postalCode?.length < 2) {
-            okayToProceed = false;
-            fieldMessage.Location_PostalCode = 'is required';
+        //    4. addEvent (use generated event.id and...
+        //      eventLocation.id (#1 above) for event.location
+        //      eventContact.id (#2 above) for event.contact
+        //      currentUser.defaultDivision.id for event.division
+        //      current
+        let createEventError = {};
+        if (
+            eventLocationError === null &&
+            eventContactError === null &&
+            mealError === null
+        ) {
+            // no errors add event
+            try {
+                //create eventCompKey
+                const eck = await createEventCompKey(
+                    eventDate,
+                    stateProv,
+                    eventUniqueID,
+                    currentUser.id
+                );
+
+                const inputVariables = {
+                    id: eventUniqueID,
+                    status: 'draft',
+                    userEventsId: currentUser.id,
+                    divisionEventsId: currentUser.defaultDivision.id,
+                    eventContactEventsId: eventContactId || null,
+                    eventLocationEventsId: eventLocationId || null,
+                    eventMealId: mealId || null,
+                    eventDate: eventDate || '1900-01-01',
+                    startTime: eventStart || '00:00',
+                    endTime: eventEnd || '00:00',
+                    name: churchName,
+                    eventCompKey: eck,
+                    message: eventMessage,
+                    graphic: '',
+                    plannedCount: 0,
+                    actualCount: 0,
+                    mealPlannedCount: 0,
+                    mealActualCount: 0,
+                };
+                const createEventResults = await API.graphql({
+                    query: mutations.createEvent,
+                    variables: { input: inputVariables },
+                });
+                if (createEventResults?.data?.createEvent != null) {
+                    resultantEvent = createEventResults.data.createEvent;
+                } else {
+                    createEventError = {
+                        errorCode: 401,
+                        message: 'createEvent failure (RPP:341)',
+                        data: createEventResults,
+                    };
+                }
+            } catch (error) {
+                createEventError = {
+                    errorCode: 404,
+                    message: 'createEvent try/catch failure (RPP:348)',
+                    data: error,
+                };
+            }
+        } else {
+            console.log('NEP:354 Error');
+            return;
         }
-        if (contactName?.length < 2) {
-            okayToProceed = false;
-            fieldMessage.Contact_Name = 'is required';
+        let DANO = true;
+        if (DANO) {
+            return;
         }
-        if (contactPhone?.length < 2) {
-            okayToProceed = false;
-            fieldMessage.Contact_Phone = 'is required';
-        }
-        if (contactEmail?.length < 2) {
-            okayToProceed = false;
-            fieldMessage.Contact_Email = 'is required';
-        }
+        //    NEED TO UPDATE REDUX
+        //****************************** */
+        //    ----------------------------
+        //    check if the EventLocation is
+        //    already in the system.
+        //    If true, use as location for Event
+        //todo-gql - add in the future.
 
         // event.preventDefault();
         //default rally

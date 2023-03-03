@@ -54,7 +54,9 @@ const EventMarquee3 = ({
                     component='h2'
                     align='center'
                 >
-                    {prettyDate(event.eventDate)}
+                    {event?.eventDate === '1900-01-01'
+                        ? 'TBD'
+                        : event.eventDate}
                 </Typography>
             </Box>
             <CardContent sx={{ padding: '16px' }}>

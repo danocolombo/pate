@@ -43,7 +43,9 @@ const StateRepRally = ({ rally }) => {
                                         component='h2'
                                         align='center'
                                     >
-                                        {prettyDate(rally.eventDate)}
+                                        {rally.eventDate === '1900-01-01'
+                                            ? 'TBD'
+                                            : prettyDate(rally.eventDate)}
                                     </Typography>
                                 </Box>
                                 <CardContent sx={{ padding: '16px' }}>

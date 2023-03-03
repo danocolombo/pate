@@ -204,14 +204,17 @@ export function prettyDate(strDate) {
     if (!strDate) {
         return;
     }
-    //const dateStr = '2023-03-04';
+    // const dateString = '2023-03-04';
     const date = new Date(strDate);
-
-    const options = { month: 'long', day: 'numeric' };
-    const formattedDate =
-        date.toLocaleDateString('en-US', options) + ', ' + date.getFullYear();
+    const options = {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+        timeZone: 'UTC',
+    };
+    const formattedDate = date.toLocaleDateString('en-US', options);
+    // console.log(formattedDate); // Output: March 4, 2023
     return formattedDate;
-    // console.log(formattedDate); // March 4th, 2023
 }
 export function prettyTime(strTime) {
     // var time = '12:30:00-05:00';

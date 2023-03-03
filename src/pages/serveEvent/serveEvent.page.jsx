@@ -78,6 +78,7 @@ const Serve = ({
         useState(false);
     const refApprovalCheckbox = useRef(null);
     // const [plan, setPlan] = useState([]);
+    const [status, setStatus] = useState('');
     const [churchName, setChurchName] = useState('');
     const [churchNameError, setChurchNameError] = useState('');
     const [street, setStreet] = useState('');
@@ -746,7 +747,65 @@ const Serve = ({
         setMealCost(event.target.value);
     };
     const handleSubmitClick = async (event) => {
-        window.alert('handleSubmitClick not implemented yet');
+        // check if contact has changed
+        if (
+            contactFirstName !== rallyEvent.contact.firstName ||
+            contactLastName !== rallyEvent.contact.lastName ||
+            contactEmail !== rallyEvent.contact.email ||
+            contactPhone !== rallyEvent.contact.phone
+        ) {
+            console.log('contact chagned, need to update');
+        }
+        // check if location has changed
+        if (
+            street !== rallyEvent.location.street ||
+            city !== rallyEvent.location.city ||
+            stateProv !== rallyEvent.location.stateProv ||
+            postalCode !== rallyEvent.location.postalCode
+        ) {
+            console.log('location chagned, need to update');
+        }
+        // check if meal has changed
+        // rallyEvent.meal may be null, if so, see if any new data
+        // is added, if so, update.
+        // if rallyEvent.meal is NOT null, need to check the values for
+        // for change
+        if (rallyEvent.meal === null) {
+            console.log('meal is null');
+            // check if there are any new values
+        } else {
+            console.log('meal is not null, check values');
+        }
+
+        // check if event has changed
+        if (
+            eventStatus !== rallyEvent.status ||
+            churchName !== rallyEvent.name ||
+            eventDate !== rallyEvent.eventDate ||
+            eventStart !== rallyEvent.startTime ||
+            eventEnd !== rallyEvent.endTime ||
+            graphicFileName !== rallyEvent.graphic ||
+            eventMessage !== rallyEvent.message ||
+            actualCount !== rallyEvent.actualCount ||
+            plannedCount !== rallyEvent.plannedCount ||
+            mealCount !== rallyEvent.mealPlannedCount ||
+            mealsServed !== rallyEvent.mealPlannedCount
+        ) {
+            console.log('event chagned, need to update');
+            console.log(eventStatus, ' vs ', rallyEvent.status);
+            console.log(churchName, ' vs ', rallyEvent.name);
+            console.log(eventDate, ' vs ', rallyEvent.eventDate);
+            console.log(eventStart, ' vs ', rallyEvent.startTime);
+            console.log(eventEnd, ' vs ', rallyEvent.endTime);
+            console.log(graphicFileName, ' vs ', rallyEvent.graphic);
+            console.log(eventMessage, ' vs ', rallyEvent.message);
+            console.log(actualCount, ' vs ', rallyEvent.actualCount);
+            console.log(plannedCount, ' vs ', rallyEvent.plannedCount);
+            console.log(mealCount, ' vs ', rallyEvent.mealPlannedCount);
+            console.log(mealsServed, ' vs ', rallyEvent.mealPlannedCount);
+        }
+    };
+    const handleSubmitClickOLD = async (event) => {
         event.preventDefault();
         setSpinner();
         //get rally object to update
