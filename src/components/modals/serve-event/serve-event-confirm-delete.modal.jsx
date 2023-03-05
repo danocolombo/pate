@@ -1,5 +1,5 @@
 import React from 'react';
-import './serve-event-confirm-delete.styles.scss';
+import './serve.styles.scss';
 const ConfirmDelete = ({ confirmDelete, declineDelete }) => {
     return (
         <div>

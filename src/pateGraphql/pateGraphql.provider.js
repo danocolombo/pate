@@ -292,3 +292,147 @@ export async function updateMealNumbers(regRequest, rally) {
         return { statusCode: 400, data: 'updateEvent: ERROR', error: err };
     }
 }
+export async function updateGQLEvent(payload) {
+    // payload should be the variables to update
+
+    try {
+        let DANO = false;
+        if (DANO) {
+            console.log('updateGQLEvent');
+            printObject('payload:\n', payload);
+            return;
+        }
+
+        const eventUpdateResults = await API.graphql({
+            query: mutations.updateEvent,
+            variables: { input: payload },
+        });
+        let returnValue = {};
+        if (eventUpdateResults.data.updateEvent.id) {
+            returnValue = {
+                statusCode: 200,
+                data: eventUpdateResults,
+            };
+        } else {
+            returnValue = {
+                statusCode: 401,
+                data: eventUpdateResults,
+            };
+        }
+        return returnValue;
+    } catch (e) {
+        let returnValue = { statusCode: 400, data: 'error', error: e };
+        return returnValue;
+    }
+}
+export async function updateGQLEventLocation(payload) {
+    // payload should be the variables to update
+
+    try {
+        let DANO = false;
+        if (DANO) {
+            console.log('updateGQLEvent');
+            printObject('payload:\n', payload);
+            return;
+        }
+
+        const eventLocationUpdateResults = await API.graphql({
+            query: mutations.updateEventLocation,
+            variables: { input: payload },
+        });
+        let returnValue = {};
+        if (eventLocationUpdateResults.data.updateEventLocation.id) {
+            returnValue = {
+                statusCode: 200,
+                data: eventLocationUpdateResults,
+            };
+        } else {
+            returnValue = {
+                statusCode: 401,
+                data: eventLocationUpdateResults,
+            };
+        }
+        return returnValue;
+    } catch (e) {
+        let returnValue = { statusCode: 400, data: 'error', error: e };
+        return returnValue;
+    }
+}
+export async function updateGQLMeal(payload) {
+    // payload should be the variables to update
+
+    try {
+        const mealUpdateResults = await API.graphql({
+            query: mutations.updateMeal,
+            variables: { input: payload },
+        });
+        let returnValue = {};
+        if (mealUpdateResults.data.updateMeal.id) {
+            returnValue = {
+                statusCode: 200,
+                data: mealUpdateResults,
+            };
+        } else {
+            returnValue = {
+                statusCode: 401,
+                data: mealUpdateResults,
+            };
+        }
+        return returnValue;
+    } catch (e) {
+        let returnValue = { statusCode: 400, data: 'error', error: e };
+        return returnValue;
+    }
+}
+export async function insertGQLMeal(payload) {
+    // payload should be the variables to update
+
+    try {
+        const mealCreateResults = await API.graphql({
+            query: mutations.createMeal,
+            variables: { input: payload },
+        });
+        let returnValue = {};
+        if (mealCreateResults.data.createMeal.id) {
+            returnValue = {
+                statusCode: 200,
+                data: mealCreateResults,
+            };
+        } else {
+            returnValue = {
+                statusCode: 401,
+                data: mealCreateResults,
+            };
+        }
+        return returnValue;
+    } catch (e) {
+        let returnValue = { statusCode: 400, data: 'error', error: e };
+        return returnValue;
+    }
+}
+export async function updateGQLEventContact(payload) {
+    // payload should be the variables to update
+
+    try {
+        const contactUpdateResults = await API.graphql({
+            query: mutations.updateEventContact,
+            variables: { input: payload },
+        });
+        let returnValue = {};
+        if (contactUpdateResults.data.updateEventContact.id) {
+            returnValue = {
+                statusCode: 200,
+                data: contactUpdateResults,
+            };
+        } else {
+            returnValue = {
+                statusCode: 401,
+                data: contactUpdateResults,
+            };
+        }
+        return returnValue;
+    } catch (e) {
+        let returnValue = { statusCode: 400, data: 'error', error: e };
+        return returnValue;
+    }
+}

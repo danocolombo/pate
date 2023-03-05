@@ -1,0 +1,110 @@
+.modal-wrapper {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50vw;
+    /* height: 30vw; */
+    z-index: 3;
+     background-color: #fff; 
+    /* padding: 10px; */
+    /* border: black solid 1px; */
+}
+.modal__success__banner {
+    background-color: #48b644;
+    color: white;
+    text-align: center;
+    padding: 3px 0px;
+    border-bottom: black solid 1px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.new-event-confirm-delete__wrapper {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 60vw;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    // margin: 20px;
+    border: black solid 1px;
+    border-radius: 5px;
+    background-color: lightgray;
+}
+.new-event-confirm-delete__header {
+    background-color: red;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    padding: 3px 0px;
+    border-bottom: black solid 1px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.serve__success__header {
+    background-color: green;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    padding: 3px 0px;
+    // border-bottom: black solid 1px;
+    // border-top-left-radius: 5px;
+    // border-top-right-radius: 5px;
+}
+.new-event-confirm-delete__message {
+    padding: 10px;
+    text-align: center;
+}
+.new-event-confirm-delete__button-wrapper {
+    text-align: center;
+}
+.new-event-confirm-delete__yes-button {
+    background-color: green;
+    color: white;
+    padding: 2px 5px;
+    margin: 5px 15px;
+}
+.new-event-confirm-delete__no-button {
+    background-color: red;
+    color: white;
+    padding: 2px 5px;
+    margin: 5px 15px 15px 15px;
+}
+.success-message__wrapper {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 60vw;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    // margin: 20px;
+    border: black solid 1px;
+    border-radius: 5px;
+    background-color: lightgray;
+}
+
+.success-message__header {
+    background-color: #4484CE;
+    color: white;
+    text-align: center;
+    padding: 3px 0px;
+    border-bottom: black solid 1px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.success-message__message {
+    padding: 10px;
+    text-align: center;
+}
+
+.success-message__button-wrapper {
+    text-align: center;
+}
+
+.success-message__ok-button {
+    padding: 2px 5px;
+    margin: 5px 0px;
+}
