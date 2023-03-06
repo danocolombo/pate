@@ -132,7 +132,7 @@ const Serve = ({
     // console.log('1. ID:  ', createAWSUniqueID());
     // console.log('1. ID:  ', createAWSUniqueID());
     // console.log('1. ID:  ', createAWSUniqueID());
-    if (!currentUser?.authSession?.accessToken?.awtToken) history.push("/");
+    if (!currentUser?.authSession?.accessToken?.jwtToken) history.push("/");
     //get the reference to the current event and load to useState
     if (match?.params?.id) {
       clearEventRegistrations();

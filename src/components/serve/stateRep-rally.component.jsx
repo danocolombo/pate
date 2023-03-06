@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { Card, Stack, Box, Typography, CardContent } from "@mui/material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import ModeIcon from "@mui/icons-material/Mode";
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { alpha } from "@mui/system";
 import { prettyDate, printObject } from "../../utils/helpers";
 import "./serve.styles.scss";
@@ -13,6 +15,7 @@ const StateRepRally = ({ rally }) => {
   const [hEnd, setHEnd] = useState("#ccc");
   const [complete, setComplete] = useState(false);
   const [attention, setAttention] = useState(false);
+  const [headerIcon, setHeaderIcon] = useState(null);
   useEffect(() => {
     // determine the colors for the event
     const eventStartDate = new Date(rally.eventDate);
@@ -24,6 +27,7 @@ const StateRepRally = ({ rally }) => {
       setHStart("lightgreen");
       setHEnd("#228B22");
       setComplete(true);
+
       if (
         rally.actualCount < 1 ||
         (rally.mealPlannedCount > 0 && rally.mealActualCount < 1)
@@ -31,14 +35,35 @@ const StateRepRally = ({ rally }) => {
         setAttention(true);
       }
     } else {
-      // event is in the past
+      // event is in the future
       setBStart("#4484CE"); // or any other color
       setBEnd("#ccc");
       setHStart("#ccc"); // or any other color
       setHEnd("#4484CE");
       setComplete(false);
+    }
 
-      printObject("rally:\n", rally);
+    if (!complete && rally.status === "draft") {
+      setHeaderIcon(
+        <ModeIcon
+          sx={{
+            color: "black",
+            marginRight: "auto",
+            marginLeft: "5px",
+          }}
+        />
+      );
+    }
+    if (!complete && rally.status === "review") {
+      setHeaderIcon(
+        <RemoveRedEyeIcon
+          sx={{
+            color: "black",
+            marginRight: "auto",
+            marginLeft: "5px",
+          }}
+        />
+      );
     }
   }, []);
 
@@ -70,16 +95,15 @@ const StateRepRally = ({ rally }) => {
                     alignItems: "center",
                   }}
                 >
-                  {complete && (
-                    <CheckCircleOutlineIcon
-                      visibility="hidden"
-                      sx={{
-                        color: "green",
-                        marginRight: "auto",
-                        marginLeft: "5px",
-                      }}
-                    />
-                  )}
+                  <CheckCircleOutlineIcon
+                    visibility="hidden"
+                    sx={{
+                      color: "green",
+                      marginRight: "auto",
+                      marginLeft: "5px",
+                    }}
+                  />
+
                   <Typography
                     variant="h6"
                     color={complete ? "white" : "black"}
@@ -91,6 +115,7 @@ const StateRepRally = ({ rally }) => {
                       ? "TBD"
                       : prettyDate(rally.eventDate)}
                   </Typography>
+                  {!complete && headerIcon}
                   {complete && (
                     <CheckCircleOutlineIcon
                       sx={{
