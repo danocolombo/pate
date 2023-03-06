@@ -156,6 +156,10 @@ export const getRepRallies = /* GraphQL */ `
             endTime
             status
             name
+            actualCount
+            plannedCount
+            mealActualCount
+            mealPlannedCount
             location {
               street
               city
