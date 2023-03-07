@@ -4,7 +4,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 50vw;
-    /* height: 30vw; */
+    // height: 100vw;
     z-index: 3;
      background-color: #fff; 
     /* padding: 10px; */
@@ -13,6 +13,15 @@
 .modal__success__banner {
     background-color: #48b644;
     color: white;
+    text-align: center;
+    padding: 3px 0px;
+    border-bottom: black solid 1px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.modal__warning__banner {
+    background-color: yellow;
+    color: black;
     text-align: center;
     padding: 3px 0px;
     border-bottom: black solid 1px;

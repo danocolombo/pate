@@ -55,6 +55,7 @@
 .landing {
     position: relative;
     background: url('./assets/background.jpg') no-repeat center center/cover;
+    background-color: brown;
     height: 100vh;
 }
 .alert {

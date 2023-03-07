@@ -1,32 +1,57 @@
-import React from 'react';
-import './serve.styles.scss';
-const ConfirmDelete = ({ confirmDelete, declineDelete }) => {
-    return (
-        <div>
-            <div className='new-event-confirm-delete__wrapper'>
-                <div className='new-event-confirm-delete__header'>
-                    CONFIRM DELETION
-                </div>
-                <div className='new-event-confirm-delete__message'>
-                    Are you sure you want to delete this rally?
-                </div>
-                <div className='new-event-confirm-delete__button-wrapper'>
-                    <button
-                        className='new-event-confirm-delete__yes-button'
-                        onClick={confirmDelete}
-                    >
-                        YES
-                    </button>
-                    <button
-                        className='new-event-confirm-delete__no-button'
-                        onClick={declineDelete}
-                    >
-                        NO
-                    </button>
-                </div>
-            </div>
+import React from "react";
+import "./serve.styles.scss";
+import { Typography, Button, Stack } from "@mui/material";
+const ConfirmDeleteModal = ({
+  isOpened = true,
+  children,
+  onClose,
+  onConfirm,
+}) => {
+  if (!isOpened) {
+    return null;
+  }
+  return (
+    <div>
+      <div className="modal-wrapper">
+        <div className="modal__warning__banner">
+          <Typography variant="h5">WARNING</Typography>
         </div>
-    );
+        <Stack direction="row" align="center">
+          <Typography variant="h6" style={{ margin: "10px" }}>
+            Please confirm you want to delete this event.
+          </Typography>
+        </Stack>
+        <Stack>
+          <Typography variant="h6">{children}</Typography>
+        </Stack>
+        <Stack direction="row" justifyContent="center">
+          <Button
+            variant="contained"
+            onClick={onConfirm}
+            sx={{
+              backgroundColor: "red",
+              margin: 2,
+              minWidth: "150px",
+            }}
+          >
+            YES, Delete
+          </Button>
+          <Button
+            variant="contained"
+            onClick={onClose}
+            sx={{
+              backgroundColor: "grey",
+              color: "white",
+              margin: 2,
+              minWidth: "150px",
+            }}
+          >
+            No, Cancel
+          </Button>
+        </Stack>
+      </div>
+    </div>
+  );
 };
 
-export default ConfirmDelete;
+export default ConfirmDeleteModal;

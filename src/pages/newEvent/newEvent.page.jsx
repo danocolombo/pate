@@ -487,7 +487,7 @@ const Serve = ({
                     borderRadius: 1, // sets the border radius
                   },
                 }}
-                inputLabelProps={{
+                InputLabelProps={{
                   shrink: true,
                   style: { paddingBottom: "0px" },
                 }}
@@ -520,7 +520,7 @@ const Serve = ({
                     borderRadius: 1, // sets the border radius
                   },
                 }}
-                inputLabelProps={{
+                InputLabelProps={{
                   shrink: true,
                   style: { paddingBottom: "0px" },
                 }}
@@ -572,7 +572,7 @@ const Serve = ({
                       borderRadius: 1, // sets the border radius
                     },
                   }}
-                  inputLabelProps={{
+                  InputLabelProps={{
                     shrink: true,
                     style: {
                       paddingBottom: "0px",
@@ -624,7 +624,7 @@ const Serve = ({
                       borderRadius: 1, // sets the border radius
                     },
                   }}
-                  inputLabelProps={{
+                  InputLabelProps={{
                     shrink: true,
                     style: { paddingBottom: "0px" },
                   }}
@@ -659,7 +659,7 @@ const Serve = ({
                       borderRadius: 1, // sets the border radius
                     },
                   }}
-                  inputLabelProps={{
+                  InputLabelProps={{
                     shrink: true,
                     style: { paddingBottom: "0px" },
                   }}

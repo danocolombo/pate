@@ -43,8 +43,13 @@ import {
   insertGQLMeal,
   updateGQLMeal,
   updateGQLEventContact,
+  deleteEventLocation,
+  deleteEventContact,
+  deleteEvent,
+  deleteMeal,
 } from "../../pateGraphql/pateGraphql.provider";
 import EventUpdateModal from "../../components/modals/serve-event/serve-event-update.modal";
+import ConfirmDeleteModal from "../../components/modals/serve-event/serve-event-confirm-delete.modal";
 import { printObject, createAWSUniqueID } from "../../utils/helpers";
 import { US_STATES } from "../../constants/pate";
 import "./serveEvent.styles.scss";
@@ -118,6 +123,10 @@ const Serve = ({
     useState(false);
   const [isEventUpdatedModalVisible, setIsEventUpdatedModalVisible] =
     useState(false);
+  const [
+    isEventDeleteConfirmModalVisible,
+    setIsEventDeleteConfirmModalVisible,
+  ] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const eventOptions = [];
   const history = useHistory();
@@ -180,6 +189,14 @@ const Serve = ({
     }
     // clearSpinner();
   }, []);
+  useEffect(() => {
+    // -------------------------------------
+    // this is to scroll to the top of the
+    // page when modal is displayed
+    if (isEventDeleteConfirmModalVisible || isEventUpdatedModalVisible) {
+      window.scrollTo(0, 0);
+    }
+  }, [isEventDeleteConfirmModalVisible, isEventUpdatedModalVisible]);
   //* need to set the status information
   /*
                     The state transitions are as follows
@@ -555,6 +572,7 @@ const Serve = ({
   };
   const dismissModal = () => {
     setIsEventUpdatedModalVisible(false);
+    setIsEventDeleteConfirmModalVisible(false);
   };
   const handleMealCostChange = (event) => {
     setMealCost(event.target.value);
@@ -804,12 +822,45 @@ const Serve = ({
   //     history.push('/serve');
   // };
   const handleDeleteRequest = () => {
-    setModalDeleteConfirmIsVisible(true);
+    setIsEventDeleteConfirmModalVisible(true);
   };
-  const handleDeleteConfirm = () => {
-    window.alert("DELETE NOT IMPLEMENTED YET");
-    return;
-    setModalDeleteConfirmIsVisible(false);
+  const handleDeleteConfirm = async () => {
+    setIsEventDeleteConfirmModalVisible(false);
+
+    //*  1. delete eventLocation
+    const deleteLocationResults = await deleteEventLocation(
+      rallyEvent.location.id
+    );
+    if (deleteLocationResults.statusCode !== 200) {
+      printObject("deleteLocation failure:\n", deleteLocationResults);
+    }
+    //*  2. delete eventContact
+    const deleteContactResults = await deleteEventContact(
+      rallyEvent.contact.id
+    );
+    if (deleteContactResults.statusCode !== 200) {
+      printObject("deleteContact failure:\n", deleteContactResults);
+    }
+    //*  3. Check if there is meal, if so, delete
+    if (rallyEvent.meal !== null && rallyEvent?.meal?.id) {
+      const deleteMealResults = await deleteMeal(rallyEvent.meal.id);
+      if (deleteMealResults.statusCode !== 200) {
+        printObject("deleteMealResults failure:\n", deleteMealResults);
+      }
+    }
+    //*  4. delete event
+    const deleteEventResults = await deleteEvent(rallyEvent.id);
+    if (deleteEventResults.statusCode !== 200) {
+      printObject("deleteEventResults failure:\n", deleteEventResults);
+    }
+    //*  5. remove from REDUX (stateRep/stateLead)
+    //*  6. remove from REDUX (currentUser.events)
+
+    let DANO = true;
+    if (DANO) {
+      return;
+    }
+
     //remove the rally from the database...
     async function updateDb() {
       await fetch(
@@ -847,11 +898,7 @@ const Serve = ({
 
     history.push("/serve");
   };
-  const handleDeleteDecline = () => {
-    //cancelling delete request
-    setModalDeleteConfirmIsVisible(false);
-    return;
-  };
+
   printObject("rallyEvent:\n", rallyEvent);
   const hasErrors =
     churchNameError !== "" ||
@@ -1782,14 +1829,13 @@ const Serve = ({
         </div>
       </div>
       <MainFooter />
-      <Modal isOpened={modalDeleteConfirmIsVisible}>
-        <div>
-          <ConfirmDelete
-            confirmDelete={() => handleDeleteConfirm()}
-            declineDelete={() => handleDeleteDecline()}
-          />
-        </div>
-      </Modal>
+
+      <ModalWrapper isOpened={isEventDeleteConfirmModalVisible}>
+        <ConfirmDeleteModal
+          onConfirm={() => handleDeleteConfirm()}
+          onClose={() => dismissModal()}
+        ></ConfirmDeleteModal>
+      </ModalWrapper>
       <ModalWrapper isOpened={isEventUpdatedModalVisible}>
         <EventUpdateModal onClose={() => dismissModal()}></EventUpdateModal>
       </ModalWrapper>

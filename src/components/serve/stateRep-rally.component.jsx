@@ -5,7 +5,6 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import ModeIcon from "@mui/icons-material/Mode";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import { alpha } from "@mui/system";
 import { prettyDate, printObject } from "../../utils/helpers";
 import "./serve.styles.scss";
 const StateRepRally = ({ rally }) => {
@@ -21,7 +20,7 @@ const StateRepRally = ({ rally }) => {
     const eventStartDate = new Date(rally.eventDate);
     const today = new Date();
 
-    if (eventStartDate < today) {
+    if (eventStartDate < today && rally.eventDate !== "1900-01-01") {
       setBStart("lightgreen");
       setBEnd("#228B22");
       setHStart("lightgreen");
