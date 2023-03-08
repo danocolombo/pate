@@ -40,10 +40,13 @@ const Serve = ({
   useEffect(() => {
     if (!currentUser?.authSession?.idToken?.jwtToken) history.push("/");
     //get the usersRallies
+    //todo-gql
     async function reps() {
+      // this loads rep rallies, but they are also in REDUX
+      // currentUser.Events.
       getRepRallies();
     }
-    reps();
+    //reps();
 
     if (
       currentUser.role === "lead" ||
@@ -82,7 +85,7 @@ const Serve = ({
           );
         });
     }
-    getDivisionEvents();
+    //getDivisionEvents();
   }, []);
   useEffect(() => {}, [pateSystem.showSpinner]);
   const getRepRallies = async () => {
@@ -97,7 +100,7 @@ const Serve = ({
       .then((repRallies) => {
         if (repRallies?.data?.listDivisions?.items[0].events.items.length > 0) {
           // printObject(
-          //   "SP:102-->repRallies: ",
+          //   "SP:103-->repRallies: ",
           //   repRallies?.data?.listDivisions?.items[0].events.items
           // );
           async function sortThem(a, b) {

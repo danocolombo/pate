@@ -249,7 +249,7 @@ const Serve = ({
         name: "Back to Review",
       });
       eventOptions.push({ id: "cancel", name: "Cancel" });
-      eventOptions.push({ id: "delete", name: "Delete" });
+      //eventOptions.push({ id: "delete", name: "Delete" });
       break;
     case "cancel":
       eventOptions.push({ id: "cancel", name: "Cancelled" });
@@ -270,41 +270,7 @@ const Serve = ({
     default:
       break;
   }
-  // const getEventRegistrations = (eid) => {
-  //   try {
-  //     try {
-  //       fetch(
-  //         "https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/registrations",
-  //         {
-  //           method: "POST",
-  //           body: JSON.stringify({
-  //             operation: "getEventRegistrations",
-  //             payload: {
-  //               eid: eid,
-  //             },
-  //           }),
-  //           headers: {
-  //             "Content-type": "application/json; charset=UTF-8",
-  //           },
-  //         }
-  //       )
-  //         .then((response) => response.json())
-  //         .then((data) => {
-  //           loadEventRegistrations(data.body);
-  //           // setDisplayRegistrations(data.body);
-  //           // console.log("SEP:140-->data:\n", data.body);
-  //         });
-  //     } catch (error) {
-  //       console.log("Error fetching registrations \n" + error);
-  //       console.err(error);
-  //     }
 
-  //     // dispatch({type: GET_EVENT_REGISTRATIONS});
-  //   } catch (err) {
-  //     console.log("getEventRegistrations ERR");
-  //     console.error(err);
-  //   }
-  // };
   const setDefaultEvent = async () => {
     //todo-gql --- set default values for new project and put in RallyEvent useState object
     //this is used for creating a default event to display for add
@@ -777,6 +743,7 @@ const Serve = ({
     }
 
     //todo-gql  - NEED  TO UPDATE REDUX NOW
+
     clearSpinner();
     setIsEventUpdatedModalVisible(true);
   };
@@ -1793,18 +1760,30 @@ const Serve = ({
               >
                 Cancel
               </Button>
-              <Button
-                variant="contained"
-                sx={{
-                  backgroundColor: "red",
-                  color: "white",
-                  marginLeft: "10px",
-                }}
-                className={classes.button}
-                onClick={() => handleDeleteRequest()}
-              >
-                Delete
-              </Button>
+              {rallyEvent.status !== "approved" &&
+                rallyEvent.registrations?.items?.length < 1 && (
+                  <>
+                    <Stack>
+                      <div>status: {rallyEvent.status}</div>
+                      <div>
+                        registrations:{" "}
+                        {rallyEvent?.registrations?.items?.length}
+                      </div>
+                    </Stack>
+                    <Button
+                      variant="contained"
+                      sx={{
+                        backgroundColor: "red",
+                        color: "white",
+                        marginLeft: "10px",
+                      }}
+                      className={classes.button}
+                      onClick={() => handleDeleteRequest()}
+                    >
+                      Delete
+                    </Button>
+                  </>
+                )}
             </div>
           </div>
 
