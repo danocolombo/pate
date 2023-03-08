@@ -58,7 +58,7 @@ const StateLead = ({
         processEvents();
 
         clearSpinner();
-    }, []);
+    }, [rallies]);
 
     return pateSystem.showSpinner ? (
         <Spinner />
