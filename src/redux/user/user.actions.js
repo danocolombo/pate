@@ -21,6 +21,14 @@ export const removeRegistrationFromCurrentUser = (user) => ({
     type: UserActionTypes.REMOVE_REGISTRATION_FROM_CURRENT_USER,
     payload: user,
 });
+export const addEventToCurrentUser = (event) => ({
+    type: UserActionTypes.ADD_EVENT_TO_CURRENT_USER,
+    payload: event,
+});
+export const removeEventFromCurrentUser = (event) => ({
+    type: UserActionTypes.REMOVE_EVENT_FROM_CURRENT_USER,
+    payload: event,
+});
 export const updateRegistrationAndEventNumbersForCurrentUser = (user) => ({
     type: UserActionTypes.UPDATE_REGISTRATION_AND_EVENT_NUMBERS,
     payload: user,

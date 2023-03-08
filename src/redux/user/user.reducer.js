@@ -2,6 +2,8 @@ import { UserActionTypes } from './user.types';
 import {
     addItemToRegistrations,
     removeItemFromRegistrations,
+    addItemToEvents,
+    removeItemFromEvents,
     updateCurrentUserPersonalInfo,
     updateCurrentUserResidenceInfo,
     updateCurrentUserMembershipInfo,
@@ -39,6 +41,19 @@ const userReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 currentUser: removeItemFromRegistrations(
+                    state.currentUser,
+                    action.payload
+                ),
+            };
+        case UserActionTypes.ADD_EVENT_TO_CURRENT_USER:
+            return {
+                ...state,
+                currentUser: addItemToEvents(state, action.payload),
+            };
+        case UserActionTypes.REMOVE_EVENT_FROM_CURRENT_USER:
+            return {
+                ...state,
+                currentUser: removeItemFromEvents(
                     state.currentUser,
                     action.payload
                 ),

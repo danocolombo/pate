@@ -22,6 +22,14 @@ export const removePateRallyRegistration = (registration) => ({
     type: PateActionTypes.REMOVE_PATE_RALLY_REGISTRATION,
     payload: registration,
 });
+export const removeEventFromPateRallies = (event) => ({
+    type: PateActionTypes.REMOVE_RALLY_FROM_RALLIES,
+    payload: event,
+});
+export const addEventToPateRallies = (event) => ({
+    type: PateActionTypes.ADD_RALLY_TO_RALLIES,
+    payload: event,
+});
 export const setPateRallies = (rallies) => ({
     type: PateActionTypes.SET_PATE_RALLIES,
     payload: rallies,

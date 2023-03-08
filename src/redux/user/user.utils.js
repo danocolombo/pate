@@ -121,3 +121,30 @@ export const updateRegistrationAndEventNumbers = (state, payload) => {
     });
     return currentUser;
 };
+//----------------------------------------
+// add event to user
+//----------------------------------------
+export const addItemToEvents = (state, eventToAdd) => {
+    let newState = { ...state };
+
+    newState.currentUser.events.items = [
+        ...newState.currentUser.events.items,
+        eventToAdd,
+    ];
+    return newState.currentUser;
+};
+//----------------------------------------
+// remove event
+//----------------------------------------
+export const removeItemFromEvents = (currentUser, eventToRemove) => {
+    const newUser = {
+        ...currentUser,
+        events: {
+            ...currentUser.events,
+            items: currentUser.events.items.filter(
+                (item) => item.id !== eventToRemove
+            ),
+        },
+    };
+    return newUser;
+};

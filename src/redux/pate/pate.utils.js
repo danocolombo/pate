@@ -94,3 +94,21 @@ export const removeRegistrationFromRally = (state, payload) => {
     printObject('PU:93==>payload:\n', payload);
     return state;
 };
+//----------------------------------------
+// remove rally from rallies
+//----------------------------------------
+export const removeItemFromRallies = (state, eventToRemove) => {
+    const newState = {
+        ...state,
+        rallies: state.rallies.filter((item) => item.id !== eventToRemove),
+    };
+    return newState;
+};
+//----------------------------------------
+// add rally to rallies
+//----------------------------------------
+export const addItemToRallies = (state, eventToAdd) => {
+    let newState = { ...state };
+    newState.rallies = { ...newState.rallies, eventToAdd };
+    return newState;
+};

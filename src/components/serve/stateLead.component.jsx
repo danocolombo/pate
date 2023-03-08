@@ -1,26 +1,68 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { compose } from 'redux';
+import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import StateRallyList from './stateLead-rally.component';
+import StateRepRally from './stateRep-rally.component';
+import Spinner from '../../components/spinner/Spinner';
 import { printObject } from '../../utils/helpers';
 import './serve.styles.scss';
-const StateLead = ({ currentUser, rallies, doneRallies }) => {
+const StateLead = ({
+    currentUser,
+    rallies,
+    doneRallies,
+    setSpinner,
+    clearSpinner,
+    pateSystem,
+}) => {
     // const [leadRallies, setLeadRallies] = useState([]);
-    useEffect(() => {
-        //loop through redux rallies and if there is any
-        //in the state that this Lead is assigned, load
-        //them in the leadRallies array.
-        //==============================================
-        const sortRalliesNow = async () => {
-            async function asc_sort(a, b) {
-                return b.eventDate - a.eventDate;
+    const [doneEvents, setDoneEvents] = useState([]);
+    const [activeEvents, setActiveEvents] = useState([]);
+    const processEvents = async () => {
+        // this gets the state lead info ready to display
+        let dEvents = [];
+        let aEvents = [];
+        async function splitEvents() {
+            if (rallies) {
+                rallies.forEach((evnt) => {
+                    var today = new Date().toISOString().slice(0, 10); // get current date in yyyy-mm-dd format
+                    if (evnt.eventDate < today) {
+                        if (evnt.eventDate === '1900-01-01') {
+                            aEvents.push(evnt);
+                        } else {
+                            dEvents.push(evnt);
+                        }
+                    } else {
+                        aEvents.push(evnt);
+                    }
+                });
             }
-            let displayData = await rallies.sort(asc_sort);
-            printObject('SLC:18=> ordered rallies:\n', displayData);
-        };
-        sortRalliesNow();
+        }
+
+        async function sortEvents() {
+            dEvents.sort(function (a, b) {
+                return new Date(b.eventDate) - new Date(a.eventDate);
+            });
+            setDoneEvents(dEvents);
+            aEvents.sort(function (a, b) {
+                return new Date(a.eventDate) - new Date(b.eventDate);
+            });
+            setActiveEvents(aEvents);
+        }
+        splitEvents();
+        sortEvents();
+    };
+    useEffect(() => {
+        setSpinner();
+        processEvents();
+
+        clearSpinner();
     }, []);
 
-    return (
+    return pateSystem.showSpinner ? (
+        <Spinner />
+    ) : (
         <>
             <div className='serve-component__event-list-header'>
                 State Events
@@ -29,30 +71,31 @@ const StateLead = ({ currentUser, rallies, doneRallies }) => {
                 These are the events within your state that you can view and
                 manage, support and change.
             </div>
+            <div>activeEvents: {activeEvents.length}</div>
             <div className='serve-component-lead__list-wrapper'>
-                {rallies ? (
+                {activeEvents ? (
                     <>
-                        {rallies.length > 0 ? (
+                        {activeEvents.length > 0 ? (
                             <div className='serve-component__section-label'>
                                 Upcoming Events
                             </div>
                         ) : null}
-                        {rallies.map((rally) => (
-                            <StateRallyList key={rally.uid} rally={rally} />
+                        {activeEvents.map((rally) => (
+                            <StateRepRally key={rally.uid} rally={rally} />
                         ))}
                     </>
                 ) : null}
             </div>
             <div className='serve-component-lead__list-wrapper'>
-                {doneRallies ? (
+                {doneEvents ? (
                     <>
-                        {doneRallies.length > 0 ? (
+                        {doneEvents.length > 0 ? (
                             <div className='serve-component__section-label'>
                                 Past Events
                             </div>
                         ) : null}
-                        {doneRallies.map((rally) => (
-                            <StateRallyList key={rally.uid} rally={rally} />
+                        {doneEvents.map((rally) => (
+                            <StateRepRally key={rally.uid} rally={rally} />
                         ))}
                     </>
                 ) : null}
@@ -60,9 +103,17 @@ const StateLead = ({ currentUser, rallies, doneRallies }) => {
         </>
     );
 };
+const mapDispatchToProps = (dispatch) => ({
+    setSpinner: () => dispatch(setSpinner()),
+    clearSpinner: () => dispatch(clearSpinner()),
+});
 const mapStateToProps = (state) => ({
+    pateSystem: state.pate,
     currentUser: state.user.currentUser,
-    rallies: state.stateLead.rally,
+    rallies: state.pate.rallies,
     doneRallies: state.stateLead.doneRally,
 });
-export default connect(mapStateToProps, null)(StateLead);
+export default compose(
+    withRouter,
+    connect(mapStateToProps, mapDispatchToProps)
+)(StateLead);

@@ -1,1075 +1,1135 @@
-import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { API } from "aws-amplify";
-import * as mutations from "../../pateGraphql/mutations";
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { API } from 'aws-amplify';
+import * as mutations from '../../pateGraphql/mutations';
 
-import { useHistory } from "react-router-dom";
-import { compose } from "redux";
-import { withRouter } from "react-router";
-import PhoneInput from "react-phone-input-2";
+import { useHistory } from 'react-router-dom';
+import { compose } from 'redux';
+import { withRouter } from 'react-router';
+import PhoneInput from 'react-phone-input-2';
 import {
-  Stack,
-  TextField,
-  MenuItem,
-  Typography,
-  TextareaAutosize,
-  Box,
-  Button,
-  InputAdornment,
-} from "@mui/material";
-import Header from "../../components/header/header.component";
-import { MainFooter } from "../../components/footers/main-footer";
-import Modal from "../../components/modals/wrapper.modal";
-import InputErrors from "../../components/modals/new-event/new-event-input-error.modal";
-import SuccessModal from "../../components/modals/new-event/new-event-success.modal";
-import SuccessMessage from "../../components/modals/new-event/new-event-success-msg.component";
-import { US_STATES } from "../../constants/pate";
-import Spinner from "../../components/spinner/Spinner";
-import { setSpinner, clearSpinner } from "../../redux/pate/pate.actions";
-import { loadRally } from "../../redux/pate/pate.actions";
+    Stack,
+    TextField,
+    MenuItem,
+    Typography,
+    TextareaAutosize,
+    Box,
+    Button,
+    InputAdornment,
+} from '@mui/material';
+import Header from '../../components/header/header.component';
+import { MainFooter } from '../../components/footers/main-footer';
+import Modal from '../../components/modals/wrapper.modal';
+import InputErrors from '../../components/modals/new-event/new-event-input-error.modal';
+import SuccessModal from '../../components/modals/new-event/new-event-success.modal';
+import ModalWrapper from '../../components/modals/wrapper.modal';
+import EventAddedModal from '../../components/modals/new-event/new-event-added.modal';
+import SuccessMessage from '../../components/modals/new-event/new-event-success-msg.component';
+import { US_STATES } from '../../constants/pate';
+import Spinner from '../../components/spinner/Spinner';
+import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
+import { loadRally } from '../../redux/pate/pate.actions';
 import {
-  createAWSUniqueID,
-  createEventCompKey,
-  printObject,
-} from "../../utils/helpers";
-import { updateStateRepRally } from "../../redux/stateRep/stateRep.actions";
-import "./newEvent.styles.scss";
-import useStyles from "./new-event.styles";
+    createAWSUniqueID,
+    createEventCompKey,
+    printObject,
+} from '../../utils/helpers';
+import { addEventToCurrentUser } from '../../redux/user/user.actions';
+import { addEventToPateRallies } from '../../redux/pate/pate.actions';
+import { updateStateRepRally } from '../../redux/stateRep/stateRep.actions';
+import './newEvent.styles.scss';
+import useStyles from './new-event.styles';
 const Serve = ({
-  setSpinner,
-  clearSpinner,
-  match,
-  pateSystem,
-  currentUser,
-  rallies,
-  leadRallies,
-  loadRally,
-  updateStateRepRally,
-  pate,
+    setSpinner,
+    clearSpinner,
+    match,
+    pateSystem,
+    currentUser,
+    rallies,
+    leadRallies,
+    loadRally,
+    updateStateRepRally,
+    addEventToPateRallies,
+    addEventToCurrentUser,
+    pate,
 }) => {
-  const classes = useStyles();
-  const [modalIsVisible, setModalIsVisible] = useState(false);
-  const [showRegistrationSuccess, setShowRegistrationSuccess] = useState(false);
-  const [churchName, setChurchName] = useState("");
-  const [churchNameError, setChurchNameError] = useState("");
-  const [street, setStreet] = useState("");
-  const [streetError, setStreetError] = useState("");
-  const [city, setCity] = useState("");
-  const [cityError, setCityError] = useState("");
-  const [stateProv, setStateProv] = useState(currentUser?.residence.stateProv);
-  const [postalCode, setPostalCode] = useState("");
-  const [postalCodeError, setPostalCodeError] = useState("");
-  const [eventDate, setEventDate] = useState("");
-  const [eventStart, setEventStart] = useState("");
-  const [eventEnd, setEventEnd] = useState("");
+    const classes = useStyles();
+    const [modalIsVisible, setModalIsVisible] = useState(false);
+    const [showEventAddedSuccess, setShowEventAddedSuccess] = useState(false);
+    const [churchName, setChurchName] = useState('');
+    const [churchNameError, setChurchNameError] = useState('');
+    const [street, setStreet] = useState('');
+    const [streetError, setStreetError] = useState('');
+    const [city, setCity] = useState('');
+    const [cityError, setCityError] = useState('');
+    const [stateProv, setStateProv] = useState(
+        currentUser?.residence.stateProv
+    );
+    const [postalCode, setPostalCode] = useState('');
+    const [postalCodeError, setPostalCodeError] = useState('');
+    const [eventDate, setEventDate] = useState('');
+    const [eventStart, setEventStart] = useState('');
+    const [eventEnd, setEventEnd] = useState('');
 
-  const [contactFirstName, setContactFirstName] = useState("");
-  const [contactFirstNameError, setContactFirstNameError] = useState("");
-  const [contactLastName, setContactLastName] = useState("");
-  const [contactLastNameError, setContactLastNameError] = useState("");
-  const [contactEmail, setContactEmail] = useState("");
-  const [contactEmailError, setContactEmailError] = useState("");
-  const [contactPhone, setContactPhone] = useState("");
-  const [contactPhoneError, setContactPhoneError] = useState("");
+    const [contactFirstName, setContactFirstName] = useState('');
+    const [contactFirstNameError, setContactFirstNameError] = useState('');
+    const [contactLastName, setContactLastName] = useState('');
+    const [contactLastNameError, setContactLastNameError] = useState('');
+    const [contactEmail, setContactEmail] = useState('');
+    const [contactEmailError, setContactEmailError] = useState('');
+    const [contactPhone, setContactPhone] = useState('');
+    const [contactPhoneError, setContactPhoneError] = useState('');
 
-  const [eventMessage, setEventMessage] = useState("");
-  const [mealTime, setMealTime] = useState("");
-  const [mealCost, setMealCost] = useState("");
-  const [mealMessage, setMealMessage] = useState("");
-  const [mealDeadline, setMealDeadline] = useState("");
+    const [eventMessage, setEventMessage] = useState('');
+    const [mealTime, setMealTime] = useState('');
+    const [mealCost, setMealCost] = useState('');
+    const [mealMessage, setMealMessage] = useState('');
+    const [mealDeadline, setMealDeadline] = useState('');
 
-  const history = useHistory();
+    const history = useHistory();
 
-  useEffect(() => {
-    //++++++++++++++++++++++++++++++++++++++++
-    // useEffect on load
-    //++++++++++++++++++++++++++++++++++++++++
-    // if (!currentUser?.authSession?.accessToken?.jwToken) {
-    //     history.push('/');
-    // }
-    //get the reference to the current event and load to useState
-  }, []);
+    useEffect(() => {
+        //++++++++++++++++++++++++++++++++++++++++
+        // useEffect on load
+        //++++++++++++++++++++++++++++++++++++++++
+        // if (!currentUser?.authSession?.accessToken?.jwToken) {
+        //     history.push('/');
+        // }
+        //get the reference to the current event and load to useState
+    }, []);
 
-  useEffect(() => {}, [pateSystem.showSpinner]);
+    useEffect(() => {}, [pateSystem.showSpinner]);
 
-  //    =============================
-  //    VALIDATIONS
-  //    -----------------------------
-  const validateChurchName = (churchName) => {
-    if (churchName.length > 50) {
-      return "max length 50 characters";
-    }
-    if (churchName.length < 5) {
-      return "minimum length 5 characters";
-    }
-    if (churchName.length > 4) {
-      const testRegex = /^[a-zA-Z\s-]{5,50}\d?$/;
-      if (!testRegex.test(churchName)) {
-        return "letters and numbers only";
-      }
-    }
-    return "";
-  };
-  const validateStreet = (street) => {
-    if (!street) {
-      return "Street is required";
-    }
-    // 2-50 chars, apostrophe with alpha permitted
-    const testRegex =
-      /^(?=.{2,50}$)(?!')[A-Za-z0-9' -]+(?:[ .,!?][A-Za-z0-9' -]+)*\.?$/;
-    if (!testRegex.test(street)) {
-      return "2-50 characters (optional number)";
-    }
-    return "";
-  };
-
-  const validateCity = (city) => {
-    if (!city) {
-      return "City is required";
-    }
-    // 2-25 chars, apostrophe with alpha permitted
-    const testRegex =
-      /^(?=.{3,25}$)(?!')[A-Za-z0-9' -]+(?:[ .,!?][A-Za-z0-9' -]+)*\.?$/;
-    if (!testRegex.test(city)) {
-      return "2-25 characters only";
-    }
-    return "";
-  };
-  const validatePostalCode = (postalCode) => {
-    const testRegex = /^\d{5}$/;
-
-    if (!testRegex.test(postalCode)) {
-      return "5 digit number";
-    }
-
-    return "";
-  };
-  const validateContactFirstName = (contactFirstName) => {
-    if (!contactFirstName) {
-      return "First name is required";
-    }
-    const testRegex = /^[A-Za-z]{2,15}$/;
-    if (!testRegex.test(contactFirstName)) {
-      return "2-15 characters only";
-    }
-    return "";
-  };
-  const validateContactLastName = (contactLastName) => {
-    if (!contactLastName) {
-      return "Last name is required";
-    }
-    const testRegex = /^[a-zA-Z-]{2,19}\d?$/;
-    if (!testRegex.test(contactLastName)) {
-      return "2-19 characters (optional number)";
-    }
-    return "";
-  };
-  const validateContactPhone = (contactPhone) => {
-    const regex = /\d{10}/;
-    if (regex.test(contactPhone) || contactPhone.length === 0) {
-      return "";
-    }
-    return true;
-  };
-  const validateContactEmail = (contactEmail) => {
-    if (!contactEmail) {
-      return "Email is required";
-    }
-    const emailRegex = /^[\w.%+-]+@[\w.-]+\.[A-Za-z]{2,}$/;
-    if (!emailRegex.test(contactEmail)) {
-      return "Email address not supported";
-    }
-
-    return "";
-  };
-
-  //    =======================================
-  //    handles...
-  //    ---------------------------------------
-  const handleAddClick = async (event) => {
-    //    several actions necessary
-    //    0. generate AWSId for event
-    let eventUniqueID = createAWSUniqueID();
-    let resultantEvent = {};
-    //      1. addEventLocation (use generated event.id as events[0])
-    let eventLocationId = "";
-    let eventLocationError = null;
-    try {
-      const inputVariables = {
-        street: street,
-        city: city,
-        stateProv: stateProv,
-        postalCode: postalCode,
-      };
-      const createEventLocationResults = await API.graphql({
-        query: mutations.createEventLocation,
-        variables: { input: inputVariables },
-      });
-      if (createEventLocationResults?.data?.createEventLocation != null) {
-        eventLocationId =
-          createEventLocationResults.data.createEventLocation.id;
-      } else {
-        eventLocationError = {
-          errorCode: 401,
-          message: "createEventLocation failure (RPP:212)",
-          data: createEventLocationResults,
-        };
-      }
-    } catch (error) {
-      eventLocationError = {
-        errorCode: 404,
-        message: "createEventLocation try/catch failure (RPP:219)",
-        data: error,
-      };
-    }
-    //      2. addEventContact (use generated event.id as events[0])
-    let eventContactId = "";
-    let eventContactError = null;
-    try {
-      const inputVariables = {
-        firstName: contactFirstName,
-        lastName: contactLastName,
-        email: contactEmail,
-        phone: contactPhone,
-      };
-      const createEventContactResults = await API.graphql({
-        query: mutations.createEventContact,
-        variables: { input: inputVariables },
-      });
-      if (createEventContactResults?.data?.createEventContact != null) {
-        eventContactId = createEventContactResults.data.createEventContact.id;
-      } else {
-        eventContactError = {
-          errorCode: 401,
-          message: "createEventContact failure (RPP:244)",
-          data: createEventContactResults,
-        };
-      }
-    } catch (error) {
-      eventContactError = {
-        errorCode: 404,
-        message: "createEventContact try/catch failure (RPP:251)",
-        data: error,
-      };
-    }
-    //      3. addMeal (use generated event.id as event)
-    let mealId = "";
-    let mealError = null;
-    if (
-      mealTime !== "" ||
-      mealCost !== "" ||
-      mealMessage !== "" ||
-      mealDeadline !== ""
-    ) {
-      try {
-        const inputVariables = {
-          mealEventId: eventUniqueID,
-          startTime: mealTime,
-          deadline: mealDeadline,
-          cost: mealCost,
-          actualCount: 0,
-          plannedCount: 0,
-          message: mealMessage,
-        };
-        const createMealResults = await API.graphql({
-          query: mutations.createMeal,
-          variables: { input: inputVariables },
-        });
-        if (createMealResults?.data?.createMeal != null) {
-          mealId = createMealResults.data.createMeal.id;
-        } else {
-          mealError = {
-            errorCode: 401,
-            message: "createMeal failure (RPP:278)",
-            data: createMealResults,
-          };
+    //    =============================
+    //    VALIDATIONS
+    //    -----------------------------
+    const validateChurchName = (churchName) => {
+        if (churchName.length > 50) {
+            return 'max length 50 characters';
         }
-      } catch (error) {
-        mealError = {
-          errorCode: 404,
-          message: "createMeal try/catch failure (RPP:285)",
-          data: error,
-        };
-      }
-    }
-    //    4. addEvent (use generated event.id and...
-    //      eventLocation.id (#1 above) for event.location
-    //      eventContact.id (#2 above) for event.contact
-    //      currentUser.defaultDivision.id for event.division
-    //      current
-    let createEventError = {};
-    if (
-      eventLocationError === null &&
-      eventContactError === null &&
-      mealError === null
-    ) {
-      // no errors add event
-      try {
-        //create eventCompKey
-        const eck = await createEventCompKey(
-          eventDate,
-          stateProv,
-          eventUniqueID,
-          currentUser.id
-        );
-
-        const inputVariables = {
-          id: eventUniqueID,
-          status: "draft",
-          userEventsId: currentUser.id,
-          divisionEventsId: currentUser.defaultDivision.id,
-          eventContactEventsId: eventContactId || null,
-          eventLocationEventsId: eventLocationId || null,
-          eventMealId: mealId || null,
-          eventDate: eventDate || "1900-01-01",
-          startTime: eventStart || "00:00",
-          endTime: eventEnd || "00:00",
-          name: churchName,
-          eventCompKey: eck,
-          message: eventMessage,
-          graphic: "",
-          plannedCount: 0,
-          actualCount: 0,
-          mealPlannedCount: 0,
-          mealActualCount: 0,
-        };
-        const createEventResults = await API.graphql({
-          query: mutations.createEvent,
-          variables: { input: inputVariables },
-        });
-        if (createEventResults?.data?.createEvent != null) {
-          resultantEvent = createEventResults.data.createEvent;
-        } else {
-          createEventError = {
-            errorCode: 401,
-            message: "createEvent failure (RPP:341)",
-            data: createEventResults,
-          };
+        if (churchName.length < 5) {
+            return 'minimum length 5 characters';
         }
-      } catch (error) {
-        createEventError = {
-          errorCode: 404,
-          message: "createEvent try/catch failure (RPP:348)",
-          data: error,
-        };
-        printObject("NEP:354==>createEventError:\n", createEventError);
-      }
-    } else {
-      console.log("NEP:357 Error");
-      return;
-    }
+        if (churchName.length > 4) {
+            const testRegex = /^[a-zA-Z\s-]{5,50}\d?$/;
+            if (!testRegex.test(churchName)) {
+                return 'letters and numbers only';
+            }
+        }
+        return '';
+    };
+    const validateStreet = (street) => {
+        if (!street) {
+            return 'Street is required';
+        }
+        // 2-50 chars, apostrophe with alpha permitted
+        const testRegex =
+            /^(?=.{2,50}$)(?!')[A-Za-z0-9' -]+(?:[ .,!?][A-Za-z0-9' -]+)*\.?$/;
+        if (!testRegex.test(street)) {
+            return '2-50 characters (optional number)';
+        }
+        return '';
+    };
 
-    //    NEED TO UPDATE REDUX
-    //****************************** */
-    //    ----------------------------
-    //    check if the EventLocation is
-    //    already in the system.
-    //    If true, use as location for Event
-    //todo-gql - add in the future.
+    const validateCity = (city) => {
+        if (!city) {
+            return 'City is required';
+        }
+        // 2-25 chars, apostrophe with alpha permitted
+        const testRegex =
+            /^(?=.{3,25}$)(?!')[A-Za-z0-9' -]+(?:[ .,!?][A-Za-z0-9' -]+)*\.?$/;
+        if (!testRegex.test(city)) {
+            return '2-25 characters only';
+        }
+        return '';
+    };
+    const validatePostalCode = (postalCode) => {
+        const testRegex = /^\d{5}$/;
 
-    //now update the stateRep.rally
-    updateStateRepRally(resultantEvent);
-    setShowRegistrationSuccess(true);
-    // history.push('/serve');
-  };
-  const handleMealCostChange = (event) => {
-    setMealCost(event.target.value);
-  };
+        if (!testRegex.test(postalCode)) {
+            return '5 digit number';
+        }
 
-  const handleChange = (e) => {
-    let { value, name } = e.target;
-    switch (name) {
-      case "rallyDate":
-        console.log("rallyDate:" + value);
-        setEventDate(value);
-        console.log("eventDate: " + eventDate);
-        console.log("make it?");
-        break;
-      case "eventStart":
-        setEventStart(value);
-        break;
-      case "eventEnd":
-        setEventEnd(value);
-        break;
-      case "mealTime":
-        setMealTime(value);
-        break;
-      case "mealDeadline":
-        setMealDeadline(value);
-        break;
-      default:
-        break;
-    }
-  };
-  const successAcknowledged = () => {
-    setShowRegistrationSuccess(false);
-    history.push("/serve");
-  };
+        return '';
+    };
+    const validateContactFirstName = (contactFirstName) => {
+        if (!contactFirstName) {
+            return 'First name is required';
+        }
+        const testRegex = /^[A-Za-z]{2,15}$/;
+        if (!testRegex.test(contactFirstName)) {
+            return '2-15 characters only';
+        }
+        return '';
+    };
+    const validateContactLastName = (contactLastName) => {
+        if (!contactLastName) {
+            return 'Last name is required';
+        }
+        const testRegex = /^[a-zA-Z-]{2,19}\d?$/;
+        if (!testRegex.test(contactLastName)) {
+            return '2-19 characters (optional number)';
+        }
+        return '';
+    };
+    const validateContactPhone = (contactPhone) => {
+        const regex = /\d{10}/;
+        if (regex.test(contactPhone) || contactPhone.length === 0) {
+            return '';
+        }
+        return true;
+    };
+    const validateContactEmail = (contactEmail) => {
+        if (!contactEmail) {
+            return 'Email is required';
+        }
+        const emailRegex = /^[\w.%+-]+@[\w.-]+\.[A-Za-z]{2,}$/;
+        if (!emailRegex.test(contactEmail)) {
+            return 'Email address not supported';
+        }
 
-  const hasErrors =
-    churchNameError !== "" ||
-    streetError !== "" ||
-    cityError !== "" ||
-    postalCodeError !== "";
-  // contactFirstNameError !== '' ||
-  // contactLastNameError !== '' ||
-  // contactPhoneError !== '' ||
-  // contactEmailError !== "";
-  return pateSystem.showSpinner ? (
-    <Spinner />
-  ) : (
-    <>
-      <Header />
-      <div className="newevent-page__wrapper">
-        <div className="newevent-page__form-box">
-          <div className="newevent-page__header">NEW RALLY</div>
-          <div className="newevent-page__data-input-box">
-            <Stack direction="row" justifyContent="center">
-              <Typography variant="h5">Location</Typography>
-            </Stack>
-            <Stack direction="row" justifyContent="center">
-              <TextField
-                label="Church Name"
-                variant="outlined"
-                size="small"
-                margin="dense"
-                fullWidth
-                className={classes.input}
-                InputProps={{
-                  style: {
-                    padding: "0px",
-                    margin: "0px",
-                    fontWeight: "200",
-                    fontSize: "1.2rem",
-                  },
-                  sx: {
-                    bgcolor: "#f5f5f5", // sets the fill color
-                    borderRadius: 1, // sets the border radius
-                  },
-                }}
-                inputlabelprops={{
-                  shrink: true,
-                  style: { paddingBottom: "0px" },
-                }}
-                value={churchName}
-                onChange={(e) => {
-                  const capitalizedStr = e.target.value
-                    .split(" ")
-                    .map(
-                      (word) =>
-                        word.charAt(0).toUpperCase() +
-                        word.slice(1).toLowerCase()
-                    )
-                    .join(" ");
-                  setChurchName(capitalizedStr);
-                  setChurchNameError(validateChurchName(e.target.value));
-                }}
-                error={churchNameError !== ""}
-                helperText={churchNameError}
-              />
-            </Stack>
-            <Stack>
-              <TextField
-                label="Street"
-                variant="outlined"
-                size="small"
-                margin="dense"
-                fullWidth
-                InputProps={{
-                  style: {
-                    padding: "0px",
-                    margin: "0px",
-                    fontWeight: "200",
-                    fontSize: "1.2rem",
-                  },
-                  sx: {
-                    bgcolor: "#f5f5f5", // sets the fill color
-                    borderRadius: 1, // sets the border radius
-                  },
-                }}
-                InputLabelProps={{
-                  shrink: true,
-                  style: { paddingBottom: "0px" },
-                }}
-                className={classes.input}
-                value={street}
-                onChange={(e) => {
-                  setStreet(e.target.value);
-                  setStreetError(validateStreet(e.target.value));
-                }}
-                error={streetError !== ""}
-                helperText={streetError}
-              />
-            </Stack>
-            <Stack direction="row" spacing={1}>
-              <TextField
-                label="City"
-                variant="outlined"
-                size="small"
-                margin="dense"
-                fullWidth
-                InputProps={{
-                  style: {
-                    padding: "0px",
-                    margin: "0px",
-                    fontWeight: "200",
-                    fontSize: "1.2rem",
-                  },
-                  sx: {
-                    bgcolor: "#f5f5f5", // sets the fill color
-                    borderRadius: 1, // sets the border radius
-                  },
-                }}
-                InputLabelProps={{
-                  shrink: true,
-                  style: { paddingBottom: "0px" },
-                }}
-                className={classes.input}
-                value={city}
-                onChange={(e) => {
-                  setCity(e.target.value);
-                  setCityError(validateCity(e.target.value));
-                }}
-                error={cityError !== ""}
-                helperText={cityError}
-              />
-            </Stack>
-            <Stack direction="row" spacing={1} justifyContent="center">
-              <Stack>
-                <TextField
-                  label="State/Providence"
-                  size="small"
-                  margin="dense"
-                  select
-                  value={stateProv}
-                  onChange={(event) => setStateProv(event.target.value)}
-                >
-                  {US_STATES.map((state) => (
-                    <MenuItem key={state.value} value={state.value}>
-                      {state.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Stack>
-              <Stack direction="row" spacing={1}>
-                <TextField
-                  label="Postal Code"
-                  variant="outlined"
-                  size="small"
-                  margin="dense"
-                  maxLength={5}
-                  className={classes.input}
-                  value={postalCode}
-                  InputProps={{
-                    style: {
-                      padding: "0px",
-                      margin: "0px",
-                      fontWeight: "200",
-                      fontSize: "1.2rem",
-                    },
-                    sx: {
-                      bgcolor: "#f5f5f5", // sets the fill color
-                      borderRadius: 1, // sets the border radius
-                    },
-                  }}
-                  InputLabelProps={{
-                    shrink: true,
-                    style: {
-                      paddingBottom: "0px",
-                      fontWeight: "bold",
-                    },
-                  }}
-                  onChange={(e) => {
-                    setPostalCode(e.target.value.substring(0, 5));
-                    setPostalCodeError(
-                      validatePostalCode(e.target.value.substring(0, 5))
-                    );
-                  }}
-                  error={postalCodeError !== ""}
-                  helperText={postalCodeError}
-                />
-              </Stack>
-            </Stack>
-            <Stack direction="row" justifyContent="center">
-              <Typography variant="h5">Church Contact</Typography>
-            </Stack>
-            <Box
-              sx={{
-                border: "1px solid black",
-                borderRadius: "5px",
-                padding: "5px",
-                marginX: "5px",
-                maxWidth: "calc(100%)",
-                minWidth: "calc(90%)",
-                margin: "0 auto",
-              }}
-            >
-              <Stack>
-                <TextField
-                  label="First Name"
-                  variant="outlined"
-                  required
-                  size="small"
-                  margin="dense"
-                  className={classes.input}
-                  InputProps={{
-                    style: {
-                      padding: "0px",
-                      margin: "0px",
-                      fontWeight: "200",
-                      fontSize: "1.2rem",
-                    },
-                    sx: {
-                      bgcolor: "#f5f5f5", // sets the fill color
-                      borderRadius: 1, // sets the border radius
-                    },
-                  }}
-                  InputLabelProps={{
-                    shrink: true,
-                    style: { paddingBottom: "0px" },
-                  }}
-                  value={contactFirstName}
-                  onChange={(e) => {
-                    setContactFirstName(e.target.value);
-                    setContactFirstNameError(
-                      validateContactFirstName(e.target.value)
-                    );
-                  }}
-                  error={contactFirstNameError !== ""}
-                  helperText={contactFirstNameError}
-                />
-              </Stack>
-              <Stack>
-                <TextField
-                  label="Last Name"
-                  variant="outlined"
-                  required
-                  size="small"
-                  margin="dense"
-                  className={classes.input}
-                  InputProps={{
-                    style: {
-                      padding: "0px",
-                      margin: "0px",
-                      fontWeight: "200",
-                      fontSize: "1.2rem",
-                    },
-                    sx: {
-                      bgcolor: "#f5f5f5", // sets the fill color
-                      borderRadius: 1, // sets the border radius
-                    },
-                  }}
-                  InputLabelProps={{
-                    shrink: true,
-                    style: { paddingBottom: "0px" },
-                  }}
-                  value={contactLastName}
-                  onChange={(e) => {
-                    setContactLastName(e.target.value);
-                    setContactLastNameError(
-                      validateContactLastName(e.target.value)
-                    );
-                  }}
-                  error={contactLastNameError !== ""}
-                  helperText={contactLastNameError}
-                />
-              </Stack>
+        return '';
+    };
 
-              <Stack
-                direction="column"
-                spacing={1}
-                align="center"
-                sx={{ marginTop: 1, marginBottom: 1 }}
-              >
-                <PhoneInput
-                  onlyCountries={["us"]}
-                  country="us"
-                  disableCountryCode
-                  disableDropdown
-                  value={contactPhone}
-                  style={{
-                    margin: 0,
-                    padding: 0,
-                    fontSize: 14,
-                    color: "black",
-                    backgroundColor: "#f5f5f5",
-                  }}
-                  onChange={(contactPhone) => {
-                    setContactPhone(contactPhone);
-                    setContactPhoneError(validateContactPhone(contactPhone));
-                  }}
-                  inputStyle={{
-                    fontSize: "20px",
-                    color: "black",
-                  }}
-                  inputProps={{
-                    padding: 0,
-                    fontSize: 24,
-                    name: "Cell",
-                    margin: 0,
-                    required: true,
-                    placeholder: "(xxx) xxx-xxxx",
-                  }}
-                />
-                {contactPhoneError && (
-                  <span
-                    style={{
-                      color: "red",
-                      fontSize: 12,
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Valid phone required.
-                  </span>
-                )}
-              </Stack>
-              <Stack direction="row" spacing={1}>
-                <TextField
-                  label="Contact Email"
-                  type="email"
-                  variant="outlined"
-                  size="small"
-                  margin="dense"
-                  fullWidth
-                  className={classes.input}
-                  value={contactEmail}
-                  InputProps={{
-                    style: {
-                      padding: "0px",
-                      margin: "0px",
-                      fontWeight: "200",
-                      fontSize: "1.2rem",
-                    },
-                    sx: {
-                      bgcolor: "#f5f5f5", // sets the fill color
-                      borderRadius: 1, // sets the border radius
-                    },
-                  }}
-                  inputlabelprops={{
-                    shrink: true,
-                    style: { paddingBottom: "5px" },
-                  }}
-                  onChange={(e) => {
-                    setContactEmail(e.target.value);
-                    setContactEmailError(validateContactEmail(e.target.value));
-                  }}
-                  error={contactEmailError !== ""}
-                  helperText={contactEmailError}
-                />
-              </Stack>
-            </Box>
+    //    =======================================
+    //    handles...
+    //    ---------------------------------------
+    const handleAddClick = async (event) => {
+        //    several actions necessary
+        //    0. generate AWSId for event
+        let eventUniqueID = createAWSUniqueID();
+        let resultantEvent = {};
+        //      1. addEventLocation (use generated event.id as events[0])
+        let eventLocationId = '';
+        let eventLocationError = null;
+        try {
+            const inputVariables = {
+                street: street,
+                city: city,
+                stateProv: stateProv,
+                postalCode: postalCode,
+            };
+            const createEventLocationResults = await API.graphql({
+                query: mutations.createEventLocation,
+                variables: { input: inputVariables },
+            });
+            if (createEventLocationResults?.data?.createEventLocation != null) {
+                eventLocationId =
+                    createEventLocationResults.data.createEventLocation.id;
+            } else {
+                eventLocationError = {
+                    errorCode: 401,
+                    message: 'createEventLocation failure (RPP:212)',
+                    data: createEventLocationResults,
+                };
+            }
+        } catch (error) {
+            eventLocationError = {
+                errorCode: 404,
+                message: 'createEventLocation try/catch failure (RPP:219)',
+                data: error,
+            };
+        }
+        //      2. addEventContact (use generated event.id as events[0])
+        let eventContactId = '';
+        let eventContactError = null;
+        try {
+            const inputVariables = {
+                firstName: contactFirstName,
+                lastName: contactLastName,
+                email: contactEmail,
+                phone: contactPhone,
+            };
+            const createEventContactResults = await API.graphql({
+                query: mutations.createEventContact,
+                variables: { input: inputVariables },
+            });
+            if (createEventContactResults?.data?.createEventContact != null) {
+                eventContactId =
+                    createEventContactResults.data.createEventContact.id;
+            } else {
+                eventContactError = {
+                    errorCode: 401,
+                    message: 'createEventContact failure (RPP:244)',
+                    data: createEventContactResults,
+                };
+            }
+        } catch (error) {
+            eventContactError = {
+                errorCode: 404,
+                message: 'createEventContact try/catch failure (RPP:251)',
+                data: error,
+            };
+        }
+        //      3. addMeal (use generated event.id as event)
+        let mealId = '';
+        let mealError = null;
+        if (
+            mealTime !== '' ||
+            mealCost !== '' ||
+            mealMessage !== '' ||
+            mealDeadline !== ''
+        ) {
+            try {
+                const inputVariables = {
+                    mealEventId: eventUniqueID,
+                    startTime: mealTime,
+                    deadline: mealDeadline,
+                    cost: mealCost,
+                    actualCount: 0,
+                    plannedCount: 0,
+                    message: mealMessage,
+                };
+                const createMealResults = await API.graphql({
+                    query: mutations.createMeal,
+                    variables: { input: inputVariables },
+                });
+                if (createMealResults?.data?.createMeal != null) {
+                    mealId = createMealResults.data.createMeal.id;
+                } else {
+                    mealError = {
+                        errorCode: 401,
+                        message: 'createMeal failure (RPP:278)',
+                        data: createMealResults,
+                    };
+                }
+            } catch (error) {
+                mealError = {
+                    errorCode: 404,
+                    message: 'createMeal try/catch failure (RPP:285)',
+                    data: error,
+                };
+            }
+        }
+        //    4. addEvent (use generated event.id and...
+        //      eventLocation.id (#1 above) for event.location
+        //      eventContact.id (#2 above) for event.contact
+        //      currentUser.defaultDivision.id for event.division
+        //      current
+        let createEventError = {};
+        if (
+            eventLocationError === null &&
+            eventContactError === null &&
+            mealError === null
+        ) {
+            // no errors add event
+            try {
+                //create eventCompKey
+                const eck = await createEventCompKey(
+                    eventDate,
+                    stateProv,
+                    eventUniqueID,
+                    currentUser.id
+                );
 
-            <Stack direction="row" justifyContent="center">
-              <Typography variant="h5">Logistics</Typography>
-            </Stack>
-            <Box
-              sx={{
-                border: "1px solid black",
-                borderRadius: "5px",
-                padding: "5px",
-                marginX: "5px",
-                maxWidth: "calc(100%)",
-                minWidth: "calc(90%)",
-                margin: "0 auto",
-              }}
-            >
-              <Stack
-                direction="row"
-                sx={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: "1.2rem",
-                    paddingRight: "5px",
-                  }}
-                >
-                  Date:
+                const inputVariables = {
+                    id: eventUniqueID,
+                    status: 'draft',
+                    userEventsId: currentUser.id,
+                    divisionEventsId: currentUser.defaultDivision.id,
+                    eventContactEventsId: eventContactId || null,
+                    eventLocationEventsId: eventLocationId || null,
+                    eventMealId: mealId || null,
+                    eventDate: eventDate || '1900-01-01',
+                    startTime: eventStart || '00:00',
+                    endTime: eventEnd || '00:00',
+                    name: churchName,
+                    eventCompKey: eck,
+                    message: eventMessage,
+                    graphic: '',
+                    plannedCount: 0,
+                    actualCount: 0,
+                    mealPlannedCount: 0,
+                    mealActualCount: 0,
+                };
+                const createEventResults = await API.graphql({
+                    query: mutations.createEvent,
+                    variables: { input: inputVariables },
+                });
+                if (createEventResults?.data?.createEvent != null) {
+                    resultantEvent = createEventResults.data.createEvent;
+                } else {
+                    createEventError = {
+                        errorCode: 401,
+                        message: 'createEvent failure (RPP:341)',
+                        data: createEventResults,
+                    };
+                }
+            } catch (error) {
+                createEventError = {
+                    errorCode: 404,
+                    message: 'createEvent try/catch failure (RPP:348)',
+                    data: error,
+                };
+                printObject('NEP:354==>createEventError:\n', createEventError);
+            }
+        } else {
+            console.log('NEP:357 Error');
+            return;
+        }
+
+        //    NEED TO UPDATE REDUX
+        //****************************** */
+        //      add to currentUser.events.items
+        addEventToCurrentUser(resultantEvent);
+        //      if lead, director or guru, add to pate.rallies
+        if (
+            currentUser.role === 'lead' ||
+            currentUser.role === 'director' ||
+            currentUser.role === 'guru'
+        ) {
+            addEventToPateRallies(resultantEvent);
+        }
+
+        //now update the stateRep.rally
+        updateStateRepRally(resultantEvent);
+        setShowEventAddedSuccess(true);
+    };
+    const handleMealCostChange = (event) => {
+        setMealCost(event.target.value);
+    };
+
+    const handleChange = (e) => {
+        let { value, name } = e.target;
+        switch (name) {
+            case 'rallyDate':
+                console.log('rallyDate:' + value);
+                setEventDate(value);
+                console.log('eventDate: ' + eventDate);
+                console.log('make it?');
+                break;
+            case 'eventStart':
+                setEventStart(value);
+                break;
+            case 'eventEnd':
+                setEventEnd(value);
+                break;
+            case 'mealTime':
+                setMealTime(value);
+                break;
+            case 'mealDeadline':
+                setMealDeadline(value);
+                break;
+            default:
+                break;
+        }
+    };
+    const dismissModal = () => {
+        setShowEventAddedSuccess(false);
+        history.push('/serve');
+    };
+
+    const hasErrors =
+        churchNameError !== '' ||
+        streetError !== '' ||
+        cityError !== '' ||
+        postalCodeError !== '';
+    // contactFirstNameError !== '' ||
+    // contactLastNameError !== '' ||
+    // contactPhoneError !== '' ||
+    // contactEmailError !== "";
+    return pateSystem.showSpinner ? (
+        <Spinner />
+    ) : (
+        <>
+            <Header />
+            <div className='newevent-page__wrapper'>
+                <div className='newevent-page__form-box'>
+                    <div className='newevent-page__header'>NEW RALLY</div>
+                    <div className='newevent-page__data-input-box'>
+                        <Stack direction='row' justifyContent='center'>
+                            <Typography variant='h5'>Location</Typography>
+                        </Stack>
+                        <Stack direction='row' justifyContent='center'>
+                            <TextField
+                                label='Church Name'
+                                variant='outlined'
+                                size='small'
+                                margin='dense'
+                                fullWidth
+                                className={classes.input}
+                                InputProps={{
+                                    style: {
+                                        padding: '0px',
+                                        margin: '0px',
+                                        fontWeight: '200',
+                                        fontSize: '1.2rem',
+                                    },
+                                    sx: {
+                                        bgcolor: '#f5f5f5', // sets the fill color
+                                        borderRadius: 1, // sets the border radius
+                                    },
+                                }}
+                                inputlabelprops={{
+                                    shrink: true,
+                                    style: { paddingBottom: '0px' },
+                                }}
+                                value={churchName}
+                                onChange={(e) => {
+                                    const capitalizedStr = e.target.value
+                                        .split(' ')
+                                        .map(
+                                            (word) =>
+                                                word.charAt(0).toUpperCase() +
+                                                word.slice(1).toLowerCase()
+                                        )
+                                        .join(' ');
+                                    setChurchName(capitalizedStr);
+                                    setChurchNameError(
+                                        validateChurchName(e.target.value)
+                                    );
+                                }}
+                                error={churchNameError !== ''}
+                                helperText={churchNameError}
+                            />
+                        </Stack>
+                        <Stack>
+                            <TextField
+                                label='Street'
+                                variant='outlined'
+                                size='small'
+                                margin='dense'
+                                fullWidth
+                                InputProps={{
+                                    style: {
+                                        padding: '0px',
+                                        margin: '0px',
+                                        fontWeight: '200',
+                                        fontSize: '1.2rem',
+                                    },
+                                    sx: {
+                                        bgcolor: '#f5f5f5', // sets the fill color
+                                        borderRadius: 1, // sets the border radius
+                                    },
+                                }}
+                                InputLabelProps={{
+                                    shrink: true,
+                                    style: { paddingBottom: '0px' },
+                                }}
+                                className={classes.input}
+                                value={street}
+                                onChange={(e) => {
+                                    setStreet(e.target.value);
+                                    setStreetError(
+                                        validateStreet(e.target.value)
+                                    );
+                                }}
+                                error={streetError !== ''}
+                                helperText={streetError}
+                            />
+                        </Stack>
+                        <Stack direction='row' spacing={1}>
+                            <TextField
+                                label='City'
+                                variant='outlined'
+                                size='small'
+                                margin='dense'
+                                fullWidth
+                                InputProps={{
+                                    style: {
+                                        padding: '0px',
+                                        margin: '0px',
+                                        fontWeight: '200',
+                                        fontSize: '1.2rem',
+                                    },
+                                    sx: {
+                                        bgcolor: '#f5f5f5', // sets the fill color
+                                        borderRadius: 1, // sets the border radius
+                                    },
+                                }}
+                                InputLabelProps={{
+                                    shrink: true,
+                                    style: { paddingBottom: '0px' },
+                                }}
+                                className={classes.input}
+                                value={city}
+                                onChange={(e) => {
+                                    setCity(e.target.value);
+                                    setCityError(validateCity(e.target.value));
+                                }}
+                                error={cityError !== ''}
+                                helperText={cityError}
+                            />
+                        </Stack>
+                        <Stack
+                            direction='row'
+                            spacing={1}
+                            justifyContent='center'
+                        >
+                            <Stack>
+                                <TextField
+                                    label='State/Providence'
+                                    size='small'
+                                    margin='dense'
+                                    select
+                                    value={stateProv}
+                                    onChange={(event) =>
+                                        setStateProv(event.target.value)
+                                    }
+                                >
+                                    {US_STATES.map((state) => (
+                                        <MenuItem
+                                            key={state.value}
+                                            value={state.value}
+                                        >
+                                            {state.label}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            </Stack>
+                            <Stack direction='row' spacing={1}>
+                                <TextField
+                                    label='Postal Code'
+                                    variant='outlined'
+                                    size='small'
+                                    margin='dense'
+                                    maxLength={5}
+                                    className={classes.input}
+                                    value={postalCode}
+                                    InputProps={{
+                                        style: {
+                                            padding: '0px',
+                                            margin: '0px',
+                                            fontWeight: '200',
+                                            fontSize: '1.2rem',
+                                        },
+                                        sx: {
+                                            bgcolor: '#f5f5f5', // sets the fill color
+                                            borderRadius: 1, // sets the border radius
+                                        },
+                                    }}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                        style: {
+                                            paddingBottom: '0px',
+                                            fontWeight: 'bold',
+                                        },
+                                    }}
+                                    onChange={(e) => {
+                                        setPostalCode(
+                                            e.target.value.substring(0, 5)
+                                        );
+                                        setPostalCodeError(
+                                            validatePostalCode(
+                                                e.target.value.substring(0, 5)
+                                            )
+                                        );
+                                    }}
+                                    error={postalCodeError !== ''}
+                                    helperText={postalCodeError}
+                                />
+                            </Stack>
+                        </Stack>
+                        <Stack direction='row' justifyContent='center'>
+                            <Typography variant='h5'>Church Contact</Typography>
+                        </Stack>
+                        <Box
+                            sx={{
+                                border: '1px solid black',
+                                borderRadius: '5px',
+                                padding: '5px',
+                                marginX: '5px',
+                                maxWidth: 'calc(100%)',
+                                minWidth: 'calc(90%)',
+                                margin: '0 auto',
+                            }}
+                        >
+                            <Stack>
+                                <TextField
+                                    label='First Name'
+                                    variant='outlined'
+                                    required
+                                    size='small'
+                                    margin='dense'
+                                    className={classes.input}
+                                    InputProps={{
+                                        style: {
+                                            padding: '0px',
+                                            margin: '0px',
+                                            fontWeight: '200',
+                                            fontSize: '1.2rem',
+                                        },
+                                        sx: {
+                                            bgcolor: '#f5f5f5', // sets the fill color
+                                            borderRadius: 1, // sets the border radius
+                                        },
+                                    }}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                        style: { paddingBottom: '0px' },
+                                    }}
+                                    value={contactFirstName}
+                                    onChange={(e) => {
+                                        setContactFirstName(e.target.value);
+                                        setContactFirstNameError(
+                                            validateContactFirstName(
+                                                e.target.value
+                                            )
+                                        );
+                                    }}
+                                    error={contactFirstNameError !== ''}
+                                    helperText={contactFirstNameError}
+                                />
+                            </Stack>
+                            <Stack>
+                                <TextField
+                                    label='Last Name'
+                                    variant='outlined'
+                                    required
+                                    size='small'
+                                    margin='dense'
+                                    className={classes.input}
+                                    InputProps={{
+                                        style: {
+                                            padding: '0px',
+                                            margin: '0px',
+                                            fontWeight: '200',
+                                            fontSize: '1.2rem',
+                                        },
+                                        sx: {
+                                            bgcolor: '#f5f5f5', // sets the fill color
+                                            borderRadius: 1, // sets the border radius
+                                        },
+                                    }}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                        style: { paddingBottom: '0px' },
+                                    }}
+                                    value={contactLastName}
+                                    onChange={(e) => {
+                                        setContactLastName(e.target.value);
+                                        setContactLastNameError(
+                                            validateContactLastName(
+                                                e.target.value
+                                            )
+                                        );
+                                    }}
+                                    error={contactLastNameError !== ''}
+                                    helperText={contactLastNameError}
+                                />
+                            </Stack>
+
+                            <Stack
+                                direction='column'
+                                spacing={1}
+                                align='center'
+                                sx={{ marginTop: 1, marginBottom: 1 }}
+                            >
+                                <PhoneInput
+                                    onlyCountries={['us']}
+                                    country='us'
+                                    disableCountryCode
+                                    disableDropdown
+                                    value={contactPhone}
+                                    style={{
+                                        margin: 0,
+                                        padding: 0,
+                                        fontSize: 14,
+                                        color: 'black',
+                                        backgroundColor: '#f5f5f5',
+                                    }}
+                                    onChange={(contactPhone) => {
+                                        setContactPhone(contactPhone);
+                                        setContactPhoneError(
+                                            validateContactPhone(contactPhone)
+                                        );
+                                    }}
+                                    inputStyle={{
+                                        fontSize: '20px',
+                                        color: 'black',
+                                    }}
+                                    inputProps={{
+                                        padding: 0,
+                                        fontSize: 24,
+                                        name: 'Cell',
+                                        margin: 0,
+                                        required: true,
+                                        placeholder: '(xxx) xxx-xxxx',
+                                    }}
+                                />
+                                {contactPhoneError && (
+                                    <span
+                                        style={{
+                                            color: 'red',
+                                            fontSize: 12,
+                                            fontWeight: 'bold',
+                                        }}
+                                    >
+                                        Valid phone required.
+                                    </span>
+                                )}
+                            </Stack>
+                            <Stack direction='row' spacing={1}>
+                                <TextField
+                                    label='Contact Email'
+                                    type='email'
+                                    variant='outlined'
+                                    size='small'
+                                    margin='dense'
+                                    fullWidth
+                                    className={classes.input}
+                                    value={contactEmail}
+                                    InputProps={{
+                                        style: {
+                                            padding: '0px',
+                                            margin: '0px',
+                                            fontWeight: '200',
+                                            fontSize: '1.2rem',
+                                        },
+                                        sx: {
+                                            bgcolor: '#f5f5f5', // sets the fill color
+                                            borderRadius: 1, // sets the border radius
+                                        },
+                                    }}
+                                    inputlabelprops={{
+                                        shrink: true,
+                                        style: { paddingBottom: '5px' },
+                                    }}
+                                    onChange={(e) => {
+                                        setContactEmail(e.target.value);
+                                        setContactEmailError(
+                                            validateContactEmail(e.target.value)
+                                        );
+                                    }}
+                                    error={contactEmailError !== ''}
+                                    helperText={contactEmailError}
+                                />
+                            </Stack>
+                        </Box>
+
+                        <Stack direction='row' justifyContent='center'>
+                            <Typography variant='h5'>Logistics</Typography>
+                        </Stack>
+                        <Box
+                            sx={{
+                                border: '1px solid black',
+                                borderRadius: '5px',
+                                padding: '5px',
+                                marginX: '5px',
+                                maxWidth: 'calc(100%)',
+                                minWidth: 'calc(90%)',
+                                margin: '0 auto',
+                            }}
+                        >
+                            <Stack
+                                direction='row'
+                                sx={{
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <div
+                                    style={{
+                                        fontSize: '1.2rem',
+                                        paddingRight: '5px',
+                                    }}
+                                >
+                                    Date:
+                                </div>
+                                <input
+                                    type='date'
+                                    id='rallyDate'
+                                    name='rallyDate'
+                                    onChange={handleChange}
+                                    value={eventDate}
+                                    style={{
+                                        fontSize: '1.2rem',
+                                        maxWidth: '150px',
+                                    }}
+                                    required
+                                />
+                            </Stack>
+                            <Stack
+                                direction='row'
+                                sx={{
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <div
+                                    style={{
+                                        fontSize: '1.2rem',
+                                        paddingRight: '5px',
+                                    }}
+                                >
+                                    Start Time:
+                                </div>
+                                <input
+                                    type='time'
+                                    id='eventStart'
+                                    name='eventStart'
+                                    onChange={handleChange}
+                                    value={eventStart}
+                                    required
+                                    style={{
+                                        fontSize: '1.2rem',
+                                        maxWidth: '150px',
+                                    }}
+                                />
+                            </Stack>
+
+                            <Stack
+                                direction='row'
+                                sx={{
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <div
+                                    style={{
+                                        fontSize: '1.2rem',
+                                        paddingRight: '5px',
+                                    }}
+                                >
+                                    End Time:
+                                </div>
+                                <input
+                                    type='time'
+                                    id='eventEnd'
+                                    name='eventEnd'
+                                    onChange={handleChange}
+                                    value={eventEnd}
+                                    required
+                                    style={{
+                                        fontSize: '1.2rem',
+                                        maxWidth: '150px',
+                                    }}
+                                />
+                            </Stack>
+                            <Stack
+                                direction='column'
+                                alignItems='center'
+                                sx={{ marginTop: '5px' }}
+                            >
+                                <label htmlFor='event-message'>
+                                    Event Message
+                                </label>
+                                <TextareaAutosize
+                                    id='event-message'
+                                    aria-label='Event Message'
+                                    placeholder=''
+                                    minRows={2}
+                                    value={eventMessage}
+                                    onChange={(event) =>
+                                        setEventMessage(event.target.value)
+                                    }
+                                    style={{
+                                        width: '90%',
+                                        backgroundColor: '#f5f5f5',
+                                        padding: '10px',
+                                        margin: '5px',
+                                        fontWeight: '200',
+                                        fontSize: '1.2rem',
+                                    }}
+                                />
+                            </Stack>
+                        </Box>
+                        <Stack direction='row' justifyContent='center'>
+                            <Typography variant='h5'>
+                                Meal/Food Information
+                            </Typography>
+                        </Stack>
+                        <Box
+                            sx={{
+                                border: '1px solid black',
+                                borderRadius: '5px',
+                                padding: '5px',
+                                marginX: '5px',
+                                maxWidth: 'calc(100%)',
+                                minWidth: 'calc(90%)',
+                                margin: '0 auto',
+                            }}
+                        >
+                            <Stack
+                                direction='row'
+                                sx={{
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <div
+                                    style={{
+                                        fontSize: '1.2rem',
+                                        paddingRight: '5px',
+                                    }}
+                                >
+                                    Meal Time:
+                                </div>
+                                <input
+                                    type='time'
+                                    id='mealTime'
+                                    name='mealTime'
+                                    onChange={handleChange}
+                                    value={mealTime}
+                                    required
+                                    style={{
+                                        fontSize: '1.2rem',
+                                        maxWidth: '150px',
+                                    }}
+                                />
+                            </Stack>
+                            <Stack
+                                direction='row'
+                                sx={{
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    marginTop: '10px',
+                                }}
+                            >
+                                <TextField
+                                    label='Cost'
+                                    value={mealCost}
+                                    onChange={handleMealCostChange}
+                                    type='number'
+                                    size='small'
+                                    margin='dense'
+                                    step='0.01'
+                                    sx={{
+                                        maxWidth: '100px',
+                                        marginLeft: '10px',
+                                        alignItems: 'center',
+                                        backgroundColor: '#f5f5f5',
+                                        justifyContent: 'center',
+                                        '& input': {
+                                            textAlign: 'center',
+                                        },
+                                    }}
+                                    InputLabelProps={{
+                                        sx: {
+                                            fontSize: '1.2rem',
+                                            padding: '0px',
+                                            margin: '0px',
+                                            '&.Mui-focused': {
+                                                fontSize: '1.2rem',
+                                                color: 'green', // You can change this to any color you like
+                                            },
+                                        },
+                                    }}
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position='start'>
+                                                $
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
+                            </Stack>
+
+                            <Stack
+                                direction='column'
+                                alignItems='center'
+                                sx={{ marginTop: '5px' }}
+                            >
+                                <label htmlFor='meal-message'>
+                                    Meal Message
+                                </label>
+                                <TextareaAutosize
+                                    id='meal-message'
+                                    aria-label='Meal Message'
+                                    placeholder=''
+                                    minRows={2}
+                                    value={mealMessage}
+                                    onChange={(event) =>
+                                        setMealMessage(event.target.value)
+                                    }
+                                    style={{
+                                        width: '90%',
+                                        backgroundColor: '#f5f5f5',
+                                        padding: '10px',
+                                        margin: '5px',
+                                        fontWeight: '200',
+                                        fontSize: '1.2rem',
+                                    }}
+                                />
+                            </Stack>
+                            <Stack direction='row' justifyContent='center'>
+                                <Typography variant='h6'>
+                                    Desired RSVP Deadline
+                                </Typography>
+                            </Stack>
+                            <Stack
+                                direction='row'
+                                sx={{
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <input
+                                    type='date'
+                                    id='mealDeadline'
+                                    name='mealDeadline'
+                                    onChange={handleChange}
+                                    value={mealDeadline}
+                                    style={{
+                                        fontSize: '1.2rem',
+                                        maxWidth: '150px',
+                                    }}
+                                    required
+                                />
+                            </Stack>
+                        </Box>
+
+                        <div className='newevent-page__button-wrapper'>
+                            <Button
+                                variant='contained'
+                                color='primary'
+                                disabled={hasErrors}
+                                className={classes.button}
+                                onClick={handleAddClick}
+                            >
+                                Add
+                            </Button>
+                            <Button
+                                variant='contained'
+                                sx={{
+                                    backgroundColor: 'yellow',
+                                    color: 'black',
+                                    marginLeft: '10px',
+                                }}
+                                className={classes.button}
+                                onClick={() => history.goBack()}
+                            >
+                                Cancel
+                            </Button>
+                        </div>
+                    </div>
                 </div>
-                <input
-                  type="date"
-                  id="rallyDate"
-                  name="rallyDate"
-                  onChange={handleChange}
-                  value={eventDate}
-                  style={{
-                    fontSize: "1.2rem",
-                    maxWidth: "150px",
-                  }}
-                  required
-                />
-              </Stack>
-              <Stack
-                direction="row"
-                sx={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: "1.2rem",
-                    paddingRight: "5px",
-                  }}
-                >
-                  Start Time:
-                </div>
-                <input
-                  type="time"
-                  id="eventStart"
-                  name="eventStart"
-                  onChange={handleChange}
-                  value={eventStart}
-                  required
-                  style={{
-                    fontSize: "1.2rem",
-                    maxWidth: "150px",
-                  }}
-                />
-              </Stack>
-
-              <Stack
-                direction="row"
-                sx={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: "1.2rem",
-                    paddingRight: "5px",
-                  }}
-                >
-                  End Time:
-                </div>
-                <input
-                  type="time"
-                  id="eventEnd"
-                  name="eventEnd"
-                  onChange={handleChange}
-                  value={eventEnd}
-                  required
-                  style={{
-                    fontSize: "1.2rem",
-                    maxWidth: "150px",
-                  }}
-                />
-              </Stack>
-              <Stack
-                direction="column"
-                alignItems="center"
-                sx={{ marginTop: "5px" }}
-              >
-                <label htmlFor="event-message">Event Message</label>
-                <TextareaAutosize
-                  id="event-message"
-                  aria-label="Event Message"
-                  placeholder=""
-                  minRows={2}
-                  value={eventMessage}
-                  onChange={(event) => setEventMessage(event.target.value)}
-                  style={{
-                    width: "90%",
-                    backgroundColor: "#f5f5f5",
-                    padding: "10px",
-                    margin: "5px",
-                    fontWeight: "200",
-                    fontSize: "1.2rem",
-                  }}
-                />
-              </Stack>
-            </Box>
-            <Stack direction="row" justifyContent="center">
-              <Typography variant="h5">Meal/Food Information</Typography>
-            </Stack>
-            <Box
-              sx={{
-                border: "1px solid black",
-                borderRadius: "5px",
-                padding: "5px",
-                marginX: "5px",
-                maxWidth: "calc(100%)",
-                minWidth: "calc(90%)",
-                margin: "0 auto",
-              }}
-            >
-              <Stack
-                direction="row"
-                sx={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: "1.2rem",
-                    paddingRight: "5px",
-                  }}
-                >
-                  Meal Time:
-                </div>
-                <input
-                  type="time"
-                  id="mealTime"
-                  name="mealTime"
-                  onChange={handleChange}
-                  value={mealTime}
-                  required
-                  style={{
-                    fontSize: "1.2rem",
-                    maxWidth: "150px",
-                  }}
-                />
-              </Stack>
-              <Stack
-                direction="row"
-                sx={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginTop: "10px",
-                }}
-              >
-                <TextField
-                  label="Cost"
-                  value={mealCost}
-                  onChange={handleMealCostChange}
-                  type="number"
-                  size="small"
-                  margin="dense"
-                  step="0.01"
-                  sx={{
-                    maxWidth: "100px",
-                    marginLeft: "10px",
-                    alignItems: "center",
-                    backgroundColor: "#f5f5f5",
-                    justifyContent: "center",
-                    "& input": {
-                      textAlign: "center",
-                    },
-                  }}
-                  InputLabelProps={{
-                    sx: {
-                      fontSize: "1.2rem",
-                      padding: "0px",
-                      margin: "0px",
-                      "&.Mui-focused": {
-                        fontSize: "1.2rem",
-                        color: "green", // You can change this to any color you like
-                      },
-                    },
-                  }}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">$</InputAdornment>
-                    ),
-                  }}
-                />
-              </Stack>
-
-              <Stack
-                direction="column"
-                alignItems="center"
-                sx={{ marginTop: "5px" }}
-              >
-                <label htmlFor="meal-message">Meal Message</label>
-                <TextareaAutosize
-                  id="meal-message"
-                  aria-label="Meal Message"
-                  placeholder=""
-                  minRows={2}
-                  value={mealMessage}
-                  onChange={(event) => setMealMessage(event.target.value)}
-                  style={{
-                    width: "90%",
-                    backgroundColor: "#f5f5f5",
-                    padding: "10px",
-                    margin: "5px",
-                    fontWeight: "200",
-                    fontSize: "1.2rem",
-                  }}
-                />
-              </Stack>
-              <Stack direction="row" justifyContent="center">
-                <Typography variant="h6">Desired RSVP Deadline</Typography>
-              </Stack>
-              <Stack
-                direction="row"
-                sx={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <input
-                  type="date"
-                  id="mealDeadline"
-                  name="mealDeadline"
-                  onChange={handleChange}
-                  value={mealDeadline}
-                  style={{
-                    fontSize: "1.2rem",
-                    maxWidth: "150px",
-                  }}
-                  required
-                />
-              </Stack>
-            </Box>
-
-            <div className="newevent-page__button-wrapper">
-              <Button
-                variant="contained"
-                color="primary"
-                disabled={hasErrors}
-                className={classes.button}
-                onClick={handleAddClick}
-              >
-                Add
-              </Button>
-              <Button
-                variant="contained"
-                sx={{
-                  backgroundColor: "yellow",
-                  color: "black",
-                  marginLeft: "10px",
-                }}
-                className={classes.button}
-                onClick={() => history.goBack()}
-              >
-                Cancel
-              </Button>
             </div>
-          </div>
-        </div>
-      </div>
-      <MainFooter />
+            <MainFooter />
+            <ModalWrapper isOpened={showEventAddedSuccess}>
+                <EventAddedModal
+                    onClose={() => dismissModal()}
+                ></EventAddedModal>
+            </ModalWrapper>
 
-      <Modal isOpened={modalIsVisible}>
-        <div>
-          <InputErrors onClose={() => setModalIsVisible(false)} />
-          {/*<div>{modalMessage}</div>*/}
-        </div>
-      </Modal>
-      <SuccessModal isOpened={showRegistrationSuccess}>
-        <SuccessMessage onClose={() => successAcknowledged()} />
-      </SuccessModal>
-    </>
-  );
+            <Modal isOpened={modalIsVisible}>
+                <div>
+                    <InputErrors onClose={() => setModalIsVisible(false)} />
+                    {/*<div>{modalMessage}</div>*/}
+                </div>
+            </Modal>
+
+            {/* <SuccessModal isOpened={showRegistrationSuccess}>
+              <SuccessMessage onClose={() => successAcknowledged()} />
+          </SuccessModal> */}
+        </>
+    );
 };
 const mapDispatchToProps = (dispatch) => ({
-  setSpinner: () => dispatch(setSpinner()),
-  clearSpinner: () => dispatch(clearSpinner()),
-  loadRally: (rally) => dispatch(loadRally(rally)),
-  updateStateRepRally: (newRally) => dispatch(updateStateRepRally(newRally)),
+    setSpinner: () => dispatch(setSpinner()),
+    clearSpinner: () => dispatch(clearSpinner()),
+    loadRally: (rally) => dispatch(loadRally(rally)),
+    addEventToCurrentUser: (event) => dispatch(addEventToCurrentUser(event)),
+    addEventToPateRallies: (event) => dispatch(addEventToPateRallies(event)),
+    updateStateRepRally: (newRally) => dispatch(updateStateRepRally(newRally)),
 });
 const mapStateToProps = (state) => ({
-  pateSystem: state.pate,
-  currentUser: state.user.currentUser,
-  rallies: state.stateRep.rally,
-  leadRallies: state.stateLead.rally,
+    pateSystem: state.pate,
+    currentUser: state.user.currentUser,
+    rallies: state.stateRep.rally,
+    leadRallies: state.stateLead.rally,
 });
 export default compose(
-  withRouter,
-  connect(mapStateToProps, mapDispatchToProps)
+    withRouter,
+    connect(mapStateToProps, mapDispatchToProps)
 )(Serve);

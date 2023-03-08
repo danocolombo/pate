@@ -129,7 +129,7 @@ const SignIn = ({
                 currentUserInfo?.attributes.sub
             );
             if (gqlProfile.status === 200) {
-                // printObject('SIP:130-->gqlProfile.data:\n', gqlProfile.data);
+                printObject('SIP:130-->gqlProfile.data:\n', gqlProfile.data);
 
                 graphQLProfile = gqlProfile.data;
             } else {
