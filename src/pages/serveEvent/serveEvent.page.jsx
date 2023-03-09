@@ -863,47 +863,6 @@ const Serve = ({
         }
 
         clearSpinner();
-        let DANO = true;
-        if (DANO) {
-            history.goBack();
-        }
-
-        //remove the rally from the database...
-        async function updateDb() {
-            await fetch(
-                'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/events',
-                {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        operation: 'deleteEvent',
-                        payload: {
-                            Key: {
-                                uid: eventID,
-                            },
-                        },
-                    }),
-                    headers: {
-                        'Content-type': 'application/json; charset=UTF-8',
-                    },
-                }
-            )
-                .then((response) => response.json())
-                .then((data) => {
-                    // const util = require('util');
-                    // console.log(
-                    //     'db data returned: \n' +
-                    //         util.inspect(data, {
-                    //             showHidden: false,
-                    //             depth: null,
-                    //         })
-                    // );
-                    removeRallyFromRallyList(eventID);
-                });
-        }
-        //next call is to async the above update
-        updateDb();
-
-        history.push('/serve');
     };
 
     printObject('rallyEvent:\n', rallyEvent);
@@ -921,7 +880,7 @@ const Serve = ({
                 <div className='serveevent-page__form-box'>
                     <div className='serveevent-page__header'>EVENT</div>
                     <div className='serveevent-page__data-input-box'>
-                        {rallyEvent?.coordinator?.id !== currentUser.id && (
+                        {rallyEvent?.coordinator?.id !== currentUser?.id && (
                             <Stack direction='row'>
                                 <Typography
                                     sx={{

@@ -47,6 +47,13 @@ const Serve = ({
             getLeadRallies().then(() =>
                 console.log('done getting lead rallies')
             );
+        } else if (
+            currentUser.role === 'director' ||
+            currentUser.role === 'guru'
+        ) {
+            getDivisionRallies().then(() => {
+                console.log('done getting division rallies');
+            });
         }
         // if (
         //     currentUser.role === 'lead' ||
@@ -91,6 +98,42 @@ const Serve = ({
                     }
                     sortRallies();
                     setPateRallies(leadRallies);
+                }
+            })
+            .catch((error) => {
+                printObject(
+                    'SP:157--> error getting lead rallies from graphql',
+                    error
+                );
+            });
+    };
+    const getDivisionRallies = async () => {
+        // =======================
+        // get all Events for current division, then filter by stateProv
+        // resulting in only the rallies for rally.location.stateProv === currentUser.residence.stateProv
+        //0ebefcdf-9fd2-4702-a1e7-76bcf90d9b68 = currentUser.id
+        const variables = {
+            id: 'fffedde6-5d5a-46f0-a3ac-882a350edc64',
+        };
+        API.graphql(graphqlOperation(queries.getAllDivisionEvents2, variables))
+            .then((allRallyResponse) => {
+                if (
+                    allRallyResponse?.data?.getDivision?.events.items.length > 0
+                ) {
+                    // separate done and active
+
+                    let divisionRallies =
+                        allRallyResponse?.data.getDivision?.events.items;
+
+                    async function sortRallies() {
+                        divisionRallies.sort(function (a, b) {
+                            return (
+                                new Date(b.eventDate) - new Date(a.eventDate)
+                            );
+                        });
+                    }
+                    sortRallies();
+                    setPateRallies(divisionRallies);
                 }
             })
             .catch((error) => {
