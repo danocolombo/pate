@@ -683,6 +683,7 @@ export const getProfileBySub = /* GraphQL */ `
                 ) {
                     items {
                         id
+                        status
                         eventDate
                         startTime
                         endTime

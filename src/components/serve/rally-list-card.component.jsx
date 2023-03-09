@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, Stack, Box, Typography, CardContent } from '@mui/material';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faGlasses } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import ModeIcon from '@mui/icons-material/Mode';
@@ -15,6 +18,7 @@ const RallyListCard = ({ rally }) => {
     const [complete, setComplete] = useState(false);
     const [attention, setAttention] = useState(false);
     const [headerIcon, setHeaderIcon] = useState(null);
+    library.add(faGlasses); // This line adds the icon to the library
     useEffect(() => {
         // determine the colors for the event
         const eventStartDate = new Date(rally.eventDate);
@@ -53,19 +57,18 @@ const RallyListCard = ({ rally }) => {
                 />
             );
         }
-        if (!complete && rally.status === 'review') {
-            setHeaderIcon(
-                <RemoveRedEyeIcon
-                    sx={{
-                        color: 'black',
-                        marginRight: 'auto',
-                        marginLeft: '5px',
-                    }}
-                />
-            );
-        }
+        // if (!complete && rally.status === 'review') {
+        //     setHeaderIcon(
+        //         <RemoveRedEyeIcon
+        //             sx={{
+        //                 color: 'black',
+        //                 marginRight: 'auto',
+        //                 marginLeft: '5px',
+        //             }}
+        //         />
+        //     );
+        // }
     }, []);
-
     return (
         <>
             <Stack direction='row' justifyContent='center'>
@@ -122,6 +125,13 @@ const RallyListCard = ({ rally }) => {
                                                 marginLeft: 'auto',
                                                 marginRight: '5px',
                                             }}
+                                        />
+                                    )}
+                                    {rally.status === 'review' && (
+                                        <FontAwesomeIcon
+                                            icon='glasses'
+                                            color='yellow'
+                                            style={{ paddingRight: '10px' }}
                                         />
                                     )}
                                 </Box>

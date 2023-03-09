@@ -187,7 +187,7 @@ const Serve = ({
                 }
                 getEventDetails();
                 loadRally();
-
+                window.scrollTo(0, 0);
                 //todo -- load details into loadEvent()??
                 // loadEvent();
                 // loadRegistrations();
@@ -267,6 +267,10 @@ const Serve = ({
                 name: 'Back to Draft',
             });
             eventOptions.push({ id: 'delete', name: 'Delete' });
+            break;
+        case 'done':
+            eventOptions.push({ id: 'done', name: 'Complete' });
+
             break;
         case 'delete':
             eventOptions.push({ id: 'delete', name: 'Deleted' });
@@ -398,7 +402,7 @@ const Serve = ({
         setRepName(theEvent?.coordinator?.firstName);
         setRepEmail(theEvent?.coordinator?.email);
         setRepPhone(theEvent?.coordinator?.phone);
-        setMealTime(theEvent?.meal?.startTime.substr(0, 5));
+        setMealTime(theEvent?.meal?.startTime?.substr(0, 5));
         setMealCost(theEvent?.meal?.cost);
         setMealCount(theEvent?.meal?.plannedCount);
         setMealsServed(theEvent?.meal?.actualCount);
@@ -917,6 +921,20 @@ const Serve = ({
                 <div className='serveevent-page__form-box'>
                     <div className='serveevent-page__header'>EVENT</div>
                     <div className='serveevent-page__data-input-box'>
+                        {rallyEvent?.coordinator?.id !== currentUser.id && (
+                            <Stack direction='row'>
+                                <Typography
+                                    sx={{
+                                        fontSize: '1.3rem',
+                                        fontWeight: '500',
+                                    }}
+                                >
+                                    Coordinator:{' '}
+                                    {rallyEvent?.coordinator?.firstName}{' '}
+                                    {rallyEvent?.coordinator?.lastName}
+                                </Typography>
+                            </Stack>
+                        )}
                         <Stack>
                             <InputLabel id='meeting-state-select-label'>
                                 Event Status
@@ -927,6 +945,7 @@ const Serve = ({
                                 style={{
                                     padding: '0px',
                                     margin: '0px',
+                                    fontSize: '1.2rem',
                                     backgroundColor: eventStatusError
                                         ? 'yellow'
                                         : null,
