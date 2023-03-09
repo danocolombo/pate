@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { compose } from 'redux';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
-import StateRallyList from './stateLead-rally.component';
-import StateRepRally from './stateRep-rally.component';
+import RallyListCard from './rally-list-card.component';
 import Spinner from '../../components/spinner/Spinner';
 import { printObject } from '../../utils/helpers';
 import './serve.styles.scss';
@@ -16,7 +15,6 @@ const StateLead = ({
     clearSpinner,
     pateSystem,
 }) => {
-    // const [leadRallies, setLeadRallies] = useState([]);
     const [doneEvents, setDoneEvents] = useState([]);
     const [activeEvents, setActiveEvents] = useState([]);
     const processEvents = async () => {
@@ -81,7 +79,7 @@ const StateLead = ({
                             </div>
                         ) : null}
                         {activeEvents.map((rally) => (
-                            <StateRepRally key={rally.uid} rally={rally} />
+                            <RallyListCard key={rally.uid} rally={rally} />
                         ))}
                     </>
                 ) : null}
@@ -95,7 +93,7 @@ const StateLead = ({
                             </div>
                         ) : null}
                         {doneEvents.map((rally) => (
-                            <StateRepRally key={rally.uid} rally={rally} />
+                            <RallyListCard key={rally.uid} rally={rally} />
                         ))}
                     </>
                 ) : null}
