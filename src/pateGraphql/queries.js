@@ -2240,3 +2240,35 @@ export const listUsers = /* GraphQL */ `
         }
     }
 `;
+
+export const listMigrationUsers = /* GraphQL */ `
+    query ListUsers($id: ID!) {
+        listUsers(filter: { divisionDefaultUsersId: { eq: $id } }, limit: 10) {
+            items {
+                id
+                sub
+                username
+                firstName
+                lastName
+                email
+                phone
+            }
+            nextToken
+        }
+    }
+`;
+export const getDivUsers = /* GraphQL */ `
+    query MyQuery($id: ID!) {
+        listUsers(filter: { divisionDefaultUsersId: { eq: $id } }) {
+            items {
+                id
+                sub
+                username
+                firstName
+                lastName
+                email
+                phone
+            }
+        }
+    }
+`;
