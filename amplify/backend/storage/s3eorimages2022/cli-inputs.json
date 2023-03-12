@@ -1,0 +1,14 @@
+{
+  "resourceName": "s3eorimages2022",
+  "bucketName": "eor-images-2022",
+  "policyUUID": "ca1aeb28",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ]
+}

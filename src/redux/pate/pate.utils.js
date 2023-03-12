@@ -31,6 +31,8 @@
 //     return returnValue;
 // };
 
+import { printObject } from '../../utils/helpers';
+
 // export const addItemToRegistrations = (registrations, registrationToAdd) => {
 //     const existingRegistrations = registrations.find(
 //         (registration) => registration.uid === registrationToAdd.uid
@@ -80,3 +82,33 @@
 //     console.log('ready to return');
 //     return returnValue;
 // };
+
+//=====================================
+// update REDUX....
+//  1. reduce pate.rally.plannedCount
+//  2. recuce pate.rally.plannedMealCount (if applicable)
+//  3. reduct pate.rally.meal.plannedCount (if applicable);
+//  4. remove registration from pate.rally.registrations.items[]
+export const removeRegistrationFromRally = (state, payload) => {
+    printObject('PU:93==>state:\n', state);
+    printObject('PU:93==>payload:\n', payload);
+    return state;
+};
+//----------------------------------------
+// remove rally from rallies
+//----------------------------------------
+export const removeItemFromRallies = (state, eventToRemove) => {
+    const newState = {
+        ...state,
+        rallies: state.rallies.filter((item) => item.id !== eventToRemove),
+    };
+    return newState;
+};
+//----------------------------------------
+// add rally to rallies
+//----------------------------------------
+export const addItemToRallies = (state, eventToAdd) => {
+    let newState = { ...state };
+    newState.rallies = { ...newState.rallies, eventToAdd };
+    return newState;
+};

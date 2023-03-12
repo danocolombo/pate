@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Auth } from 'aws-amplify';
+import { Auth, API, graphqlOperation } from 'aws-amplify';
+import * as queries from '../../pateGraphql/queries';
 import { Link, useHistory } from 'react-router-dom';
 // import jwt_decode from 'jwt-decode';
 import FormInput from '../../components/form-input/form-input.component';
@@ -12,7 +13,7 @@ import Modal from '../../components/modals/wrapper.modal';
 import ResetPassword from '../../components/modals/auth/reset-password.modal';
 import Modal2 from '../../components/modals/wrapper.modal';
 import CheckEmailModal from '../../components/modals/auth/check-email.modal';
-
+import { printObject, createAWSUniqueID } from '../../utils/helpers';
 //----- actions needed -------
 import {
     loadRegistrations,
@@ -21,7 +22,9 @@ import {
 import { setCurrentUser } from '../../redux/user/user.actions';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import { setAlert } from '../../redux/alert/alert.action';
+import { createNewGQLProfile } from '../../pateGraphql/pateGraphql.provider';
 import './signin.styles.scss';
+import { getGQLProfile, getDDBProfile } from '../../providers/profile.provider';
 
 const SignIn = ({
     onSignIn,
@@ -45,6 +48,7 @@ const SignIn = ({
     useEffect(() => {}, [pateSystem.showSpinner]);
     const signIn = async () => {
         //display spinner
+        printObject('REACT_APP_PATE_API', process.env.REACT_APP_PATE_API);
         let alertPayload = {};
         setSpinner();
         try {
@@ -107,6 +111,9 @@ const SignIn = ({
 
             let currentUserInfo = {};
             let currentSession = {};
+            let graphQLProfile = {};
+            let newProfile = {};
+            let dProfile = {};
             await Auth.currentUserInfo().then((u) => {
                 currentUserInfo = u;
             });
@@ -115,19 +122,135 @@ const SignIn = ({
             });
             // we will get true if user is registered or false if not
 
-            const userIsRegistered = await saveUser(
-                currentUserInfo,
-                currentSession
+            //    **********************************************
+            //    get the profile information from graphql
+            //    **********************************************
+            const gqlProfile = await getGQLProfile(
+                currentUserInfo?.attributes.sub
             );
-            await getRegistrations(currentUserInfo.attributes.sub);
+            if (gqlProfile.status === 200) {
+                printObject('SIP:130-->gqlProfile.data:\n', gqlProfile.data);
+
+                graphQLProfile = gqlProfile.data;
+            } else {
+                //  *******************************************
+                //      get Dynamo Profile - if necessary
+                //  *******************************************
+                let oldProfile = await getDDBProfile(
+                    currentUserInfo?.attributes?.sub
+                );
+                if (oldProfile.status === 404) {
+                    //********************************************* */
+                    //* There is possibility that this user just signed
+                    //* up and never had legacy profile or access.
+                    //********************************************* */
+                    // set default values to get them started.
+                    oldProfile.data.role = 'guest';
+                    oldProfile.data.status = 'active';
+                    let residence = {
+                        stateProv: 'GA',
+                        postalCode: '30030',
+                    };
+                    oldProfile.data.residence = residence;
+                }
+                printObject('SIP:140-->oldProfile:\n', oldProfile);
+                //===========================================
+                let residenceUniqueID = createAWSUniqueID();
+                let userUniqueID = createAWSUniqueID();
+                let affiliationUniqueID = createAWSUniqueID();
+
+                // create residence object
+                const residenceObject = {
+                    id: residenceUniqueID,
+                    street: oldProfile?.data?.residence?.street || '',
+                    city: oldProfile?.data?.residence?.city || '',
+                    stateProv: oldProfile?.data?.residence?.stateProv || '',
+                    postalCode: oldProfile?.data?.residence?.postalCode || '',
+                    latitude: '',
+                    longitude: '',
+                };
+
+                const userObject = {
+                    id: userUniqueID,
+                    sub: currentUserInfo?.attributes.sub,
+                    username: currentUserInfo.username,
+                    firstName: oldProfile?.data?.firstName || '',
+                    lastName: oldProfile?.data?.lastName || '',
+                    email:
+                        oldProfile?.data?.email ||
+                        currentUserInfo.attributes.email,
+                    phone: oldProfile?.data?.phone || '',
+                    divisionDefaultUsersId:
+                        'fffedde6-5d5a-46f0-a3ac-882a350edc64',
+                    residenceResidentsId: residenceUniqueID,
+                };
+                const affiliationObject = {
+                    id: affiliationUniqueID,
+                    role: oldProfile?.data?.role || 'guest',
+                    status: 'active',
+                    divisionAffiliationsId:
+                        'fffedde6-5d5a-46f0-a3ac-882a350edc64',
+                    userAffiliationsId: userUniqueID,
+                };
+
+                const multiMutate = {
+                    residence: residenceObject,
+                    user: userObject,
+                    affiliation: affiliationObject,
+                };
+                const creationResults = await createNewGQLProfile(multiMutate);
+                graphQLProfile = creationResults.data;
+                // console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&');
+                // printObject('SIP:195-->creationResults:\n', creationResults);
+                // console.log('################################');
+                console.log('DONE CREATING NEW USER');
+            }
+            //      DETERMINE USER ROLE FOR CLIENT
+            async function setUserRoleValue() {
+                const thisAffiliationId =
+                    'fffedde6-5d5a-46f0-a3ac-882a350edc64';
+                const p8RallyAffiliation =
+                    graphQLProfile.affiliations.items.filter(
+                        (a) => a.divisionAffiliationsId === thisAffiliationId
+                    );
+                if (p8RallyAffiliation) {
+                    let role = '';
+                    if (p8RallyAffiliation[0].status === 'active') {
+                        // use the affiliation role
+                        role = p8RallyAffiliation[0].role;
+                    } else {
+                        // set as guest
+                        role = 'guest';
+                    }
+                    graphQLProfile = { ...graphQLProfile, role: role };
+                }
+                console.log('thisAffiliationId:', thisAffiliationId);
+                console.log('p8RallyAffiliation:', p8RallyAffiliation);
+            }
+            setUserRoleValue();
+            //      SET CURRENT USER = graphqQLProfile
+            graphQLProfile = {
+                ...graphQLProfile,
+                isLoggedIn: true,
+                authUserInfo: currentUserInfo,
+                authSession: currentSession,
+            };
+            await setCurrentUser(graphQLProfile);
+            // const userIsRegistered = await saveUser(
+            //     currentUserInfo,
+            //     currentSession
+            // );
+            await getRegistrations(graphQLProfile.id);
+
+            //console.log("SIP:123-->currentUserInfo:", currentUserInfo);
             //generic cleanup
             await clearTempRegistration();
             //let user know if they need to complete registration
-            console.log('REGISTERED: ' + userIsRegistered);
-            !userIsRegistered ? console.log('NOPE') : console.log('YEP');
 
             clearSpinner();
-            userIsRegistered ? history.push('/') : history.push('/profile');
+            //todo-gql  NEED TO DETERMINE WHAT THIS LOOKS LIKE FOR NEW USER
+            // userIsRegistered ? history.push('/') : history.push('/profile');
+            history.push('/');
         } catch (error) {
             switch (error) {
                 case 'No current user':
@@ -157,46 +280,43 @@ const SignIn = ({
     //         .then((data) => console.log(data))
     //         .catch((err) => console.log(err));
     // };
-    const getRegistrations = async (uid) => {
-        async function getUserReg() {
-            try {
-                fetch(
-                    'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/registrations',
-                    {
-                        method: 'POST',
-                        body: JSON.stringify({
-                            operation: 'getAllUserRegistrations',
-                            payload: {
-                                rid: uid,
-                            },
-                        }),
-                        headers: {
-                            'Content-type': 'application/json; charset=UTF-8',
-                        },
-                    }
-                )
-                    .then((response) => response.json())
-                    .then((data) => {
-                        // const util = require('util');
-                        // console.log(
-                        //     'registrations-data:\n' +
-                        //         util.inspect(data.body, {
-                        //             showHidden: false,
-                        //             depth: null,
-                        //         })
-                        // );
-                        loadRegistrations(data.body);
-                    });
-            } catch (error) {
-                clearSpinner();
-                console.log('Error fetching registrations \n' + error);
+    const getRegistrations = async (id) => {
+        //* need to get the regisrations for the current user.
+        const variables = {
+            id: id,
+        };
+        try {
+            const gqlRegistrations = await API.graphql(
+                graphqlOperation(queries.getCurrentUserRegistrations, variables)
+            );
+            if (gqlRegistrations.data.listRegistrations.items.length > 0)
+                loadRegistrations(
+                    gqlRegistrations.data.listRegistrations.items
+                );
+            else {
+                console.log('SP:272--> no registrations for the user');
             }
+        } catch (error) {
+            printObject('SP:275-->error gettng graphql data');
         }
-        await getUserReg();
+    };
+    const composeUser = async (graphqlProfile, userInfo, userSession) => {
+        await setCurrentUser(graphqlProfile);
     };
     const saveUser = async (userInfo, userSession) => {
         //get p8user data...
-
+        //* check if there is graphql profile
+        const variables = {
+            id: userInfo?.attributes?.sub,
+        };
+        try {
+            const gqlProfile = await API.graphql(
+                graphqlOperation(queries.getProfileBySub, variables)
+            );
+            printObject('SP:216-->gqlProfile:\n', gqlProfile);
+        } catch (error) {
+            printObject('SP:218-->error gettng graphql data');
+        }
         let dbUser = {};
         try {
             await fetch(
@@ -221,7 +341,7 @@ const SignIn = ({
         } catch (error) {
             clearSpinner();
             let alertPayload = {
-                msg: 'Error fetching registrations: [' + error.message + ']',
+                msg: 'Error fetching user: [' + error.message + ']',
                 alertType: 'danger',
             };
 
@@ -240,10 +360,17 @@ const SignIn = ({
         // will not be any pate ddb data to load, so need
         // to default...
         let userDetails = {};
+        console.log('SIP:241--> dbUser', dbUser);
         if (dbUser === undefined) {
             // default values
             userDetails.isLoggedIn = true;
             userDetails.role = 'guest';
+
+            // ************************************
+            // web based defaults
+            // ************************************
+            userDetails.affiliate = 'CRP8';
+            userDetails.region = 'us#east#south';
             userDetails.status = 'active';
             userDetails.phone = '';
             userDetails.displayName = userInfo?.username;
@@ -255,11 +382,15 @@ const SignIn = ({
             userDetails.email = userInfo?.attributes?.email;
             userDetails.jwt = userSession?.idToken?.jwtToken;
         } else {
+            // this is for the user that has p8User record
             userDetails.isLoggedIn = true;
-            userDetails.role = dbUser?.role;
+            userDetails.affiliate =
+                dbUser?.affiliations?.active?.value || 'CRP8';
+            userDetails.region = dbUser?.affiliations?.active?.region;
+            userDetails.role = dbUser?.affiliations?.active?.role;
             userDetails.status = dbUser?.status;
             userDetails.phone = dbUser?.phone;
-            userDetails.displayName = dbUser.displayName;
+            userDetails.displayName = dbUser.displayName || dbUser.firstName;
             userDetails.firstName = dbUser.firstName;
             userDetails.lastName = dbUser.lastName;
             userDetails.uid = userInfo?.attributes?.sub;
@@ -329,6 +460,7 @@ const SignIn = ({
                 break;
         }
     };
+
     const handleResetPasswordRequest = async (uName) => {
         setModalIsVisible(false);
         // alert('USER WANTS TO CHANGE PASSWORD:' + uName);
@@ -376,69 +508,75 @@ const SignIn = ({
             <Header />
             <div className='signin-page__page-frame'>
                 <div className='signin-page__content-wrapper'>
-                    <div className='signin-page__content-box'>
-                        <div className='signin-page__section-title'>LOGIN</div>
-                        <div className='signin-page__section-box'>
-                            <div className='signin-page__data-line'>
-                                <div className='signin-page__data-label'>
-                                    Username
-                                </div>
-                                <div className='signin-page__data-control'>
-                                    <input
-                                        type='text'
-                                        name='username'
-                                        id='username'
-                                        value={username}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </div>
+                    <form>
+                        <div className='signin-page__content-box'>
+                            <div className='signin-page__section-title'>
+                                LOGIN
                             </div>
-                            <div className='signin-page__data-line'>
-                                <div className='signin-page__data-label'>
-                                    Password
+                            <div className='signin-page__section-box'>
+                                <div className='signin-page__data-line'>
+                                    <div className='signin-page__data-label'>
+                                        Username
+                                    </div>
+                                    <div className='signin-page__data-control'>
+                                        <input
+                                            type='text'
+                                            name='username'
+                                            id='username'
+                                            value={username}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                    </div>
                                 </div>
-                                <div className='signin-page__data-control'>
-                                    <input
-                                        type='password'
-                                        id='password'
-                                        name='password'
-                                        onChange={handleChange}
-                                        value={password}
-                                        required
-                                    />
+                                <div className='signin-page__data-line'>
+                                    <div className='signin-page__data-label'>
+                                        Password
+                                    </div>
+                                    <div className='signin-page__data-control'>
+                                        <input
+                                            type='password'
+                                            id='password'
+                                            name='password'
+                                            onChange={handleChange}
+                                            value={password}
+                                            required
+                                        />
+                                    </div>
                                 </div>
-                            </div>
-                            <div className='signin-page__data-line'>
-                                <div className='signin-page__forgot-offer'>
-                                    <span
-                                        onClick={() => setModalIsVisible(true)}
+                                <div className='signin-page__data-line'>
+                                    <div className='signin-page__forgot-offer'>
+                                        <span
+                                            onClick={() =>
+                                                setModalIsVisible(true)
+                                            }
+                                        >
+                                            Forgot your password?
+                                        </span>
+                                    </div>
+                                </div>
+                                <div className='signin-page__button-wrapper'>
+                                    <CustomButton
+                                        onClick={signIn}
+                                        className='signin-page__signin-button'
                                     >
-                                        Forgot your password?
-                                    </span>
+                                        {' '}
+                                        Sign In{' '}
+                                    </CustomButton>
                                 </div>
-                            </div>
-                            <div className='signin-page__button-wrapper'>
-                                <CustomButton
-                                    onClick={signIn}
-                                    className='signin-page__signin-button'
-                                >
-                                    {' '}
-                                    Sign In{' '}
-                                </CustomButton>
                             </div>
                         </div>
-                    </div>
-                    <div className='signin-page__offer-box'>
-                        Don't have an account?
-                        <Link
-                            className='signin-page__register-link'
-                            to='/register'
-                        >
-                            {' '}
-                            SIGN-UP
-                        </Link>
-                    </div>
+                        <div className='signin-page__offer-box'>
+                            Don't have an account?
+                            <Link
+                                className='signin-page__register-link'
+                                to='/register'
+                            >
+                                {' '}
+                                SIGN-UP
+                            </Link>
+                        </div>
+                    </form>
                 </div>
             </div>
             <MainFooter />

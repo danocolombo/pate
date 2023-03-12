@@ -16,6 +16,7 @@ import {
 import { clearRally, clearRegistration } from '../../redux/pate/pate.actions';
 import { clearStateRep } from '../../redux/stateRep/stateRep.actions';
 import { clearStateLead } from '../../redux/stateLead/stateLead.actions';
+import { clearAllPate } from '../../redux/pate/pate.actions';
 
 const Header = ({
     currentUser,
@@ -27,6 +28,7 @@ const Header = ({
     clearRegistration,
     clearStateLead,
     clearStateRep,
+    clearAllPate,
 }) => {
     const history = useHistory();
     const logoutRequest = async () => {
@@ -44,6 +46,7 @@ const Header = ({
             clearRegistration();
             clearStateLead();
             clearStateRep();
+            clearAllPate();
         }
         logoffUser();
         history.push('/');
@@ -60,7 +63,7 @@ const Header = ({
                     {currentUser?.isLoggedIn ? (
                         <>
                             {' '}
-                            {currentUser?.login === 'guru' ? (
+                            {currentUser?.username === 'guru' ? (
                                 <div className='header__nav-item'>
                                     <Link
                                         to='/admin'
@@ -73,7 +76,10 @@ const Header = ({
                                     </Link>
                                 </div>
                             ) : null}
-                            {currentUser?.stateRep || currentUser?.stateLead ? (
+                            {currentUser?.role === 'rep' ||
+                            currentUser?.role === 'lead' ||
+                            currentUser?.role === 'guru' ||
+                            currentUser?.role === 'director' ? (
                                 <div className='header__nav-item'>
                                     <Link
                                         to='/serve'
@@ -137,6 +143,7 @@ const mapDispatchToProps = (dispatch) => ({
     clearRegistration: () => dispatch(clearRegistration()),
     clearStateRep: () => dispatch(clearStateRep()),
     clearStateLead: () => dispatch(clearStateLead()),
+    clearAllPate: () => dispatch(clearAllPate()),
 });
 const mapStateToProps = (state) => ({
     currentUser: state.user.currentUser,

@@ -12,6 +12,7 @@ import ProfileNotification from '../../components/modals/profile-reminder/profil
 import Header from '../../components/header/header.component';
 import { MainFooter } from '../../components/footers/main-footer';
 import Profile2 from '../../components/profile/profile.component2';
+import Profile3 from '../../components/profile/profile.component3';
 import PersonalProfile from '../../components/profile/profile.component';
 import UserRegistrationOverview from '../../components/userregistrationsoverview/userregistrationsoverview.component';
 import { loadRegistrations } from '../../redux/registrations/registrations.actions';
@@ -23,70 +24,34 @@ const UserProfile = ({
     clearSpinner,
 }) => {
     const history = useHistory();
-    const [
-        isCompleteProfileModalVisible,
-        setIsCompleteProfileModalVisible,
-    ] = useState(false);
+    const [isCompleteProfileModalVisible, setIsCompleteProfileModalVisible] =
+        useState(false);
     useEffect(() => {
-        if (!currentUser.isLoggedIn) {
-            history.push('/');
-        }
-        if (!currentUser?.residence?.city) {
+        if (!currentUser?.authSession?.idToken?.jwtToken) history.push('/');
+
+        if (!currentUser?.residence) {
             setIsCompleteProfileModalVisible(true);
         } else {
             setIsCompleteProfileModalVisible(false);
         }
-        getRegistrations();
+        // getRegistrations();
     }, []);
-    //=======================================
-    // get the latest registration updates
-    //=======================================
-    const getRegistrations = async () => {
-        setSpinner();
-        async function getUserReg() {
-            try {
-                fetch(
-                    'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/registrations',
-                    {
-                        method: 'POST',
-                        body: JSON.stringify({
-                            operation: 'getAllUserRegistrations',
-                            payload: {
-                                rid: currentUser?.uid,
-                            },
-                        }),
-                        headers: {
-                            'Content-type': 'application/json; charset=UTF-8',
-                        },
-                    }
-                )
-                    .then((response) => response.json())
-                    .then((data) => {
-                        loadRegistrations(data.body);
-                        clearSpinner();
-                    });
-            } catch (error) {
-                clearSpinner();
-                console.log('Error fetching registrations \n' + error);
-            }
-        }
-        await getUserReg();
-    };
+
     const dismissProfileReminderModal = () => {
         setIsCompleteProfileModalVisible(false);
     };
     // render() {
+    if (!currentUser?.authSession?.idToken?.jwtToken) {
+        return 'loading';
+    }
     return (
         <>
             <Header />
-
             <div className='profilepagewrapper'>
-                {/*<div className='pageheader'>PERSONAL PROFILE</div>*/}
-                <Profile2 />
-                {/*<PersonalProfile />*/}
-                {/*<div className='profile-page__'>YOUR REGISTRATIONS</div>*/}
-
-                <UserRegistrationOverview />
+                <Profile3 />
+                {currentUser.registrations.items.length > 0 && (
+                    <UserRegistrationOverview />
+                )}
             </div>
             <MainFooter />
             <ModalWrapper isOpened={isCompleteProfileModalVisible}>

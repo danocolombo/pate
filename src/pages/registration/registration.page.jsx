@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { compose } from 'redux';
 import { withRouter } from 'react-router';
+import { API, graphqlOperation } from 'aws-amplify';
+import * as queries from '../../pateGraphql/queries';
 // import { withAuthenticator } from '@aws-amplify/ui-react';
 
 import Header from '../../components/header/header.component';
@@ -14,7 +16,7 @@ import Modal from '../../components/modals/wrapper.modal';
 import InputErrors from '../../components/modals/registration/registation-input-error.modal';
 import SuccessModal from '../../components/modals/registration/registration-success.modal';
 import SuccessMessage from '../../components/modals/registration/registration-success-msg.component';
-
+import { printObject, prettyDate, prettyTime } from '../../utils/helpers';
 import {
     addRegistration,
     loadTempRegistration,
@@ -24,6 +26,7 @@ import { loadRally } from '../../redux/pate/pate.actions';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import { setAlert } from '../../redux/alert/alert.action';
 import './registration.styles.scss';
+import classNames from 'classnames';
 const EventRegistration = ({
     setSpinner,
     clearSpinner,
@@ -37,6 +40,8 @@ const EventRegistration = ({
     clearTempRegistration,
     loadRally,
 }) => {
+    let id = match.params.id;
+    const [isEditting, setIsEditting] = useState(false);
     const [modalIsVisible, setModalIsVisible] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
     const [showRegistrationSuccess, setShowRegistrationSuccess] =
@@ -67,168 +72,66 @@ const EventRegistration = ({
 
     const [theEvent, setTheEvent] = useState({});
     const history = useHistory();
-    const util = require('util');
     useEffect(() => {
-        let id = match.params.id;
-        //need to determine if the first 3 digits are REG, which
-        //means that the request is to get a registration already
-        //saved.
-        let regCheck = '';
-
-        if (id.length > 3) {
-            regCheck = id.substring(0, 3);
-            if (regCheck === 'REG') {
-                // EXISTING-REGISTRATION_EXISTING-REGISTRATION_EXISTING-REGISTRATION_
-                // ------------------------------------------------------------------
-                // this is existing registration. go it it
-                //-------------------------------------------------------------------
-                // EXISTING-REGISTRATION_EXISTING-REGISTRATION_EXISTING-REGISTRATION_
-                id = id.slice(3);
-
-                setIsEdit(true);
-                async function preClean() {
-                    clearTempRegistration();
-                }
-                preClean();
-                async function getTheRegistration() {
-                    fetch(
-                        'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/registrations',
-                        {
-                            method: 'POST',
-                            body: JSON.stringify({
-                                operation: 'getRegistration',
-                                payload: {
-                                    uid: id,
-                                },
-                            }),
-                            headers: {
-                                'Content-type':
-                                    'application/json; charset=UTF-8',
-                            },
-                        }
-                    )
-                        .then((response) => response.json())
-                        .then((data) => {
-                            const details = data?.body?.Items[0];
-                            loadTempRegistration(details);
-                            // setTheEvent({ ...theEvent, details });
-                        });
-                }
-                getTheRegistration();
-                async function getTheEvent() {
-                    fetch(
-                        'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/events',
-                        {
-                            method: 'POST',
-                            body: JSON.stringify({
-                                operation: 'getEvent',
-                                payload: {
-                                    uid: registrations.tempRegistration.eid,
-                                },
-                            }),
-                            headers: {
-                                'Content-type':
-                                    'application/json; charset=UTF-8',
-                            },
-                        }
-                    )
-                        .then((response) => response.json())
-                        .then((data) => {
-                            const details = data?.body?.Items[0];
-                            loadRally(details);
-                            setTheEvent({ ...theEvent, details });
-                        });
-                }
-                getTheEvent();
-                // if (weAreEditting) {
-                //     //copy registrations.confirmed to registrations.tempRegistration
-                //     registrations.confirmed.forEach((reg) => {
-                //         if (reg.eid === id) {
-                //             async function copyReg() {
-                //                 loadTempRegistration(reg);
-                //             }
-                //             copyReg();
-                //         }
-                //     });
-                // }
-            } else {
-                // NEW-REGISTRATION_NEW-REGISTRATION_NEW-REGISTRATION_
-                // ---------------------------------------
-                // if new registration, get the event
-                //----------------------------------------
-                // NEW-REGISTRATION_NEW-REGISTRATION_NEW-REGISTRATION_
-                async function getTheEvent() {
-                    fetch(
-                        'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/events',
-                        {
-                            method: 'POST',
-                            body: JSON.stringify({
-                                operation: 'getEvent',
-                                payload: {
-                                    uid: id,
-                                },
-                            }),
-                            headers: {
-                                'Content-type':
-                                    'application/json; charset=UTF-8',
-                            },
-                        }
-                    )
-                        .then((response) => response.json())
-                        .then((data) => {
-                            const details = data?.body?.Items[0];
-                            loadRally(details);
-                            setTheEvent({ ...theEvent, details });
-                        });
-                }
-                getTheEvent();
+        async function checkIfRegistered() {
+            const hit = currentUser?.registrations?.items.filter(
+                (r) => r?.event?.id === id
+            );
+            if (hit.length > 0) {
+                setIsEditting(true);
             }
-            console.log('done getting data');
         }
+        async function getTheEvent() {
+            const variables = {
+                id: id,
+            };
+            API.graphql(graphqlOperation(queries.getEvent, variables))
+                .then((theEvent) => {
+                    console.log('1.');
+                    if (theEvent?.data?.getEvent) {
+                        // printObject(
+                        //     'RP:69-->event: ',
+                        //     theEvent?.data?.getEvent
+                        // );
+                        loadRally(theEvent.data.getEvent);
+                        setTheEvent(theEvent.data.getEvent);
+                    } else {
+                        console.log('EP:73--> NO EVENTS TO DISPLAY');
+                    }
+                })
+                .catch((error) => {
+                    printObject(
+                        'EP:78--> error getting division events from graphql',
+                        error
+                    );
+                });
+        }
+        //      get the membership from array for default division
+        async function clarifyMembership() {
+            // need to get membership info based on division
+
+            if (currentUser?.memberships.items.length > 0) {
+                let membership = currentUser.memberships.items.find(
+                    (m) => m.division.id === currentUser.defaultDivision.id
+                );
+                if (membership) {
+                    setChurchName(membership.name);
+                    setChurchCity(membership.city);
+                    setChurchStateProv(membership.stateProv);
+                } else {
+                    console.log(
+                        'PC:52--> MEMBERSHIP NOT FOUND IN MEMBERSHIP ARRAY'
+                    );
+                }
+            } else {
+                console.log('PC:46--> MEMBERSHIPS NOT IDENTIFIED');
+            }
+        }
+        checkIfRegistered();
+        clarifyMembership();
+
+        getTheEvent();
     }, []);
-    useEffect(() => {
-        //when we get tempRegistation, load state
-        console.log('USE_EFFECT for registrations.tempRegistration');
-        if (registrations.tempRegistration) {
-            setAttendeeCount(registrations.tempRegistration?.attendeeCount);
-            setMealCount(registrations.tempRegistration?.mealCount);
-            setFirstName(registrations.tempRegistration?.registrar?.firstName);
-            setLastName(registrations.tempRegistration?.registrar?.lastName);
-            setEmail(registrations.tempRegistration?.registrar?.email);
-            setPhone(registrations.tempRegistration?.registrar?.phone);
-            setHomeStreet(
-                registrations.tempRegistration?.registrar?.residence?.street
-            );
-            setHomeCity(
-                registrations.tempRegistration?.registrar?.residence?.city
-            );
-            setHomeStateProv(
-                registrations.tempRegistration?.registrar?.residence?.stateProv
-            );
-            setHomePostalCode(
-                registrations.tempRegistration?.registrar?.residence?.postalCode
-            );
-            setChurchName(registrations.tempRegistration?.church?.Name);
-            setChurchCity(registrations.tempRegistration?.church?.city);
-            setChurchStateProv(
-                registrations.tempRegistration?.church?.stateProv
-            );
-        } else {
-            setAttendeeCount(1);
-            setMealCount(0);
-            setFirstName('');
-            setLastName('');
-            setEmail('');
-            setPhone('');
-            setHomeStreet('');
-            setHomeCity('');
-            setHomeStateProv('');
-            setHomePostalCode('');
-            setChurchName('');
-            setChurchCity('');
-            setChurchStateProv('');
-        }
-    }, [registrations.tempRegistration]);
 
     useEffect(() => {}, [pateSystem.showSpinner]);
     const displayDate = () => {
@@ -244,31 +147,18 @@ const EventRegistration = ({
         return null;
     };
     const displayTimes = () => {
-        if (theEvent?.details?.startTime) {
-            let sTime = theEvent?.details?.startTime.split(':');
-            let eTime = theEvent?.details?.endTime.split(':');
-
-            let startTime = '';
-            let endTime = '';
-            if (parseInt(sTime[0]) < 13) {
-                startTime = theEvent?.details?.startTime;
-            } else {
-                let newHour = parseInt(sTime[0]) - 12;
-
-                startTime = newHour.toString() + ':' + sTime[1];
-            }
-            if (parseInt(eTime[0]) < 13) {
-                endTime = theEvent?.details?.endTime;
-            } else {
-                let newHour = parseInt(eTime[0]) - 12;
-                endTime = newHour.toString() + ':' + eTime[1];
-            }
-            let returnValue = startTime + ' - ' + endTime;
+        printObject('RP:275-->theEvent', theEvent);
+        console.log('stime:', theEvent?.startTime);
+        if (theEvent?.startTime && theEvent?.endTime) {
+            let stime = prettyTime(theEvent?.startTime);
+            let etime = prettyTime(theEvent?.endTime);
+            let returnValue = `${stime} - ${etime}`;
             return returnValue;
         } else {
-            return null;
+            return;
         }
     };
+
     const handleCancel = (e) => {
         async function purgeTempReg() {
             clearTempRegistration();
@@ -341,55 +231,21 @@ const EventRegistration = ({
         e.preventDefault();
         history.push('/register');
     };
-    const displayDate2 = (displayThis) => {
-        // format the date and return it
-        //the new formatted date coming in will look like this...
-        //            2021-04-21
-        let dateParts = displayThis?.eventDate.split('-');
-        console.log(dateParts);
-        // dateParts.forEach(element => {
-        //     console.log(element);
-        // });
-        // let newEventDate = new Date(dateParts[0], dateParts[1], dateParts[2]);
-        // let newTheDate = newEventDate.toDateString();
-        // console.log('newTheDate:' + newTheDate);
-        let y = parseInt(displayThis?.eventDate.substring(0, 4));
-        let m = parseInt(displayThis?.eventDate.substring(4, 6)) - 1;
-        let d = parseInt(displayThis?.eventDate.substring(6, 8));
-        let eventDate = new Date(y, m, d);
-        let theDate = eventDate.toDateString();
-
-        return theDate;
-    };
-    const displayTimes2 = (displayThis) => {
-        if (displayThis?.startTime) {
-            let sTime = displayThis?.startTime.split(':');
-            let eTime = displayThis?.endTime.split(':');
-
-            let startTime = '';
-            let endTime = '';
-            if (parseInt(sTime[0]) < 13) {
-                startTime = displayThis?.startTime;
-            } else {
-                let newHour = parseInt(sTime[0]) - 12;
-
-                startTime = newHour.toString() + ':' + sTime[1];
-            }
-            if (parseInt(eTime[0]) < 13) {
-                endTime = displayThis.endTime;
-            } else {
-                let newHour = parseInt(eTime[0]) - 12;
-                endTime = newHour.toString() + ':' + eTime[1];
-            }
-            let returnValue = startTime + ' - ' + endTime;
-            return returnValue;
+    const mealCostValue = (strValue) => {
+        const convertedValue = +strValue;
+        if (convertedValue === 0) {
+            return 0;
         } else {
-            return null;
+            let returnValue = parseFloat(strValue * 0.01);
+            console.log(returnValue.toFixed(2));
+            return returnValue.toFixed(2);
         }
     };
+
     const handleRegisterRequest = async (e) => {
         e.preventDefault();
         setSpinner();
+        //      REGISTER THE USER
         // this function pulls the data together and creates
         // an object to update database.
         //-----------------------------------------------------
@@ -466,52 +322,84 @@ const EventRegistration = ({
 
             return;
         }
-
+        //*************************************************
+        //* at this point we have required fields
+        //*************************************************
         //========================================
         // check to see if he registration request is from
         // a logged in user. If not, set the rid to 0.
-        let registrarId = '0';
-        if (currentUser?.isLoggedIn) {
-            registrarId = currentUser.uid;
-        }
 
-        let regData = {
-            eventDate: theEvent?.details?.eventDate,
-            startTime: theEvent?.details?.startTime,
-            endTime: theEvent?.details?.endTime,
-            eid: theEvent?.details?.uid,
-            location: {
-                name: theEvent?.details?.name,
-                street: theEvent?.details?.street,
-                city: theEvent?.details?.city,
-                stateProv: theEvent?.details?.stateProv,
-                postalCode: theEvent?.details?.postalCode,
+        const registrationInput = {
+            eventId: id,
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            phone: phone,
+            residence: {
+                street: homeStreet,
+                city: homeCity,
+                stateProv: homeStateProv,
+                postalCode: homePostalCode,
             },
-            church: {
+            membership: {
                 name: churchName,
                 city: churchCity,
                 stateProv: churchStateProv,
             },
-            rid: registrarId,
-            registrar: {
-                firstName: firstName,
-                lastName: lastName,
-                email: email,
-                phone: phone,
-                residence: {
-                    street: homeStreet,
-                    city: homeCity,
-                    stateProv: homeStateProv,
-                    postalCode: homePostalCode,
-                },
-            },
-            attendeeCount: parseInt(attendeeCount, 10),
-            mealCount: parseInt(mealCount, 10),
+            attendanceCount: attendeeCount,
+            mealCount: mealCount,
+        };
+
+        history.push({
+            pathname: '/registrationprocess',
+            state: { registrationInput },
+        });
+        clearSpinner();
+        let DANO = true;
+        if (DANO) {
+            return;
+        }
+
+        let regData = {
+            // eventDate: theEvent?.details?.eventDate,
+            // startTime: theEvent?.details?.startTime,
+            // endTime: theEvent?.details?.endTime,
+            // eid: theEvent?.details?.uid,
+            // location: {
+            //     name: theEvent?.details?.name,
+            //     street: theEvent?.details?.street,
+            //     city: theEvent?.details?.city,
+            //     stateProv: theEvent?.details?.stateProv,
+            //     postalCode: theEvent?.details?.postalCode,
+            // },
+            // church: {
+            //     name: churchName,
+            //     city: churchCity,
+            //     stateProv: churchStateProv,
+            // },
+            // rid: registrarId,
+            // registrar: {
+            //     firstName: firstName,
+            //     lastName: lastName,
+            //     email: email,
+            //     phone: phone,
+            //     residence: {
+            //         street: homeStreet,
+            //         city: homeCity,
+            //         stateProv: homeStateProv,
+            //         postalCode: homePostalCode,
+            //     },
+            // },
+            // attendeeCount: parseInt(attendeeCount, 10),
+            // mealCount: parseInt(mealCount, 10),
         };
 
         // post the registration to API and return to /
         //====================================================
         // async function updateDb() {
+        //    REGISTER THE USER FOR THE EVENT...
+        //todo-gql - register user for event
+
         try {
             await fetch(
                 'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/registrations',
@@ -548,6 +436,7 @@ const EventRegistration = ({
         //====================================
         // update the event with the numbers
         //====================================
+        //todo-gql  update regisrtation numbers for event & meals...
         let eventUpdate = {
             uid: pateSystem.rally.uid,
             adjustments: {
@@ -579,9 +468,9 @@ const EventRegistration = ({
         // //=====================================
         // // add the registration to redux
         // //=====================================
-        if (registrarId !== '0') {
-            await addRegistration(regData);
-        }
+        // if (registrarId !== '0') {
+        //     await addRegistration(regData);
+        // }
         // const alertPayload = {
         //     msg: 'REGISTRATION SUCCESS - REVIEW IN PROFILE',
         //     alertType: 'success',
@@ -602,8 +491,8 @@ const EventRegistration = ({
             'Congrats ' +
             firstName +
             ', you have successfully registered for the P8 Rally. Put it on your calendar!!<br/><br/><center>';
-        emailBody = emailBody.concat(displayDate2(displayThis), '<br/>');
-        emailBody = emailBody.concat(displayTimes2(displayThis), '<br/>');
+        emailBody = emailBody.concat(theEvent.eventDate(displayThis), '<br/>');
+        emailBody = emailBody.concat(theEvent.startTime(displayThis), '<br/>');
 
         emailBody = emailBody.concat(
             '<h3>',
@@ -686,71 +575,65 @@ const EventRegistration = ({
                     <div className='registration-page__header'>
                         REGISTRATION
                     </div>
-                    {/*
+
                     <div className='registration-page__image-wrapper'>
                         {pateSystem?.rally?.graphic !== 'tbd' ? (
                             <img
                                 class='registration-page__image-file'
-                                src={pateSystem?.rally?.graphic}
+                                src='https://eor-images-202214132-staging.s3.amazonaws.com/public/events/b70c0a49-dfa0-4671-b48d-38d3dcb1de9c/NorthwayChurch.png'
                                 alt='CR P8 Rally'
+                                style={{ width: '100%' }}
                             ></img>
                         ) : null}
-                        </div> */}
+                    </div>
+
                     <div className='registration-page__church-name'>
                         {pateSystem?.rally?.name}
                     </div>
                     <div className='registration-page__church-street'>
-                        {pateSystem?.rally?.street}
+                        {pateSystem?.rally?.location?.street}
                     </div>
                     <div className='registration-page__church-city-state-postal'>
-                        {pateSystem?.rally?.city},{' '}
-                        {pateSystem?.rally?.stateProv}
+                        {pateSystem?.rally?.location?.city},{' '}
+                        {pateSystem?.rally?.location?.stateProv}
                         &nbsp;
                         {pateSystem?.rally?.postalCode}
                     </div>
                     <div className='registration-page__date'>
                         {displayDate()}
                     </div>
-                    <div className='registration-page__time'>
-                        {displayTimes()}
-                    </div>
-                    <div className='registration-page__message'>
+                    {pateSystem?.rally?.startTime &&
+                        pateSystem?.rally?.endTime && (
+                            <div className='registration-page__time'>
+                                {displayTimes()}
+                            </div>
+                        )}
+                    {/* <div className='registration-page__message'>
                         <div>{pateSystem?.rally?.message}</div>
-                    </div>
+                    </div> */}
                     <hr className='registration-page__divider' />
-                    <div className='registration-page__instructions'>
-                        {currentUser?.isLoggedIn ? (
-                            <>
+                    {/* <div className='registration-page__instructions'>
+                        <>
+                            <div>
+                                You can{' '}
                                 <button
                                     className='registration-page__login-button'
-                                    onClick={populateUserInfo}
+                                    onClick={handleLoginClick}
                                 >
-                                    Click to Populate w/ Your Profile Data
-                                </button>
-                            </>
-                        ) : (
-                            <>
-                                <div>
-                                    You can{' '}
-                                    <button
-                                        className='registration-page__login-button'
-                                        onClick={handleLoginClick}
-                                    >
-                                        LOGIN
-                                    </button>{' '}
-                                    or{' '}
-                                    <button
-                                        className='registration-page__signup-button'
-                                        onClick={handleRegisterClick}
-                                    >
-                                        SIGN-UP
-                                    </button>{' '}
-                                    for an account to save your profile for
-                                    future use.
-                                </div>
-                            </>
-                        )}
-                    </div>
+                                    LOGIN
+                                </button>{' '}
+                                or{' '}
+                                <button
+                                    className='registration-page__signup-button'
+                                    onClick={handleRegisterClick}
+                                >
+                                    SIGN-UP
+                                </button>{' '}
+                                for an account to save your profile for future
+                                use.
+                            </div>
+                        </>
+                    </div> */}
 
                     <div className='registration-page__section-header'>
                         Contact Information
@@ -949,11 +832,53 @@ const EventRegistration = ({
                     </div>
                     {madeMealDeadline() ? (
                         <div className='registration-page__meal-box'>
-                            <p className='registration-page__meal-message'>
-                                This particular event offers a "free" lunch at
-                                12 noon, please indicate how many will attend
-                                the lunch.
-                            </p>
+                            <div className='registration-page__meal-details-container'>
+                                <div className='registration-page__meal-row'>
+                                    <div className='registration-page__meal-cell'>
+                                        <p className='registration-page__meal-message'>
+                                            This event offers a meal at a
+                                            different time. Please indicate how
+                                            many will attend.
+                                        </p>
+                                    </div>
+                                </div>
+                                {pateSystem?.rally?.meal?.startTime && (
+                                    <div className='registration-page__meal-row'>
+                                        <div className='registration-page__meal-cell'>
+                                            <p>
+                                                Serving time:{' '}
+                                                {prettyTime(
+                                                    pateSystem?.rally?.meal
+                                                        ?.startTime
+                                                )}
+                                            </p>
+                                        </div>
+                                    </div>
+                                )}
+                                <div className='registration-page__meal-row'>
+                                    <div className='registration-page__meal-cell'>
+                                        <p>
+                                            Cost: ${' '}
+                                            {mealCostValue(
+                                                pateSystem?.rally?.meal?.cost
+                                            )}
+                                        </p>
+                                    </div>
+                                </div>
+                                {pateSystem?.rally?.meal?.message && (
+                                    <div className='registration-page__meal-row'>
+                                        <div className='registration-page__meal-cell'>
+                                            <p>
+                                                {
+                                                    pateSystem?.rally?.meal
+                                                        ?.message
+                                                }
+                                            </p>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+
                             <div className='registration-page__meal-input-line'>
                                 <div className='registration-page__meal-input-label'>
                                     Meal Guests
@@ -970,12 +895,16 @@ const EventRegistration = ({
                                     />
                                 </div>
                             </div>
-                            <div className='registration-page__meal-message'>
-                                <div>
-                                    Deadline for meals:{' '}
-                                    {pateSystem?.rally?.meal?.deadline}
+                            {pateSystem?.rally?.meal?.deadline && (
+                                <div className='registration-page__meal-message'>
+                                    <div>
+                                        Deadline for meals:{' '}
+                                        {prettyDate(
+                                            pateSystem?.rally?.meal?.deadline
+                                        )}
+                                    </div>
                                 </div>
-                            </div>
+                            )}
                         </div>
                     ) : null}
                     <div className='registration-page__button-wrapper'>
@@ -983,7 +912,11 @@ const EventRegistration = ({
                             className='registration-page__register-button'
                             onClick={handleRegisterRequest}
                         >
-                            Register
+                            {isEditting ? (
+                                <div>Update</div>
+                            ) : (
+                                <div>Register</div>
+                            )}
                         </button>
                     </div>
                 </div>

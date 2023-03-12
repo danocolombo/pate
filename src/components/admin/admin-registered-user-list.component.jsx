@@ -15,7 +15,7 @@ const RegisteredDetails = ({ user, pate, clearTmpUser }) => {
             <div className='reg-user-list-component__box'>
                 <div
                     className={
-                        user.registration
+                        user.gqlProfile
                             ? 'reg-user-list-component__link-wrapper'
                             : 'reg-user-list-component__unreg-link-wrapper'
                     }
@@ -39,6 +39,11 @@ const RegisteredDetails = ({ user, pate, clearTmpUser }) => {
                         {user.stateLead ? (
                             <span className='reg-user-list-component__role-inicator'>
                                 (L)
+                            </span>
+                        ) : null}
+                        {user.gqlProfile ? (
+                            <span className='reg-ser-list-component__role-indicator'>
+                                [GQL]
                             </span>
                         ) : null}
                     </Link>

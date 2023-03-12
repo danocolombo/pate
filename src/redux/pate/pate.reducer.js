@@ -1,10 +1,14 @@
 import { PateActionTypes } from './pate.types';
 import {
-    updateUserWithProfile
+    updateUserWithProfile,
+    removeRegistrationFromRally,
+    removeItemFromRallies,
+    addItemToRallies,
 } from './pate.utils';
 const INITIAL_STATE = {
     showSpinner: false,
     rally: null,
+    rallies: [],
     registration: null,
     users: null,
     tmpUser: null,
@@ -17,48 +21,85 @@ const pateReducer = (state = INITIAL_STATE, action = null) => {
                 ...state,
                 showSpinner: true,
             };
-
+        case PateActionTypes.CLEAR_ALL_PATE:
+            return {
+                ...state,
+                showSpinner: false,
+                rally: null,
+                rallies: [],
+                registration: null,
+                users: null,
+                tmpUser: null,
+            };
         case PateActionTypes.CLEAR_SPINNER:
             return {
                 ...state,
                 showSpinner: false,
+            };
+        case PateActionTypes.REMOVE_PATE_RALLY_REGISTRATION:
+            return {
+                ...state,
+                currentUser: removeRegistrationFromRally(
+                    state.currentUser,
+                    action.payload
+                ),
+            };
+        case PateActionTypes.REMOVE_RALLY_FROM_RALLIES:
+            return {
+                ...state,
+                rallies: removeItemFromRallies(state, action.payload),
+            };
+        case PateActionTypes.ADD_RALLY_TO_RALLIES:
+            return {
+                ...state,
+                rallies: addItemToRallies(state, action.payload),
             };
         case PateActionTypes.SET_RALLY:
             return {
                 ...state,
                 rally: action.payload,
             };
-        case PateActionTypes.CLEAR_RALLY:
-            return{
+        case PateActionTypes.SET_PATE_RALLIES:
+            return {
                 ...state,
-                rally: null
+                rallies: action.payload,
+            };
+        case PateActionTypes.CLEAR_PATE_RALLIES:
+            return {
+                ...state,
+                rallies: null,
+            };
+        case PateActionTypes.CLEAR_RALLY:
+            return {
+                ...state,
+                rally: null,
             };
         case PateActionTypes.SET_PATE_REGISTRATION:
             console.log('SET_PATE_REGISTRATION case point');
-            return{
+            return {
                 ...state,
-                registration: action.payload
+                registration: action.payload,
             };
         case PateActionTypes.CLEAR_PATE_REGISTRATION:
-            return{
+            return {
                 ...state,
-                registration: null
+                registration: null,
             };
         case PateActionTypes.LOAD_REGISTERED_USERS:
-            return{
+            return {
                 ...state,
-                users: action.payload
+                users: action.payload,
             };
         case PateActionTypes.LOAD_TMP_USER:
-            return{
+            return {
                 ...state,
-                tmpUser: action.payload
-            }
+                tmpUser: action.payload,
+            };
         case PateActionTypes.CLEAR_TMP_USER:
-            return{
+            return {
                 ...state,
-                tmpUser: null
-            }
+                tmpUser: null,
+            };
         // case PateActionTypes.UPDATE_USER_WITH_PROFILE:
         //     return {
         //         ...state,

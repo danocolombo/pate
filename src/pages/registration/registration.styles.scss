@@ -1,478 +1,499 @@
+.registration-page__meal-details-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  //   background-color: red;
+  padding: 0, 10px;
+}
+.registration-page__meal-row {
+  display: flex;
+  width: 100%;
+}
+.registration-page__meal-cell {
+  flex: 1;
+  margin: 0px;
+  //   border: 1px solid black;
+  text-align: center;
+}
+
 .registration-page__wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    // display: flex;
-    // // margin-left: 10vw;
-    // margin-top: 10px;
-    // justify-content: center;
-    // align-items: center;
-    // flex-direction: column;
-    // width: 280px;
-    // background-color: lightgray;
-    // color: black;
-    // text-align: center;
-    // border-left: black solid 1px;
-    // border-right: black solid 1px;
-    // border-bottom: black solid 1px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  // display: flex;
+  // // margin-left: 10vw;
+  // margin-top: 10px;
+  // justify-content: center;
+  // align-items: center;
+  // flex-direction: column;
+  // width: 280px;
+  // background-color: lightgray;
+  // color: black;
+  // text-align: center;
+  // border-left: black solid 1px;
+  // border-right: black solid 1px;
+  // border-bottom: black solid 1px;
 }
 .registration-page__form-box {
-    background-color: lightgray;
-    width: 280px;
-    margin: 5px 0 10px 0;
-    border: black solid 1px;
-    border-radius: 5px;
+  background-color: lightgray;
+  width: 280px;
+  margin: 5px 0 10px 0;
+  border: black solid 1px;
+  border-radius: 5px;
 }
 .registration-page__header {
-    font-size: 1.2em;
-    padding: 5px 0;
-    font-weight: bold;
-    background-color: #4484ce;
-    text-align: center;
-    // width: 100%;
-    color: white;
-    // border: black solid 1px;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
+  font-size: 1.2em;
+  padding: 5px 0;
+  font-weight: bold;
+  background-color: #4484ce;
+  text-align: center;
+  // width: 100%;
+  color: white;
+  // border: black solid 1px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }
 .registration-page__image-wrapper {
-    padding-top: 5px;
-    // max-width: 100%;
+  padding-top: 5px;
+  // max-width: 100%;
 }
 
 .registration-page__church-name {
-    font-size: 1.3em;
-    text-align: center;
-    color: black;
-    padding-top: 10px;
+  font-size: 1.3em;
+  text-align: center;
+  color: black;
+  padding-top: 10px;
 }
 .registration-page__church-street {
-    color: black;
-    text-align: center;
+  color: black;
+  text-align: center;
 }
 .registration-page__church-city-state-postal {
-    color: black;
-    text-align: center;
+  color: black;
+  text-align: center;
 }
 .registration-page__date {
-    color: black;
-    padding: 10px 0 0 0;
-    // width: 100%;
-    text-align: center;
-    // border: black solid 1px;
-    font-weight: bold;
-    font-size: 1.3em;
+  color: black;
+  padding: 10px 0 0 0;
+  // width: 100%;
+  text-align: center;
+  // border: black solid 1px;
+  font-weight: bold;
+  font-size: 1.3em;
 }
 .registration-page__time {
-    color: black;
-    flex-grow: 1;
-    // width: 100%;
-    text-align: center;
+  color: black;
+  flex-grow: 1;
+  // width: 100%;
+  text-align: center;
 }
 .registration-page__message {
-    // color: white;
-    text-align: center;
-    padding: 5px 15px;
+  // color: white;
+  text-align: center;
+  padding: 5px 15px;
 }
 .registration-page__divider {
-    height: 1px;
-    // width: 90%;
+  height: 1px;
+  // width: 90%;
 }
 .registration-page__instructions {
-    color: black;
-    padding: 10px 15px 0 15px;
-    text-align: center;
+  color: black;
+  padding: 10px 15px 0 15px;
+  text-align: center;
 }
 .registration-page__login-button {
-    background-color: blue;
-    color: white;
-    padding: 1px 2px;
+  background-color: blue;
+  color: white;
+  padding: 1px 2px;
 }
 .registration-page__signup-button {
-    background-color: orange;
-    color: black;
-    padding: 1px 2px;
+  background-color: orange;
+  color: black;
+  padding: 1px 2px;
 }
 .registration-page__section-header {
-    // width: 100%;
-    font-weight: bold;
-    font-size: 1.1em;
-    color: black;
-    text-align: center;
-    padding: 10px 0 0 0;
+  // width: 100%;
+  font-weight: bold;
+  font-size: 1.1em;
+  color: black;
+  text-align: center;
+  padding: 10px 0 0 0;
 }
 .registration-page__data-input-box {
-    display: flex;
-    flex-direction: column;
-    margin: 5px 10px;
+  display: flex;
+  flex-direction: column;
+  margin: 5px 10px;
 }
 .registration-page__input-line {
-    display: flex;
-    padding-right: 15px;
+  display: flex;
+  padding-right: 15px;
 }
 .profile-component__phone-input-line {
-    display: flex;
-    justify-content: flex-end;
-    padding-right: 14px;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 14px;
 }
 .registration-page__state-line {
-    display: flex;
-    padding-right: 23px;
+  display: flex;
+  padding-right: 23px;
 }
 .registration-page__attendee-input-line {
-    display: flex;
-    padding-right: 60px;
+  display: flex;
+  padding-right: 60px;
 }
 .registration-page__input-label {
-    flex-grow: 1;
-    color: black;
-    text-align: right;
-    padding-right: 3px;
+  flex-grow: 1;
+  color: black;
+  text-align: right;
+  padding-right: 3px;
 }
 .registration-page__input-control {
-    // flex-grow: 2;
-    // width: 50vw;
-    // text-align: left;
-    padding-right: 0px;
+  // flex-grow: 2;
+  // width: 50vw;
+  // text-align: left;
+  padding-right: 0px;
 }
 .registration-page__phone-input {
-    text-align: left;
-    color: black;
-    margin-bottom: 5px;
+  text-align: left;
+  color: black;
+  margin-bottom: 5px;
 }
 .registration-page__button-wrapper {
-    // width: 100%;
+  // width: 100%;
 }
 .registration-page__meal-box {
-    // width: 100%;
-    border: black solid 2px;
-    display: flex;
-    flex-direction: column;
-    margin: 15px 10px;
+  // width: 100%;
+  border: black solid 2px;
+  display: flex;
+  flex-direction: column;
+  margin: 15px 10px;
 }
 .registration-page__meal-message {
-    color: black;
-    padding: 10px;
+  color: black;
+  padding: 10px;
+  text-align: center;
 }
 .registration-page__meal-input-line {
-    // width: 100%;
-    display: flex;
-    flex-direction: row;
+  // width: 100%;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: row;
 }
 .registration-page__meal-input-label {
-    color: black;
-    flex-grow: 1;
-    padding-right: 0px;
-    padding-bottom: 10px;
-    text-align: right;
+  color: black;
+  flex-grow: 1;
+  padding-right: 0px;
+  padding-bottom: 10px;
+  text-align: right;
 }
 .registration-page__meal-count {
-    padding-left: 10px;
-    padding-bottom: 10px;
-    flex-grow: 1;
-    text-align: left;
+  padding-left: 10px;
+  padding-bottom: 10px;
+  flex-grow: 1;
+  text-align: left;
 }
 .registration-page__button-wrapper {
-    padding-bottom: 15px;
-    text-align: center;
+  padding-bottom: 15px;
+  text-align: center;
 }
 .registration-page__register-button {
-    background-color: yellow;
-    color: black;
-    padding: 1px 5px;
-    border-radius: 5px;
+  background-color: yellow;
+  color: black;
+  padding: 1px 5px;
+  border-radius: 5px;
 }
 // MEDIA ALTERATIONS ** MEDIA ALTERATIONS ** MEDIA ALTERATIONS **
 //Iphone Series
 @media only screen and (min-width: 320px) and (max-width: 767px) {
-    .registration-page__form-box {
-        width: 320px;
-    }
-    .registration-page__input-control {
-        padding-right: 25px;
-    }
-    .profile-component__phone-input-line {
-        padding-right: 40px;
-    }
-    .registration-page__attendee-input-line {
-        padding-right: 60px;
-    }
-    .registration-page__state-line {
-        padding-right: 47px;
-    }
+  .registration-page__form-box {
+    width: 320px;
+  }
+  .registration-page__input-control {
+    padding-right: 25px;
+  }
+  .profile-component__phone-input-line {
+    padding-right: 40px;
+  }
+  .registration-page__attendee-input-line {
+    padding-right: 60px;
+  }
+  .registration-page__state-line {
+    padding-right: 47px;
+  }
 }
 //IPAD Series
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
-    .registration-page__form-box {
-        width: 400px;
-    }
-    .registration-page__input-control {
-        padding-right: 75px;
-    }
-    .profile-component__phone-input-line {
-        padding-right: 90px;
-    }
-    .registration-page__attendee-input-line {
-        padding-right: 45px;
-    }
-    .registration-page__state-line {
-        padding-right: 96px;
-    }
+  .registration-page__form-box {
+    width: 400px;
+  }
+  .registration-page__input-control {
+    padding-right: 75px;
+  }
+  .profile-component__phone-input-line {
+    padding-right: 90px;
+  }
+  .registration-page__attendee-input-line {
+    padding-right: 45px;
+  }
+  .registration-page__state-line {
+    padding-right: 96px;
+  }
 }
 //desktop
 @media only screen and (min-width: 1024px) {
-    .registration-page__form-box {
-        width: 500px;
-    }
-    .registration-page__input-control {
-        padding-right: 75px;
-    }
-    .profile-component__phone-input-line {
-        padding-right: 90px;
-    }
-    .registration-page__attendee-input-line {
-        padding-right: 95px;
-    }
-    .registration-page__state-line {
-        padding-right: 95px;
-    }
+  .registration-page__form-box {
+    width: 500px;
+  }
+  .registration-page__input-control {
+    padding-right: 75px;
+  }
+  .profile-component__phone-input-line {
+    padding-right: 90px;
+  }
+  .registration-page__attendee-input-line {
+    padding-right: 95px;
+  }
+  .registration-page__state-line {
+    padding-right: 95px;
+  }
 }
 
 //==========================
 //==========================
 .registrationpagewrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .pageheader {
-    background: #4484ce;
-    text-align: center;
-    font-weight: bold;
-    font-size: 1.3em;
-    color: white;
-    width: 80%;
-    margin: 3px 0 0 0;
-    padding: 5px 0px;
-    border-top: black solid 1px;
-    border-left: black solid 1px;
-    border-right: black solid 1px;
+  background: #4484ce;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.3em;
+  color: white;
+  width: 80%;
+  margin: 3px 0 0 0;
+  padding: 5px 0px;
+  border-top: black solid 1px;
+  border-left: black solid 1px;
+  border-right: black solid 1px;
 }
 .registration-pageheader {
-    background: #4484ce;
-    text-align: center;
-    font-weight: bold;
-    font-size: 1.3em;
-    color: white;
-    width: 80%;
-    margin: 3px 0 0 0;
-    padding: 5px 0px;
-    border-top: black solid 1px;
-    border-left: black solid 1px;
-    border-right: black solid 1px;
-    border-bottom: black solid 1px;
+  background: #4484ce;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.3em;
+  color: white;
+  width: 80%;
+  margin: 3px 0 0 0;
+  padding: 5px 0px;
+  border-top: black solid 1px;
+  border-left: black solid 1px;
+  border-right: black solid 1px;
+  border-bottom: black solid 1px;
 }
 //----------- from registration details original page
 .registrationdetailswrapper {
-    text-align: left;
-    // padding: 1rem;
-    // margin: 0.5rem 0;
-    padding-top: 10px;
-    width: 80%;
-    // align-items: center;
-    background: #286da8;
-    color: white;
-    border-right: black solid 1px;
-    // border-bottom: black solid 1px;
-    border-left: black solid 1px;
+  text-align: left;
+  // padding: 1rem;
+  // margin: 0.5rem 0;
+  padding-top: 10px;
+  width: 80%;
+  // align-items: center;
+  background: #286da8;
+  color: white;
+  border-right: black solid 1px;
+  // border-bottom: black solid 1px;
+  border-left: black solid 1px;
 }
 .eventgraphics {
-    width: 50%;
+  width: 50%;
 }
 .eventimage {
-    width: 80%;
-    margin-left: 0%;
+  width: 80%;
+  margin-left: 0%;
 }
 .eventbox {
-    // border: 1px solid #333;
+  // border: 1px solid #333;
 }
 .eventbox p {
-    /* Text Align */
-    text-align: left;
-    text-align: right;
-    // text-align: center;
-    // text-align: justify;
+  /* Text Align */
+  text-align: left;
+  text-align: right;
+  // text-align: center;
+  // text-align: justify;
 }
 #eventbox-location {
-    // float: left;
-    margin-top: 15px;
-    width: 80%;
-    margin-left: 10%;
-    margin-bottom: 20px;
+  // float: left;
+  margin-top: 15px;
+  width: 80%;
+  margin-left: 10%;
+  margin-bottom: 20px;
 }
 
 #eventbox-datetime {
-    // float: right;
-    width: 80%;
-    margin-left: 10%;
+  // float: right;
+  width: 80%;
+  margin-left: 10%;
 }
 .eventboxclear {
-    clear: both;
+  clear: both;
 }
 .registrationmessage {
-    // border: black solid 1px;
-    margin: 15px 10% 0 10%;
+  // border: black solid 1px;
+  margin: 15px 10% 0 10%;
 }
 
 .registrationchurchinfo {
-    float: left;
-    text-align: left;
-    font-family: sans-serif;
-    margin-top: 10px;
-    margin-left: 10%;
-    margin-bottom: 15px;
-    font-size: 1.2em;
+  float: left;
+  text-align: left;
+  font-family: sans-serif;
+  margin-top: 10px;
+  margin-left: 10%;
+  margin-bottom: 15px;
+  font-size: 1.2em;
 }
 .registrationchurchname {
-    align-items: left;
-    font-size: 1.4em;
-    font-weight: bold;
+  align-items: left;
+  font-size: 1.4em;
+  font-weight: bold;
 }
 .registrationdatetime {
-    float: right;
-    text-align: left;
-    margin-left: 10%;
+  float: right;
+  text-align: left;
+  margin-left: 10%;
 }
 .eventdate {
-    align-items: left;
-    font-size: 2em;
-    font-weight: bold;
+  align-items: left;
+  font-size: 2em;
+  font-weight: bold;
 }
 
 .registerhorizontalbreak {
-    border: 2px solid #b1a296;
-    width: 80%;
-    color: #b1a296;
-    height: 1px;
-    margin: 10px 10% 10px 10%;
+  border: 2px solid #b1a296;
+  width: 80%;
+  color: #b1a296;
+  height: 1px;
+  margin: 10px 10% 10px 10%;
 
-    background-color: #b9a296;
-    border-radius: 7px 7px 7px 7px;
+  background-color: #b9a296;
+  border-radius: 7px 7px 7px 7px;
 }
 .registrationoffermessage {
-    margin-bottom: 30px;
+  margin-bottom: 30px;
 }
 .loginbutton {
-    padding: 2px 5px;
-    font-size: 0.7em;
-    background-color: white;
-    border-radius: 2px 2px 2px 2px;
+  padding: 2px 5px;
+  font-size: 0.7em;
+  background-color: white;
+  border-radius: 2px 2px 2px 2px;
 }
 .newregisterbutton {
-    padding: 2px 5px;
-    font-size: 0.7em;
-    background-color: black;
-    color: white;
-    border-radius: 2px 2px 2px 2px;
+  padding: 2px 5px;
+  font-size: 0.7em;
+  background-color: black;
+  color: white;
+  border-radius: 2px 2px 2px 2px;
 }
 .registration-instructions {
-    width: 80%;
-    margin-left: 10%;
-    padding-bottom: 10px;
-    text-align: center;
+  width: 80%;
+  margin-left: 10%;
+  padding-bottom: 10px;
+  text-align: center;
 }
 .register-identity-wrapper {
-    // border: yellow solid 1px;
+  // border: yellow solid 1px;
 }
 .register-identity-wrapper label {
-    display: inline-block;
-    width: 30%;
-    text-align: right;
-    padding-right: 10px;
+  display: inline-block;
+  width: 30%;
+  text-align: right;
+  padding-right: 10px;
 }
 .attendee-identity-wrapper input {
-    display: inline-block;
-    width: 45%;
-    text-align: left;
+  display: inline-block;
+  width: 45%;
+  text-align: left;
 }
 .attendee-address-wrapper {
-    // border: yellow solid 1px;
+  // border: yellow solid 1px;
 }
 .attendee-address-wrapper label {
-    display: inline-block;
-    width: 20%;
-    text-align: right;
-    padding-right: 10px;
+  display: inline-block;
+  width: 20%;
+  text-align: right;
+  padding-right: 10px;
 }
 .attendee-address-wrapper input {
-    display: inline-block;
-    width: 40%;
-    text-align: left;
+  display: inline-block;
+  width: 40%;
+  text-align: left;
 }
 .register-fill-click-here {
-    text-decoration: none;
-    cursor: pointer;
+  text-decoration: none;
+  cursor: pointer;
 }
 .register-contact-label,
 .register-address-label,
 .register-church-label {
-    font-weight: bold;
-    font-size: 1.3em;
-    padding-left: 10%;
+  font-weight: bold;
+  font-size: 1.3em;
+  padding-left: 10%;
 }
 .attendeewrapper {
-    margin: 10px 0 10px 10%;
+  margin: 10px 0 10px 10%;
 }
 .attendee-count-label {
-    margin-right: 5px;
+  margin-right: 5px;
 }
 .attendee-count-component {
-    width: 30px;
-    margin-left: 10px;
+  width: 30px;
+  margin-left: 10px;
 }
 
 .meal-wrapper {
-    border: black double 3px;
-    width: 50%;
-    text-align: center;
-    display: inline-block;
-    padding: 5px;
-    margin-left: 10%;
+  border: black double 3px;
+  width: 50%;
+  text-align: center;
+  display: inline-block;
+  padding: 5px;
+  margin-left: 10%;
 }
 .meal-description-label {
-    font-size: 0.7em;
-    padding: 5px;
+  font-size: 0.7em;
+  padding: 5px;
 }
 .meal-count-label {
-    margin-right: 5px;
+  margin-right: 5px;
 }
 .meal-count-component {
-    width: 30px;
+  width: 30px;
 }
 .register-button {
-    background: yellow;
-    padding: 2px 5px;
-    margin-bottom: 20px;
+  background: yellow;
+  padding: 2px 5px;
+  margin-bottom: 20px;
 }
 .register-address-section,
 .register-contact-section,
 .register-church-section {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 .register-church-header {
 }
 .register-church-wrapper {
-    margin-top: 10px;
-    display: inline-block;
-    width: 40%;
-    text-align: left;
+  margin-top: 10px;
+  display: inline-block;
+  width: 40%;
+  text-align: left;
 }
 .react-tel-input {
-    display: inline-block;
-    margin-left: 10%;
+  display: inline-block;
+  margin-left: 10%;
 }
 .special-label {
-    display: inline-block;
-    padding-right: 10px;
+  display: inline-block;
+  padding-right: 10px;
 }

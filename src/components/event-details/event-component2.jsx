@@ -1,12 +1,13 @@
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
+import { printObject, prettyDate, prettyTime } from '../../utils/helpers';
 import './event.styles.scss';
 //event: { uid, eventDate, startTime, endTime, location },
-const EventDetails = ({ theEvent }) => {
-    const util = require('util');
-
+const EventDetails = ({ theRally }) => {
+    // printObject('EC:7-->theRally:\n', theRally);
     //get data ready to display
-    const displayThis = theEvent;
+    const displayThis = theRally;
+    console.log('EC2:10-->displayThis:\n', displayThis);
     //-------------------------------------------------------
     // if the graphic file name is available and not tbd.png
     // add the correct path to display from s3
@@ -28,43 +29,7 @@ const EventDetails = ({ theEvent }) => {
     //     'component.dislayThis: \n' +
     //         util.inspect(displayThis, { showHidden: false, depth: null })
     // );
-    const displayDate = () => {
-        // format the date and return it
-        //the new formatted date coming in will look like this...
-        //            2021-04-21
-        let dateParts = displayThis?.eventDate.split('-');
-        let y = parseInt(dateParts[0]);
-        let m = parseInt(dateParts[1]) - 1;
-        let d = parseInt(dateParts[2]);
-        let eventDate = new Date(y, m, d);
-        return eventDate.toDateString();
-    };
-    const displayTimes = () => {
-        if (displayThis?.startTime) {
-            let sTime = displayThis?.startTime.split(':');
-            let eTime = displayThis?.endTime.split(':');
 
-            let startTime = '';
-            let endTime = '';
-            if (parseInt(sTime[0]) < 13) {
-                startTime = displayThis?.startTime;
-            } else {
-                let newHour = parseInt(sTime[0]) - 12;
-
-                startTime = newHour.toString() + ':' + sTime[1];
-            }
-            if (parseInt(eTime[0]) < 13) {
-                endTime = displayThis.endTime;
-            } else {
-                let newHour = parseInt(eTime[0]) - 12;
-                endTime = newHour.toString() + ':' + eTime[1];
-            }
-            let returnValue = startTime + ' - ' + endTime;
-            return returnValue;
-        } else {
-            return null;
-        }
-    };
     return (
         <>
             <div className='event-details-component__wrapper'>
@@ -73,20 +38,22 @@ const EventDetails = ({ theEvent }) => {
                         THE EVENT
                     </div>
                     <div className='event-details-component__section-header'>
-                        {displayThis?.name}
+                        {displayThis?.event?.name}
                     </div>
                     <div className='event-details-component__church-address-line'>
-                        {displayThis?.street}
+                        {displayThis?.event?.location?.street}
                     </div>
                     <div className='event-details-component__church-address-line'>
-                        {displayThis?.city},{displayThis?.stateProv}&nbsp;
-                        {displayThis?.postalCode}
+                        {displayThis?.event?.location?.city},
+                        {displayThis?.event?.location?.stateProv}&nbsp;
+                        {displayThis?.event?.location?.postalCode}
                     </div>
                     <div className='event-details__event-date'>
-                        {displayDate ? () => displayDate() : null}
+                        {prettyDate(displayThis?.eventDate)}
                     </div>
                     <div className='event-details__event-time'>
-                        {displayTimes()}
+                        {prettyTime(displayThis?.event?.startTime)} -{' '}
+                        {prettyTime(displayThis?.event?.endTime)}
                     </div>
                     <div className='event-details__event-message'>
                         {displayThis?.message}

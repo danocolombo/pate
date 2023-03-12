@@ -1,0 +1,41 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-patemobile-staging-14132-authRole",
+      "UnauthRoleArn": "arn:aws:iam::226036691416:role/amplify-patemobile-staging-14132-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::226036691416:role/amplify-patemobile-staging-14132-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-patemobile-staging-14132-deployment",
+      "UnauthRoleName": "amplify-patemobile-staging-14132-unauthRole",
+      "StackName": "amplify-patemobile-staging-14132",
+      "StackId": "arn:aws:cloudformation:us-east-1:226036691416:stack/amplify-patemobile-staging-14132/777ce920-f1cc-11ec-8685-0e4d072aa857",
+      "AmplifyAppId": "d3gb4eqd68lu39"
+    },
+    "categories": {
+      "auth": {
+        "patemobile": {
+          "userPoolId": "us-east-1_2AD4aPWxt",
+          "userPoolName": "pate20214e565539_userpool_4e565539-dev",
+          "webClientId": "6hd1l0kgekae1gq1oq4tupmuft",
+          "nativeClientId": "6hd1l0kgekae1gq1oq4tupmuft",
+          "identityPoolId": "us-east-1:7e9553eb-d401-4d7b-88fa-0d98c646e093",
+          "identityPoolName": "pate20214e565539_identitypool_4e565539__dev",
+          "allowUnauthenticatedIdentities": true,
+          "authRoleArn": "arn:aws:iam::226036691416:role/amplify-pate2021-dev-175248-authRole",
+          "authRoleName": "amplify-pate2021-dev-175248-authRole",
+          "unauthRoleArn": "arn:aws:iam::226036691416:role/amplify-pate2021-dev-175248-unauthRole",
+          "unauthRoleName": "amplify-pate2021-dev-175248-unauthRole"
+        }
+      },
+      "storage": {
+        "s3eorimages2022": {}
+      },
+      "analytics": {
+        "patemobile": {}
+      },
+      "api": {
+        "patemobile": {}
+      }
+    }
+  }
+}

@@ -11,6 +11,7 @@ import Administer from './pages/admin/admin-feature-page';
 
 import UserDetails from './pages/admin/admin-user-details.page.jsx';
 // import RegisteredUserDetails from './pages/admin/admin-registered-user-details.page';
+import RegistrationProcess from './pages/registration/registration-process.page';
 import Events from './pages/events/events.component';
 import Profile from './pages/profile/profile.page';
 import SignIn from './pages/signin/signin.page';
@@ -21,6 +22,7 @@ import PrivatePage from './pages/privatePage/privatePage';
 import EventDetails from './pages/event/event.page';
 import EventRegistration from './pages/registration/registration.page';
 import FAQ from './pages/faq/faq.page';
+import RegistrationControllerPage from './pages/registration/registration-controller-page';
 import Serve from './pages/serve/serve.page';
 import ServeEvent from './pages/serveEvent/serveEvent.page';
 import NewEvent from './pages/newEvent/newEvent.page';
@@ -34,7 +36,7 @@ import Leroy from './pages/junkyard/junkyard';
 //AMPLIFY INTEGRATION
 //----------------------
 // import { withAuthenticator } from '@aws-amplify/ui-react';
-
+require('dotenv').config();
 function App() {
     return (
         <>
@@ -76,11 +78,27 @@ function App() {
                     <Route
                         exact
                         path='/registration/:id'
-                        component={EventRegistration}
+                        component={RegistrationControllerPage}
                     />
                     <Route
                         exact
-                        path='/editregistration/:eid/:rid'
+                        path='/registrationOLD/:id'
+                        component={EventRegistration}
+                    />
+
+                    <Route
+                        exact
+                        path='/registrationprocess'
+                        component={RegistrationProcess}
+                    />
+                    <Route
+                        exact
+                        path='/editregistrationOLD/:eid/:rid'
+                        component={EditRegistration}
+                    />
+                    <Route
+                        exact
+                        path='/editregistration/:id'
                         component={EditRegistration}
                     />
                     <Route exact path='/event/:id' component={EventDetails} />

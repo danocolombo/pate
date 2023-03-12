@@ -1,15 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import { IoTrash } from 'react-icons/io5';
+import { API, graphqlOperation } from 'aws-amplify';
+import * as queries from '../../pateGraphql/queries';
+
 import StyledLink from '../../components/custom-link/custom-link-white.component';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 import { removeRegistration } from '../../redux/registrations/registrations.actions';
-
+import { removeRegistrationFromCurrentUser } from '../../redux/user/user.actions';
+import EventListDate from '../ui/dates/serve-date.component';
+import '@fortawesome/fontawesome-free/css/all.css';
 import './userregistrationsoverview.styles.scss';
+import { printObject } from '../../utils/helpers';
+import { deleteRegistrationProvider } from '../../providers/registrations.provider';
 const UserRegistrationOverview = ({
     currentUser,
     registrations,
+    removeRegistrationFromCurrentUser,
     setSpinner,
     clearSpinner,
     removeRegistration,
@@ -18,132 +26,144 @@ const UserRegistrationOverview = ({
     if (!currentUser?.isLoggedIn) {
         history.push('/');
     }
-    const dateToDisplay = (dt) => {
-        const y = dt.substring(0, 4);
-        const m = parseInt(dt.substring(4, 6));
-        const d = dt.substring(6, 8);
+    const [rallies, setRallies] = useState([]);
 
-        let smDate = m.toString() + '/' + d.toString();
-        return smDate;
-    };
-    const handleCancellation = async (registration) => {
-        //delete from database
-        setSpinner();
+    const handleCancellation = async (reg) => {
+        // if (!regId) {
+        //     console.log('UROC:37==> deleteRegistration requires regId');
+        //     return;
+        // }
+        // // const theReg = currentUser.registrations.items.filter(
+        // //     (r) => r.id === regId
+        // // );
+        const deleteResults = await deleteRegistrationProvider(reg.id);
+        if (deleteResults.statusCode === 200) {
+            //      4. remove from rallies array
 
-        await fetch(
-            'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/registrations',
-            {
-                method: 'POST',
-                body: JSON.stringify({
-                    operation: 'deleteRegistration',
-                    payload: {
-                        Key: { uid: registration.uid },
-                    },
-                }),
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8',
-                },
+            async function purgeRally() {
+                const newRallyArray = rallies.filter(
+                    (item) => item.id !== reg.id
+                );
+
+                printObject('testArray:\n', newRallyArray);
+                setRallies(newRallyArray);
             }
-        )
-            .then((response) => response.json())
-            .then((data) => {
-                // const util = require('util');
-                // console.log(
-                //     'db data returned: \n' +
-                //         util.inspect(data, {
-                //             showHidden: false,
-                //             depth: null,
-                //         })
-                // );
-            });
-        //-------------------------
-        // reduce event numbers.
-        //-------------------------
-        let eventUpdate = {
-            uid: registration.eid,
-            adjustments: {
-                registrationCount: registration.attendeeCount * -1,
-            },
-        };
-        const mCount = parseInt(registration.mealCount, 10) * -1;
-        if (mCount !== 0) {
-            eventUpdate.adjustments.mealCount = mCount;
+            purgeRally();
+            //      4. remove REDUX currentUser.regisrations array
+            removeRegistrationFromCurrentUser(reg.id);
+            //      5. remove REDUX registrations?.confirmed array (if there)
         }
-        await fetch(
-            'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/events',
-            {
-                method: 'POST',
-                body: JSON.stringify({
-                    operation: 'maintainNumbers',
-                    payload: eventUpdate,
-                }),
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8',
-                },
-            }
-        )
-            .then((response) => response.json())
-            .then((data) => {
-                console.log('maintainEventNumbers successful');
-            });
-
-        //remove the redux reference to the event
-        await removeRegistration(registration.uid);
-        //??????
-        // may need to reload stateRep & stateLead redux
-        //??????
-        clearSpinner();
     };
+    useEffect(() => {
+        // load the redux values into useState array
+        async function getLatestProfile() {
+            const variables = {
+                id: currentUser.sub,
+            };
+            try {
+                const gqlProfile = await API.graphql(
+                    graphqlOperation(queries.getProfileBySub, variables)
+                );
+                if (
+                    gqlProfile?.data?.listUsers?.items[0]?.registrations?.items
+                        .length > 0
+                ) {
+                    // only load them if attendeeId === currentUserId
+                    let userRallies = [];
+                    gqlProfile?.data?.listUsers?.items[0]?.registrations?.items.forEach(
+                        (reg) => {
+                            if (reg.attendeeId === currentUser.id) {
+                                userRallies.push(reg);
+                            }
+                        }
+                    );
+                    setRallies(userRallies);
+                }
+            } catch (error) {
+                printObject('SP:218-->error gettng graphql data');
+            }
+        }
+        getLatestProfile();
+        //*===========================================
+        // some users can register others for events,
+        // so only display registrations when the user
+        // is the attendee.
+        //*============================================
+        const filterRallies = async () => {
+            let userRallies = [];
+            if (currentUser?.registrations?.items.length > 0) {
+                currentUser?.registrations?.items.forEach((reg) => {
+                    if (reg.attendeeId === currentUser.id) {
+                        userRallies.push(reg);
+                    }
+                });
+            }
+            setRallies(userRallies);
+        };
+        filterRallies();
+    }, []);
     return (
         <>
-            <div className='user-reg-overview__wrapper'>
-                <div className='user-reg-overview__section-header'>
-                    YOUR REGISTRATIONS
+            {rallies.length > 0 && (
+                <div className='user-reg-overview__wrapper'>
+                    <div className='user-reg-overview__section-header'>
+                        YOUR REGISTRATIONS
+                        {rallies.length}
+                    </div>
+                    {/* currentUser.registrations.items */}
+                    {rallies.map(
+                        (reg) =>
+                            reg.id && (
+                                <div key={reg.id}>
+                                    <div className='user-reg-flex__event-wrapper'>
+                                        <StyledLink
+                                            style={{
+                                                textDecoration: 'none',
+                                                color: 'black',
+                                            }}
+                                            to={`/editregistration/${reg.id}`}
+                                        >
+                                            <EventListDate
+                                                date={reg.event.eventDate}
+                                            />
+                                        </StyledLink>
+                                        <div className='user-reg-flex__location'>
+                                            {reg?.event?.name}
+                                            <br />
+                                            {reg?.event?.location?.city},{' '}
+                                            {reg?.event.location.stateProv}
+                                        </div>
+
+                                        {reg.registrar?.id !==
+                                        currentUser?.id ? (
+                                            <div className='user-reg-flex__location'>
+                                                ({reg.registrar?.firstName})
+                                            </div>
+                                        ) : null}
+
+                                        <div className='user-reg-flex__cancel'>
+                                            <Link
+                                                onClick={() => {
+                                                    handleCancellation(reg);
+                                                }}
+                                                to='#'
+                                            >
+                                                <i
+                                                    className='fas fa-trash-alt'
+                                                    style={{
+                                                        fontSize: '24px',
+                                                        color: 'red',
+                                                        marginRight: '5px',
+                                                    }}
+                                                ></i>
+                                            </Link>
+                                        </div>
+                                    </div>
+                                </div>
+                            )
+                    )}
                 </div>
-                {registrations
-                    ? registrations.map((reg) => (
-                          <>
-                              <div className='user-reg-flex__event-wrapper'>
-                                  <div className='user-reg-flex__date'>
-                                      <StyledLink
-                                          style={{
-                                              textDecoration: 'none',
-                                              color: 'blue',
-                                          }}
-                                          to={`/editregistration/${reg.eid}/${reg.uid}`}
-                                      >
-                                          {dateToDisplay(reg.eventDate)}
-                                      </StyledLink>
-                                  </div>
-
-                                  <div className='user-reg-flex__location'>
-                                      {reg?.location.name}
-                                      <br />
-                                      {reg?.location?.city},{' '}
-                                      {reg?.location?.stateProv}
-                                  </div>
-
-                                  {reg.registrar?.firstName !==
-                                  currentUser?.firstName ? (
-                                      <div className='user-reg-flex__location'>
-                                          ({reg.registrar?.firstName})
-                                      </div>
-                                  ) : null}
-
-                                  <div className='user-reg-flex__cancel'>
-                                      <Link
-                                          onClick={() => {
-                                              handleCancellation(reg);
-                                          }}
-                                      >
-                                          <IoTrash />
-                                      </Link>
-                                  </div>
-                              </div>
-                          </>
-                      ))
-                    : null}
-            </div>
+            )}
         </>
     );
 };
@@ -151,6 +171,8 @@ const UserRegistrationOverview = ({
 const mapDispatchToProps = (dispatch) => ({
     setSpinner: () => dispatch(setSpinner()),
     clearSpinner: () => dispatch(clearSpinner()),
+    removeRegistrationFromCurrentUser: (registration) =>
+        dispatch(removeRegistrationFromCurrentUser(registration)),
     removeRegistration: (registration) =>
         dispatch(removeRegistration(registration)),
 });

@@ -1,0 +1,146 @@
+# This "input" configures a global authorization rule to enable public access to
+# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
+input AMPLIFY {
+    globalAuthRule: AuthRule = { allow: public }
+} # FOR TESTING ONLY!
+type Organization @model {
+    id: ID!
+    appName: String
+    available: Boolean
+    category: String
+    code: String!
+    description: String
+    exposure: String
+    label: String
+    name: String!
+    title: String
+    value: String
+    divisions: [Division] @hasMany
+}
+type Division @model {
+    id: ID!
+    code: String
+    divCompKey: String
+    organization: Organization @belongsTo
+    events: [Event] @hasMany
+    affiliations: [Affiliation] @hasMany
+    defaultUsers: [User] @hasMany
+    memberships: [Membership] @hasMany
+}
+type Affiliation @model {
+    id: ID!
+    role: String
+    status: String
+    user: User @belongsTo
+    division: Division @belongsTo
+}
+
+type Event @model {
+    id: ID!
+    eventDate: AWSDate
+    eventCompKey: String
+    division: Division @belongsTo
+    registrations: [Registration] @hasMany
+    coordinator: User @belongsTo
+    status: String
+    plannedCount: Int
+    actualCount: Int
+    mealPlannedCount: Int
+    mealActualCount: Int
+    startTime: AWSTime
+    endTime: AWSTime
+    message: String
+    name: String
+    graphic: String
+    location: EventLocation @belongsTo
+    contact: EventContact @belongsTo
+    meal: Meal @hasOne
+}
+type EventLocation @model {
+    id: ID!
+    street: String
+    city: String
+    stateProv: String
+    postalCode: Int
+    latitude: String
+    longitude: String
+    events: [Event] @hasMany
+}
+type EventContact @model {
+    id: ID!
+    firstName: String
+    lastName: String
+    email: String
+    phone: String
+    street: String
+    city: String
+    stateProv: String
+    postalCode: Int
+    events: [Event] @hasMany
+}
+type Meal @model {
+    id: ID!
+    deadline: AWSDate
+    cost: Int
+    plannedCount: Int
+    actualCount: Int
+    startTime: AWSTime
+    message: String
+    event: Event @hasOne
+}
+type Registration @model {
+    id: ID!
+    attendeeId: String
+    attendeeFirstName: String
+    attendeeLastName: String
+    attendeeStreet: String
+    attendeeCity: String
+    attendeeStateProv: String
+    attendeePostalCode: Int
+    attendeeEmail: String
+    attendeePhone: String
+    event: Event @belongsTo
+    attendanceCount: Int
+    mealCount: Int
+    membershipName: String
+    membershipStreet: String
+    membershipCity: String
+    membershipStateProv: String
+    membershipPostalCode: Int
+    registrar: User @belongsTo
+}
+type Residence @model {
+    id: ID!
+    street: String
+    city: String
+    stateProv: String
+    postalCode: Int
+    latitude: String
+    longitude: String
+    residents: [User] @hasMany
+}
+type User @model {
+    id: ID!
+    sub: String! @index
+    username: String!
+    firstName: String
+    lastName: String
+    email: String
+    phone: String
+    defaultDivision: Division @belongsTo
+    residence: Residence @belongsTo
+    events: [Event] @hasMany
+    registrations: [Registration] @hasMany
+    affiliations: [Affiliation] @hasMany
+    memberships: [Membership] @hasMany
+}
+type Membership @model {
+    id: ID!
+    name: String!
+    street: String
+    city: String
+    stateProv: String
+    postalCode: Int
+    member: User @belongsTo
+    division: Division @belongsTo
+}

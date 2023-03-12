@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { compose } from 'redux';
 import { withRouter } from 'react-router';
-
+import { API, graphqlOperation } from 'aws-amplify';
+import * as queries from '../../pateGraphql/queries';
 import Header from '../../components/header/header.component';
 import { MainFooter } from '../../components/footers/main-footer';
 import Spinner from '../../components/spinner/Spinner';
@@ -19,6 +20,8 @@ import {
     loadLeadRallies,
     loadLeadDoneRallies,
 } from '../../redux/stateLead/stateLead.actions';
+import { setPateRallies } from '../../redux/pate/pate.actions';
+import { printObject } from '../../utils/helpers';
 import './serve.styles.scss';
 const Serve = ({
     setSpinner,
@@ -30,113 +33,116 @@ const Serve = ({
     loadDoneRallies,
     loadLeadRallies,
     loadLeadDoneRallies,
+    setPateRallies,
 }) => {
     const history = useHistory();
 
     useEffect(() => {
-        if (!currentUser?.isLoggedIn) history.push('/');
+        if (!currentUser?.authSession?.idToken?.jwtToken) history.push('/');
         //get the usersRallies
-        async function reps() {
-            getMyRallies();
-        }
-        reps();
 
-        //if current user is a state lead, get state rallies
-        if (currentUser?.stateLead) {
-            getStateRallies();
+        // if L, grab state rallies
+        if (currentUser.role === 'lead') {
+            //    only get rallies for state
+            getLeadRallies().then(() =>
+                console.log('done getting lead rallies')
+            );
+        } else if (
+            currentUser.role === 'director' ||
+            currentUser.role === 'guru'
+        ) {
+            getDivisionRallies().then(() => {
+                console.log('done getting division rallies');
+            });
         }
+        // if (
+        //     currentUser.role === 'lead' ||
+        //     currentUser.role === 'director' ||
+        //     currentUser.role === 'guru'
+        // ) {
+        //     async function leads() {
+        //         getLeadRallies();
+        //     }
+        //     leads();
+        // }
     }, []);
 
-    useEffect(() => {}, [pateSystem.showSpinner]);
+    const getLeadRallies = async () => {
+        // =======================
+        // get all Events for current division, then filter by stateProv
+        // resulting in only the rallies for rally.location.stateProv === currentUser.residence.stateProv
+        //0ebefcdf-9fd2-4702-a1e7-76bcf90d9b68 = currentUser.id
+        const variables = {
+            id: 'fffedde6-5d5a-46f0-a3ac-882a350edc64',
+        };
+        API.graphql(graphqlOperation(queries.getAllDivisionEvents2, variables))
+            .then((allRallyResponse) => {
+                if (
+                    allRallyResponse?.data?.getDivision?.events.items.length > 0
+                ) {
+                    // separate done and active
 
-    const getMyRallies = async () => {
-        //this gets the current rallies for the user and loads it in redux
-        let repData = {};
-        await fetch(
-            'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/events',
-            {
-                method: 'POST',
-                body: JSON.stringify({
-                    operation: 'getActiveEvents',
-                    coordinator: currentUser.uid,
-                }),
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8',
-                },
-            }
-        )
-            .then((response) => response.json())
-            .then((data) => {
-                repData = data.body;
+                    let leadRallies =
+                        allRallyResponse?.data.getDivision?.events.items.filter(
+                            (evnt) =>
+                                (evnt.location.stateProv =
+                                    currentUser.residence.stateProv)
+                        );
+
+                    async function sortRallies() {
+                        leadRallies.sort(function (a, b) {
+                            return (
+                                new Date(b.eventDate) - new Date(a.eventDate)
+                            );
+                        });
+                    }
+                    sortRallies();
+                    setPateRallies(leadRallies);
+                }
+            })
+            .catch((error) => {
+                printObject(
+                    'SP:157--> error getting lead rallies from graphql',
+                    error
+                );
             });
-        // setRallyInfo(rallyInfo.concat(repData));
-
-        loadRallies(repData);
-        await fetch(
-            'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/events',
-            {
-                method: 'POST',
-                body: JSON.stringify({
-                    operation: 'getHistoricEvents',
-                    coordinator: currentUser.uid,
-                }),
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8',
-                },
-            }
-        )
-            .then((response) => response.json())
-            .then((data) => {
-                repData = data.body;
-            });
-        // setRallyInfo(rallyInfo.concat(repData));
-
-        loadDoneRallies(repData);
     };
+    const getDivisionRallies = async () => {
+        // =======================
+        // get all Events for current division, then filter by stateProv
+        // resulting in only the rallies for rally.location.stateProv === currentUser.residence.stateProv
+        //0ebefcdf-9fd2-4702-a1e7-76bcf90d9b68 = currentUser.id
+        const variables = {
+            id: 'fffedde6-5d5a-46f0-a3ac-882a350edc64',
+        };
+        API.graphql(graphqlOperation(queries.getAllDivisionEvents2, variables))
+            .then((allRallyResponse) => {
+                if (
+                    allRallyResponse?.data?.getDivision?.events.items.length > 0
+                ) {
+                    // separate done and active
 
-    const getStateRallies = async () => {
-        //this gets the current rallies for the state
-        let searchState = currentUser?.stateLead;
-        let stateData = {};
-        await fetch(
-            'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/events',
-            {
-                method: 'POST',
-                body: JSON.stringify({
-                    operation: 'getActiveEvents',
-                    state: currentUser.stateLead,
-                }),
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8',
-                },
-            }
-        )
-            .then((response) => response.json())
-            .then((data) => {
-                stateData = data.body;
+                    let divisionRallies =
+                        allRallyResponse?.data.getDivision?.events.items;
+
+                    async function sortRallies() {
+                        divisionRallies.sort(function (a, b) {
+                            return (
+                                new Date(b.eventDate) - new Date(a.eventDate)
+                            );
+                        });
+                    }
+                    sortRallies();
+                    setPateRallies(divisionRallies);
+                }
+            })
+            .catch((error) => {
+                printObject(
+                    'SP:157--> error getting lead rallies from graphql',
+                    error
+                );
             });
-        loadLeadRallies(stateData);
-        stateData = {};
-        await fetch(
-            'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/events',
-            {
-                method: 'POST',
-                body: JSON.stringify({
-                    operation: 'getHistoricEvents',
-                    state: currentUser.stateLead,
-                }),
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8',
-                },
-            }
-        )
-            .then((response) => response.json())
-            .then((data) => {
-                stateData = data.body;
-            });
-        loadLeadDoneRallies(stateData);
     };
-
     return pateSystem.showSpinner ? (
         <Spinner />
     ) : (
@@ -155,7 +161,9 @@ const Serve = ({
                         </div>
                         <StateRep />
 
-                        {currentUser?.stateLead ? (
+                        {currentUser?.role === 'lead' ||
+                        currentUser?.role === 'director' ||
+                        currentUser?.role === 'guru' ? (
                             <>
                                 <StateLead />
                             </>
@@ -173,6 +181,7 @@ const mapDispatchToProps = (dispatch) => ({
     loadDoneRallies: (rallies) => dispatch(loadDoneRallies(rallies)),
     loadLeadRallies: (srallies) => dispatch(loadLeadRallies(srallies)),
     loadLeadDoneRallies: (srallies) => dispatch(loadLeadDoneRallies(srallies)),
+    setPateRallies: (allRallies) => dispatch(setPateRallies(allRallies)),
     setSpinner: () => dispatch(setSpinner()),
     clearSpinner: () => dispatch(clearSpinner()),
 });

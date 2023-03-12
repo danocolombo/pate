@@ -1,5 +1,14 @@
 import { UserActionTypes } from './user.types';
-
+import {
+    addItemToRegistrations,
+    removeItemFromRegistrations,
+    addItemToEvents,
+    removeItemFromEvents,
+    updateCurrentUserPersonalInfo,
+    updateCurrentUserResidenceInfo,
+    updateCurrentUserMembershipInfo,
+    updateRegistrationAndEventNumbers,
+} from './user.utils';
 const INITIAL_STATE = {
     currentUser: {
         loading: true,
@@ -8,7 +17,6 @@ const INITIAL_STATE = {
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
-    console.log('____________IN userReducer: ' + action.type);
     if (action.type === 'UPDATE_USER') {
         const util = require('util');
         console.log(
@@ -23,6 +31,40 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 currentUser: action.payload,
                 loading: false,
+            };
+        case UserActionTypes.ADD_REGISTRATION_TO_CURRENT_USER:
+            return {
+                ...state,
+                currentUser: addItemToRegistrations(state, action.payload),
+            };
+        case UserActionTypes.REMOVE_REGISTRATION_FROM_CURRENT_USER:
+            return {
+                ...state,
+                currentUser: removeItemFromRegistrations(
+                    state.currentUser,
+                    action.payload
+                ),
+            };
+        case UserActionTypes.ADD_EVENT_TO_CURRENT_USER:
+            return {
+                ...state,
+                currentUser: addItemToEvents(state, action.payload),
+            };
+        case UserActionTypes.REMOVE_EVENT_FROM_CURRENT_USER:
+            return {
+                ...state,
+                currentUser: removeItemFromEvents(
+                    state.currentUser,
+                    action.payload
+                ),
+            };
+        case UserActionTypes.UPDATE_REGISTRATION_AND_EVENT_NUMBERS:
+            return {
+                ...state,
+                currentUser: updateRegistrationAndEventNumbers(
+                    state.currentUser,
+                    action.payload
+                ),
             };
         case UserActionTypes.LOGIN_SUCCESS:
             return {
@@ -39,6 +81,32 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 currentUser: action.payload,
             };
+        case UserActionTypes.UPDATE_USER_PERSONAL_INFO:
+            return {
+                ...state,
+                currentUser: updateCurrentUserPersonalInfo(
+                    state,
+                    action.payload
+                ),
+            };
+
+        case UserActionTypes.UPDATE_USER_RESIDENCE_INFO:
+            return {
+                ...state,
+                currentUser: updateCurrentUserResidenceInfo(
+                    state,
+                    action.payload
+                ),
+            };
+        case UserActionTypes.UPDATE_USER_MEMBERSHIP_INFO:
+            return {
+                ...state,
+                currentUser: updateCurrentUserMembershipInfo(
+                    state,
+                    action.payload
+                ),
+            };
+
         case UserActionTypes.CLEAR_USER:
             return {
                 ...state,
