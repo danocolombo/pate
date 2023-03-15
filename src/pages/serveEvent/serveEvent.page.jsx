@@ -566,11 +566,12 @@ const Serve = ({
   };
   const handleNumberUpdate = (numberUpdates) => {
     printObject("number updates:\n", numberUpdates);
-    setPlannedCount(numberUpdates.plannedCount);
-    setActualCount(numberUpdates.actualCount);
+    setRegistrationCount(numberUpdates.plannedCount);
+    setAttendeeCount(numberUpdates.actualCount);
     setMealCount(numberUpdates.mealPlannedCount);
     setMealsServed(numberUpdates.mealActualCount);
     setIsEventNumberModalVisible(false);
+    window.alert("Remember to Update so save values.");
   };
   const handleMealCostChange = (event) => {
     setMealCost(event.target.value);
@@ -751,8 +752,8 @@ const Serve = ({
             ? mealUpdates.id
             : rallyEvent.eventMealId,
 
-        plannedCount: attendeeCount,
-        actualCount: registrationCount,
+        plannedCount: registrationCount,
+        actualCount: attendeeCount,
         mealPlannedCount: mealCount,
         mealActualCount: mealsServed,
       };
@@ -1555,6 +1556,10 @@ const Serve = ({
                   size="small"
                   margin="dense"
                   step="1"
+                  onChange={(e) => setMealCount(e.target.value)}
+                  inputProps={{
+                    readOnly: rallyEvent?.status !== "done",
+                  }}
                   sx={{
                     maxWidth: "120px",
                     marginLeft: "10px",
@@ -1580,6 +1585,10 @@ const Serve = ({
                   size="small"
                   margin="dense"
                   step="1"
+                  onChange={(e) => setMealsServed(e.target.value)}
+                  inputProps={{
+                    readOnly: rallyEvent?.status !== "done",
+                  }}
                   sx={{
                     maxWidth: "120px",
                     marginLeft: "10px",
@@ -1719,6 +1728,10 @@ const Serve = ({
                   size="small"
                   margin="dense"
                   step="1"
+                  onChange={(e) => setRegistrationCount(e.target.value)}
+                  inputProps={{
+                    readOnly: rallyEvent?.status !== "done",
+                  }}
                   sx={{
                     maxWidth: "120px",
                     marginLeft: "10px",
@@ -1744,6 +1757,10 @@ const Serve = ({
                   size="small"
                   margin="dense"
                   step="1"
+                  onChange={(e) => setAttendeeCount(e.target.value)}
+                  inputProps={{
+                    readOnly: rallyEvent?.status !== "done",
+                  }}
                   sx={{
                     maxWidth: "120px",
                     marginLeft: "10px",
