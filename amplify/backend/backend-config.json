@@ -1,44 +1,134 @@
 {
-  "auth": {
-    "patemobile": {
-      "service": "Cognito",
-      "serviceType": "imported",
-      "providerPlugin": "awscloudformation",
-      "dependsOn": [],
-      "customAuth": false
-    }
-  },
   "analytics": {
     "patemobile": {
-      "service": "Pinpoint",
-      "providerPlugin": "awscloudformation"
-    }
-  },
-  "storage": {
-    "s3eorimages2022": {
-      "service": "S3",
       "providerPlugin": "awscloudformation",
-      "dependsOn": []
+      "service": "Pinpoint"
     }
   },
   "api": {
     "patemobile": {
-      "service": "AppSync",
-      "providerPlugin": "awscloudformation",
       "dependsOn": [],
       "output": {
         "authConfig": {
+          "additionalAuthenticationProviders": [],
           "defaultAuthentication": {
-            "authenticationType": "API_KEY",
             "apiKeyConfig": {
-              "apiKeyExpirationDays": 365,
               "apiKeyExpirationDate": "2024-01-16T10:01:40.795Z",
+              "apiKeyExpirationDays": 365,
               "description": "pate-api-key"
-            }
-          },
-          "additionalAuthenticationProviders": []
+            },
+            "authenticationType": "API_KEY"
+          }
         }
-      }
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "AppSync"
+    }
+  },
+  "auth": {
+    "patemobile": {
+      "customAuth": false,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito",
+      "serviceType": "imported"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_auth_patemobile_allowUnauthenticatedIdentities": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "patemobile"
+        }
+      ]
+    },
+    "AMPLIFY_auth_patemobile_authRoleArn": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "patemobile"
+        }
+      ]
+    },
+    "AMPLIFY_auth_patemobile_authRoleName": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "patemobile"
+        }
+      ]
+    },
+    "AMPLIFY_auth_patemobile_identityPoolId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "patemobile"
+        }
+      ]
+    },
+    "AMPLIFY_auth_patemobile_identityPoolName": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "patemobile"
+        }
+      ]
+    },
+    "AMPLIFY_auth_patemobile_nativeClientId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "patemobile"
+        }
+      ]
+    },
+    "AMPLIFY_auth_patemobile_unauthRoleArn": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "patemobile"
+        }
+      ]
+    },
+    "AMPLIFY_auth_patemobile_unauthRoleName": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "patemobile"
+        }
+      ]
+    },
+    "AMPLIFY_auth_patemobile_userPoolId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "patemobile"
+        }
+      ]
+    },
+    "AMPLIFY_auth_patemobile_userPoolName": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "patemobile"
+        }
+      ]
+    },
+    "AMPLIFY_auth_patemobile_webClientId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "patemobile"
+        }
+      ]
+    }
+  },
+  "storage": {
+    "s3eorimages2022": {
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "S3"
     }
   }
 }
