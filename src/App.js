@@ -25,6 +25,7 @@ import FAQ from './pages/faq/faq.page';
 import RegistrationControllerPage from './pages/registration/registration-controller-page';
 import Serve from './pages/serve/serve.page';
 import ServeEvent from './pages/serveEvent/serveEvent.page';
+import ServeGraphic from './pages/serveGraphic/serve-graphic.page';
 import NewEvent from './pages/newEvent/newEvent.page';
 import EditRegistration from './pages/edit-registration/edit-registration.page';
 import Alert from './components/alert/alert.component';
@@ -67,6 +68,11 @@ function App() {
                         exact
                         path='/serveevent/:id'
                         component={ServeEvent}
+                    />
+                    <Route
+                        exact
+                        path='/servegraphic/:eventId/:graphicName'
+                        component={ServeGraphic}
                     />
                     <Route exact path='/newevent' component={NewEvent} />
                     <Route
