@@ -17,6 +17,7 @@ import {
   Box,
   Button,
   InputLabel,
+  CardMedia,
   InputAdornment,
 } from "@mui/material";
 import PhoneInput from "react-phone-input-2";
@@ -123,7 +124,7 @@ const Serve = ({
   const [mealDeadline, setMealDeadline] = useState("");
   const [attendeeCount, setAttendeeCount] = useState(0);
   const [registrationCount, setRegistrationCount] = useState(0);
-
+  const [imageUrl, setImageUrl] = useState("");
   const [modalDeleteConfirmIsVisible, setModalDeleteConfirmIsVisible] =
     useState(false);
   const [isEventUpdatedModalVisible, setIsEventUpdatedModalVisible] =
@@ -139,6 +140,19 @@ const Serve = ({
   const history = useHistory();
 
   //const util = require('util');
+  useEffect(() => {
+    const fetchImageUrl = async () => {
+      const url = await Storage.get(
+        `events/${rallyEvent.id}/${rallyEvent.graphic}`
+      );
+      printObject(
+        "s3 location:\n",
+        `events/${rallyEvent.id}/${rallyEvent.graphic}`
+      );
+      setImageUrl(url);
+    };
+    fetchImageUrl();
+  }, [rallyEvent.graphic]);
   useEffect(() => {
     // setSpinner();
     //++++++++++++++++++++++++++++++++++++++++
@@ -204,7 +218,6 @@ const Serve = ({
         parseInt(rallyEvent.mealActualCount) <
           parseInt(rallyEvent.mealPlannedCount))
     ) {
-      console.log("numbers need attention");
       setIsEventNumberModalVisible(true);
     }
   }, [rallyEvent]);
@@ -1674,12 +1687,16 @@ const Serve = ({
               <div className="serveevent-page__section-header">
                 Graphic File
               </div>
+
               <div className="serveevent-page__graphic-section">
                 <div className="serveevent-page__graphic-preview">
-                  {graphicLocation && (
-                    <AmplifyS3Image
-                      style={{ "--width": "100%" }}
-                      imgKey={graphicLocation}
+                  {imageUrl && (
+                    <CardMedia
+                      component="img"
+                      // height="200"
+                      height="auto"
+                      image={imageUrl}
+                      alt="My Image"
                     />
                   )}
                   {graphicFileName}
