@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardMedia, Stack } from '@mui/material';
+import { Card, CardMedia, Button, Stack } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withRouter } from 'react-router';
+import { Storage } from 'aws-amplify';
 import ServeGraphic from '../../components/graphics/serveGraphic.component';
 import { setSpinner, clearSpinner } from '../../redux/pate/pate.actions';
 const ServeGraphicPage = ({ match, setSpinner, clearSpinner }) => {
@@ -16,6 +17,8 @@ const ServeGraphicPage = ({ match, setSpinner, clearSpinner }) => {
     const [uploading, setUploading] = useState(false);
     const [accepted, setAccepted] = useState(false);
     const [status, setStatus] = useState(0);
+    const [tmpFileName, setTmpFileName] = useState(null);
+
     const handleFileUpload = async (e) => {
         e.preventDefault();
 
@@ -30,16 +33,34 @@ const ServeGraphicPage = ({ match, setSpinner, clearSpinner }) => {
         try {
             const fileExtension = selectedFile.name.split('.').pop();
             const fileName = `new-image-${Date.now()}.${fileExtension}`;
+            setTmpFileName(fileName);
             const key = `tmp/${fileName}`;
             setUploading(true);
             await Storage.put(key, selectedFile);
             setImageUrl(await Storage.get(key));
             setUploading(false);
             setAccepted(false);
+            setStatus(1);
         } catch (error) {
             console.log('Error uploading file: ', error);
             setUploading(false);
         }
+    };
+    const handleAccept = async () => {
+        // try {
+        //     const finalKey = `tmp/default.png`;
+        //     await Storage.rename(imageUrl, finalKey);
+        //     setImageUrl(await Storage.get(finalKey));
+        //     setAccepted(true);
+        // } catch (error) {
+        //     console.log('Error accepting file: ', error);
+        // }
+    };
+
+    const handleReject = () => {
+        // setImageUrl('');
+        // setSelectedFile(null);
+        // setAccepted(false);
     };
     return (
         <Stack
@@ -47,7 +68,12 @@ const ServeGraphicPage = ({ match, setSpinner, clearSpinner }) => {
             alignItems='center'
             sx={{ height: '100vh', backgroundColor: 'yellow' }}
         >
-            <ServeGraphic eventId={eventID} graphicName={graphicName} />
+            {status === 0 && (
+                <ServeGraphic eventId={eventID} graphicName={graphicName} />
+            )}
+            {status === 1 && (
+                <ServeGraphic eventId='' graphicName={tmpFileName} />
+            )}
             <Card sx={{ width: '95vw' }}>
                 <Stack alignItems='center'>
                     {status === 0 && (
@@ -96,16 +122,69 @@ const ServeGraphicPage = ({ match, setSpinner, clearSpinner }) => {
                                     <li>Only one image will be retained.</li>
                                 </ul>
                             </div>
+
+                            <form onSubmit={handleFileUpload}>
+                                <input
+                                    type='file'
+                                    onChange={(e) =>
+                                        setSelectedFile(e.target.files[0])
+                                    }
+                                />
+                                <button type='submit'>Upload</button>
+                            </form>
+                            {error && <div className='error'>{error}</div>}
                         </>
                     )}
-                    <form onSubmit={handleFileUpload}>
-                        <input
-                            type='file'
-                            onChange={(e) => setSelectedFile(e.target.files[0])}
-                        />
-                        <button type='submit'>Upload</button>
-                    </form>
-                    {error && <div className='error'>{error}</div>}
+                    {status === 1 && (
+                        <>
+                            <>
+                                <div
+                                    style={{
+                                        fontSize: '1.2rem',
+                                        fontWeight: '500',
+                                    }}
+                                >
+                                    New Image
+                                </div>
+                                <div
+                                    style={{
+                                        fontSize: '1rem',
+                                        fontWeight: 'normal',
+                                        paddingLeft: '20px',
+                                        paddingRight: '20px',
+                                        paddingBottom: '10px',
+                                        paddingTop: '10px',
+                                    }}
+                                >
+                                    If you would like to use this image, press
+                                    "ACCEPT" below, or you can select "CANCEL"
+                                    if you want to keep your current image."
+                                </div>
+                            </>
+                            <Stack direction='row' justifyContent='center'>
+                                <Button
+                                    variant='contained'
+                                    sx={{
+                                        backgroundColor: 'green',
+                                        color: 'white',
+                                        margin: '10px',
+                                    }}
+                                >
+                                    ACCEPT
+                                </Button>
+                                <Button
+                                    variant='contained'
+                                    sx={{
+                                        backgroundColor: 'yellow',
+                                        color: 'black',
+                                        margin: '10px',
+                                    }}
+                                >
+                                    CANCEL
+                                </Button>
+                            </Stack>
+                        </>
+                    )}
                 </Stack>
             </Card>
         </Stack>
