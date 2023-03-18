@@ -11,9 +11,16 @@ import ServeGraphic from "../../components/graphics/serveGraphic.component";
 import { setSpinner, clearSpinner } from "../../redux/pate/pate.actions";
 import { MainFooter } from "../../components/footers/main-footer";
 import { printObject } from "../../utils/helpers";
-const ServeGraphicPage = ({ match, setSpinner, clearSpinner, pateSystem }) => {
+const ServeGraphicPage = ({
+  match,
+  setSpinner,
+  clearSpinner,
+  pateSystem,
+  currentUser,
+}) => {
   let eventID = match?.params?.eventId;
   let graphicName = match?.params?.graphicName;
+  const history = useHistory();
   const [error, setError] = useState("");
   const [files, setFiles] = useState([]);
   const [imageUrl, setImageUrl] = useState("");
@@ -23,6 +30,9 @@ const ServeGraphicPage = ({ match, setSpinner, clearSpinner, pateSystem }) => {
   const [status, setStatus] = useState(0);
   const [tmpFileName, setTmpFileName] = useState(null);
 
+  useEffect(() => {
+    if (!currentUser?.authSession?.accessToken?.jwtToken) history.push("/");
+  }, []);
   const handleFileUpload = async (e) => {
     e.preventDefault();
 
@@ -35,8 +45,10 @@ const ServeGraphicPage = ({ match, setSpinner, clearSpinner, pateSystem }) => {
     }
 
     try {
-      const fileExtension = selectedFile.name.split(".").pop();
-      const fileName = `new-image-${Date.now()}.${fileExtension}`;
+      //   const fileExtension = selectedFile.name.split(".").pop();
+      //const fileName = `new-image-${Date.now()}.${fileExtension}`;
+      setSpinner();
+      const fileName = selectedFile.name;
       setTmpFileName(fileName);
       const key = `tmp/${fileName}`;
       setUploading(true);
@@ -45,11 +57,14 @@ const ServeGraphicPage = ({ match, setSpinner, clearSpinner, pateSystem }) => {
       setUploading(false);
       setAccepted(false);
       setStatus(1);
+      clearSpinner();
     } catch (error) {
       console.log("Error uploading file: ", error);
       setUploading(false);
+      clearSpinner();
     }
   };
+
   const handleAccept = async () => {
     // try {
     //     const finalKey = `tmp/default.png`;
@@ -65,6 +80,7 @@ const ServeGraphicPage = ({ match, setSpinner, clearSpinner, pateSystem }) => {
     // setImageUrl('');
     // setSelectedFile(null);
     // setAccepted(false);
+    history.goBack();
   };
   return pateSystem.showSpinner ? (
     <Spinner />
@@ -185,7 +201,11 @@ const ServeGraphicPage = ({ match, setSpinner, clearSpinner, pateSystem }) => {
                       backgroundColor: "yellow",
                       color: "black",
                       margin: "10px",
+                      "&:hover": {
+                        backgroundColor: "orange",
+                      },
                     }}
+                    onClick={handleReject}
                   >
                     CANCEL
                   </Button>
