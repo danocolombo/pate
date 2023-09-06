@@ -580,7 +580,7 @@ const EventRegistration = ({
                         {pateSystem?.rally?.graphic !== 'tbd' ? (
                             <img
                                 class='registration-page__image-file'
-                                src='https://eor-images-202214132-staging.s3.amazonaws.com/public/events/b70c0a49-dfa0-4671-b48d-38d3dcb1de9c/NorthwayChurch.png'
+                                src='https://eor-images-202214132-staging.s3.amazonaws.com/public/events/f03931d0-1759-527b-e867-7dd52cbde5d4/P8-Calhoun-20231118.png'
                                 alt='CR P8 Rally'
                                 style={{ width: '100%' }}
                             ></img>

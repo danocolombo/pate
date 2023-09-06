@@ -34,12 +34,16 @@ const EventDetails = ({ theEvent, currentUser }) => {
                         level: 'public',
                     }
                 );
+
                 setEventGraphicFile(
-                    'https://eor-images-202214132-staging.s3.amazonaws.com/public/events/b70c0a49-dfa0-4671-b48d-38d3dcb1de9c/NorthwayChurch.png'
+                    'https://eor-images-202214132-staging.s3.amazonaws.com/public/events/f03931d0-1759-527b-e867-7dd52cbde5d4/P8-Calhoun-20231118.png'
                 );
                 setEventGraphicFile(eventGraphic);
                 // const tmp = `s3://eor-images-202214132-staging/public/events/b70c0a49-dfa0-4671-b48d-38d3dcb1de9c/${displayThis.graphic}`;
                 // setEventGraphicFile(tmp);
+                // setEventGraphicFile(
+                //     'https://eor-images-202214132-staging.s3.amazonaws.com/public/events/b70c0a49-dfa0-4671-b48d-38d3dcb1de9c/NorthwayChurch.png'
+                // );
             }
             getS3File();
         }
@@ -79,7 +83,7 @@ const EventDetails = ({ theEvent, currentUser }) => {
                         {displayThis?.graphic && (
                             <div>
                                 <img
-                                    src='https://eor-images-202214132-staging.s3.amazonaws.com/public/events/b70c0a49-dfa0-4671-b48d-38d3dcb1de9c/NorthwayChurch.png'
+                                    src='https://eor-images-202214132-staging.s3.amazonaws.com/public/events/f03931d0-1759-527b-e867-7dd52cbde5d4/P8-Calhoun-20231118.png'
                                     alt='Event '
                                     className='event-details__graphic-image'
                                     style={{
