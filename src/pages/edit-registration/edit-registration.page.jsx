@@ -57,7 +57,7 @@ const UserProfile = ({
         }
         getRegistrationDetails();
     }, []);
-
+    // printObject('ERP:60-->theRegistration', theRegistration);
     return (
         <>
             <Header />

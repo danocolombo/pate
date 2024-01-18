@@ -12,6 +12,7 @@ import {
     loadRegisteredUsers,
 } from '../../redux/pate/pate.actions';
 import './registered-users.style.scss';
+import { printObject } from '../../utils/helpers';
 const RegisteredUsers = ({
     currentUser,
     pate,
@@ -22,6 +23,7 @@ const RegisteredUsers = ({
     const [p8Users, setP8Users] = useState([]);
     const [loadingUsers, setLoadingUsers] = useState(true);
     // const [registeredUser, setRegisteredUser] = useState([]);
+
     useEffect(() => {
         prepUsers();
         // setLoadingUsers(false);
@@ -38,6 +40,7 @@ const RegisteredUsers = ({
         try {
             let theUsersArray = [];
             try {
+                printObject('RUP:43-->currentUser\n', currentUser);
                 fetch(
                     'https://j7qty6ijwg.execute-api.us-east-1.amazonaws.com/QA/admin',
                     {
@@ -45,7 +48,7 @@ const RegisteredUsers = ({
                         body: JSON.stringify({
                             operation: 'getRegisteredUsers',
                             payload: {
-                                uniqueKey: currentUser.uid,
+                                uniqueKey: currentUser.sub,
                             },
                         }),
                         headers: {
@@ -55,7 +58,9 @@ const RegisteredUsers = ({
                 )
                     .then((response) => response.json())
                     .then((data) => {
+                        console.log('🚀 ~ .then ~ data:', data);
                         theUsersArray = data?.body?.Users;
+                        console.log('RUP:61-->theUsersArray:\n', theUsersArray);
                         loadRegisteredUsers(theUsersArray);
                         setLoadingUsers(false);
                     });

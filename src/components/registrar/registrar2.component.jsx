@@ -67,13 +67,15 @@ function Registrar({
     //printObject('registration:\n', registration);
     const classes = useStyles();
     const history = useHistory();
-    const [firstName, setFirstName] = useState(registration.attendeeFirstName);
+    const [firstName, setFirstName] = useState(
+        registration?.registrar?.firstName
+    );
     const [firstNameError, setFirstNameError] = useState('');
-    const [lastName, setLastName] = useState(registration.attendeeLastName);
+    const [lastName, setLastName] = useState(registration?.registrar?.lastName);
     const [lastNameError, setLastNameError] = useState('');
-    const [email, setEmail] = useState(registration.attendeeEmail);
+    const [email, setEmail] = useState(registration?.registrar?.email);
     const [emailError, setEmailError] = useState('');
-    const [phone, setPhone] = useState(registration.attendeePhone);
+    const [phone, setPhone] = useState(registration?.registrar?.phone);
     const [phoneError, setPhoneError] = useState('');
     const [street, setStreet] = useState(registration.attendeeStreet);
     const [streetError, setStreetError] = useState('');
@@ -626,6 +628,7 @@ function Registrar({
     if (!event) {
         return <Spinner />;
     }
+    printObject("R2C:629-->registration:', registration");
     return pateSystem.showSpinner ? (
         <Spinner />
     ) : (
